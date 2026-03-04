@@ -3,8 +3,8 @@ using HSM;
 public class PlayerRoot : State
 {
     private readonly PlayerContext ctx;
-    private readonly Grounded grounded;
-    private readonly Airborne airborne;
+    public readonly Grounded grounded;
+    public readonly Airborne airborne;
 
     public PlayerRoot(StateMachine machine, PlayerContext ctx, State parent = null) : base(machine, parent)
     {
@@ -14,5 +14,5 @@ public class PlayerRoot : State
         airborne = new Airborne(machine, ctx, this);
     }
 
-    protected override State GetInitialState() => grounded;
+    protected override State GetInitialState() => ctx.isGrounded ? grounded : airborne;
 }

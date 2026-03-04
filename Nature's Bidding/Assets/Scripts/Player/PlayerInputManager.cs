@@ -5,26 +5,22 @@ using HSM;
 using System.Linq;
 using Unity.Netcode;
 
-public class PlayerInputManager : NetworkBehaviour
+public class PlayerInputManager : MonoBehaviour
 {
-    public PlayerContext ctx;
-
-    [Header("References")]
-    [SerializeField] private Animator anim;
-    [SerializeField] private Transform orientation;
-    [SerializeField] private Rigidbody rb;
-    [SerializeField] private Camera cam;
+    private PlayerContext ctx;
 
     [Header("Player Controls")]
     private PlayerControls controls;
     private InputAction move;
     private InputAction sprint;
+    private InputAction dash;
     private InputAction jump;
     private InputAction parry;
     private InputAction attack;
 
     private bool allowInputs = false;
     public bool allowSprint = true;
+    public bool allowDash = true;
     public bool allowJump = true;
     public bool allowAttack = true;
     public bool allowParry = true;
@@ -32,55 +28,51 @@ public class PlayerInputManager : NetworkBehaviour
     private StateMachine sm;
     private State root;
 
-    private void Awake()
+    public void InitializePlayer(PlayerContext context)
     {
-        if (!IsOwner) return;
+        ctx = context;
 
         controls = new PlayerControls();
         move = controls.PlayerGameplay.Move;
         sprint = controls.PlayerGameplay.Sprint;
-        //jump = controls.PlayerGameplay.Jump;
-        //attack = controls.PlayerGameplay.LightAttack;
-        //parry = controls.PlayerGameplay.Parry;
+        dash = controls.PlayerGameplay.Dash;
+        jump = controls.PlayerGameplay.Jump;
+        attack = controls.PlayerGameplay.Attack;
+        parry = controls.PlayerGameplay.Parry;
 
-        anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
+        ctx.orientation = Instantiate(new GameObject(), transform).transform;
+        ctx.orientation.rotation = transform.rotation;
+        ctx.orientation.position = transform.position;
 
-        orientation = Instantiate(new GameObject(), transform).transform;
-        orientation.rotation = transform.rotation;
-        orientation.position = transform.position;
-
-        cam = Camera.main;
+        ctx.cam = Camera.main;
 
         root = new PlayerRoot(null, ctx);
         var builder = new StateMachineBuilder(root);
 
         sm = builder.Build();
 
-    }
-
-    private void OnEnable()
-    {
         move.Enable();
         sprint.Enable();
+        dash.Enable();
         jump.Enable();
         attack.Enable();
         parry.Enable();
+
+        allowInputs = true;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         move.Disable();
         sprint.Disable();
+        dash.Disable();
         jump.Disable();
         attack.Disable();
         parry.Disable();
-
     }
 
     void Update()
     {
-        if (!IsOwner) return;
 
         HandleOrientation();
         ctx.isGrounded = CheckGrounded();
@@ -89,29 +81,32 @@ public class PlayerInputManager : NetworkBehaviour
 
         sm.Tick(Time.deltaTime);
 
-        // DebugCurrentState();
+        DebugCurrentState();
+    }
+
+    private void FixedUpdate()
+    {
+        HandlePhysicsMove();
+    }
+
+    private void HandlePhysicsMove()
+    {
+        ctx.rb.AddForce(ctx.forceToAdd * Time.fixedDeltaTime, ctx.forceMode);
     }
 
     private void HandleOrientation()
     {
-        Vector3 cameraRelativeOrientation = transform.position - cam.transform.position;
+        Vector3 cameraRelativeOrientation = ctx.cam.transform.forward;
         cameraRelativeOrientation.y = 0;
         cameraRelativeOrientation = cameraRelativeOrientation.normalized;
 
-        orientation.forward = cameraRelativeOrientation;
+        ctx.orientation.forward = cameraRelativeOrientation;
     }
 
     private bool CheckGrounded()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, .2f, ctx.isGroundLayers);
+        Collider[] colliders = Physics.OverlapSphere(transform.position + (transform.up * .125f), .2f, ctx.isGroundLayers);
         return colliders.Length > 0;
-    }
-
-    // Debug ONLY shows the grounded check visibly on selecting the player
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(transform.position, .2f);
     }
 
     public void DebugCurrentState() => Debug.Log(ActivePathString(root.Leaf()));
@@ -123,16 +118,20 @@ public class PlayerInputManager : NetworkBehaviour
 
     void PlayerInput()
     {
-
-        if (!allowInputs || !IsOwner) return;
+        if (!allowInputs) return;
 
         Vector2 moveInput = move.ReadValue<Vector2>();
         ctx.sprintPressed = allowSprint ? sprint.IsPressed() : false;
+        ctx.jumpPressed = allowJump ? jump.IsPressed() : false;
+        ctx.dashPressed = allowDash ? dash.IsPressed() : false;
+        ctx.attackPressed = allowAttack ? attack.IsPressed() : false;
+        ctx.parryPressed = allowParry ? parry.IsPressed() : false;
 
-        Vector3 moveDirection = orientation.forward * moveInput.y + orientation.right * moveInput.x;
+        Vector3 moveDirection = ctx.orientation.forward * moveInput.y + ctx.orientation.right * moveInput.x;
         moveDirection.Normalize();
 
         ctx.moveInput = moveDirection;
+
     }
 
     void OnPauseGame()

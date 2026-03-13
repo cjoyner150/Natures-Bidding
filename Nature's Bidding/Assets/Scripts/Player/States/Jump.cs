@@ -14,6 +14,7 @@ public class Jump : State
 
     protected override void OnEnter()
     {
+        ctx.desiredMaxSpeed = ctx.airSpeed;
         ctx.rb.AddForce(ctx.jumpImpulse * ctx.rb.transform.up, ForceMode.Impulse);
         spaceHeld = true;
         spaceHeldTimer = ctx.jumpHeldAllowedTime;

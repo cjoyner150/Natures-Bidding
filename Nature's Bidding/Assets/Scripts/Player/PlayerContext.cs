@@ -14,8 +14,19 @@ public class PlayerContext
     public Camera cam;
 
     [Header("Speed")]
+
+    [Header("State Desired Speeds")]
     public float moveSpeed;
     public float sprintSpeed;
+    public float attackSpeed;
+    public float dashSpeed;
+    public float airSpeed;
+    public float knockbackSpeed;
+
+    [Header("Speed Options")]
+    public float currentMaxSpeed;
+    public float desiredMaxSpeed;
+    public float momentumLerpSpeed;
     public float acceleration;
     public float turnSpeed;
     public float groundDrag;
@@ -28,6 +39,20 @@ public class PlayerContext
     public float jumpImpulse;
     public float jumpHeldForce;
     public float jumpHeldAllowedTime;
+
+    [Header("Attacks")]
+    public float damage;
+    public float attackTime;
+    public float attackCD;
+    public float attackCDTimer;
+    public bool attackOnCooldown => attackCDTimer > 0;
+
+    [Header("Dash")]
+    public float dashTime;
+    public float dashCD;
+    public float dashCDTimer;
+    public bool dashOnCooldown => dashCDTimer > 0;
+    public float dashRotateMultiplier;
 
     [Header("Input")]
     public Vector3 moveInput;

@@ -8,6 +8,11 @@ public class Idle : State
         this.ctx = ctx;
     }
 
+    protected override void OnEnter()
+    {
+        ctx.desiredMaxSpeed = 0;
+    }
+
     protected override State GetTransition() => ctx.moveInput.magnitude > 0.01f ? GetParentOfType<GroundedLocomotion>().move : null;
 
 }

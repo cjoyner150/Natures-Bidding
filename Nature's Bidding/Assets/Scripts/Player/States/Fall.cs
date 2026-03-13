@@ -15,6 +15,7 @@ public class Fall : State
 
     protected override void OnEnter()
     {
+        ctx.desiredMaxSpeed = ctx.airSpeed;
         attacksWhileFalling = 0;
     }
 

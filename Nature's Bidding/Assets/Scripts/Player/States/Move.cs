@@ -16,25 +16,16 @@ public class Move : State
 
     protected override void OnUpdate(float deltaTime)
     {
+        ctx.desiredMaxSpeed = ctx.sprintPressed ? ctx.sprintSpeed : ctx.moveSpeed;
+
         ctx.forceToAdd = ctx.moveInput * ctx.acceleration * 10f;
 
-        HandleSpeedControl();
         HandleRotation(deltaTime);
     }
 
     protected override void OnExit()
     {
         ctx.forceToAdd = Vector3.zero;
-    }
-
-    void HandleSpeedControl()
-    {
-        float maxSpeed = ctx.sprintPressed ? ctx.sprintSpeed : ctx.moveSpeed;
-
-        if (ctx.rb.linearVelocity.magnitude > maxSpeed)
-        {
-            ctx.rb.linearVelocity = ctx.rb.linearVelocity.normalized * maxSpeed;
-        }
     }
 
     void HandleRotation(float deltaTime)

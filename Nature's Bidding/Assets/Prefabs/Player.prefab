@@ -146,7 +146,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8377056256281788884}
+  - {fileID: 1487306883029901934}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8537624614535359085
@@ -191,12 +191,13 @@ MonoBehaviour:
     isGrounded: 0
     isGroundLayers:
       serializedVersion: 2
-      m_Bits: 55
+      m_Bits: 129
     anim: {fileID: 3605974692278089002}
     rb: {fileID: 2963171370598308453}
+    modelHolder: {fileID: 1487306883029901934}
     orientation: {fileID: 0}
     cam: {fileID: 0}
-    moveSpeed: 2.7
+    walkSpeed: 0
     sprintSpeed: 5.5
     attackSpeed: 2
     dashSpeed: 20
@@ -204,7 +205,7 @@ MonoBehaviour:
     knockbackSpeed: 10
     currentMaxSpeed: 0
     desiredMaxSpeed: 0
-    momentumLerpSpeed: 5
+    momentumLerpSpeed: 10
     acceleration: 1000
     turnSpeed: 15
     groundDrag: 1
@@ -217,14 +218,16 @@ MonoBehaviour:
     jumpHeldAllowedTime: 0.2
     damage: 0
     attackTime: 0.3
+    jumpAttackTime: 0.2
+    fallAttackTime: 0.2
     attackCD: 0.5
     attackCDTimer: 0
-    dashTime: 0.5
-    dashCD: 2
+    dashTime: 0.4
+    dashCD: 3.65
     dashCDTimer: 0
     dashRotateMultiplier: 2
     moveInput: {x: 0, y: 0, z: 0}
-    sprintPressed: 0
+    moveInputIsSprint: 0
     dashPressed: 0
     jumpPressed: 0
     attackPressed: 0
@@ -332,7 +335,7 @@ GameObject:
   - component: {fileID: 1520460844582407427}
   - component: {fileID: 8726532484383772824}
   - component: {fileID: 3605974692278089002}
-  - component: {fileID: 5328395839758305051}
+  - component: {fileID: 6594369287800077036}
   m_Layer: 7
   m_Name: Model
   m_TagString: Untagged
@@ -348,14 +351,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2185307695873140252}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7100969408403557883}
   - {fileID: 2627287230023975621}
-  m_Father: {fileID: 1529684055763310261}
+  m_Father: {fileID: 1487306883029901934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1395644850789209385
 MeshFilter:
@@ -459,13 +462,99 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5328395839758305051
+--- !u!114 &6594369287800077036
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2185307695873140252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkAnimator
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkAnimatorExpanded: 0
+  AuthorityMode: 1
+  m_Animator: {fileID: 3605974692278089002}
+  TransitionStateInfoList:
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 753088835
+    DestinationState: -729051950
+    TransitionDuration: 0.1
+    TriggerNameHash: 1080829965
+    TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 753088835
+    DestinationState: -2073306267
+    TransitionDuration: 0.1
+    TriggerNameHash: -2045864598
+    TransitionIndex: 1
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 753088835
+    DestinationState: -1539735091
+    TransitionDuration: 0.1
+    TriggerNameHash: 30052541
+    TransitionIndex: 2
+  AnimatorParameterEntries:
+    ParameterEntries:
+    - name: Attack
+      NameHash: 1080829965
+      Synchronize: 1
+      ParameterType: 9
+    - name: JumpAttack
+      NameHash: -2045864598
+      Synchronize: 1
+      ParameterType: 9
+    - name: FallAttack
+      NameHash: 30052541
+      Synchronize: 1
+      ParameterType: 9
+  AnimatorParametersExpanded: 0
+--- !u!1 &3949436915247687260
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1487306883029901934}
+  - component: {fileID: 7307092967920666893}
+  m_Layer: 7
+  m_Name: ModelHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1487306883029901934
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3949436915247687260}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8377056256281788884}
+  m_Father: {fileID: 1529684055763310261}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7307092967920666893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3949436915247687260}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
@@ -484,14 +573,14 @@ MonoBehaviour:
   ScaleLerpSmoothing: 1
   ScaleMaxInterpolationTime: 0.1
   AuthorityMode: 1
-  TickSyncChildren: 0
+  TickSyncChildren: 1
   UseUnreliableDeltas: 1
   SyncPositionX: 0
   SyncPositionY: 0
   SyncPositionZ: 0
-  SyncRotAngleX: 0
+  SyncRotAngleX: 1
   SyncRotAngleY: 1
-  SyncRotAngleZ: 0
+  SyncRotAngleZ: 1
   SyncScaleX: 0
   SyncScaleY: 0
   SyncScaleZ: 0

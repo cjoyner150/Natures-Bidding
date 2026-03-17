@@ -4,6 +4,7 @@ public class Airborne : State
     private readonly PlayerContext ctx;
     public readonly Jump jump;
     public readonly Fall fall;
+    public readonly AirDash airDash;
 
     private float regroundedCooldown = .2f;
     private bool canGround;
@@ -14,6 +15,7 @@ public class Airborne : State
 
         jump = new Jump(machine, ctx, this);
         fall = new Fall(machine, ctx, this);
+        airDash = new AirDash(machine, ctx, this);
     }
 
     protected override void OnEnter()
@@ -38,5 +40,6 @@ public class Airborne : State
 
     protected override State GetInitialState() => ctx.jumpPressed ? jump : fall;
 
-    protected override State GetTransition() => ctx.isGrounded && canGround ? GetParentOfType<PlayerRoot>().grounded : null;
+    protected override State GetTransition() => (ctx.isGrounded && canGround) ? GetParentOfType<PlayerRoot>().grounded : null;
+
 }

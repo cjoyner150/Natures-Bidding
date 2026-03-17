@@ -16,7 +16,7 @@ public class Move : State
 
     protected override void OnUpdate(float deltaTime)
     {
-        ctx.desiredMaxSpeed = ctx.sprintPressed ? ctx.sprintSpeed : ctx.moveSpeed;
+        ctx.desiredMaxSpeed = ctx.moveInputIsSprint ? ctx.sprintSpeed : ctx.walkSpeed;
 
         ctx.forceToAdd = ctx.moveInput * ctx.acceleration * 10f;
 
@@ -30,7 +30,7 @@ public class Move : State
 
     void HandleRotation(float deltaTime)
     {
-        ctx.anim.transform.forward = Vector3.Slerp(ctx.anim.transform.forward, ctx.moveInput.normalized, ctx.turnSpeed * deltaTime);
+        ctx.modelHolder.forward = Vector3.Slerp(ctx.modelHolder.forward, ctx.moveInput.normalized, ctx.turnSpeed * deltaTime);
     }
 
     protected override State GetTransition() => ctx.moveInput.magnitude > 0.01f ? null : GetParentOfType<GroundedLocomotion>().idle;

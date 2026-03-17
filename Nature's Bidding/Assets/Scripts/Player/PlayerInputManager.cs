@@ -121,14 +121,15 @@ public class PlayerInputManager : MonoBehaviour
         if (!allowInputs) return;
 
         Vector2 moveInput = move.ReadValue<Vector2>();
-        ctx.sprintPressed = allowSprint ? sprint.IsPressed() : false;
         ctx.jumpPressed = allowJump ? jump.IsPressed() : false;
         ctx.dashPressed = allowDash ? dash.IsPressed() : false;
         ctx.attackPressed = allowAttack ? attack.IsPressed() : false;
         ctx.parryPressed = allowParry ? parry.IsPressed() : false;
 
-        Vector3 moveDirection = ctx.orientation.forward * moveInput.y + ctx.orientation.right * moveInput.x;
-        moveDirection.Normalize();
+        Debug.Log($"moveInput: {moveInput.x}, {moveInput.y}");
+        ctx.moveInputIsSprint = allowSprint && (Mathf.Abs(moveInput.x) > .4f || Mathf.Abs(moveInput.y) > .4f);
+
+        Vector3 moveDirection = (ctx.orientation.forward * moveInput.y + ctx.orientation.right * moveInput.x).normalized;
 
         ctx.moveInput = moveDirection;
 

@@ -20,7 +20,7 @@ public class Attack : State
 
         ctx.anim.SetTrigger("Attack");
 
-        momentumDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.anim.transform.forward;
+        momentumDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
 
         attackTimer = ctx.attackTime;
         exitAttack = false;
@@ -28,7 +28,7 @@ public class Attack : State
 
     protected override void OnUpdate(float deltaTime)
     {
-        ctx.forceToAdd = ctx.anim.transform.forward * ctx.acceleration * 10f;
+        ctx.forceToAdd = ctx.modelHolder.forward * ctx.acceleration * 10f;
 
         HandleRotation(deltaTime);
 
@@ -39,11 +39,12 @@ public class Attack : State
     protected override void OnExit()
     {
         ctx.forceToAdd = Vector3.zero;
+        ctx.attackCDTimer = ctx.attackCD;
     }
 
     void HandleRotation(float deltaTime)
     {
-        ctx.anim.transform.forward = Vector3.Slerp(ctx.anim.transform.forward, momentumDirection, ctx.turnSpeed * deltaTime);
+        ctx.modelHolder.forward = Vector3.Slerp(ctx.modelHolder.forward, momentumDirection, ctx.turnSpeed * deltaTime);
     }
 
     protected override State GetTransition() 

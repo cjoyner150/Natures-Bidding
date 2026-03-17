@@ -10,13 +10,14 @@ public class PlayerContext
     [Header("References")]
     public Animator anim;
     public Rigidbody rb;
+    public Transform modelHolder;
     public Transform orientation;
     public Camera cam;
 
     [Header("Speed")]
 
     [Header("State Desired Speeds")]
-    public float moveSpeed;
+    public float walkSpeed;
     public float sprintSpeed;
     public float attackSpeed;
     public float dashSpeed;
@@ -43,6 +44,8 @@ public class PlayerContext
     [Header("Attacks")]
     public float damage;
     public float attackTime;
+    public float jumpAttackTime;
+    public float fallAttackTime;
     public float attackCD;
     public float attackCDTimer;
     public bool attackOnCooldown => attackCDTimer > 0;
@@ -56,7 +59,7 @@ public class PlayerContext
 
     [Header("Input")]
     public Vector3 moveInput;
-    public bool sprintPressed;
+    public bool moveInputIsSprint;
     public bool dashPressed;
     public bool jumpPressed;
     public bool attackPressed;

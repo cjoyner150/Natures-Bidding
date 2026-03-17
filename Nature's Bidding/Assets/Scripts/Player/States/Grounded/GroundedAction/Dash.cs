@@ -17,10 +17,15 @@ public class Dash : State
     {
         ctx.desiredMaxSpeed = ctx.dashSpeed;
 
-        momentumDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.anim.transform.forward;
+        momentumDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
 
         dashTimer = ctx.dashTime;
         exitDash = false;
+    }
+
+    protected override void OnExit()
+    {
+        ctx.dashCDTimer = ctx.dashCD;
     }
 
     protected override void OnUpdate(float deltaTime)
@@ -35,7 +40,7 @@ public class Dash : State
 
     void HandleRotation(float deltaTime)
     {
-        ctx.anim.transform.forward = Vector3.Slerp(ctx.anim.transform.forward, momentumDirection, ctx.turnSpeed * deltaTime * ctx.dashRotateMultiplier);
+        ctx.modelHolder.forward = Vector3.Slerp(ctx.modelHolder.forward, momentumDirection, ctx.turnSpeed * deltaTime * ctx.dashRotateMultiplier);
     }
 
     protected override State GetTransition() 

@@ -1,13 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
+using MoreMountains.Tools;
 using Unity.Netcode;
+using UnityEngine.Events;
+using UnityUtils;
 
-public class TestingGameManager : MonoBehaviour
+public class TestingGameManager : Singleton<TestingGameManager>
 {
 
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private List<Transform> spawnPoints;
     private int nextSpawnIndex = 0;
+
+    [SerializeField] private GameObject playerHealthBarPrefab;
+    [SerializeField] private Transform playerHealthBarParent;
+
+    public static UnityEvent OnSessionStarted = new UnityEvent();
 
     void OnEnable()
     {
@@ -43,5 +51,27 @@ public class TestingGameManager : MonoBehaviour
         response.Position = spawnPoint.position; 
         response.Rotation = spawnPoint.rotation; 
     }
+
+    [ContextMenu("TestBeginSession")]
+    public void BeginSession()
+    {
+        BeginSessionAllRpc();
+    }
+
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    void BeginSessionAllRpc()
+    {
+        OnSessionStarted?.Invoke();
+    }
+
+    public PlayerGameplayUI SpawnPlayerHealthBar()
+    {
+        GameObject healthGO = Instantiate(playerHealthBarPrefab, playerHealthBarParent);
+        
+        PlayerGameplayUI gameplayUI = healthGO.GetComponent<PlayerGameplayUI>();
+        
+        return gameplayUI;
+    }
+    
 }
 

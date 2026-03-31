@@ -30,4 +30,9 @@ public class NetworkUIManager : MonoBehaviour
     {
         sessionManager.StartSessionAsHost();
     }
+
+    public void EnterNameByButton(TMP_InputField input)
+    {
+        _ = sessionManager.ChangePlayerName(input.text);
+    }
 }

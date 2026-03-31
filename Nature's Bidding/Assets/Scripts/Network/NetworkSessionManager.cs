@@ -8,10 +8,13 @@ using UnityUtils;
 using System;
 using System.Linq;
 using TMPro;
+using Unity.Netcode;
 
 public class NetworkSessionManager : Singleton<NetworkSessionManager>
 {
     ISession activeSession;
+    Dictionary<ulong, string> authenticationIdByClientId = new Dictionary<ulong, string>();
+    Dictionary<ulong, string> playerNameByClientId = new Dictionary<ulong, string>();
 
     ISession ActiveSession
     {
@@ -29,6 +32,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         {
             await UnityServices.InitializeAsync();
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            await AuthenticationService.Instance.UpdatePlayerNameAsync("Player");
             Debug.Log($"Player Initialized with id: {AuthenticationService.Instance.PlayerId} and name: {AuthenticationService.Instance.PlayerName}");
         }
         catch (Exception e)
@@ -36,6 +40,12 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
             Debug.LogException(e);
         }
 
+    }
+
+    public async UniTask ChangePlayerName(string playerName)
+    {
+        await AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
+        Debug.Log($"Player updated with id: {AuthenticationService.Instance.PlayerId} and name: {AuthenticationService.Instance.PlayerName}");
     }
 
     public async void StartSessionAsHost()
@@ -114,5 +124,45 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
                 ActiveSession = null;
             }
         }
+    }
+    
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    public void RegisterClientIdRpc(ulong clientId, string clientAuthenticationId, string clientName)
+    {
+        if (authenticationIdByClientId.ContainsKey(clientId))
+        {
+            Debug.LogError($"Client with clientId {clientId} has already been registered.");
+            return;
+        }
+        else if (authenticationIdByClientId.ContainsValue(clientAuthenticationId))
+        {
+            Debug.LogError($"Client with authId {clientAuthenticationId} has already been registered.");
+            return;
+        }
+        
+        authenticationIdByClientId.Add(clientId, clientAuthenticationId);
+        playerNameByClientId.Add(clientId, clientName);
+        
+    }
+    
+    
+    /// <summary>
+    /// Client is not guaranteed to have updated dictionary on NetworkSessionManager. Dict is updated by RegisterClientIdRpc. Ensure Client has been registered.
+    /// </summary>
+    /// <param name="clientId"></param>
+    /// <returns></returns>
+    public string RequestPlayerNameByClientId(ulong clientId)
+    {
+        return playerNameByClientId[clientId];
+    }
+    
+    /// <summary>
+    /// Client is not guaranteed to have updated dictionary on NetworkSessionManager. Dict is updated by RegisterClientIdRpc. Ensure Client has been registered.
+    /// </summary>
+    /// <param name="clientId"></param>
+    /// <returns></returns>
+    public string RequestAuthenticationIdByClientId(ulong clientId)
+    {
+        return authenticationIdByClientId[clientId];
     }
 }

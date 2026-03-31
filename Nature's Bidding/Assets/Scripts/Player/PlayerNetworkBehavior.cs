@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using Unity.Services.Authentication;
 using UnityEngine;
 
 public class PlayerNetworkBehavior : NetworkBehaviour
@@ -10,10 +11,24 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
+        TestingGameManager.OnSessionStarted.AddListener(OnSessionStarted);
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+        
+        TestingGameManager.OnSessionStarted.RemoveListener(OnSessionStarted);
+    }
+
+    public void OnSessionStarted()
+    {
         if (IsOwner)
         {
             playerInput = gameObject.AddComponent<PlayerInputManager>();
             playerInput.InitializePlayer(ctx);
+            
+            NetworkSessionManager.Instance.RegisterClientIdRpc(OwnerClientId, AuthenticationService.Instance.PlayerId, AuthenticationService.Instance.PlayerName);
         }
         
     }

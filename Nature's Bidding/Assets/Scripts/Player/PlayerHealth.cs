@@ -1,3 +1,4 @@
+using MoreMountains.Tools;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -9,33 +10,37 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     
     NetworkObject selfNetworkObject;
     GameplayServerHandler gameplayServerHandler;
+    private PlayerGameplayUI playerGameplayUI;
+    private MMProgressBar healthProgressBarVisual;
     
     public override void OnNetworkSpawn()
     {
         gameplayServerHandler = FindAnyObjectByType<GameplayServerHandler>();
         selfNetworkObject = GetComponent<NetworkObject>();
         
-        if (IsOwner)
-        {
-            health.OnValueChanged += OnHealthChanged;
-        }
+        health.OnValueChanged += OnHealthChanged;
+        TestingGameManager.OnSessionStarted.AddListener(OnSessionStarted);
+    }
+
+    public void OnSessionStarted()
+    {
+        playerGameplayUI = TestingGameManager.Instance.SpawnPlayerHealthBar();
+        playerGameplayUI.Initialize(selfNetworkObject.OwnerClientId);
+        
+        healthProgressBarVisual = playerGameplayUI.gameObject.GetComponentInChildren<MMProgressBar>();
 
         if (IsServer)
         {
             health.Value = 100;
         }
-
-        
     }
 
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();
 
-        if (IsOwner)
-        {
-            health.OnValueChanged -= OnHealthChanged;
-        }
+        health.OnValueChanged -= OnHealthChanged;
+        TestingGameManager.OnSessionStarted.RemoveListener(OnSessionStarted);
     }
 
     public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context)
@@ -54,7 +59,9 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     private void OnHealthChanged(float from, float to)
     {
-        Debug.Log($"{selfNetworkObject.OwnerClientId}: My new health is {health.Value}");
+        if (IsServer) return;
+        
+        healthProgressBarVisual.SetBar01((health.Value / 100f));
     }
 
     [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]

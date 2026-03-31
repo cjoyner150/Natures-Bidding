@@ -35,7 +35,7 @@ public class JumpLocomotion : State
 
         if (spaceHeldTimer <= 0) spaceHeld = false;
 
-        ctx.forceToAdd = (ctx.moveInput * ctx.acceleration * ctx.airControlMultiplier) + (ctx.jumpHeldForce * ctx.rb.transform.up);
+        ctx.forceToAdd = (ctx.moveInput * (ctx.acceleration * ctx.airControlMultiplier)) + (ctx.jumpHeldForce * ctx.rb.transform.up);
     }
 
     void HandleRotation(float deltaTime)

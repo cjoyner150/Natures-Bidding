@@ -13,6 +13,7 @@ public class PlayerContext
     public Transform modelHolder;
     public Transform orientation;
     public Camera cam;
+    public PlayerAttackManager playerAttackManager;
 
     [Header("Speed")]
 

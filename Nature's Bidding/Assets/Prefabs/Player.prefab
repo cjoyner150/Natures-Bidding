@@ -126,6 +126,8 @@ GameObject:
   - component: {fileID: 2963171370598308453}
   - component: {fileID: 6244941739227278746}
   - component: {fileID: 1684177354383623377}
+  - component: {fileID: 9193257734005782328}
+  - component: {fileID: 2143706486958459292}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -161,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1770671079
+  GlobalObjectIdHash: 2036068895
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -197,6 +199,7 @@ MonoBehaviour:
     modelHolder: {fileID: 1487306883029901934}
     orientation: {fileID: 0}
     cam: {fileID: 0}
+    playerAttackManager: {fileID: 9193257734005782328}
     walkSpeed: 0
     sprintSpeed: 5.5
     attackSpeed: 2
@@ -322,6 +325,45 @@ MonoBehaviour:
   UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
+--- !u!114 &9193257734005782328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104365586213191800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13d05ae7126144d8ad5e50f89d4642a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackManager
+  ShowTopMostFoldoutHeaderGroup: 1
+  attackTransform: {fileID: 2627287230023975621}
+  attackableLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  attackRadius: 0.3
+  attackLength: 1
+  attackDamage: 10
+--- !u!114 &2143706486958459292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104365586213191800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f9537fa2aa1bc342a37bcd0830637ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  ShowTopMostFoldoutHeaderGroup: 1
+  health:
+    m_InternalValue: 0
+  isInvulnerable:
+    m_InternalValue: 0
+  isParrying:
+    m_InternalValue: 0
 --- !u!1 &2185307695873140252
 GameObject:
   m_ObjectHideFlags: 0

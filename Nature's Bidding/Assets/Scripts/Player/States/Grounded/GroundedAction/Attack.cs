@@ -19,6 +19,7 @@ public class Attack : State
         ctx.forceMode = ForceMode.Force;
 
         ctx.anim.SetTrigger("Attack");
+        ctx.playerAttackManager.BeginAttack();
 
         momentumDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
 
@@ -40,6 +41,7 @@ public class Attack : State
     {
         ctx.forceToAdd = Vector3.zero;
         ctx.attackCDTimer = ctx.attackCD;
+        ctx.playerAttackManager.EndAttack();
     }
 
     void HandleRotation(float deltaTime)

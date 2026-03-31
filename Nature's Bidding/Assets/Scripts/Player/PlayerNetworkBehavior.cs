@@ -5,7 +5,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 {
     [SerializeField] PlayerContext ctx;
     private PlayerInputManager playerInput;
-
+    
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -15,6 +15,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             playerInput = gameObject.AddComponent<PlayerInputManager>();
             playerInput.InitializePlayer(ctx);
         }
+        
     }
 
     private void OnDrawGizmosSelected()

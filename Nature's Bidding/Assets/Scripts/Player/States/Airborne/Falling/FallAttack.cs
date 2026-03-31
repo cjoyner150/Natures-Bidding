@@ -23,6 +23,7 @@ public class FallAttack : State
         ctx.rb.useGravity = false;
 
         ctx.anim.SetTrigger("FallAttack");
+        ctx.playerAttackManager.BeginAttack();
 
         facingDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
         momentumDirection = (facingDirection + -ctx.modelHolder.up).normalized;
@@ -52,6 +53,7 @@ public class FallAttack : State
         ctx.attackCDTimer = ctx.attackCD;
 
         ctx.rb.useGravity = true;
+        ctx.playerAttackManager.EndAttack();
     }
 
     protected override State GetTransition()

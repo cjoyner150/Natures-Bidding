@@ -9,5 +9,5 @@ public interface IDamageable
         failed
     }
 
-    public void Hit();
+    public void Hit(float damage, ulong fromPlayerId, out HitCallbackContext context);
 }

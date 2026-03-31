@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using HSM;
 using System.Linq;
-using Unity.Netcode;
+using UnityUtils;
 
 public class PlayerInputManager : MonoBehaviour
 {
@@ -59,6 +59,15 @@ public class PlayerInputManager : MonoBehaviour
         parry.Enable();
 
         allowInputs = true;
+        
+        SetOwnedPlayerLayers();
+    }
+
+    private void SetOwnedPlayerLayers()
+    {
+        Transform[] transforms = GetComponentsInChildren<Transform>();
+        
+        foreach (Transform t in transforms) t.gameObject.layer = LayerMask.NameToLayer("OwnedPlayer");
     }
 
     private void OnDestroy()
@@ -121,12 +130,12 @@ public class PlayerInputManager : MonoBehaviour
         if (!allowInputs) return;
 
         Vector2 moveInput = move.ReadValue<Vector2>();
-        ctx.jumpPressed = allowJump ? jump.IsPressed() : false;
-        ctx.dashPressed = allowDash ? dash.IsPressed() : false;
-        ctx.attackPressed = allowAttack ? attack.IsPressed() : false;
-        ctx.parryPressed = allowParry ? parry.IsPressed() : false;
+        ctx.jumpPressed = allowJump && jump.IsPressed();
+        ctx.dashPressed = allowDash && dash.IsPressed();
+        ctx.attackPressed = allowAttack && attack.IsPressed();
+        ctx.parryPressed = allowParry && parry.IsPressed();
 
-        Debug.Log($"moveInput: {moveInput.x}, {moveInput.y}");
+        //Debug.Log($"moveInput: {moveInput.x}, {moveInput.y}");
         ctx.moveInputIsSprint = allowSprint && (Mathf.Abs(moveInput.x) > .4f || Mathf.Abs(moveInput.y) > .4f);
 
         Vector3 moveDirection = (ctx.orientation.forward * moveInput.y + ctx.orientation.right * moveInput.x).normalized;

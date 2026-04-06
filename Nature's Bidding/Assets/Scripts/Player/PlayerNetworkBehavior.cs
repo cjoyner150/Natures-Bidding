@@ -12,6 +12,11 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         base.OnNetworkSpawn();
 
         TestingGameManager.OnSessionStarted.AddListener(OnSessionStarted);
+
+        if (IsOwner)
+        {
+            NetworkSessionManager.Instance.RegisterClientIdRpc(OwnerClientId, AuthenticationService.Instance.PlayerId, AuthenticationService.Instance.PlayerName);
+        }
     }
 
     public override void OnNetworkDespawn()
@@ -27,8 +32,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         {
             playerInput = gameObject.AddComponent<PlayerInputManager>();
             playerInput.InitializePlayer(ctx);
-            
-            NetworkSessionManager.Instance.RegisterClientIdRpc(OwnerClientId, AuthenticationService.Instance.PlayerId, AuthenticationService.Instance.PlayerName);
         }
         
     }

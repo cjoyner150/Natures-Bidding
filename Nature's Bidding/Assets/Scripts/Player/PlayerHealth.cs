@@ -18,7 +18,6 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         gameplayServerHandler = FindAnyObjectByType<GameplayServerHandler>();
         selfNetworkObject = GetComponent<NetworkObject>();
         
-        health.OnValueChanged += OnHealthChanged;
         TestingGameManager.OnSessionStarted.AddListener(OnSessionStarted);
     }
 
@@ -28,6 +27,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         playerGameplayUI.Initialize(selfNetworkObject.OwnerClientId);
         
         healthProgressBarVisual = playerGameplayUI.gameObject.GetComponentInChildren<MMProgressBar>();
+        health.OnValueChanged += OnHealthChanged;
 
         if (IsServer)
         {

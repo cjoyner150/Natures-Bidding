@@ -126,7 +126,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         }
     }
     
-    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    /*[Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
     public void RegisterClientIdRpc(ulong clientId, string clientAuthenticationId, string clientName)
     {
         if (authenticationIdByClientId.ContainsKey(clientId))
@@ -143,6 +143,24 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         authenticationIdByClientId.Add(clientId, clientAuthenticationId);
         playerNameByClientId.Add(clientId, clientName);
         
+    }*/
+    
+    [Rpc(SendTo.Server, InvokePermission =  RpcInvokePermission.Everyone)]
+    public void RegisterClientIdRpc(ulong clientId, string clientAuthId, string clientName)
+    {
+        if (authenticationIdByClientId.ContainsKey(clientId)) return;
+
+        authenticationIdByClientId.Add(clientId, clientAuthId);
+        playerNameByClientId.Add(clientId, clientName);
+        
+        OnClientRegisteredRpc(clientId, clientAuthId, clientName);
+    }
+
+    [Rpc(SendTo.ClientsAndHost,  InvokePermission = RpcInvokePermission.Server)]
+    private void OnClientRegisteredRpc(ulong clientId, string clientAuthId, string clientName)
+    {
+        authenticationIdByClientId[clientId] = clientAuthId;
+        playerNameByClientId[clientId] = clientName;
     }
     
     
@@ -153,7 +171,8 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
     /// <returns></returns>
     public string RequestPlayerNameByClientId(ulong clientId)
     {
-        return playerNameByClientId[clientId];
+        if (playerNameByClientId.ContainsKey(clientId)) return playerNameByClientId[clientId];
+        else return null;
     }
     
     /// <summary>
@@ -163,6 +182,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
     /// <returns></returns>
     public string RequestAuthenticationIdByClientId(ulong clientId)
     {
-        return authenticationIdByClientId[clientId];
+        if (authenticationIdByClientId.ContainsKey(clientId)) return authenticationIdByClientId[clientId];
+        else return null;
     }
 }

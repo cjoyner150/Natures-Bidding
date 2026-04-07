@@ -58,6 +58,11 @@ public class PlayerContext
     public bool dashOnCooldown => dashCDTimer > 0;
     public float dashRotateMultiplier;
 
+    [Header("Knockback")]
+    public float knockbackTime;
+    public Vector3 lastHitFromPosition;
+    public bool shouldTakeKnockback;
+
     [Header("Input")]
     public Vector3 moveInput;
     public bool moveInputIsSprint;

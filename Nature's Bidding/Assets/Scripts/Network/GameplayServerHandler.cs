@@ -38,7 +38,7 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
             var hitPlayerHealth = hitPlayer.GetComponent<PlayerHealth>();
             
             hitPlayerHealth.health.Value -= damage;
-            hitPlayerHealth.PlayerDamagedFeedbackClientRpc();
+            hitPlayerHealth.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position);
         }
     }
 

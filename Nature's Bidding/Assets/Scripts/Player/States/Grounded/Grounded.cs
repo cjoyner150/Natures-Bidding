@@ -22,7 +22,8 @@ public class Grounded : State
 
     protected override State GetTransition()
     {
-        if (!ctx.isGrounded) return GetParentOfType<PlayerRoot>().airborne;
+        if (ctx.shouldTakeKnockback) return groundedAction.knockback;
+        else if (!ctx.isGrounded) return GetParentOfType<PlayerRoot>().airborne;
         else return null;
     }
 

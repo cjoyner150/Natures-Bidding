@@ -7,7 +7,8 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     public NetworkVariable<float> health =  new(100, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<bool> isInvulnerable = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isParrying = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    
+
+    PlayerContext ctx;
     NetworkObject selfNetworkObject;
     GameplayServerHandler gameplayServerHandler;
     private PlayerGameplayUI playerGameplayUI;
@@ -17,6 +18,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         gameplayServerHandler = FindAnyObjectByType<GameplayServerHandler>();
         selfNetworkObject = GetComponent<NetworkObject>();
+        ctx = GetComponent<PlayerNetworkBehavior>()?.ctx;
         
         GameplayServerHandler.OnAllPlayersRegistered.AddListener(OnAllPlayersRegistered);
     }
@@ -28,7 +30,6 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         
         healthProgressBarVisual = playerGameplayUI.gameObject.GetComponentInChildren<MMProgressBar>();
         health.OnValueChanged += OnHealthChanged;
-        Debug.Log("OnHealthChanged Registered.");
 
         if (IsServer)
         {
@@ -64,12 +65,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     }
 
     [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
-    public void PlayerDamagedFeedbackClientRpc()
+    public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition)
     {
         if (!IsOwner) return;
         
-        Debug.Log($"{selfNetworkObject.OwnerClientId}: I'm hit!");
-        
+        ctx.lastHitFromPosition = fromPosition;
+        ctx.shouldTakeKnockback = true;
+        Debug.Log("I've been hit!");
     }
     
 }

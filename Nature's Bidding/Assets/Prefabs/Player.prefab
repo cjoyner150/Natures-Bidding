@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2036068895
+  GlobalObjectIdHash: 1770671079
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -205,7 +205,7 @@ MonoBehaviour:
     attackSpeed: 2
     dashSpeed: 20
     airSpeed: 10
-    knockbackSpeed: 10
+    knockbackSpeed: 25
     currentMaxSpeed: 0
     desiredMaxSpeed: 0
     momentumLerpSpeed: 10
@@ -229,6 +229,9 @@ MonoBehaviour:
     dashCD: 3.65
     dashCDTimer: 0
     dashRotateMultiplier: 2
+    knockbackTime: 0.225
+    lastHitFromPosition: {x: 0, y: 0, z: 0}
+    shouldTakeKnockback: 0
     moveInput: {x: 0, y: 0, z: 0}
     moveInputIsSprint: 0
     dashPressed: 0
@@ -339,11 +342,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackManager
   ShowTopMostFoldoutHeaderGroup: 1
   attackTransform: {fileID: 2627287230023975621}
+  selfPlayerHealth: {fileID: 0}
   attackableLayers:
     serializedVersion: 2
     m_Bits: 128
-  attackRadius: 0.3
-  attackLength: 1
+  attackRadius: 0.4
+  attackLength: 2
   attackDamage: 10
 --- !u!114 &2143706486958459292
 MonoBehaviour:

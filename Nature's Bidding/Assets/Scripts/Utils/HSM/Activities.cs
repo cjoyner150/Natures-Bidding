@@ -19,67 +19,10 @@ namespace HSM
         Task DeactivateAsync(CancellationToken ct);
     }
 
-
-    //public class JumpActivity : Activity
-    //{
-    //    public PlayerContext ctx;
-    //    public float jumpTime;
-
-    //    public override Task ActivateAsync(CancellationToken ct)
-    //    {
-    //        return base.ActivateAsync(ct);
-    //    }
-
-    //    public override async Task DeactivateAsync(CancellationToken ct)
-    //    {
-    //        Mode = ActivityMode.Deactivating;
-
-    //        if (ctx.jumpPressed)
-    //        {
-
-    //            ctx.jumpPressed = false;
-
-    //            ctx.velocity = ctx.anim.velocity;
-    //            ctx.velocity.y = Mathf.Sqrt(2 * ctx.gravity * ctx.jumpHeight);
-
-    //            ctx.anim.SetBool("Sprinting", ctx.sprintPressed);
-    //            ctx.anim.SetBool("Moving", ctx.isMoving);
-    //            ctx.anim.SetTrigger("Jump");
-    //            ctx.isGrounded = false;
-
-    //            await UpdateJumpMotionForTime(jumpTime, ctx.sprintPressed, ct);
-    //        }
-
-    //        Mode = ActivityMode.Inactive;
-    //    }
-
-    //    async UniTask UpdateJumpMotionForTime(float time, bool sprinting, CancellationToken ct)
-    //    {
-    //        float t = time;
-
-    //        while (t > 0)
-    //        {
-    //            t -= Time.deltaTime;
-
-    //            Vector3 move = sprinting ? ctx.rootMotion : (ctx.rootMotion * .5f);
-
-    //            ctx.velocity.y -= ctx.gravity * Time.deltaTime;
-    //            ctx.velocity += ctx.moveDirection * ctx.airMultiplier * Time.deltaTime;
-
-    //            ctx.cc.Move((ctx.velocity * Time.deltaTime) + move);
-    //            ctx.rootMotion = Vector3.zero;
-
-    //            if (t < time * .5f)
-    //            {
-    //                ctx.isGrounded = ctx.cc.isGrounded;
-    //                if (ctx.isGrounded) break;
-    //            }
-
-
-    //            await UniTask.NextFrame();
-    //        }
-    //    }
-    //}
+    public class RetainKnockbackOnUnexpectedTransition : Activity
+    {
+        
+    }
 
     public class DelayActivationActivity : Activity
     {

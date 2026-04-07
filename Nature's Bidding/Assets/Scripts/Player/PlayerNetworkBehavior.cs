@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerNetworkBehavior : NetworkBehaviour
 {
-    [SerializeField] PlayerContext ctx;
+    public PlayerContext ctx;
     private PlayerInputManager playerInput;
     
     public override void OnNetworkSpawn()

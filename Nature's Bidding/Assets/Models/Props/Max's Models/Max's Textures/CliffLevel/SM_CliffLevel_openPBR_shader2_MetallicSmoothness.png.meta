@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Nature's Bidding/Assets/Models/Max's Models/CliffLevel/SM_CliffLevel_openPBR_shader2_MetallicSmoothness.png.meta
+guid: f466bad8dba28c34b9629c81f87585cd
+=======
 guid: 653e2b6d90dedc74bbacd69f332afe51
+>>>>>>> main:Nature's Bidding/Assets/Models/Props/Max's Models/Max's Textures/CliffLevel/SM_CliffLevel_openPBR_shader2_MetallicSmoothness.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

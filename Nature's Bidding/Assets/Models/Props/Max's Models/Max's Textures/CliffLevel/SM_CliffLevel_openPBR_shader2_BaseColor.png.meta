@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Nature's Bidding/Assets/Models/Max's Models/CliffLevel/SM_CliffLevel_openPBR_shader2_BaseColor.png.meta
+guid: 9b6bbd58442c0394ab8c8e977fea682c
+=======
 guid: d93393bde6fa6f643966de7afd4dab6b
+>>>>>>> main:Nature's Bidding/Assets/Models/Props/Max's Models/Max's Textures/CliffLevel/SM_CliffLevel_openPBR_shader2_BaseColor.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

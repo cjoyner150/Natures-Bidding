@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Nature's Bidding/Assets/Models/Max's Models/Log/SM_Log_DefaultMaterial_Normal.png.meta
+guid: f5842f6e66ae86f40be785b5adb23825
+=======
 guid: adcc7bdb53ac2434da9585dbe6cc1e60
+>>>>>>> main:Nature's Bidding/Assets/Models/Props/Max's Models/Max's Textures/Log/SM_Log_DefaultMaterial_Normal.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -7,7 +11,11 @@ TextureImporter:
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
+<<<<<<< HEAD:Nature's Bidding/Assets/Models/Max's Models/Log/SM_Log_DefaultMaterial_Normal.png.meta
+    sRGBTexture: 1
+=======
     sRGBTexture: 0
+>>>>>>> main:Nature's Bidding/Assets/Models/Props/Max's Models/Max's Textures/Log/SM_Log_DefaultMaterial_Normal.png.meta
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
@@ -54,7 +62,11 @@ TextureImporter:
   alphaUsage: 1
   alphaIsTransparency: 0
   spriteTessellationDetail: -1
+<<<<<<< HEAD:Nature's Bidding/Assets/Models/Max's Models/Log/SM_Log_DefaultMaterial_Normal.png.meta
+  textureType: 0
+=======
   textureType: 1
+>>>>>>> main:Nature's Bidding/Assets/Models/Props/Max's Models/Max's Textures/Log/SM_Log_DefaultMaterial_Normal.png.meta
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1

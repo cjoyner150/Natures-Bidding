@@ -7,18 +7,14 @@ public class PlayerGameplayUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI playerNameText;
     private ulong clientId;
-    public void Initialize(ulong _clientId)
+    public async void Initialize(ulong _clientId)
     {
         clientId = _clientId;
-        playerNameText.text = NetworkSessionManager.Instance.RequestPlayerNameByClientId(clientId);
-        
-    }
 
-    void Update()
-    {
-        if (playerNameText.text.IsNullOrEmpty())
-        {
-            playerNameText.text = NetworkSessionManager.Instance.RequestPlayerNameByClientId(clientId);
-        }
+        string playerName = await GameplayServerHandler.Instance.RequestPlayerNameByClientId(clientId);
+        playerName = playerName.Split('#')[0];
+
+        playerNameText.text = playerName;
+        
     }
 }

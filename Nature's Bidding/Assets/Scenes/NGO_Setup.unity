@@ -1201,6 +1201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameplayServerHandler
   ShowTopMostFoldoutHeaderGroup: 1
   acceptableAttackRange: 100
+  playersRequiredBeforeStart: 3
 --- !u!1 &1172708018
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,8 +15,6 @@ public class TestingGameManager : Singleton<TestingGameManager>
     [SerializeField] private GameObject playerHealthBarPrefab;
     [SerializeField] private Transform playerHealthBarParent;
 
-    public static UnityEvent OnSessionStarted = new UnityEvent();
-
     void OnEnable()
     {
         if (NetworkManager.Singleton != null)
@@ -50,18 +48,6 @@ public class TestingGameManager : Singleton<TestingGameManager>
         response.CreatePlayerObject = true; 
         response.Position = spawnPoint.position; 
         response.Rotation = spawnPoint.rotation; 
-    }
-
-    [ContextMenu("TestBeginSession")]
-    public void BeginSession()
-    {
-        BeginSessionAllRpc();
-    }
-
-    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
-    void BeginSessionAllRpc()
-    {
-        OnSessionStarted?.Invoke();
     }
 
     public PlayerGameplayUI SpawnPlayerHealthBar()

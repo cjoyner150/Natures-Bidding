@@ -40,7 +40,7 @@ namespace HSM
                         : (a.Mode == ActivityMode.Inactive);
                     if (!include) continue;
 
-                    Debug.Log($"[Phase {(deactivate ? "Exit" : "Enter")}] state={st.GetType().Name}, activity={a.GetType().Name}, mode={a.Mode}");
+                    //Debug.Log($"[Phase {(deactivate ? "Exit" : "Enter")}] state={st.GetType().Name}, activity={a.GetType().Name}, mode={a.Mode}");
 
                     steps.Add(ct => deactivate ? a.DeactivateAsync(ct) : a.ActivateAsync(ct));
                 }

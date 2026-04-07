@@ -9,12 +9,14 @@ using System;
 using System.Linq;
 using TMPro;
 using Unity.Netcode;
+using UnityEngine.Events;
+using System.Threading.Tasks;
+using UnityEditor.PackageManager;
+using Unity.Collections;
 
 public class NetworkSessionManager : Singleton<NetworkSessionManager>
 {
     ISession activeSession;
-    Dictionary<ulong, string> authenticationIdByClientId = new Dictionary<ulong, string>();
-    Dictionary<ulong, string> playerNameByClientId = new Dictionary<ulong, string>();
 
     ISession ActiveSession
     {
@@ -39,6 +41,8 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         {
             Debug.LogException(e);
         }
+
+        //players = await RequestPlayers();
 
     }
 
@@ -116,8 +120,9 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
             {
                 await ActiveSession.LeaveAsync();
             }
-            catch {
-            
+            catch
+            {
+
             }
             finally
             {
@@ -125,64 +130,5 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
             }
         }
     }
-    
-    /*[Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
-    public void RegisterClientIdRpc(ulong clientId, string clientAuthenticationId, string clientName)
-    {
-        if (authenticationIdByClientId.ContainsKey(clientId))
-        {
-            Debug.LogError($"Client with clientId {clientId} has already been registered.");
-            return;
-        }
-        else if (authenticationIdByClientId.ContainsValue(clientAuthenticationId))
-        {
-            Debug.LogError($"Client with authId {clientAuthenticationId} has already been registered.");
-            return;
-        }
-        
-        authenticationIdByClientId.Add(clientId, clientAuthenticationId);
-        playerNameByClientId.Add(clientId, clientName);
-        
-    }*/
-    
-    [Rpc(SendTo.Server, InvokePermission =  RpcInvokePermission.Everyone)]
-    public void RegisterClientIdRpc(ulong clientId, string clientAuthId, string clientName)
-    {
-        if (authenticationIdByClientId.ContainsKey(clientId)) return;
 
-        authenticationIdByClientId.Add(clientId, clientAuthId);
-        playerNameByClientId.Add(clientId, clientName);
-        
-        OnClientRegisteredRpc(clientId, clientAuthId, clientName);
-    }
-
-    [Rpc(SendTo.ClientsAndHost,  InvokePermission = RpcInvokePermission.Server)]
-    private void OnClientRegisteredRpc(ulong clientId, string clientAuthId, string clientName)
-    {
-        authenticationIdByClientId[clientId] = clientAuthId;
-        playerNameByClientId[clientId] = clientName;
-    }
-    
-    
-    /// <summary>
-    /// Client is not guaranteed to have updated dictionary on NetworkSessionManager. Dict is updated by RegisterClientIdRpc. Ensure Client has been registered.
-    /// </summary>
-    /// <param name="clientId"></param>
-    /// <returns></returns>
-    public string RequestPlayerNameByClientId(ulong clientId)
-    {
-        if (playerNameByClientId.ContainsKey(clientId)) return playerNameByClientId[clientId];
-        else return null;
-    }
-    
-    /// <summary>
-    /// Client is not guaranteed to have updated dictionary on NetworkSessionManager. Dict is updated by RegisterClientIdRpc. Ensure Client has been registered.
-    /// </summary>
-    /// <param name="clientId"></param>
-    /// <returns></returns>
-    public string RequestAuthenticationIdByClientId(ulong clientId)
-    {
-        if (authenticationIdByClientId.ContainsKey(clientId)) return authenticationIdByClientId[clientId];
-        else return null;
-    }
 }

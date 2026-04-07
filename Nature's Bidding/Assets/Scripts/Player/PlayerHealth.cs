@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerHealth : NetworkBehaviour, IDamageable
 {
-    public NetworkVariable<float> health =  new(100, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
+    public NetworkVariable<float> health =  new(100, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<bool> isInvulnerable = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isParrying = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     
@@ -18,16 +18,17 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         gameplayServerHandler = FindAnyObjectByType<GameplayServerHandler>();
         selfNetworkObject = GetComponent<NetworkObject>();
         
-        TestingGameManager.OnSessionStarted.AddListener(OnSessionStarted);
+        GameplayServerHandler.OnAllPlayersRegistered.AddListener(OnAllPlayersRegistered);
     }
 
-    public void OnSessionStarted()
+    public void OnAllPlayersRegistered()
     {
         playerGameplayUI = TestingGameManager.Instance.SpawnPlayerHealthBar();
         playerGameplayUI.Initialize(selfNetworkObject.OwnerClientId);
         
         healthProgressBarVisual = playerGameplayUI.gameObject.GetComponentInChildren<MMProgressBar>();
         health.OnValueChanged += OnHealthChanged;
+        Debug.Log("OnHealthChanged Registered.");
 
         if (IsServer)
         {
@@ -40,7 +41,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         base.OnNetworkDespawn();
 
         health.OnValueChanged -= OnHealthChanged;
-        TestingGameManager.OnSessionStarted.RemoveListener(OnSessionStarted);
+        GameplayServerHandler.OnAllPlayersRegistered.RemoveListener(OnAllPlayersRegistered);
     }
 
     public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context)
@@ -59,8 +60,6 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     private void OnHealthChanged(float from, float to)
     {
-        if (IsServer) return;
-        
         healthProgressBarVisual.SetBar01((health.Value / 100f));
     }
 

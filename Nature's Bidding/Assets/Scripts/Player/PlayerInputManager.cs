@@ -114,7 +114,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private bool CheckGrounded()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position + (transform.up * .125f), .2f, ctx.isGroundLayers);
+        Collider[] colliders = Physics.OverlapSphere(transform.position + (transform.up * .125f), .25f, ctx.isGroundLayers);
         return colliders.Length > 0;
     }
 

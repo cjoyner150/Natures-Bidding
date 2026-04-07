@@ -488,7 +488,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4754440072113730475, guid: b3c544c4164edbd46982b60687a4486f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25
+      value: -0.34
       objectReference: {fileID: 0}
     - target: {fileID: 4754440072113730475, guid: b3c544c4164edbd46982b60687a4486f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -950,6 +950,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 244343332}
   m_CullTransparentMesh: 1
+--- !u!1 &254841744 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7750397243111347764, guid: 598e0aca7c7a95c4da5948497511b2a8, type: 3}
+  m_PrefabInstance: {fileID: 347771992}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &254841748
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254841744}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6329158148709259305, guid: 598e0aca7c7a95c4da5948497511b2a8, type: 3}
 --- !u!1 &270665628
 GameObject:
   m_ObjectHideFlags: 0
@@ -1307,7 +1334,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7750397243111347764, guid: 598e0aca7c7a95c4da5948497511b2a8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 254841748}
   m_SourcePrefab: {fileID: 100100000, guid: 598e0aca7c7a95c4da5948497511b2a8, type: 3}
 --- !u!4 &347771993 stripped
 Transform:
@@ -2098,7 +2128,7 @@ Transform:
   m_GameObject: {fileID: 598839362}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.34, y: 0.287, z: -1.94}
+  m_LocalPosition: {x: 10.34, y: 0.439, z: -1.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5473,7 +5503,7 @@ Transform:
   m_GameObject: {fileID: 1989715492}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.16, y: 1.58, z: 9.78}
+  m_LocalPosition: {x: 11.16, y: 0.49, z: 9.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6014,7 +6044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.8235294}
+  m_Color: {r: 0.2691343, g: 0.38679248, b: 0.18427378, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6296,7 +6326,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2750550320543240391, guid: 50375c646db899346ac5433c58d58461, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.75
+      value: 0.62
       objectReference: {fileID: 0}
     - target: {fileID: 2750550320543240391, guid: 50375c646db899346ac5433c58d58461, type: 3}
       propertyPath: m_LocalPosition.z

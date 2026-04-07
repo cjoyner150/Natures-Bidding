@@ -12,6 +12,7 @@ public class Move : State
     protected override void OnEnter()
     {
         ctx.forceMode = ForceMode.Force;
+        ctx.anim.SetBool("Walking", true);
     }
 
     protected override void OnUpdate(float deltaTime)
@@ -25,6 +26,7 @@ public class Move : State
 
     protected override void OnExit()
     {
+        ctx.anim.SetBool("Walking", false);
         ctx.forceToAdd = Vector3.zero;
     }
 

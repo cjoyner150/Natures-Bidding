@@ -4,6 +4,7 @@ using MoreMountains.Tools;
 using Unity.Netcode;
 using UnityEngine.Events;
 using UnityUtils;
+using System.Collections;
 
 public class TestingGameManager : Singleton<TestingGameManager>
 {
@@ -17,10 +18,16 @@ public class TestingGameManager : Singleton<TestingGameManager>
 
     void OnEnable()
     {
-        if (NetworkManager.Singleton != null)
-        {
-            NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
-        }
+        StartCoroutine(WaitForNetworkManager());
+    }
+
+    IEnumerator WaitForNetworkManager()
+    {
+        while (NetworkManager.Singleton == null)
+            yield return null;
+
+        NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
+        Debug.Log("ApprovalCheck registered successfully.");
     }
 
     void OnDisable()
@@ -33,6 +40,7 @@ public class TestingGameManager : Singleton<TestingGameManager>
 
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
+        Debug.Log($"ApprovalCheck: spawnPoints count = {spawnPoints?.Count ?? -1}");
 
         if (spawnPoints == null || spawnPoints.Count == 0)
         {

@@ -38,7 +38,7 @@ namespace HSM
         /// <param name="to"></param>
         public void ChangeState(State from, State to)
         {
-            //Debug.Log($"Attempting to change from {from.GetType().Name} to {to.GetType().Name}");
+            Debug.Log($"Attempting to change from {from.GetType().Name} to {to.GetType().Name}");
 
             if (from == to || from == null || to == null) return;
 

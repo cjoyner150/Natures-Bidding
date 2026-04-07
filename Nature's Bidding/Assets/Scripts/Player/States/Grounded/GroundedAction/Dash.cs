@@ -15,6 +15,8 @@ public class Dash : State
 
     protected override void OnEnter()
     {
+        ctx.anim.SetBool("Dashing", true);
+
         ctx.desiredMaxSpeed = ctx.dashSpeed;
 
         momentumDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
@@ -25,6 +27,8 @@ public class Dash : State
 
     protected override void OnExit()
     {
+        ctx.anim.SetBool("Dashing", false);
+
         ctx.dashCDTimer = ctx.dashCD;
     }
 

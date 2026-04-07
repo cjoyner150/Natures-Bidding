@@ -15,6 +15,8 @@ public class AirDash : State
 
     protected override void OnEnter()
     {
+        ctx.anim.SetBool("AirDashing", true);
+
         ctx.desiredMaxSpeed = ctx.dashSpeed;
 
         momentumDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
@@ -27,6 +29,8 @@ public class AirDash : State
 
     protected override void OnExit()
     {
+        ctx.anim.SetBool("AirDashing", false);
+
         ctx.dashCDTimer = ctx.dashCD;
         ctx.rb.useGravity = true;
     }

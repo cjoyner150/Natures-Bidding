@@ -16,6 +16,7 @@ public class Jump : State
 
     protected override void OnEnter()
     {
+        ctx.anim.SetTrigger("Jump");
         ctx.rb.AddForce(ctx.jumpImpulse * ctx.rb.transform.up, ForceMode.Impulse);
     }
 

@@ -28,11 +28,20 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         }
     }
 
+    private bool _isBusy = false;
+
     async void Start()
     {
         try
         {
             await UnityServices.InitializeAsync();
+
+            if (AuthenticationService.Instance.IsSignedIn)
+            {
+                AuthenticationService.Instance.SignOut(true);
+            }
+            AuthenticationService.Instance.ClearSessionToken();
+
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
             await AuthenticationService.Instance.UpdatePlayerNameAsync("Player");
             Debug.Log($"Player Initialized with id: {AuthenticationService.Instance.PlayerId} and name: {AuthenticationService.Instance.PlayerName}");
@@ -52,7 +61,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         Debug.Log($"Player updated with id: {AuthenticationService.Instance.PlayerId} and name: {AuthenticationService.Instance.PlayerName}");
     }
 
-    public async void StartSessionAsHost()
+    public async UniTask StartSessionAsHost()
     {
         var options = new SessionOptions
         {
@@ -62,7 +71,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         }.WithRelayNetwork();
 
         ActiveSession = await MultiplayerService.Instance.CreateSessionAsync(options);
-        Debug.Log($"Session started with id: {ActiveSession.Id}, and join code: {ActiveSession.Code}");
+        Debug.Log($"Session started. Id: {ActiveSession.Id}, Code: {ActiveSession.Code}");
     }
 
     async UniTaskVoid JoinSessionByID(string sessionId)
@@ -85,22 +94,75 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
     public async UniTaskVoid QuickJoin()
     {
-        var sessions = (await QuerySessions()).ToList();
-        if (sessions.Count > 0)
+        // Prevent overlapping join/leave operations
+        if (_isBusy)
         {
-            ActiveSession = await MultiplayerService.Instance.JoinSessionByIdAsync(sessions[0].Id);
-            Debug.Log($"Session with code: {ActiveSession.Code} joined!");
+            Debug.LogWarning("QuickJoin called while session operation already in progress. Ignoring.");
+            return;
         }
-        else
+
+        _isBusy = true;
+
+        try
         {
-            StartSessionAsHost();
+            // Fully leave any existing session before doing anything else
+            await SafeLeaveAsync();
+
+            await UniTask.Yield();
+            await UniTask.Delay(1000);
+
+            var sessions = (await QuerySessions()).ToList();
+
+            if (sessions.Count > 0)
+            {
+                Debug.Log($"Found {sessions.Count} session(s). Joining {sessions[0].Id}...");
+                ActiveSession = await MultiplayerService.Instance.JoinSessionByIdAsync(sessions[0].Id);
+                Debug.Log($"Joined session. Code: {ActiveSession.Code}");
+            }
+            else
+            {
+                Debug.Log("No sessions found. Starting as host...");
+                await StartSessionAsHost();
+            }
+        }
+        catch (SessionException e)
+        {
+            Debug.LogError($"QuickJoin failed: {e.Message}");
+            ActiveSession = null;
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+            ActiveSession = null;
+        }
+        finally
+        {
+            _isBusy = false;
+        }
+    }
+
+    async UniTask SafeLeaveAsync()
+    {
+        if (ActiveSession != null)
+        {
+            try
+            {
+                await ActiveSession.LeaveAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"SafeLeave warning (non-fatal): {e.Message}");
+            }
+            finally
+            {
+                ActiveSession = null;
+            }
         }
     }
 
     async UniTaskVoid KickPlayer(string playerId)
     {
-        if (!activeSession.IsHost) return;
-
+        if (activeSession == null || !activeSession.IsHost) return;
         await ActiveSession.AsHost().RemovePlayerAsync(playerId);
     }
 
@@ -112,22 +174,22 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         return results.Sessions;
     }
 
-    async UniTaskVoid LeaveSession()
+    public async UniTaskVoid LeaveSession()
     {
-        if (ActiveSession != null)
+        if (_isBusy)
         {
-            try
-            {
-                await ActiveSession.LeaveAsync();
-            }
-            catch
-            {
+            Debug.LogWarning("LeaveSession called while busy. Ignoring.");
+            return;
+        }
 
-            }
-            finally
-            {
-                ActiveSession = null;
-            }
+        _isBusy = true;
+        try
+        {
+            await SafeLeaveAsync();
+        }
+        finally
+        {
+            _isBusy = false;
         }
     }
 

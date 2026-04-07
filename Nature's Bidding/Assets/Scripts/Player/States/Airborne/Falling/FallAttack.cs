@@ -17,6 +17,7 @@ public class FallAttack : State
 
     protected override void OnEnter()
     {
+        ctx.attackPressed = false;
         ctx.desiredMaxSpeed = ctx.attackSpeed;
         ctx.forceMode = ForceMode.Force;
 

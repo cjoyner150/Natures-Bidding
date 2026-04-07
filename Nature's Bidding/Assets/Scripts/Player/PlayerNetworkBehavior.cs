@@ -1,3 +1,4 @@
+using Cinemachine;
 using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -7,7 +8,8 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 {
     public PlayerContext ctx;
     private PlayerInputManager playerInput;
-    
+    private CinemachineTargetGroup cameraTargetGroup;
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -18,6 +20,13 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             GameplayServerHandler.OnPlayerRegistered.AddListener(OnPlayerRegistered);
             RegisterPlayer();
         }
+
+        cameraTargetGroup = FindAnyObjectByType<CinemachineTargetGroup>();
+        if (cameraTargetGroup != null)
+        {
+            cameraTargetGroup.AddMember(transform, 1, 10);
+        }
+
     }
 
     async void RegisterPlayer()

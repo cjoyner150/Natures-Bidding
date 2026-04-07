@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:Nature's Bidding/Assets/Models/Max's Models/Tree/SM_Tree_DefaultMaterial_Metallic.png.meta
 guid: 72085c66ba7e9e1439862f7085b1db0d
-=======
-guid: e3259ec607527db41a930c80896bdfd8
->>>>>>> main:Nature's Bidding/Assets/Models/Props/Max's Models/Max's Textures/Tree/SM_Tree_DefaultMaterial_Metallic.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -67,16 +63,16 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 0
+  applyGammaDecoding: 1
   swizzle: 50462976
-  cookieLightType: 0
+  cookieLightType: 2
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -89,7 +85,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0

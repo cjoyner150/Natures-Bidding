@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:Nature's Bidding/Assets/Models/Max's Models/CliffLevel/SM_CliffLevel_openPBR_shader2_Normal.png.meta
 guid: 69c6be5ecf910154fbb5054fbece022d
-=======
-guid: 51ce0e363131d00449b556a5a057be5d
->>>>>>> main:Nature's Bidding/Assets/Models/Props/Max's Models/Max's Textures/CliffLevel/SM_CliffLevel_openPBR_shader2_Normal.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -11,11 +7,7 @@ TextureImporter:
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
-<<<<<<< HEAD:Nature's Bidding/Assets/Models/Max's Models/CliffLevel/SM_CliffLevel_openPBR_shader2_Normal.png.meta
-    sRGBTexture: 1
-=======
     sRGBTexture: 0
->>>>>>> main:Nature's Bidding/Assets/Models/Props/Max's Models/Max's Textures/CliffLevel/SM_CliffLevel_openPBR_shader2_Normal.png.meta
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
@@ -62,11 +54,7 @@ TextureImporter:
   alphaUsage: 1
   alphaIsTransparency: 0
   spriteTessellationDetail: -1
-<<<<<<< HEAD:Nature's Bidding/Assets/Models/Max's Models/CliffLevel/SM_CliffLevel_openPBR_shader2_Normal.png.meta
-  textureType: 0
-=======
   textureType: 1
->>>>>>> main:Nature's Bidding/Assets/Models/Props/Max's Models/Max's Textures/CliffLevel/SM_CliffLevel_openPBR_shader2_Normal.png.meta
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -75,9 +63,9 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 0
+  applyGammaDecoding: 1
   swizzle: 50462976
-  cookieLightType: 0
+  cookieLightType: 2
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform

@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:Nature's Bidding/Assets/Models/Max's Models/Tree/SM_Tree_DefaultMaterial_Normal.png.meta
 guid: 16d42ede81bd5234e9567603dc6fae6f
-=======
-guid: dafec233c1c69d74e81b567da0e82500
->>>>>>> main:Nature's Bidding/Assets/Models/Props/Max's Models/Max's Textures/Tree/SM_Tree_DefaultMaterial_Normal.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -67,9 +63,9 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 0
+  applyGammaDecoding: 1
   swizzle: 50462976
-  cookieLightType: 0
+  cookieLightType: 2
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform

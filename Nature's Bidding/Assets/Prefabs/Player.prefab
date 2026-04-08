@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1770671079
+  GlobalObjectIdHash: 2036068895
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -77,6 +77,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerNetworkBehavior
   ShowTopMostFoldoutHeaderGroup: 1
+  colors:
+  - {r: 1, g: 0, b: 0, a: 0}
+  - {r: 0.08334541, g: 1, b: 0, a: 0}
+  - {r: 0, g: 0.75050783, b: 1, a: 0}
+  - {r: 1, g: 0.9104993, b: 0, a: 0}
+  - {r: 1, g: 0, b: 0.7330103, a: 0}
+  - {r: 0.5049224, g: 0, b: 1, a: 0}
+  skinnedMeshRenderer: {fileID: 3524554207742476985}
   ctx:
     isGrounded: 0
     isGroundLayers:
@@ -1005,6 +1013,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4877116423051160359}
   m_SourcePrefab: {fileID: 100100000, guid: 2a613d8717e15e2428480b58d46327ff, type: 3}
+--- !u!137 &3524554207742476985 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -2933139716659438605, guid: 2a613d8717e15e2428480b58d46327ff, type: 3}
+  m_PrefabInstance: {fileID: 7467776972302965066}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6451522480683506389 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4479592979180520351, guid: 2a613d8717e15e2428480b58d46327ff, type: 3}

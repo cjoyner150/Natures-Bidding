@@ -11,7 +11,6 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine.Events;
 using System.Threading.Tasks;
-using UnityEditor.PackageManager;
 using Unity.Collections;
 
 public class NetworkSessionManager : Singleton<NetworkSessionManager>

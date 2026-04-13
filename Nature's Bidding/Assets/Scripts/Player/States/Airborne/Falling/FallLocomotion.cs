@@ -17,7 +17,7 @@ public class FallLocomotion : State
 
     protected override void OnUpdate(float deltaTime)
     {
-        ctx.forceToAdd = (ctx.moveInput * ctx.acceleration * ctx.airControlMultiplier);
+        ctx.forceToAdd = (ctx.moveInput * ctx.acceleration * ctx.airControlMultiplier) + (-ctx.modelHolder.transform.up * ctx.acceleration * ctx.extraGravityMultiplier);
         HandleRotation(deltaTime);
     }
 

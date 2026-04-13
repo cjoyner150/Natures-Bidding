@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2036068895
+  GlobalObjectIdHash: 1770671079
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -98,7 +98,7 @@ MonoBehaviour:
     playerAttackManager: {fileID: 9193257734005782328}
     walkSpeed: 0
     sprintSpeed: 5.5
-    attackSpeed: 2
+    attackSpeed: 5
     dashSpeed: 20
     airSpeed: 10
     knockbackSpeed: 25
@@ -107,7 +107,7 @@ MonoBehaviour:
     momentumLerpSpeed: 10
     acceleration: 1000
     turnSpeed: 15
-    groundDrag: 1
+    groundDrag: 1.5
     airDrag: 0
     airControlMultiplier: 0.75
     forceToAdd: {x: 0, y: 0, z: 0}
@@ -115,10 +115,11 @@ MonoBehaviour:
     jumpImpulse: 2
     jumpHeldForce: 800
     jumpHeldAllowedTime: 0.2
+    extraGravityMultiplier: 1
     damage: 0
     attackTime: 0.3
     jumpAttackTime: 0.2
-    fallAttackTime: 0.2
+    fallAttackTime: 0.35
     attackCD: 0.5
     attackCDTimer: 0
     dashTime: 0.4

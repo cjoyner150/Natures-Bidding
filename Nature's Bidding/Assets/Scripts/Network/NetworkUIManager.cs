@@ -28,7 +28,7 @@ public class NetworkUIManager : MonoBehaviour
 
     public void StartSessionAsHostByButton()
     {
-        sessionManager.StartSessionAsHost();
+        _ = sessionManager.StartSessionAsHost();
     }
 
     public void EnterNameByButton(TMP_InputField input)

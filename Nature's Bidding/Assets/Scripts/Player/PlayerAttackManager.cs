@@ -55,8 +55,13 @@ public class PlayerAttackManager : NetworkBehaviour
                 {
                     if (damagedObjectsOnThisAttack.Contains(damageable)) continue;
                     
-                    damageable.Hit(attackDamage, selfPlayerHealth.OwnerClientId, out IDamageable.HitCallbackContext ctx);
+                    damageable.Hit(attackDamage, selfPlayerHealth.OwnerClientId, out IDamageable.HitCallbackContext callbackContext);
                     damagedObjectsOnThisAttack.Add(damageable);
+
+                    if (callbackContext == IDamageable.HitCallbackContext.success)
+                    {
+
+                    }
                 }
             }
         }

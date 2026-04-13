@@ -13,15 +13,14 @@ public class FallAttack : State
     public FallAttack(StateMachine machine, PlayerContext ctx, State parent = null) : base(machine, parent)
     {
         this.ctx = ctx;
+
+        Add(new PauseInAirActivity(ctx, .2f));
     }
 
     protected override void OnEnter()
     {
         ctx.attackPressed = false;
         ctx.desiredMaxSpeed = ctx.attackSpeed;
-        ctx.forceMode = ForceMode.Force;
-
-        ctx.rb.useGravity = false;
 
         ctx.anim.SetTrigger("FallAttack");
         ctx.playerAttackManager.BeginAttack();
@@ -29,18 +28,18 @@ public class FallAttack : State
         facingDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
         momentumDirection = (facingDirection + -ctx.modelHolder.up).normalized;
 
-        attackTimer = ctx.jumpAttackTime;
+        attackTimer = ctx.fallAttackTime;
         exitAttack = false;
     }
 
     protected override void OnUpdate(float deltaTime)
     {
+        ctx.rb.linearVelocity = momentumDirection * ctx.desiredMaxSpeed;
         HandleRotation(deltaTime);
-
-        ctx.forceToAdd = momentumDirection * ctx.acceleration;
 
         attackTimer -= deltaTime;
         if (attackTimer <= 0) exitAttack = true;
+
     }
 
     void HandleRotation(float deltaTime)
@@ -53,8 +52,8 @@ public class FallAttack : State
         ctx.forceToAdd = Vector3.zero;
         ctx.attackCDTimer = ctx.attackCD;
 
-        ctx.rb.useGravity = true;
         ctx.playerAttackManager.EndAttack();
+        ctx.rb.useGravity = true;
     }
 
     protected override State GetTransition()

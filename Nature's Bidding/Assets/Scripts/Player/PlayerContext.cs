@@ -41,6 +41,7 @@ public class PlayerContext
     public float jumpImpulse;
     public float jumpHeldForce;
     public float jumpHeldAllowedTime;
+    public float extraGravityMultiplier;
 
     [Header("Attacks")]
     public float damage;

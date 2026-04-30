@@ -13,9 +13,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     GameplayServerHandler gameplayServerHandler;
     private PlayerGameplayUI playerGameplayUI;
     private MMProgressBar healthProgressBarVisual;
+
+    bool isDead = false;
     
     public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
+
         gameplayServerHandler = FindAnyObjectByType<GameplayServerHandler>();
         selfNetworkObject = GetComponent<NetworkObject>();
         ctx = GetComponent<PlayerNetworkBehavior>()?.ctx;
@@ -43,6 +47,8 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
         health.OnValueChanged -= OnHealthChanged;
         GameplayServerHandler.OnAllPlayersRegistered.RemoveListener(OnAllPlayersRegistered);
+
+        Destroy(playerGameplayUI.gameObject);
     }
 
     public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context)
@@ -61,7 +67,16 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     private void OnHealthChanged(float from, float to)
     {
-        healthProgressBarVisual.SetBar01((health.Value / 100f));
+        if (isDead) return;
+
+        healthProgressBarVisual.SetBar01(Mathf.Clamp01(health.Value / 100f));
+
+        if (health.Value <= 0 && IsServer)
+        {
+            isDead = true;
+            GameplayServerHandler.Instance.OnPlayerDeath(selfNetworkObject.OwnerClientId);
+            selfNetworkObject.Despawn();
+        }
     }
 
     [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
@@ -73,5 +88,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         ctx.shouldTakeKnockback = true;
         Debug.Log("I've been hit!");
     }
+
+    public void OnWinRound()
+    {
+        Destroy(playerGameplayUI.gameObject);
+        isInvulnerable.Value = true;
+    }
+
+    public PlayerContext GetPlayerContext() => ctx;
     
 }

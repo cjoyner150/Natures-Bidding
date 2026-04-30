@@ -51,6 +51,9 @@ public class PlayerContext
     public float attackCD;
     public float attackCDTimer;
     public bool attackOnCooldown => attackCDTimer > 0;
+    public float attackResponseForce;
+    public bool hitResponse;
+    public int attackActiveDelay;
 
     [Header("Dash")]
     public float dashTime;

@@ -1,4 +1,5 @@
-﻿using HSM;
+﻿using Cysharp.Threading.Tasks;
+using HSM;
 using UnityEngine;
 
 public class FallAttack : State
@@ -23,7 +24,7 @@ public class FallAttack : State
         ctx.desiredMaxSpeed = ctx.attackSpeed;
 
         ctx.anim.SetTrigger("FallAttack");
-        ctx.playerAttackManager.BeginAttack();
+        SetAttackActive(ctx.attackActiveDelay);
 
         facingDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
         momentumDirection = (facingDirection + -ctx.modelHolder.up).normalized;
@@ -32,8 +33,20 @@ public class FallAttack : State
         exitAttack = false;
     }
 
+    async void SetAttackActive(int delay)
+    {
+        await UniTask.Delay(delay);
+        ctx.playerAttackManager.BeginAttack();
+    }
+
     protected override void OnUpdate(float deltaTime)
     {
+        if (ctx.hitResponse)
+        {
+            exitAttack = true;
+            return;
+        }
+
         ctx.rb.linearVelocity = momentumDirection * ctx.desiredMaxSpeed;
         HandleRotation(deltaTime);
 

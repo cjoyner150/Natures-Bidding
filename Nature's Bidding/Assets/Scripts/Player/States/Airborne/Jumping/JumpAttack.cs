@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using HSM;
+using Cysharp.Threading.Tasks;
+
 public class JumpAttack : State
 {
     private readonly PlayerContext ctx;
@@ -23,7 +25,7 @@ public class JumpAttack : State
         ctx.rb.useGravity = false;
 
         ctx.anim.SetTrigger("JumpAttack");
-        ctx.playerAttackManager.BeginAttack();
+        SetAttackActive(ctx.attackActiveDelay);
 
         facingDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
         momentumDirection = (facingDirection + ctx.modelHolder.up).normalized;
@@ -32,8 +34,20 @@ public class JumpAttack : State
         exitAttack = false;
     }
 
+    async void SetAttackActive(int delay)
+    {
+        await UniTask.Delay(delay);
+        ctx.playerAttackManager.BeginAttack();
+    }
+
     protected override void OnUpdate(float deltaTime)
     {
+        if (ctx.hitResponse)
+        {
+            exitAttack = true;
+            return;
+        }
+
         HandleRotation(deltaTime);
 
         ctx.forceToAdd = momentumDirection * ctx.acceleration;

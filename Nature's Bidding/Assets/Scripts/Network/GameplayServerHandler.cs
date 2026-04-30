@@ -1,3 +1,5 @@
+using Cinemachine;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,38 +12,67 @@ using UnityUtils;
 public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
 {
     List<PlayerServerInfo> players;
+    List<PlayerServerInfo> alivePlayers;
 
     public static UnityEvent OnPlayerRegistered = new UnityEvent();
     public static UnityEvent OnAllPlayersRegistered = new UnityEvent();
-    
+
+    [SerializeField] private CinemachineVirtualCamera winCamera;
     [SerializeField] private float acceptableAttackRange;
     [SerializeField] private int playersRequiredBeforeStart;
 
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        if (IsServer)
+        {
+            NetworkManager.OnClientDisconnectCallback += OnClientDisconnected;
+        }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        if (IsServer)
+        {
+            NetworkManager.OnClientDisconnectCallback -= OnClientDisconnected;
+        }
+    }
 
     protected override void Awake()
     {
         base.Awake();
 
         players = new List<PlayerServerInfo>();
+        alivePlayers = new List<PlayerServerInfo>();
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void RequestHitPlayerServerRpc(ulong attackingPlayerId, ulong hitPlayerIndex, float damage)
     {
         if (!IsServer) return;
-        
-        var hitPlayer = NetworkManager.Singleton.ConnectedClients[hitPlayerIndex].PlayerObject.GetComponent<NetworkObject>();
-        var attackingPlayer = NetworkManager.Singleton.ConnectedClients[attackingPlayerId].PlayerObject.GetComponent<NetworkObject>();
 
-        if (Vector3.Distance(hitPlayer.transform.position, attackingPlayer.transform.position) <= acceptableAttackRange)
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(hitPlayerIndex, out var hitClient) ||
+            !NetworkManager.Singleton.ConnectedClients.TryGetValue(attackingPlayerId, out var attackingClient))
+            return;
+
+        var hitNetObj = hitClient.PlayerObject;
+        var attackingNetObj = attackingClient.PlayerObject;
+
+        if (hitNetObj == null || attackingNetObj == null) return;
+
+        if (Vector3.Distance(hitNetObj.transform.position, attackingNetObj.transform.position) <= acceptableAttackRange)
         {
-            var hitPlayerHealth = hitPlayer.GetComponent<PlayerHealth>();
-            
+            var hitPlayerHealth = hitNetObj.GetComponent<PlayerHealth>();
+            if (hitPlayerHealth == null) return;
+
             hitPlayerHealth.health.Value -= damage;
-            hitPlayerHealth.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position);
+            hitPlayerHealth.PlayerDamagedFeedbackClientRpc(attackingNetObj.transform.position);
         }
     }
-
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone, DeferLocal = true)]
     public void RegisterPlayerOnServerRpc(PlayerServerInfo info, RpcParams rpcParams = default)
@@ -64,17 +95,82 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
         OnPlayerRegistered?.Invoke();
         Debug.Log($"Client with: clientId {info.clientId}, auth {info.playerAuthenticationId}, and name {info.playerName} has been registered on the server. There are now {playersCount} players.");
 
-        if (playersCount >= playersRequiredBeforeStart) AllPlayersRegisteredRpc();
+        if (playersCount >= playersRequiredBeforeStart) 
+        {
+            AllPlayersRegisteredServerRpc(); 
+        }
     }
 
-    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
-    private void AllPlayersRegisteredRpc()
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+    private void AllPlayersRegisteredClientRpc()
     {
         Debug.Log("All players registered!");
         OnAllPlayersRegistered?.Invoke();
     }
 
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    void AllPlayersRegisteredServerRpc()
+    {
+        if (!IsServer) return;
+
+        alivePlayers = players.Clone();
+        AllPlayersRegisteredClientRpc();
+    }
+
+    // ----------------------------- Remove Player ----------------------------- \\
+
+    public void OnPlayerDeath(ulong clientId)
+    {
+        if (!IsServer) return;
+
+        int index = alivePlayers.FindIndex(p => p.clientId == clientId);
+        if (index != -1) alivePlayers.RemoveAt(index);
+
+        if (alivePlayers.Count == 1)
+        {
+            OnRoundEndRpc(alivePlayers[0].clientId);
+        }
+    }
+
+    public void OnClientDisconnected(ulong clientId)
+    {
+        if (!IsServer) return;
+
+        int index = alivePlayers.FindIndex(p => p.clientId == clientId);
+        if (index != -1) alivePlayers.RemoveAt(index);
+        
+        index = players.FindIndex(p => p.clientId == clientId);
+        if (index != -1) players.RemoveAt(index);
+
+        if (alivePlayers.Count == 1)
+        {
+            OnRoundEndRpc(alivePlayers[0].clientId);
+        }
+    }
+
+    // ----------------------------- End Round ----------------------------- \\
+
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+    public void OnRoundEndRpc(ulong winningPlayer)
+    {
+        WinSequence(winningPlayer);
+        NetworkManager.ConnectedClients[winningPlayer].PlayerObject.GetComponent<PlayerHealth>()?.OnWinRound();
+    }
+
+    private async void WinSequence(ulong winningPlayer)
+    {
+        Transform winningPlayerTransform = NetworkManager.ConnectedClients[winningPlayer].PlayerObject.transform;
+
+        winCamera.Follow = winningPlayerTransform;
+        winCamera.LookAt = winningPlayerTransform;
+
+        winCamera.enabled = true;
+
+        await UniTask.Delay(8000);
+    }
+
     // ----------------------------- Get Player Names ----------------------------- \\
+
     private Dictionary<ulong, TaskCompletionSource<string>> playerNameRequests = new();
 
     /// <summary>

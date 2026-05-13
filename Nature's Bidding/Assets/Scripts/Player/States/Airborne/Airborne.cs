@@ -7,7 +7,8 @@ public class Airborne : State
     public readonly AirDash airDash;
     public readonly AirKnockback airKnockback;
 
-    private float regroundedCooldown = .2f;
+    private float regroundedCooldown = .4f;
+    private float regroundedCooldownTimer;
     private bool canGround;
 
     public Airborne(StateMachine machine, PlayerContext ctx, State parent = null) : base(machine, parent)
@@ -23,7 +24,7 @@ public class Airborne : State
     protected override void OnEnter()
     {
         ctx.rb.linearDamping = ctx.airDrag;
-        regroundedCooldown = .2f;
+        regroundedCooldownTimer = regroundedCooldown;
         canGround = false;
     }
 
@@ -31,9 +32,9 @@ public class Airborne : State
     {
         if (!canGround)
         {
-            regroundedCooldown -= deltaTime;
+            regroundedCooldownTimer -= deltaTime;
 
-            if (regroundedCooldown <= 0)
+            if (regroundedCooldownTimer <= 0)
             {
                 canGround = true;
             }

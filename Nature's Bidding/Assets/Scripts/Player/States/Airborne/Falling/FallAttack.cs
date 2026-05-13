@@ -1,4 +1,5 @@
-﻿using HSM;
+﻿using Cysharp.Threading.Tasks;
+using HSM;
 using UnityEngine;
 
 public class FallAttack : State
@@ -13,34 +14,45 @@ public class FallAttack : State
     public FallAttack(StateMachine machine, PlayerContext ctx, State parent = null) : base(machine, parent)
     {
         this.ctx = ctx;
+
+        Add(new PauseInAirActivity(ctx, .2f));
     }
 
     protected override void OnEnter()
     {
         ctx.attackPressed = false;
         ctx.desiredMaxSpeed = ctx.attackSpeed;
-        ctx.forceMode = ForceMode.Force;
-
-        ctx.rb.useGravity = false;
 
         ctx.anim.SetTrigger("FallAttack");
-        ctx.playerAttackManager.BeginAttack();
+        SetAttackActive(ctx.attackActiveDelay);
 
         facingDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
         momentumDirection = (facingDirection + -ctx.modelHolder.up).normalized;
 
-        attackTimer = ctx.jumpAttackTime;
+        attackTimer = ctx.fallAttackTime;
         exitAttack = false;
+    }
+
+    async void SetAttackActive(int delay)
+    {
+        await UniTask.Delay(delay);
+        ctx.playerAttackManager.BeginAttack();
     }
 
     protected override void OnUpdate(float deltaTime)
     {
-        HandleRotation(deltaTime);
+        if (ctx.hitResponse)
+        {
+            exitAttack = true;
+            return;
+        }
 
-        ctx.forceToAdd = momentumDirection * ctx.acceleration;
+        ctx.rb.linearVelocity = momentumDirection * ctx.desiredMaxSpeed;
+        HandleRotation(deltaTime);
 
         attackTimer -= deltaTime;
         if (attackTimer <= 0) exitAttack = true;
+
     }
 
     void HandleRotation(float deltaTime)
@@ -53,8 +65,8 @@ public class FallAttack : State
         ctx.forceToAdd = Vector3.zero;
         ctx.attackCDTimer = ctx.attackCD;
 
-        ctx.rb.useGravity = true;
         ctx.playerAttackManager.EndAttack();
+        ctx.rb.useGravity = true;
     }
 
     protected override State GetTransition()

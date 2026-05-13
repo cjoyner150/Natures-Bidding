@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using MoreMountains.Tools;
 using Unity.Netcode;
 using UnityEngine;
@@ -13,9 +14,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     GameplayServerHandler gameplayServerHandler;
     private PlayerGameplayUI playerGameplayUI;
     private MMProgressBar healthProgressBarVisual;
+
+    bool isDead = false;
     
     public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
+
         gameplayServerHandler = FindAnyObjectByType<GameplayServerHandler>();
         selfNetworkObject = GetComponent<NetworkObject>();
         ctx = GetComponent<PlayerNetworkBehavior>()?.ctx;
@@ -39,10 +44,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     public override void OnNetworkDespawn()
     {
+        Destroy(playerGameplayUI?.gameObject);
+
         base.OnNetworkDespawn();
 
         health.OnValueChanged -= OnHealthChanged;
         GameplayServerHandler.OnAllPlayersRegistered.RemoveListener(OnAllPlayersRegistered);
+
     }
 
     public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context)
@@ -61,7 +69,16 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     private void OnHealthChanged(float from, float to)
     {
-        healthProgressBarVisual.SetBar01((health.Value / 100f));
+        if (isDead) return;
+
+        healthProgressBarVisual.SetBar01(Mathf.Clamp01(health.Value / 100f));
+
+        if (health.Value <= 0 && IsServer)
+        {
+            isDead = true;
+            GameplayServerHandler.Instance.OnPlayerDeath(selfNetworkObject.OwnerClientId);
+            selfNetworkObject.Despawn();
+        }
     }
 
     [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
@@ -73,5 +90,19 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         ctx.shouldTakeKnockback = true;
         Debug.Log("I've been hit!");
     }
+
+    public async void OnWinRound(int victoryLapDelay)
+    {
+        if (!IsOwner) return;
+
+        Destroy(playerGameplayUI.gameObject);
+        isInvulnerable.Value = true;
+
+        await UniTask.Delay(victoryLapDelay);
+
+        ctx.allowInputs = false;
+    }
+
+    public PlayerContext GetPlayerContext() => ctx;
     
 }

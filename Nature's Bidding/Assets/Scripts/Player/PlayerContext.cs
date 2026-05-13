@@ -3,6 +3,8 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerContext
 {
+    public bool allowInputs = true;
+
     [Header("World Context")]
     public bool isGrounded;
     public LayerMask isGroundLayers;
@@ -41,6 +43,7 @@ public class PlayerContext
     public float jumpImpulse;
     public float jumpHeldForce;
     public float jumpHeldAllowedTime;
+    public float extraGravityMultiplier;
 
     [Header("Attacks")]
     public float damage;
@@ -50,6 +53,9 @@ public class PlayerContext
     public float attackCD;
     public float attackCDTimer;
     public bool attackOnCooldown => attackCDTimer > 0;
+    public float attackResponseForce;
+    public bool hitResponse;
+    public int attackActiveDelay;
 
     [Header("Dash")]
     public float dashTime;

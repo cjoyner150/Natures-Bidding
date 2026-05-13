@@ -4,6 +4,9 @@ public class Move : State
 {
     private readonly PlayerContext ctx;
 
+    float idleTimer = 0;
+    bool isIdle = false;
+
     public Move(StateMachine machine, PlayerContext ctx, State parent = null) : base(machine, parent)
     {
         this.ctx = ctx;
@@ -17,6 +20,21 @@ public class Move : State
 
     protected override void OnUpdate(float deltaTime)
     {
+        if (ctx.moveInput.magnitude < 0.01f && !isIdle)
+        {
+            idleTimer += deltaTime;
+
+            if (idleTimer > .5f)
+            {
+                isIdle = true;
+                idleTimer = 0;
+            }
+        }
+        else
+        {
+            idleTimer = 0;
+        }
+
         ctx.desiredMaxSpeed = ctx.moveInputIsSprint ? ctx.sprintSpeed : ctx.walkSpeed;
 
         ctx.forceToAdd = ctx.moveInput * ctx.acceleration * 10f;

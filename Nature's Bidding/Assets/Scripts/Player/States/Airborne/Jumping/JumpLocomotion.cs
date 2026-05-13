@@ -28,7 +28,7 @@ public class JumpLocomotion : State
 
         HandleRotation(deltaTime);
 
-        if (!spaceHeld) { ctx.forceToAdd = Vector3.zero; return; }
+        if (!spaceHeld) { ctx.forceToAdd = (ctx.moveInput * (ctx.acceleration * ctx.airControlMultiplier)); return; }
 
         spaceHeld = ctx.jumpPressed;
         spaceHeldTimer -= deltaTime;

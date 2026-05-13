@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerNetworkBehavior : NetworkBehaviour
 {
+    public Color[] colors;
+    public SkinnedMeshRenderer skinnedMeshRenderer;
     public PlayerContext ctx;
     private PlayerInputManager playerInput;
     private CinemachineTargetGroup cameraTargetGroup;
@@ -13,7 +15,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-
 
         if (IsOwner)
         {
@@ -26,6 +27,8 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         {
             cameraTargetGroup.AddMember(transform, 1, 10);
         }
+
+        skinnedMeshRenderer.materials[2].color = colors[OwnerClientId];
 
     }
 

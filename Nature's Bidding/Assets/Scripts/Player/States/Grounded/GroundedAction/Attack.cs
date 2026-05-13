@@ -27,6 +27,7 @@ public class Attack : State
 
         attackTimer = ctx.attackTime;
         exitAttack = false;
+
     }
 
     async void SetAttackActive(int delay)

@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using MoreMountains.Tools;
 using Unity.Netcode;
 using UnityEngine;
@@ -43,12 +44,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     public override void OnNetworkDespawn()
     {
+        Destroy(playerGameplayUI?.gameObject);
+
         base.OnNetworkDespawn();
 
         health.OnValueChanged -= OnHealthChanged;
         GameplayServerHandler.OnAllPlayersRegistered.RemoveListener(OnAllPlayersRegistered);
 
-        Destroy(playerGameplayUI.gameObject);
     }
 
     public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context)
@@ -89,10 +91,16 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         Debug.Log("I've been hit!");
     }
 
-    public void OnWinRound()
+    public async void OnWinRound(int victoryLapDelay)
     {
+        if (!IsOwner) return;
+
         Destroy(playerGameplayUI.gameObject);
         isInvulnerable.Value = true;
+
+        await UniTask.Delay(victoryLapDelay);
+
+        ctx.allowInputs = false;
     }
 
     public PlayerContext GetPlayerContext() => ctx;

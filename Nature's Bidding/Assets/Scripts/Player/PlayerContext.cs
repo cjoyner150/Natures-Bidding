@@ -3,6 +3,8 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerContext
 {
+    public bool allowInputs = true;
+
     [Header("World Context")]
     public bool isGrounded;
     public LayerMask isGroundLayers;

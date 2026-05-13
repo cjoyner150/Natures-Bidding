@@ -18,13 +18,19 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
     public static UnityEvent OnAllPlayersRegistered = new UnityEvent();
 
     [SerializeField] private CinemachineVirtualCamera winCamera;
+    [SerializeField] private GameObject gameOverUI;
     [SerializeField] private float acceptableAttackRange;
     [SerializeField] private int playersRequiredBeforeStart;
+
+    [Range(1000, 20000)]
+    [SerializeField] private int victoryLapDelay;
 
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
+        gameOverUI?.SetActive(false);
 
         if (IsServer)
         {
@@ -154,7 +160,7 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
     public void OnRoundEndRpc(ulong winningPlayer)
     {
         WinSequence(winningPlayer);
-        NetworkManager.ConnectedClients[winningPlayer].PlayerObject.GetComponent<PlayerHealth>()?.OnWinRound();
+        NetworkManager.ConnectedClients[winningPlayer].PlayerObject.GetComponent<PlayerHealth>()?.OnWinRound(victoryLapDelay);
     }
 
     private async void WinSequence(ulong winningPlayer)
@@ -166,7 +172,10 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
 
         winCamera.enabled = true;
 
-        await UniTask.Delay(8000);
+        await UniTask.Delay(victoryLapDelay);
+
+        winCamera.enabled = false;
+        gameOverUI?.SetActive(true);
     }
 
     // ----------------------------- Get Player Names ----------------------------- \\

@@ -35,4 +35,9 @@ public class NetworkUIManager : MonoBehaviour
     {
         _ = sessionManager.ChangePlayerName(input.text);
     }
+
+    public void LeaveSessionByButton()
+    {
+        _ = sessionManager.LeaveSession();
+    }
 }

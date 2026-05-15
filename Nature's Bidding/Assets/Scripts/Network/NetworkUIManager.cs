@@ -40,4 +40,10 @@ public class NetworkUIManager : MonoBehaviour
     {
         _ = sessionManager.LeaveSession();
     }
+
+    public async void QuitGameByButton()
+    {
+        await sessionManager.LeaveSession();
+        Application.Quit();
+    }
 }

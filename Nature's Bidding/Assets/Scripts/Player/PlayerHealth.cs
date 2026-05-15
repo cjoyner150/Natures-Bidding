@@ -8,6 +8,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     public NetworkVariable<float> health =  new(100, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<bool> isInvulnerable = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isParrying = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<bool> isRoundWinner = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     PlayerContext ctx;
     NetworkObject selfNetworkObject;
@@ -44,7 +45,10 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     public override void OnNetworkDespawn()
     {
-        Destroy(playerGameplayUI?.gameObject);
+        if (playerGameplayUI != null && playerGameplayUI.gameObject != null)
+        {
+            Destroy(playerGameplayUI.gameObject);
+        }
 
         base.OnNetworkDespawn();
 
@@ -93,9 +97,10 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     public async void OnWinRound(int victoryLapDelay)
     {
+        Destroy(playerGameplayUI.gameObject);
+
         if (!IsOwner) return;
 
-        Destroy(playerGameplayUI.gameObject);
         isInvulnerable.Value = true;
 
         await UniTask.Delay(victoryLapDelay);

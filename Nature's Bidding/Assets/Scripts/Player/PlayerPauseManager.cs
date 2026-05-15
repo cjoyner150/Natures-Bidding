@@ -1,0 +1,67 @@
+using System;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityUtils;
+
+public class PlayerPauseManager : Singleton<PlayerPauseManager>
+{
+    [SerializeField] GameObject pausePanel;
+
+    public Action OnPausePressed;
+    [HideInInspector] public bool Paused { get; private set; }
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        Paused = false;
+        pausePanel.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        OnPausePressed += OnPauseEvent;
+    }
+
+    private void OnDisable()
+    {
+        OnPausePressed -= OnPauseEvent;
+    }
+
+    void OnPauseEvent()
+    {
+        if (Paused)
+        {
+            UnpauseGame();
+        }
+        else
+        {
+            PauseGame();
+        }
+    }
+    void PauseGame()
+    {
+        Paused = true;
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+
+        pausePanel.SetActive(true);
+    }
+
+    void UnpauseGame()
+    {
+        Paused = false;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        pausePanel.SetActive(false);
+    }
+
+    public void OnResumeButton()
+    {
+        UnpauseGame();
+    }
+
+}

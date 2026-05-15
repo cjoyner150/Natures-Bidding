@@ -173,7 +173,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         return results.Sessions;
     }
 
-    public async UniTaskVoid LeaveSession()
+    public async UniTask LeaveSession()
     {
         if (_isBusy)
         {

@@ -16,6 +16,7 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
 
     public static UnityEvent OnPlayerRegistered = new UnityEvent();
     public static UnityEvent OnAllPlayersRegistered = new UnityEvent();
+    public static UnityEvent OnLocalPlayerDisconnect = new UnityEvent();
 
     [SerializeField] private CinemachineVirtualCamera winCamera;
     [SerializeField] private GameObject gameOverUI;
@@ -150,7 +151,11 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
 
         if (alivePlayers.Count == 1)
         {
-            OnRoundEndRpc(alivePlayers[0].clientId);
+            ulong winningPlayerId = alivePlayers[0].clientId;
+
+            NetworkManager.ConnectedClients[winningPlayerId].PlayerObject.GetComponent<PlayerHealth>().isRoundWinner.Value = true;
+
+            OnRoundEndRpc(winningPlayerId);
         }
     }
 

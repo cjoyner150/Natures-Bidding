@@ -5,15 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
-    path: Assets/Scenes/NGO_Setup.unity
-    guid: c0dab7aaba1c7644482cbbcf171cb40f
   - enabled: 1
-    path: Assets/Scenes/LevelWhitebox/CliffLevel/CliffLevelWhitebox.unity
-    guid: a94dd0172f88ade46a19fc328990182a
+    path: Assets/Scenes/GameLoop/MainMenu.unity
+    guid: d756e9663faa72142bca351da8466745
+  - enabled: 1
+    path: Assets/Scenes/GameLoop/CliffGameplay.unity
+    guid: d086b4925344f8e40830e2ff85b056a8
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 708dcf6a8bd30934fb7c3e7f5636b2e0, type: 3}
   m_UseUCBPForAssetBundles: 0

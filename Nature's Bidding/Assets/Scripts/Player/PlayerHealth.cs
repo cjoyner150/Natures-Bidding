@@ -31,7 +31,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     public void OnAllPlayersRegistered()
     {
-        playerGameplayUI = TestingGameManager.Instance.SpawnPlayerHealthBar();
+        playerGameplayUI = GameplaySpawnManager.Instance.SpawnPlayerHealthBar();
         playerGameplayUI.Initialize(selfNetworkObject.OwnerClientId);
         
         healthProgressBarVisual = playerGameplayUI.gameObject.GetComponentInChildren<MMProgressBar>();

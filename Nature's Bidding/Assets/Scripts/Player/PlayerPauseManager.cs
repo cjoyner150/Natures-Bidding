@@ -8,6 +8,8 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
     [SerializeField] GameObject pausePanel;
 
     public Action OnPausePressed;
+    public Action OnResumed;
+    public Action OnPaused;
     [HideInInspector] public bool Paused { get; private set; }
 
     protected override void Awake()
@@ -47,6 +49,8 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
         Cursor.visible = true;
 
         pausePanel.SetActive(true);
+
+        OnPaused?.Invoke();
     }
 
     void UnpauseGame()
@@ -57,6 +61,16 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
         Cursor.visible = false;
 
         pausePanel.SetActive(false);
+
+        OnResumed?.Invoke();
+    }
+
+    public void ForceResume()
+    {
+        if (Paused)
+        {
+            UnpauseGame();
+        }
     }
 
     public void OnResumeButton()

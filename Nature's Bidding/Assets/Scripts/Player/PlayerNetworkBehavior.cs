@@ -19,7 +19,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         if (IsOwner)
         {
             GameplayServerHandler.OnPlayerRegistered.AddListener(OnPlayerRegistered);
-            RegisterPlayer();
         }
 
         cameraTargetGroup = FindAnyObjectByType<CinemachineTargetGroup>();
@@ -30,12 +29,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
         skinnedMeshRenderer.materials[2].color = colors[OwnerClientId];
 
-    }
-
-    async void RegisterPlayer()
-    {
-        await UniTask.DelayFrame(1);
-        GameplayServerHandler.Instance.RegisterPlayerOnServerRpc(new PlayerServerInfo(OwnerClientId, AuthenticationService.Instance.PlayerId, AuthenticationService.Instance.PlayerName));
     }
 
     public override void OnNetworkDespawn()

@@ -35,7 +35,9 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
 
         if (IsServer)
         {
+            NetworkManager.OnClientConnectedCallback += OnClientConnected;
             NetworkManager.OnClientDisconnectCallback += OnClientDisconnected;
+            SpawnAllPlayers();
         }
     }
 
@@ -45,6 +47,7 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
 
         if (IsServer)
         {
+            NetworkManager.OnClientConnectedCallback -= OnClientConnected;
             NetworkManager.OnClientDisconnectCallback -= OnClientDisconnected;
         }
     }
@@ -57,27 +60,34 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
         alivePlayers = new List<PlayerServerInfo>();
     }
 
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void RequestHitPlayerServerRpc(ulong attackingPlayerId, ulong hitPlayerIndex, float damage)
+    #region Add Players
+
+    private void SpawnAllPlayers()
     {
-        if (!IsServer) return;
+        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
+            SpawnAndRegisterPlayer(client.ClientId);
+    }
 
-        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(hitPlayerIndex, out var hitClient) ||
-            !NetworkManager.Singleton.ConnectedClients.TryGetValue(attackingPlayerId, out var attackingClient))
-            return;
+    private void OnClientConnected(ulong clientId) => SpawnAndRegisterPlayer(clientId);
 
-        var hitNetObj = hitClient.PlayerObject;
-        var attackingNetObj = attackingClient.PlayerObject;
+    public void SpawnAndRegisterPlayer(ulong clientId)
+    {
+        Debug.Log($"Spawning client: {clientId}");
 
-        if (hitNetObj == null || attackingNetObj == null) return;
-
-        if (Vector3.Distance(hitNetObj.transform.position, attackingNetObj.transform.position) <= acceptableAttackRange)
+        if (!PlayerRegistry.Instance.Has(clientId))
         {
-            var hitPlayerHealth = hitNetObj.GetComponent<PlayerHealth>();
-            if (hitPlayerHealth == null) return;
+            Debug.LogWarning($"Client {clientId} has no registry entry yet, cannot spawn.");
+            return;
+        }
 
-            hitPlayerHealth.health.Value -= damage;
-            hitPlayerHealth.PlayerDamagedFeedbackClientRpc(attackingNetObj.transform.position);
+        NetworkObject netObj = GameplaySpawnManager.Instance.SpawnPlayer(clientId);
+
+        var info = PlayerRegistry.Instance.Get(clientId);
+        if (!players.Contains(info))
+        {
+            players.Add(info);
+            NotifyPlayerRegisteredRpc(info, players.Count,
+                NetworkManager.Singleton.RpcTarget.Single(clientId, RpcTargetUse.Temp));
         }
     }
 
@@ -124,7 +134,37 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
         AllPlayersRegisteredClientRpc();
     }
 
-    // ----------------------------- Remove Player ----------------------------- \\
+    #endregion
+
+    #region Request Hit
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void RequestHitPlayerServerRpc(ulong attackingPlayerId, ulong hitPlayerIndex, float damage)
+    {
+        if (!IsServer) return;
+
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(hitPlayerIndex, out var hitClient) ||
+            !NetworkManager.Singleton.ConnectedClients.TryGetValue(attackingPlayerId, out var attackingClient))
+            return;
+
+        var hitNetObj = hitClient.PlayerObject;
+        var attackingNetObj = attackingClient.PlayerObject;
+
+        if (hitNetObj == null || attackingNetObj == null) return;
+
+        if (Vector3.Distance(hitNetObj.transform.position, attackingNetObj.transform.position) <= acceptableAttackRange)
+        {
+            var hitPlayerHealth = hitNetObj.GetComponent<PlayerHealth>();
+            if (hitPlayerHealth == null) return;
+
+            hitPlayerHealth.health.Value -= damage;
+            hitPlayerHealth.PlayerDamagedFeedbackClientRpc(attackingNetObj.transform.position);
+        }
+    }
+
+    #endregion
+
+    #region Remove Player
 
     public void OnPlayerDeath(ulong clientId)
     {
@@ -141,6 +181,14 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
 
     public void OnClientDisconnected(ulong clientId)
     {
+        PlayerRegistry.Instance.Remove(clientId);
+
+        if (NetworkObject.OwnerClientId == clientId)
+        {
+            print("I am disconnecting!");
+            return;
+        }
+
         if (!IsServer) return;
 
         int index = alivePlayers.FindIndex(p => p.clientId == clientId);
@@ -159,7 +207,9 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
         }
     }
 
-    // ----------------------------- End Round ----------------------------- \\
+    #endregion
+
+    #region End Round
 
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
     public void OnRoundEndRpc(ulong winningPlayer)
@@ -183,7 +233,9 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
         gameOverUI?.SetActive(true);
     }
 
-    // ----------------------------- Get Player Names ----------------------------- \\
+    #endregion
+
+    #region Get Player Names
 
     private Dictionary<ulong, TaskCompletionSource<string>> playerNameRequests = new();
 
@@ -244,8 +296,10 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
         }
     }
 
+    #endregion
 
-    // ----------------------------- Get Player List ----------------------------- \\
+    #region Get Player List
+
     private TaskCompletionSource<List<PlayerServerInfo>> playersRequestTcs;
 
     /// <summary>
@@ -282,6 +336,8 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
     {
         playersRequestTcs?.SetResult(new List<PlayerServerInfo>(playersArray));
     }
+
+    #endregion
 
 }
 

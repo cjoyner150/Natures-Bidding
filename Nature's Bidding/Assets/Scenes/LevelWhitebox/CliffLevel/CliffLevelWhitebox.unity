@@ -640,7 +640,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Multiplayer.Tools.NetworkSimulator.Runtime::Unity.Multiplayer.Tools.NetworkSimulator.Runtime.NetworkSimulator
   m_PresetAsset: {fileID: 0}
   m_PresetReference:
-    rid: 4553274799182053523
+    rid: 4553274911436308564
   m_Scenario:
     rid: -2
   m_IsScenarioSettingsFolded: 0
@@ -650,7 +650,7 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 4553274799182053523
+    - rid: 4553274911436308564
       type: {class: NetworkSimulatorPreset, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
       data:
         <Name>k__BackingField: 'Home Broadband [WIFI, Cable, Console, PC]'
@@ -825,7 +825,7 @@ GameObject:
   - component: {fileID: 127281492}
   - component: {fileID: 127281491}
   m_Layer: 0
-  m_Name: Network Session Manager
+  m_Name: PersistentSessionManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -856,7 +856,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 564595897}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &160919437
 GameObject:
@@ -2386,9 +2386,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 127281492}
   - {fileID: 101406859}
   - {fileID: 1844735685}
+  - {fileID: 689627213}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &572573384
@@ -2447,6 +2447,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NetworkUIManager
   startPanel: {fileID: 2117279372}
+  gameOverPanel: {fileID: 125549843}
 --- !u!114 &572573387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2608,6 +2609,58 @@ Transform:
   - {fileID: 1233614682}
   m_Father: {fileID: 755280886}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &689627212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 689627213}
+  - component: {fileID: 689627214}
+  m_Layer: 0
+  m_Name: SpawnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &689627213
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689627212}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 564595897}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &689627214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689627212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf32c91a89c1fc248a15221425b04515, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TestingGameManager
+  playerPrefab: {fileID: 2104365586213191800, guid: 26eb582ed92ce4046929799f886c505d, type: 3}
+  spawnPoints:
+  - {fileID: 1551449852}
+  - {fileID: 543347436}
+  - {fileID: 1989715493}
+  - {fileID: 598839363}
+  playerHealthBarPrefab: {fileID: 3078929919336392733, guid: 15346032f08ac424185e2bc49ea396d1, type: 3}
+  playerHealthBarParent: {fileID: 1191624107}
 --- !u!1 &753701430
 GameObject:
   m_ObjectHideFlags: 0
@@ -3593,7 +3646,6 @@ GameObject:
   - component: {fileID: 1009277996}
   - component: {fileID: 1009277995}
   - component: {fileID: 1009277994}
-  - component: {fileID: 1009277993}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -3601,26 +3653,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1009277993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1009277992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf32c91a89c1fc248a15221425b04515, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TestingGameManager
-  playerPrefab: {fileID: 2104365586213191800, guid: 26eb582ed92ce4046929799f886c505d, type: 3}
-  spawnPoints:
-  - {fileID: 1551449852}
-  - {fileID: 543347436}
-  - {fileID: 1989715493}
-  - {fileID: 598839363}
-  playerHealthBarPrefab: {fileID: 3078929919336392733, guid: 15346032f08ac424185e2bc49ea396d1, type: 3}
-  playerHealthBarParent: {fileID: 1191624107}
 --- !u!114 &1009277994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7012,30 +7044,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2117279372}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 125549843}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &2113037477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7850,4 +7858,5 @@ SceneRoots:
   - {fileID: 1090500457}
   - {fileID: 618338196}
   - {fileID: 564595897}
+  - {fileID: 127281492}
   - {fileID: 1009277996}

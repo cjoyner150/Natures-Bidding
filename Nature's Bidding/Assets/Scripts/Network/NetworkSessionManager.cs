@@ -29,6 +29,13 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
     private bool _isBusy = false;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        DontDestroyOnLoad(gameObject);
+    }
+
     async void Start()
     {
         try
@@ -62,6 +69,13 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
     public async UniTask StartSessionAsHost()
     {
+        NetworkManager.Singleton.NetworkConfig.ConnectionApproval = true;
+        NetworkManager.Singleton.ConnectionApprovalCallback += (request, response) =>
+        {
+            response.Approved = true;
+            response.CreatePlayerObject = false;
+        };
+
         var options = new SessionOptions
         {
             MaxPlayers = 4,
@@ -71,12 +85,15 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
         ActiveSession = await MultiplayerService.Instance.CreateSessionAsync(options);
         Debug.Log($"Session started. Id: {ActiveSession.Id}, Code: {ActiveSession.Code}");
+
+        RegisterAuthData();
     }
 
     async UniTaskVoid JoinSessionByID(string sessionId)
     {
         ActiveSession = await MultiplayerService.Instance.JoinSessionByIdAsync(sessionId);
         Debug.Log($"Session with id: {sessionId} joined!");
+        RegisterAuthData();
     }
 
     public async UniTask<bool> JoinSessionByCode(string sessionCode)
@@ -86,12 +103,13 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         if (ActiveSession != null)
         {
             Debug.Log($"Session with id: {sessionCode} joined!");
+            RegisterAuthData();
             return true;
         }
         else return false;
     }
 
-    public async UniTaskVoid QuickJoin()
+    public async UniTask QuickJoin()
     {
         // Prevent overlapping join/leave operations
         if (_isBusy)
@@ -117,6 +135,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
                 Debug.Log($"Found {sessions.Count} session(s). Joining {sessions[0].Id}...");
                 ActiveSession = await MultiplayerService.Instance.JoinSessionByIdAsync(sessions[0].Id);
                 Debug.Log($"Joined session. Code: {ActiveSession.Code}");
+                RegisterAuthData();
             }
             else
             {
@@ -190,6 +209,33 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         {
             _isBusy = false;
         }
+    }
+
+    private void RegisterAuthData()
+    {
+        PlayerRegistry.Instance.Register(
+            NetworkManager.Singleton.LocalClientId,
+            AuthenticationService.Instance.PlayerId,
+            AuthenticationService.Instance.PlayerName
+        );
+
+        SendAuthToServerRpc(
+            AuthenticationService.Instance.PlayerId,
+            AuthenticationService.Instance.PlayerName
+        );
+    }
+
+    [Rpc(SendTo.Server)]
+    public void SendAuthToServerRpc(string authId, string playerName, RpcParams rpcParams = default)
+    {
+        ulong clientId = rpcParams.Receive.SenderClientId;
+        PlayerRegistry.Instance.Register(clientId, authId, playerName);
+
+        Debug.Log($"Auth received for {clientId}. GameplayServerHandler exists: {GameplayServerHandler.Instance != null}");
+
+        // If gameplay is already running, spawn immediately
+        if (GameplayServerHandler.Instance != null)
+            GameplayServerHandler.Instance.SpawnAndRegisterPlayer(clientId);
     }
 
 }

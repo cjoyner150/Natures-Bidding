@@ -35,7 +35,6 @@ public class MenuNetworkUI : MonoBehaviour
     {
         PersistentGameStateManager.Instance.LoadingPanel.SetActive(true);
         await sessionManager.StartSessionAsHost();
-        PersistentGameStateManager.Instance.LoadGameplayLevel();
     }
 
     public void EnterNameByButton(TMP_InputField input)

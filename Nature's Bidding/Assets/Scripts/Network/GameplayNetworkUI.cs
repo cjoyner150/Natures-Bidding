@@ -23,10 +23,8 @@ public class GameplayNetworkUI : MonoBehaviour
         Application.Quit();
     }
 
-    public async void LeaveSession()
+    public void LeaveSession()
     {
-        await sessionManager.LeaveSession();
-
         PlayerPauseManager.Instance.ForceResume();
 
         Cursor.lockState = CursorLockMode.Confined;

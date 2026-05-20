@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using TMPro;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -13,6 +14,13 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     [SerializeField] TextMeshProUGUI loadingProgress;
 
+    public bool IsReturningToMenu {
+        get => _isReturningToMenu;
+        private set { _isReturningToMenu = value; }
+    }
+
+    private bool _isReturningToMenu = false;
+    
     public enum GameState {
         Menu,
         Lobby,
@@ -36,17 +44,29 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     private void OnEnable()
     {
         GameplayServerHandler.OnAllPlayersRegistered.AddListener(OnAllPlayersRegistered);
+        NetworkSessionManager.OnSessionHosted += OnSessionHosted;
     }
 
     private void OnDisable()
     {
         GameplayServerHandler.OnAllPlayersRegistered.RemoveListener(OnAllPlayersRegistered);
+        NetworkSessionManager.OnSessionHosted -= OnSessionHosted;
+    }
+
+    public async UniTask LoadMenuScene()
+    {
+        await LoadSceneAsync(1);
+    }
+
+    private void OnSessionHosted()
+    {
+        LoadGameplayLevel();
     }
 
     public async void LoadGameplayLevel()
     {
         loadingPanel.SetActive(true);
-        await LoadNetworkedSceneAsync(1);
+        await LoadNetworkedSceneAsync(2);
         RegisterAuthData();
         loadingPanel.SetActive(false);
         state = GameState.Lobby;
@@ -59,32 +79,24 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         RegisterAuthData();
     }
 
-    private UniTaskCompletionSource _clientSyncTcs;
-
-    public async UniTask WaitForClientSceneSync()
-    {
-        _clientSyncTcs = new UniTaskCompletionSource();
-        await _clientSyncTcs.Task;
-    }
-
-    public void CompleteClientSceneSync()
-    {
-        _clientSyncTcs?.TrySetResult();
-    }
 
     public async void ReturnToMenu()
     {
+        if (IsReturningToMenu) return;
+        IsReturningToMenu = true;
+
         PlayerRegistry.Instance.Clear();
         state = GameState.Menu;
 
-        if (NetworkManager.Singleton != null)
-        {
-            GameObject networkManagerGO = NetworkManager.Singleton.gameObject;
-            NetworkManager.Singleton.Shutdown();
-            Destroy(networkManagerGO);
-        }
+        _sceneLoadTcs?.TrySetCanceled();
+        _sceneLoadTcs = null;
 
-        await LoadSceneAsync(0);
+        if (NetworkSessionManager.Instance.HasActiveSession)
+            await NetworkSessionManager.Instance.LeaveSession();
+
+        await LoadSceneAsync(1);
+        await UniTask.WaitUntil(() => NetworkManager.Singleton != null);
+        IsReturningToMenu = false;
     }
 
     private async UniTask LoadSceneAsync(int idx)
@@ -118,9 +130,19 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         if (NetworkManager.Singleton.IsServer)
             NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
 
-        await _sceneLoadTcs.Task;
-
-        NetworkManager.Singleton.SceneManager.OnSceneEvent -= OnSceneEvent;
+        try
+        {
+            await _sceneLoadTcs.Task;
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.Log("Scene load cancelled.");
+        }
+        finally
+        {
+            if (NetworkManager.Singleton?.SceneManager != null)
+                NetworkManager.Singleton.SceneManager.OnSceneEvent -= OnSceneEvent;
+        }
     }
 
     private void OnSceneEvent(SceneEvent sceneEvent)
@@ -155,6 +177,8 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private async UniTask LoadStandaloneSceneAsync(int idx)
     {
+        loadingPanel.SetActive(true);
+
         AsyncOperation op = SceneManager.LoadSceneAsync(idx);
         op.allowSceneActivation = false;
 
@@ -168,6 +192,8 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         await UniTask.Delay(200);
         op.allowSceneActivation = true;
         await UniTask.WaitUntil(() => op.isDone);
+
+        loadingPanel.SetActive(false);
     }
 
     public async void RegisterAuthData()

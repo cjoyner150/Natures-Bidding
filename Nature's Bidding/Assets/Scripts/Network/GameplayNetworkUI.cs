@@ -23,15 +23,15 @@ public class GameplayNetworkUI : MonoBehaviour
         Application.Quit();
     }
 
-    public void LeaveSession()
+    public async void LeaveSession()
     {
-        _ = sessionManager.LeaveSession();
+        await sessionManager.LeaveSession();
 
         PlayerPauseManager.Instance.ForceResume();
 
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
-        SceneManager.LoadScene(0);
+        PersistentGameStateManager.Instance.ReturnToMenu();
     }
 }

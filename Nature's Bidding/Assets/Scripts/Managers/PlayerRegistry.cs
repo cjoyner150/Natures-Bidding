@@ -9,8 +9,13 @@ public class PlayerRegistry : Singleton<PlayerRegistry>
 
     protected override void Awake()
     {
-        base.Awake();
-        DontDestroyOnLoad(gameObject);
+        if (HasInstance) Destroy(gameObject);
+        else
+        {
+            base.Awake();
+
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     public void Register(ulong clientId, string authId, string playerName)
@@ -25,6 +30,8 @@ public class PlayerRegistry : Singleton<PlayerRegistry>
     public IReadOnlyCollection<PlayerServerInfo> GetAll() => _registry.Values;
 
     public void Remove(ulong clientId) => _registry.Remove(clientId);
+
+    public void Clear() => _registry.Clear();
 
     public bool Has(ulong clientId) => _registry.ContainsKey(clientId);
 }

@@ -41,6 +41,16 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
+    public void NotifyRegisteredRpc(PlayerServerInfo info, int playersCount)
+    {
+        GameplayServerHandler.OnPlayerRegistered?.Invoke();
+        Debug.Log($"Registered: clientId {info.clientId}, name {info.playerName}. Total: {playersCount}");
+
+        if (playersCount >= GameplayServerHandler.Instance.PlayersRequiredBeforeStart)
+            GameplayServerHandler.Instance.AllPlayersRegisteredServerRpc();
+    }
+
     public void OnPlayerRegistered()
     {
         if (IsOwner)

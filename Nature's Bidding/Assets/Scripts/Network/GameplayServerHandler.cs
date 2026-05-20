@@ -21,7 +21,7 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
     [SerializeField] private CinemachineVirtualCamera winCamera;
     [SerializeField] private GameObject gameOverUI;
     [SerializeField] private float acceptableAttackRange;
-    [SerializeField] private int playersRequiredBeforeStart;
+    public int PlayersRequiredBeforeStart;
 
     [Range(1000, 20000)]
     [SerializeField] private int victoryLapDelay;
@@ -30,7 +30,7 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-
+        Debug.Log($"GameplayServerHandler spawned. IsServer: {IsServer}");
         gameOverUI?.SetActive(false);
 
         if (IsServer)
@@ -38,6 +38,10 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
             NetworkManager.OnClientConnectedCallback += OnClientConnected;
             NetworkManager.OnClientDisconnectCallback += OnClientDisconnected;
             SpawnAllPlayers();
+        }
+        else
+        {
+            PersistentGameStateManager.Instance.OnGameplaySceneReady();
         }
     }
 
@@ -68,54 +72,32 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
             SpawnAndRegisterPlayer(client.ClientId);
     }
 
-    private void OnClientConnected(ulong clientId) => SpawnAndRegisterPlayer(clientId);
+    private void OnClientConnected(ulong clientId)
+    {
+        Debug.Log($"Client {clientId} connected. Current players spawned: {players.Count}");
+        foreach (var p in players)
+            Debug.Log($"  Already registered: {p.clientId}");
+        SpawnAndRegisterPlayer(clientId);
+    }    
 
     public void SpawnAndRegisterPlayer(ulong clientId)
     {
-        Debug.Log($"Spawning client: {clientId}");
-
         if (!PlayerRegistry.Instance.Has(clientId))
         {
             Debug.LogWarning($"Client {clientId} has no registry entry yet, cannot spawn.");
             return;
         }
 
-        NetworkObject netObj = GameplaySpawnManager.Instance.SpawnPlayer(clientId);
+        NetworkObject playerNetObj = GameplaySpawnManager.Instance.SpawnPlayer(clientId);
 
         var info = PlayerRegistry.Instance.Get(clientId);
-        if (!players.Contains(info))
-        {
-            players.Add(info);
-            NotifyPlayerRegisteredRpc(info, players.Count,
-                NetworkManager.Singleton.RpcTarget.Single(clientId, RpcTargetUse.Temp));
-        }
-    }
-
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone, DeferLocal = true)]
-    public void RegisterPlayerOnServerRpc(PlayerServerInfo info, RpcParams rpcParams = default)
-    {
-        if (!IsServer) return;
-
         if (players.Contains(info)) return;
 
         players.Add(info);
-
-        ulong senderId = rpcParams.Receive.SenderClientId;
         int playersCount = players.Count;
 
-        NotifyPlayerRegisteredRpc(info, playersCount, NetworkManager.Singleton.RpcTarget.Single(senderId, RpcTargetUse.Temp));
-    }
-
-    [Rpc(SendTo.SpecifiedInParams)]
-    private void NotifyPlayerRegisteredRpc(PlayerServerInfo info, int playersCount, RpcParams rpcParams = default)
-    {
-        OnPlayerRegistered?.Invoke();
-        Debug.Log($"Client with: clientId {info.clientId}, auth {info.playerAuthenticationId}, and name {info.playerName} has been registered on the server. There are now {playersCount} players.");
-
-        if (playersCount >= playersRequiredBeforeStart) 
-        {
-            AllPlayersRegisteredServerRpc(); 
-        }
+        var playerHandler = playerNetObj.GetComponent<PlayerNetworkBehavior>();
+        playerHandler.NotifyRegisteredRpc(info, playersCount);
     }
 
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
@@ -126,7 +108,7 @@ public class GameplayServerHandler : NetworkSingleton<GameplayServerHandler>
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    void AllPlayersRegisteredServerRpc()
+    public void AllPlayersRegisteredServerRpc()
     {
         if (!IsServer) return;
 

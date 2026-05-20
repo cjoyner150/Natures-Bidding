@@ -12,6 +12,7 @@ using Unity.Netcode;
 using UnityEngine.Events;
 using System.Threading.Tasks;
 using Unity.Collections;
+using System.Threading;
 
 public class NetworkSessionManager : Singleton<NetworkSessionManager>
 {
@@ -31,9 +32,13 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
     protected override void Awake()
     {
-        base.Awake();
+        if (HasInstance) Destroy(gameObject);
+        else
+        {
+            base.Awake();
 
-        DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     async void Start()
@@ -57,15 +62,90 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
             Debug.LogException(e);
         }
 
-        //players = await RequestPlayers();
-
     }
 
+    private void OnNetworkSceneEvent(SceneEvent sceneEvent)
+    {
+        if (NetworkManager.Singleton.IsServer) return;
+        if (sceneEvent.ClientId != NetworkManager.Singleton.LocalClientId) return;
+
+        switch (sceneEvent.SceneEventType)
+        {
+            case SceneEventType.Synchronize:
+                PersistentGameStateManager.Instance.LoadingPanel.SetActive(true);
+                break;
+            case SceneEventType.Load:
+                if (sceneEvent.AsyncOperation != null)
+                    TrackClientLoadProgress(sceneEvent.AsyncOperation).Forget();
+                break;
+        }
+    }
+
+    private async UniTaskVoid TrackClientLoadProgress(AsyncOperation op)
+    {
+        while (!op.isDone)
+        {
+            PersistentGameStateManager.Instance.UpdateLoadingProgress(op.progress / 0.9f * 100f);
+            await UniTask.Yield();
+        }
+    }
+
+    #region Handle Session Events
+
+    private void HookSessionEvents(ISession session)
+    {
+        session.Deleted += OnSessionDeleted;
+        session.RemovedFromSession += OnRemovedFromSession;
+        session.StateChanged += OnSessionStateChanged;
+        NetworkManager.Singleton.SceneManager.OnSceneEvent += OnNetworkSceneEvent;
+    }
+
+    private void UnhookSessionEvents(ISession session)
+    {
+        session.Deleted -= OnSessionDeleted;
+        session.RemovedFromSession -= OnRemovedFromSession;
+        session.StateChanged -= OnSessionStateChanged;
+        NetworkManager.Singleton.SceneManager.OnSceneEvent -= OnNetworkSceneEvent;
+    }
+
+    private void OnSessionDeleted()
+    {
+        Debug.Log("Session deleted by host.");
+        HandleSessionEnded().Forget();
+    }
+
+    private void OnRemovedFromSession()
+    {
+        Debug.Log("Removed from session.");
+        HandleSessionEnded().Forget();
+    }
+
+    private void OnSessionStateChanged(SessionState state)
+    {
+        Debug.Log($"Session state changed: {state}");
+        if (state == SessionState.Disconnected)
+            HandleSessionEnded().Forget();
+    }
+
+    private async UniTaskVoid HandleSessionEnded()
+    {
+        await SafeLeaveAsync();
+
+        PersistentGameStateManager.Instance.ReturnToMenu();
+    }
+
+    #endregion
+
+    #region Handle Player Data
     public async UniTask ChangePlayerName(string playerName)
     {
         await AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
         Debug.Log($"Player updated with id: {AuthenticationService.Instance.PlayerId} and name: {AuthenticationService.Instance.PlayerName}");
     }
+
+    #endregion
+
+    #region Manage Session Join and Leave
 
     public async UniTask StartSessionAsHost()
     {
@@ -86,14 +166,14 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         ActiveSession = await MultiplayerService.Instance.CreateSessionAsync(options);
         Debug.Log($"Session started. Id: {ActiveSession.Id}, Code: {ActiveSession.Code}");
 
-        RegisterAuthData();
+        StartLobbyHeartbeat();
+        HookSessionEvents(ActiveSession);
     }
 
     async UniTaskVoid JoinSessionByID(string sessionId)
     {
         ActiveSession = await MultiplayerService.Instance.JoinSessionByIdAsync(sessionId);
         Debug.Log($"Session with id: {sessionId} joined!");
-        RegisterAuthData();
     }
 
     public async UniTask<bool> JoinSessionByCode(string sessionCode)
@@ -102,8 +182,8 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
         if (ActiveSession != null)
         {
+            HookSessionEvents(ActiveSession);
             Debug.Log($"Session with id: {sessionCode} joined!");
-            RegisterAuthData();
             return true;
         }
         else return false;
@@ -134,8 +214,8 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
             {
                 Debug.Log($"Found {sessions.Count} session(s). Joining {sessions[0].Id}...");
                 ActiveSession = await MultiplayerService.Instance.JoinSessionByIdAsync(sessions[0].Id);
+                HookSessionEvents(ActiveSession);
                 Debug.Log($"Joined session. Code: {ActiveSession.Code}");
-                RegisterAuthData();
             }
             else
             {
@@ -161,11 +241,19 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
     async UniTask SafeLeaveAsync()
     {
+        StopLobbyHeartbeat();
+
         if (ActiveSession != null)
         {
+            UnhookSessionEvents(ActiveSession);
+
             try
             {
                 await ActiveSession.LeaveAsync();
+            }
+            catch (SessionException e) when (e.Message.Contains("connection was lost"))
+            {
+                Debug.LogWarning($"Session leave warning (non-fatal): {e.Message}");
             }
             catch (Exception e)
             {
@@ -211,31 +299,41 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         }
     }
 
-    private void RegisterAuthData()
-    {
-        PlayerRegistry.Instance.Register(
-            NetworkManager.Singleton.LocalClientId,
-            AuthenticationService.Instance.PlayerId,
-            AuthenticationService.Instance.PlayerName
-        );
+    #endregion
 
-        SendAuthToServerRpc(
-            AuthenticationService.Instance.PlayerId,
-            AuthenticationService.Instance.PlayerName
-        );
+    #region Session Heartbeat
+
+    private CancellationTokenSource _heartbeatCts;
+
+    public void StartLobbyHeartbeat()
+    {
+        _heartbeatCts = new CancellationTokenSource();
+        HeartbeatLoopAsync(_heartbeatCts.Token).Forget();
     }
 
-    [Rpc(SendTo.Server)]
-    public void SendAuthToServerRpc(string authId, string playerName, RpcParams rpcParams = default)
+    public void StopLobbyHeartbeat()
     {
-        ulong clientId = rpcParams.Receive.SenderClientId;
-        PlayerRegistry.Instance.Register(clientId, authId, playerName);
-
-        Debug.Log($"Auth received for {clientId}. GameplayServerHandler exists: {GameplayServerHandler.Instance != null}");
-
-        // If gameplay is already running, spawn immediately
-        if (GameplayServerHandler.Instance != null)
-            GameplayServerHandler.Instance.SpawnAndRegisterPlayer(clientId);
+        _heartbeatCts?.Cancel();
+        _heartbeatCts = null;
     }
+
+    private async UniTaskVoid HeartbeatLoopAsync(CancellationToken ct)
+    {
+        while (!ct.IsCancellationRequested && ActiveSession != null)
+        {
+            try
+            {
+                await ActiveSession.AsHost().RefreshAsync();
+            }
+            catch (SessionException e)
+            {
+                Debug.LogWarning($"Heartbeat warning (non-fatal): {e.Message}");
+            }
+
+            await UniTask.Delay(15000, cancellationToken: ct);
+        }
+    }
+
+    #endregion
 
 }

@@ -3960,7 +3960,7 @@ MonoBehaviour:
   winCamera: {fileID: 67567528}
   gameOverUI: {fileID: 125549843}
   acceptableAttackRange: 100
-  playersRequiredBeforeStart: 2
+  PlayersRequiredBeforeStart: 3
   victoryLapDelay: 8000
 --- !u!114 &1844735687
 MonoBehaviour:

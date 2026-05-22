@@ -1,9 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class PlayerContext
 {
     public bool allowInputs = true;
+
+    [Header("Stats")]
+    public BasePlayerStats BaseStats;
+    public List<StatusEffectorSO> statusEffectsOnStart;
 
     [Header("World Context")]
     public bool isGrounded;

@@ -12,7 +12,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     PlayerContext ctx;
     NetworkObject selfNetworkObject;
-    GameplayServerHandler gameplayServerHandler;
+    private IGameServerHandler _serverHandler;
     private PlayerGameplayUI playerGameplayUI;
     private MMProgressBar healthProgressBarVisual;
 
@@ -22,14 +22,16 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         base.OnNetworkSpawn();
 
-        gameplayServerHandler = FindAnyObjectByType<GameplayServerHandler>();
+        _serverHandler = FindAnyObjectByType<LobbyServerHandler>();
+        _serverHandler ??= FindAnyObjectByType<CombatServerHandler>();
+
         selfNetworkObject = GetComponent<NetworkObject>();
         ctx = GetComponent<PlayerNetworkBehavior>()?.ctx;
-        
-        GameplayServerHandler.OnAllPlayersRegistered.AddListener(OnAllPlayersRegistered);
+
+        CombatServerHandler.OnCombatBegin.AddListener(OnCombatBegin);
     }
 
-    public void OnAllPlayersRegistered()
+    public void OnCombatBegin()
     {
         playerGameplayUI = GameplaySpawnManager.Instance.SpawnPlayerHealthBar();
         playerGameplayUI.Initialize(selfNetworkObject.OwnerClientId);
@@ -53,7 +55,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         base.OnNetworkDespawn();
 
         health.OnValueChanged -= OnHealthChanged;
-        GameplayServerHandler.OnAllPlayersRegistered.RemoveListener(OnAllPlayersRegistered);
+        CombatServerHandler.OnCombatBegin.RemoveListener(OnCombatBegin);
 
     }
 
@@ -63,7 +65,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         {
             context = IDamageable.HitCallbackContext.success;
             
-            gameplayServerHandler.RequestHitPlayerServerRpc(fromPlayerId, selfNetworkObject.OwnerClientId, damage);
+            _serverHandler.RequestHitPlayerServerRpc(fromPlayerId, selfNetworkObject.OwnerClientId, damage);
         }
         else
         {
@@ -80,7 +82,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         if (health.Value <= 0 && IsServer)
         {
             isDead = true;
-            GameplayServerHandler.Instance.OnPlayerDeath(selfNetworkObject.OwnerClientId);
+            _serverHandler?.OnPlayerDeath(selfNetworkObject.OwnerClientId);
             selfNetworkObject.Despawn();
         }
     }

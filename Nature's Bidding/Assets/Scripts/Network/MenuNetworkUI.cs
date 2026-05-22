@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Unity.Services.Authentication;
 using Unity.Netcode;
+using Steamworks;
 
 public class MenuNetworkUI : MonoBehaviour
 {
@@ -11,13 +12,16 @@ public class MenuNetworkUI : MonoBehaviour
 
     private void Start()
     {
-        PersistentGameStateManager.Instance.LoadingPanel.SetActive(false);
         sessionManager = NetworkSessionManager.Instance;
     }
 
     public async void JoinSessionByButton(TMP_InputField input)
     {
-        PersistentGameStateManager.Instance.LoadingPanel.SetActive(true);
+        if (PersistentGameStateManager.Instance.IsLoading) return;
+
+        PersistentGameStateManager.Instance.IsLoading = true;
+        PersistentGameStateManager.Instance.SetLoadingState("Validating Session...");
+
         bool validSession = await sessionManager.JoinSessionByCode(input.text);
         if (!validSession)
         {
@@ -27,13 +31,21 @@ public class MenuNetworkUI : MonoBehaviour
 
     public async void QuickJoinByButton()
     {
-        PersistentGameStateManager.Instance.LoadingPanel.SetActive(true);
+        if (PersistentGameStateManager.Instance.IsLoading) return;
+
+        PersistentGameStateManager.Instance.IsLoading = true;
+        PersistentGameStateManager.Instance.SetLoadingState("Looking for sessions...");
+
         await sessionManager.QuickJoin();
     }
 
     public async void StartSessionAsHostByButton()
     {
-        PersistentGameStateManager.Instance.LoadingPanel.SetActive(true);
+        if (PersistentGameStateManager.Instance.IsLoading) return;
+
+        PersistentGameStateManager.Instance.IsLoading = true;
+        PersistentGameStateManager.Instance.SetLoadingState("Hosting session...");
+
         await sessionManager.StartSessionAsHost();
     }
 
@@ -44,7 +56,18 @@ public class MenuNetworkUI : MonoBehaviour
 
     public async void QuitGameByButton()
     {
+        if (PersistentGameStateManager.Instance.IsLoading) return;
+
+        PersistentGameStateManager.Instance.IsLoading = true;
+        PersistentGameStateManager.Instance.SetLoadingState("Ending session...");
+
         await sessionManager.LeaveSession();
+
+        if (SteamClient.IsValid)
+        {
+            await PersistentSteamManager.Instance.ShutdownSteam();
+        }
+
         Application.Quit();
     }
 }

@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/GameLoop/MainMenu.unity
     guid: d756e9663faa72142bca351da8466745
   - enabled: 1
+    path: Assets/Scenes/GameLoop/LobbyScene.unity
+    guid: 5e981f954483cf14ab34838796931f47
+  - enabled: 1
     path: Assets/Scenes/GameLoop/CliffGameplay.unity
     guid: d086b4925344f8e40830e2ff85b056a8
   m_configObjects:

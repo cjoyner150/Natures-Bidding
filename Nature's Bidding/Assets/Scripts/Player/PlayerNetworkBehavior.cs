@@ -1,7 +1,5 @@
 using Cinemachine;
-using Cysharp.Threading.Tasks;
 using Unity.Netcode;
-using Unity.Services.Authentication;
 using UnityEngine;
 
 public class PlayerNetworkBehavior : NetworkBehaviour
@@ -10,57 +8,60 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     public SkinnedMeshRenderer skinnedMeshRenderer;
     public PlayerContext ctx;
     private PlayerInputManager playerInput;
+    private PlayerStatusEffectManager playerStatusEffectManager;
     private CinemachineTargetGroup cameraTargetGroup;
+
+    private Stats stats;
+    private StatsMediator statsMediator;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
 
-        if (IsOwner)
-        {
-            GameplayServerHandler.OnPlayerRegistered.AddListener(OnPlayerRegistered);
-        }
-
         cameraTargetGroup = FindAnyObjectByType<CinemachineTargetGroup>();
-        if (cameraTargetGroup != null)
-        {
-            cameraTargetGroup.AddMember(transform, 1, 10);
-        }
+        cameraTargetGroup?.AddMember(transform, 1, 10);
 
         skinnedMeshRenderer.materials[2].color = colors[OwnerClientId];
 
-    }
-
-    public override void OnNetworkDespawn()
-    {
-        base.OnNetworkDespawn();
-        
-        if (IsOwner)
-        {
-            GameplayServerHandler.OnPlayerRegistered.RemoveListener(OnPlayerRegistered);
-        }
-    }
-
-    [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
-    public void NotifyRegisteredRpc(PlayerServerInfo info, int playersCount)
-    {
-        GameplayServerHandler.OnPlayerRegistered?.Invoke();
-        Debug.Log($"Registered: clientId {info.clientId}, name {info.playerName}. Total: {playersCount}");
-
-        if (playersCount >= GameplayServerHandler.Instance.PlayersRequiredBeforeStart)
-            GameplayServerHandler.Instance.AllPlayersRegisteredServerRpc();
-    }
-
-    public void OnPlayerRegistered()
-    {
         if (IsOwner)
         {
             playerInput = gameObject.AddComponent<PlayerInputManager>();
             playerInput.InitializePlayer(ctx);
 
-            Debug.Log("I have been registered!");
+            statsMediator = new StatsMediator();
+            stats = new Stats(statsMediator, ctx.BaseStats);
+
+            playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
+            playerStatusEffectManager.Initialize(stats, ctx.statusEffectsOnStart);
+
+            if (LobbyServerHandler.Instance != null)
+                LobbyServerHandler.OnPlayerRegistered.AddListener(OnPlayerRegistered);
         }
-        
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        if (IsOwner)
+        {
+            LobbyServerHandler.OnPlayerRegistered.RemoveListener(OnPlayerRegistered);
+            cameraTargetGroup?.RemoveMember(transform);
+        }
+    }
+
+    private void OnPlayerRegistered()
+    {
+        if (!IsOwner) return;
+        Debug.Log("I have been registered!");
+    }
+
+    [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
+    public void NotifyRegisteredRpc(ulong clientId, int playerCount)
+    {
+        var data = PersistentPlayerRegistry.Instance.GetByClientId(clientId);
+        Debug.Log($"Registered: clientId {clientId}, name {data?.playerName}. Total: {playerCount}");
+        LobbyServerHandler.OnPlayerRegistered?.Invoke();
     }
 
     private void OnDrawGizmosSelected()

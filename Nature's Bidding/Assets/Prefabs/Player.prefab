@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1770671079
+  GlobalObjectIdHash: 2036068895
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -86,6 +86,13 @@ MonoBehaviour:
   - {r: 0.5049224, g: 0, b: 1, a: 0}
   skinnedMeshRenderer: {fileID: 3524554207742476985}
   ctx:
+    allowInputs: 1
+    BaseStats: {fileID: 11400000, guid: 00d09b787490d4b47851779da1458683, type: 2}
+    statusEffectsOnStart:
+    - {fileID: 11400000, guid: cea7273baa150d84a9d5e3486302760f, type: 2}
+    - {fileID: 11400000, guid: 168bec0935f5ced4b8d02683b062176f, type: 2}
+    - {fileID: 11400000, guid: 25ea21ee61385524a89ba0f9b1dd49c0, type: 2}
+    - {fileID: 11400000, guid: d934063e5b6ab2d4ab0b35dc01376d1e, type: 2}
     isGrounded: 0
     isGroundLayers:
       serializedVersion: 2
@@ -267,6 +274,8 @@ MonoBehaviour:
   isInvulnerable:
     m_InternalValue: 0
   isParrying:
+    m_InternalValue: 0
+  isRoundWinner:
     m_InternalValue: 0
 --- !u!1 &3949436915247687260
 GameObject:

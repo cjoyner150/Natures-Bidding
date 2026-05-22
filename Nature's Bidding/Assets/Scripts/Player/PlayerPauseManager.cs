@@ -6,6 +6,7 @@ using UnityUtils;
 public class PlayerPauseManager : Singleton<PlayerPauseManager>
 {
     [SerializeField] GameObject pausePanel;
+    [SerializeField] GameObject lobbyWaitingPanel;
 
     public Action OnPausePressed;
     public Action OnResumed;
@@ -50,6 +51,8 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
 
         pausePanel.SetActive(true);
 
+        if (lobbyWaitingPanel != null) lobbyWaitingPanel.SetActive(false);
+
         OnPaused?.Invoke();
     }
 
@@ -61,6 +64,8 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
         Cursor.visible = false;
 
         pausePanel.SetActive(false);
+
+        if (lobbyWaitingPanel != null) lobbyWaitingPanel.SetActive(true);
 
         OnResumed?.Invoke();
     }

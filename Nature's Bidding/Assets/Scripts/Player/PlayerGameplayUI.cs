@@ -11,7 +11,7 @@ public class PlayerGameplayUI : MonoBehaviour
     {
         clientId = _clientId;
 
-        string playerName = await GameplayServerHandler.Instance.RequestPlayerNameByClientId(clientId);
+        string playerName = await CombatServerHandler.Instance.RequestPlayerNameByClientId(clientId);
         playerName = playerName.Split('#')[0];
 
         playerNameText.text = playerName;

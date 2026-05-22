@@ -83,18 +83,23 @@ public class PlayerInputManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        controls.Disable();
-        move.Disable();
-        sprint.Disable();
-        dash.Disable();
-        jump.Disable();
-        attack.Disable();
-        parry.Disable();
-        pause.Disable();
+        controls?.Disable();
+        move?.Disable();
+        sprint?.Disable();
+        dash?.Disable();
+        jump?.Disable();
+        attack?.Disable();
+        parry?.Disable();
+        pause?.Disable();
 
-        pause.performed -= OnPausePressed;
-        PlayerPauseManager.Instance.OnPaused -= OnPaused;
-        PlayerPauseManager.Instance.OnResumed -= OnResumed;
+        if (pause != null)
+            pause.performed -= OnPausePressed;
+
+        if (PlayerPauseManager.HasInstance)
+        {
+            PlayerPauseManager.Instance.OnPaused -= OnPaused;
+            PlayerPauseManager.Instance.OnResumed -= OnResumed;
+        }
     }
 
     void Update()

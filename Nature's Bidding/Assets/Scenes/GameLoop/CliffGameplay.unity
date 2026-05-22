@@ -960,6 +960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPauseManager
   pausePanel: {fileID: 67191036}
+  lobbyWaitingPanel: {fileID: 0}
 --- !u!1 &508170746
 GameObject:
   m_ObjectHideFlags: 0
@@ -1411,6 +1412,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fe9405a6409c664e90229ed34fc653b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameplayNetworkUI
+  lobbyWaitingText: {fileID: 0}
+  playerReadyAction:
+    m_Name: Player Ready
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 9a69c55c-30dc-4017-824b-aee7f4dfb879
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 6d8c2a87-e740-4bdc-99a5-cf54cdb5b177
+      m_Path: <Gamepad>/start
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Player Ready
+      m_Flags: 0
+    - m_Name: 
+      m_Id: a99aee82-e070-4da0-957b-ba9b58df3cc1
+      m_Path: <Keyboard>/enter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Player Ready
+      m_Flags: 0
+    m_Flags: 0
 --- !u!1 &598839362
 GameObject:
   m_ObjectHideFlags: 0
@@ -3921,7 +3948,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1844735685}
   - component: {fileID: 1844735687}
-  - component: {fileID: 1844735686}
+  - component: {fileID: 1844735688}
   m_Layer: 0
   m_Name: Gameplay Server Handler
   m_TagString: Untagged
@@ -3944,24 +3971,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 564595897}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1844735686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1844735684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b88c26fb95e8be54bbe82744d5ae2ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameplayServerHandler
-  ShowTopMostFoldoutHeaderGroup: 1
-  winCamera: {fileID: 67567528}
-  gameOverUI: {fileID: 125549843}
-  acceptableAttackRange: 100
-  PlayersRequiredBeforeStart: 3
-  victoryLapDelay: 8000
 --- !u!114 &1844735687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3987,6 +3996,23 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &1844735688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844735684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e5bcfbf46eb975418f1acea64695eb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatServerHandler
+  ShowTopMostFoldoutHeaderGroup: 1
+  acceptableAttackRange: 100
+  winCamera: {fileID: 67567528}
+  gameOverUI: {fileID: 125549843}
+  victoryLapDelay: 8000
 --- !u!4 &1894731453 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5201590645276976644, guid: 6bccdd0598c32a545a34d01050e9a6d1, type: 3}

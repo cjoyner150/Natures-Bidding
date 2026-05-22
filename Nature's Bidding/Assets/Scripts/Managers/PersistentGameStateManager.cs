@@ -12,15 +12,27 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     [SerializeField] private GameObject loadingPanel;
     public GameObject LoadingPanel => loadingPanel;
 
+    [SerializeField] TextMeshProUGUI loadingStatus;
     [SerializeField] TextMeshProUGUI loadingProgress;
 
+
+    private bool _isReturningToMenu = false;
     public bool IsReturningToMenu {
         get => _isReturningToMenu;
         private set { _isReturningToMenu = value; }
     }
 
-    private bool _isReturningToMenu = false;
-    
+    private bool _isLoading = false;
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set
+        {
+            _isLoading = value;
+            loadingPanel.SetActive(value);
+        }
+    }
+
     public enum GameState {
         Menu,
         Lobby,
@@ -29,7 +41,18 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         Combat
     }
 
-    public GameState state = GameState.Menu;
+    private GameState _state = GameState.Menu;
+    public GameState State {
+        get => _state;
+        set
+        {
+            if (_state != value)
+            {
+                _state = value;
+                OnGameStateChanged(value);
+            }
+        }
+    }
 
     protected override void Awake()
     {
@@ -43,40 +66,85 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private void OnEnable()
     {
-        GameplayServerHandler.OnAllPlayersRegistered.AddListener(OnAllPlayersRegistered);
+        LobbyServerHandler.OnAllPlayersReadied.AddListener(OnAllPlayersReadied);
         NetworkSessionManager.OnSessionHosted += OnSessionHosted;
     }
 
     private void OnDisable()
     {
-        GameplayServerHandler.OnAllPlayersRegistered.RemoveListener(OnAllPlayersRegistered);
+        LobbyServerHandler.OnAllPlayersReadied.RemoveListener(OnAllPlayersReadied);
         NetworkSessionManager.OnSessionHosted -= OnSessionHosted;
+    }
+
+    private async void OnGameStateChanged(GameState newState)
+    {
+        switch (newState)
+        {
+            case GameState.Menu:
+            case GameState.Bidding:
+            case GameState.Shopping:
+            case GameState.Combat:
+                await NetworkSessionManager.Instance.SetSessionLocked(true);
+                break;
+            case GameState.Lobby:
+                await NetworkSessionManager.Instance.SetSessionLocked(false);
+                break;
+        }
+
+        PersistentSteamManager.Instance.UpdateRichPresence(newState);
     }
 
     public async UniTask LoadMenuScene()
     {
+        SetLoadingState("Loading Menu...", true);
+
         await LoadSceneAsync(1);
+    }
+
+    public void SetLoadingProgress(float progress)
+    {
+        loadingProgress.text = $"{progress:F1}%";
+    }
+
+    public void SetLoadingState(string status, bool showProgress = false)
+    {
+        IsLoading = true;
+        loadingStatus.text = status;
+        loadingProgress.gameObject.SetActive(showProgress);
+        if (!showProgress)
+            loadingProgress.text = "";
+    }
+
+    public void ClearLoadingState()
+    {
+        IsLoading = false;
+        loadingStatus.text = "";
+        loadingProgress.text = "";
+        loadingProgress.gameObject.SetActive(true);
     }
 
     private void OnSessionHosted()
     {
-        LoadGameplayLevel();
+        LoadLobbyLevel();
     }
 
-    public async void LoadGameplayLevel()
+    public async void LoadLobbyLevel()
     {
-        loadingPanel.SetActive(true);
+        SetLoadingState("Loading Lobby...");
+
         await LoadNetworkedSceneAsync(2);
-        RegisterAuthData();
-        loadingPanel.SetActive(false);
-        state = GameState.Lobby;
     }
 
-    public void OnGameplaySceneReady()
+    public async void OnLobbySceneReady()
     {
-        loadingPanel.SetActive(false);
-        state = GameState.Lobby;
+        SetLoadingState("Spawning...");
+
+        State = GameState.Lobby;
         RegisterAuthData();
+
+        await UniTask.WaitUntil(() => NetworkManager.Singleton.LocalClient.PlayerObject != null);
+
+        ClearLoadingState();
     }
 
 
@@ -85,8 +153,10 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         if (IsReturningToMenu) return;
         IsReturningToMenu = true;
 
-        PlayerRegistry.Instance.Clear();
-        state = GameState.Menu;
+        SetLoadingState("Leaving session...");
+
+        PersistentPlayerRegistry.Instance.Clear();
+        State = GameState.Menu;
 
         _sceneLoadTcs?.TrySetCanceled();
         _sceneLoadTcs = null;
@@ -94,15 +164,18 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         if (NetworkSessionManager.Instance.HasActiveSession)
             await NetworkSessionManager.Instance.LeaveSession();
 
+        SetLoadingState("Returning to Menu...", true);
+
         await LoadSceneAsync(1);
+
         await UniTask.WaitUntil(() => NetworkManager.Singleton != null);
         IsReturningToMenu = false;
+
+        ClearLoadingState();
     }
 
     private async UniTask LoadSceneAsync(int idx)
     {
-        loadingPanel.SetActive(true);
-
         if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
         {
             await LoadNetworkedSceneAsync(idx);
@@ -111,24 +184,33 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         {
             await LoadStandaloneSceneAsync(idx);
         }
-
-        loadingPanel.SetActive(false);
     }
 
     private UniTaskCompletionSource _sceneLoadTcs;
 
     private async UniTask LoadNetworkedSceneAsync(int idx)
     {
+        Debug.Log($"LoadNetworkedSceneAsync. IsServer: {NetworkManager.Singleton.IsServer}, IsListening: {NetworkManager.Singleton.IsListening}");
+
         _sceneLoadTcs = new UniTaskCompletionSource();
 
         string sceneName = System.IO.Path.GetFileNameWithoutExtension(
             SceneUtility.GetScenePathByBuildIndex(idx)
         );
 
+        Debug.Log($"Loading scene: {sceneName}");
+
         NetworkManager.Singleton.SceneManager.OnSceneEvent += OnSceneEvent;
 
         if (NetworkManager.Singleton.IsServer)
+        {
+            Debug.Log("IsServer — calling LoadScene.");
             NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        }
+        else
+        {
+            Debug.Log("Not server — waiting for scene sync from server.");
+        }
 
         try
         {
@@ -160,7 +242,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
             case SceneEventType.LoadComplete:
             case SceneEventType.SynchronizeComplete:
-                loadingProgress.text = "100%";
+                SetLoadingProgress(100);
                 _sceneLoadTcs?.TrySetResult();
                 break;
         }
@@ -168,61 +250,62 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private async UniTaskVoid TrackLoadProgress(AsyncOperation op)
     {
-        while (!op.isDone)
+        while (op.progress < .9f)
         {
-            loadingProgress.text = $"{(op.progress / 0.9f * 100f):F1}%";
+            SetLoadingProgress(Mathf.Clamp(op.progress / 0.9f * 100f, 0f, 100f));
             await UniTask.Yield();
         }
     }
 
     private async UniTask LoadStandaloneSceneAsync(int idx)
     {
-        loadingPanel.SetActive(true);
-
         AsyncOperation op = SceneManager.LoadSceneAsync(idx);
         op.allowSceneActivation = false;
 
-        while (op.progress < 0.9f)
-        {
-            loadingProgress.text = $"{(op.progress * 100f / 0.9f):F1}%";
-            await UniTask.Delay(25);
-        }
+        TrackLoadProgress(op).Forget();
 
-        loadingProgress.text = "100%";
+        await UniTask.WaitUntil(() => op.progress >= .9f);
+
+        SetLoadingProgress(100);
+
         await UniTask.Delay(200);
         op.allowSceneActivation = true;
-        await UniTask.WaitUntil(() => op.isDone);
 
-        loadingPanel.SetActive(false);
+        await UniTask.WaitUntil(() => op.isDone);
     }
 
     public async void RegisterAuthData()
     {
         await UniTask.WaitUntil(() =>
-            GameplayServerHandler.Instance != null &&
-            LobbyNetworkMessenger.Instance != null &&
-            LobbyNetworkMessenger.Instance.IsSpawned
-        );
+        {
+            IGameServerHandler handler = FindAnyObjectByType<LobbyServerHandler>();
+            handler ??= FindAnyObjectByType<CombatServerHandler>();
+            return handler != null;
+        });
 
-        PlayerRegistry.Instance.Register(
-            NetworkManager.Singleton.LocalClientId,
-            AuthenticationService.Instance.PlayerId,
-            AuthenticationService.Instance.PlayerName
-        );
+        string playerId = AuthenticationService.Instance.PlayerId ?? "unknown";
+        string playerName = AuthenticationService.Instance.PlayerName ?? "Player";
 
-        LobbyNetworkMessenger.Instance.SendAuthToServerRpc(
-            AuthenticationService.Instance.PlayerId,
-            AuthenticationService.Instance.PlayerName
-        );
+        if (LobbyServerHandler.Instance != null)
+            LobbyServerHandler.Instance.SendAuthToServerRpc(playerId, playerName);
+        else if (CombatServerHandler.Instance != null)
+            CombatServerHandler.Instance.SendAuthToServerRpc(playerId, playerName);
     }
 
-    public void UpdateLoadingProgress(float percent)
+    private void OnAllPlayersReadied()
     {
-        loadingProgress.text = $"{percent:F1}%";
+        LoadCombatLevel();
     }
 
-    private void OnAllPlayersRegistered()
+    public async void LoadCombatLevel()
     {
-        state = GameState.Combat;
+        SetLoadingState("Loading combat...", true);
+        await LoadNetworkedSceneAsync(3);
+    }
+
+    public void OnCombatSceneReady()
+    {
+        ClearLoadingState();
+        State = GameState.Combat;
     }
 }

@@ -13,12 +13,14 @@ using UnityEngine.Events;
 using System.Threading.Tasks;
 using Unity.Collections;
 using System.Threading;
+using Steamworks;
+using Steamworks.Data;
 
 public class NetworkSessionManager : Singleton<NetworkSessionManager>
 {
     ISession activeSession;
 
-    ISession ActiveSession
+    public ISession ActiveSession
     {
         get => activeSession;
         set
@@ -32,6 +34,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
     public bool HasActiveSession => ActiveSession != null;
 
+    public bool IsBusy => _isBusy;
     private bool _isBusy = false;
 
     protected override void Awake()
@@ -52,14 +55,38 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
             await UnityServices.InitializeAsync();
 
             if (AuthenticationService.Instance.IsSignedIn)
-            {
                 AuthenticationService.Instance.SignOut(true);
-            }
-            AuthenticationService.Instance.ClearSessionToken();
 
+            AuthenticationService.Instance.ClearSessionToken();
+#if UNITY_EDITOR
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
-            await AuthenticationService.Instance.UpdatePlayerNameAsync("Player");
-            Debug.Log($"Player Initialized with id: {AuthenticationService.Instance.PlayerId} and name: {AuthenticationService.Instance.PlayerName}");
+            await AuthenticationService.Instance.UpdatePlayerNameAsync("EditorPlayer");
+#else
+            string identity = "unityauthentication";
+
+            var ticket = await SteamUser.GetAuthTicketForWebApiAsync(identity);
+
+            if (ticket == null)
+            {
+                Debug.LogError("Failed to get Steam auth ticket. Make sure this account has access to the game in Steamworks.");
+
+                Application.Quit();
+                return;
+            }
+
+            string ticketHex = BitConverter.ToString(ticket.Data)
+                .Replace("-", "")
+                .ToLower();
+
+            await AuthenticationService.Instance.SignInWithSteamAsync(ticketHex, identity);
+
+            string steamName = SteamClient.Name;
+            await AuthenticationService.Instance.UpdatePlayerNameAsync(steamName);
+
+            Debug.Log($"Steam: Signed in as {steamName}");
+
+            ticket.Cancel();
+#endif
         }
         catch (Exception e)
         {
@@ -88,14 +115,14 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
     {
         while (!op.isDone)
         {
-            PersistentGameStateManager.Instance.UpdateLoadingProgress(op.progress / 0.9f * 100f);
+            PersistentGameStateManager.Instance.SetLoadingProgress(op.progress / 0.9f * 100f);
             await UniTask.Yield();
         }
     }
 
     #region Handle Session Events
 
-    private void HookSessionEvents(ISession session)
+    private void OnSessionConnected(ISession session)
     {
         if (NetworkManager.Singleton?.SceneManager == null)
             throw new InvalidOperationException("NetworkManager not ready during HookSessionEvents.");
@@ -105,10 +132,13 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         NetworkManager.Singleton.SceneManager.OnSceneEvent += OnNetworkSceneEvent;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnDisconnectedFromHost;
 
-        if (session.IsHost) StartLobbyHeartbeat();
+        if (session.IsHost) { 
+            StartLobbyHeartbeat();
+            OnSessionHosted?.Invoke();
+        }
     }
 
-    private void UnhookSessionEvents(ISession session)
+    private void OnSessionDisconnected(ISession session)
     {
         session.Deleted -= OnSessionDeleted;
         session.RemovedFromSession -= OnRemovedFromSession;
@@ -142,11 +172,6 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         PersistentGameStateManager.Instance.ReturnToMenu();
     }
 
-    void NotifySessionHosted()
-    {
-        OnSessionHosted?.Invoke();
-    }
-
     #endregion
 
     #region Handle Player Data
@@ -162,6 +187,8 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
     public async UniTask StartSessionAsHost(int maxRetries = 3)
     {
+        PersistentGameStateManager.Instance.SetLoadingState("Creating session...");
+
         NetworkManager.Singleton.NetworkConfig.ConnectionApproval = true;
         NetworkManager.Singleton.ConnectionApprovalCallback = (request, response) =>
         {
@@ -182,8 +209,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
             {
                 ActiveSession = await MultiplayerService.Instance.CreateSessionAsync(options);
                 Debug.Log($"Session started. Id: {ActiveSession.Id}, Code: {ActiveSession.Code}");
-                HookSessionEvents(ActiveSession);
-                NotifySessionHosted();
+                OnSessionConnected(ActiveSession);
                 return;
             }
             catch (SessionException e) when (e.Message.Contains("fetch relay join code") || e.Message.Contains("timeout"))
@@ -198,49 +224,49 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         }
     }
 
-    async UniTaskVoid JoinSessionByID(string sessionId)
-    {
-        ActiveSession = await MultiplayerService.Instance.JoinSessionByIdAsync(sessionId);
-        Debug.Log($"Session with id: {sessionId} joined!");
-    }
+    //async UniTaskVoid JoinSessionByID(string sessionId)
+    //{
+    //    ActiveSession = await MultiplayerService.Instance.JoinSessionByIdAsync(sessionId);
+    //    Debug.Log($"Session with id: {sessionId} joined!");
+    //}
 
     public async UniTask<bool> JoinSessionByCode(string sessionCode)
     {
+        PersistentGameStateManager.Instance.SetLoadingState("Joining session...");
+
         ActiveSession = await MultiplayerService.Instance.JoinSessionByCodeAsync(sessionCode);
 
         if (ActiveSession != null)
         {
-            HookSessionEvents(ActiveSession);
+            OnSessionConnected(ActiveSession);
             Debug.Log($"Session with id: {sessionCode} joined!");
             return true;
         }
         else return false;
     }
 
-    public async UniTask QuickJoin()
+    public async UniTask QuickJoin(int retryCount = 0)
     {
-        await UniTask.WaitUntil(() => !_isBusy && !PersistentGameStateManager.Instance.IsReturningToMenu);
+        const int maxRetries = 3;
 
+        await UniTask.WaitUntil(() => !_isBusy && !PersistentGameStateManager.Instance.IsReturningToMenu);
         if (HasActiveSession)
         {
             Debug.LogWarning("QuickJoin called with an active session. Leave the session before joining a new one.");
             return;
         }
-
         _isBusy = true;
         bool shouldReturnToMenu = false;
-
         try
         {
             var sessions = (await QuerySessions()).ToList();
-
             if (sessions.Count > 0)
             {
                 Debug.Log($"Found {sessions.Count} session(s). Joining {sessions[0].Id}...");
                 try
                 {
                     ActiveSession = await JoinSessionWithRetry(sessions[0].Id, 5);
-                    HookSessionEvents(ActiveSession);
+                    OnSessionConnected(ActiveSession);
                     Debug.Log($"Joined session. Code: {ActiveSession.Code}");
                 }
                 catch (InvalidOperationException e)
@@ -261,6 +287,23 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
                 await StartSessionAsHost();
             }
         }
+        catch (Exception e) when (e.Message.Contains("Unexpected exception processing network metadata"))
+        {
+            if (retryCount < maxRetries)
+            {
+                Debug.LogWarning($"Network metadata exception — retrying QuickJoin ({retryCount + 1}/{maxRetries}).");
+                PersistentGameStateManager.Instance.SetLoadingState($"Retrying... ({retryCount + 1}/{maxRetries})");
+                _isBusy = false;
+                await UniTask.Delay(2000);
+                await QuickJoin(retryCount + 1);
+                return;
+            }
+            Debug.LogError($"QuickJoin failed after {maxRetries} retries.");
+            PersistentGameStateManager.Instance.SetLoadingState("Failed to connect. Returning to menu...");
+            await UniTask.Delay(2000);
+            ActiveSession = null;
+            shouldReturnToMenu = true;
+        }
         catch (SessionException e)
         {
             Debug.LogError($"QuickJoin failed: {e.Message}");
@@ -277,7 +320,6 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         {
             _isBusy = false;
         }
-
         if (shouldReturnToMenu)
             PersistentGameStateManager.Instance.ReturnToMenu();
     }
@@ -308,7 +350,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
         if (ActiveSession != null)
         {
-            UnhookSessionEvents(ActiveSession);
+            OnSessionDisconnected(ActiveSession);
 
             try
             {
@@ -353,6 +395,22 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
         var results = await MultiplayerService.Instance.QuerySessionsAsync(options);
         return results?.Sessions ?? new List<ISessionInfo>();
+    }
+
+    public async UniTask SetSessionLocked(bool locked)
+    {
+        if (ActiveSession == null || !ActiveSession.IsHost) return;
+
+        try
+        {
+            var hostSession = ActiveSession.AsHost();
+            hostSession.IsLocked = locked;
+            await hostSession.SavePropertiesAsync();
+        }
+        catch (SessionException e)
+        {
+            Debug.LogWarning($"Failed to set session lock: {e.Message}");
+        }
     }
 
     public async UniTask LeaveSession()

@@ -11,6 +11,7 @@ public class GroundedAction : State
     public readonly Attack attack;
     public readonly Dash dash;
     public readonly Knockback knockback;
+    public readonly Parry parry;
 
     public GroundedAction(StateMachine machine, PlayerContext ctx, State parent) : base(machine, parent)
     {
@@ -19,12 +20,20 @@ public class GroundedAction : State
         attack = new Attack(machine, ctx, this);
         dash = new Dash(machine, ctx, this);
         knockback = new Knockback(machine, ctx, this);
+        parry = new Parry(machine, ctx, this);
     }
 
     protected override State GetInitialState() 
     {
         if (ctx.attackPressed) return attack;
         else if (ctx.dashPressed) return dash;
+        else if (ctx.parryPressed) return parry;
+        else return null;
+    }
+
+    protected override State GetTransition()
+    {
+        if (ctx.shouldStunSelf) return GetParentOfType<Grounded>().groundedStunned; 
         else return null;
     }
 }

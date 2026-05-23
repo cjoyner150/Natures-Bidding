@@ -35,7 +35,7 @@ public class Move : State
             idleTimer = 0;
         }
 
-        ctx.desiredMaxSpeed = ctx.moveInputIsSprint ? ctx.sprintSpeed : ctx.walkSpeed;
+        ctx.desiredMaxSpeed = ctx.moveInputIsSprint ? ctx.sprintSpeed * ctx.playerStats.MoveSpeed : ctx.walkSpeed * ctx.playerStats.MoveSpeed;
 
         ctx.forceToAdd = ctx.moveInput * ctx.acceleration * 10f;
 

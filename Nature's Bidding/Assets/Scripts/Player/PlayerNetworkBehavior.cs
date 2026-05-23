@@ -11,9 +11,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     private PlayerStatusEffectManager playerStatusEffectManager;
     private CinemachineTargetGroup cameraTargetGroup;
 
-    private Stats stats;
-    private StatsMediator statsMediator;
-
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -28,11 +25,11 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             playerInput = gameObject.AddComponent<PlayerInputManager>();
             playerInput.InitializePlayer(ctx);
 
-            statsMediator = new StatsMediator();
-            stats = new Stats(statsMediator, ctx.BaseStats);
+            var statsMediator = new StatsMediator();
+            ctx.playerStats = new Stats(statsMediator, ctx.BaseStats);
 
             playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
-            playerStatusEffectManager.Initialize(stats, ctx.statusEffectsOnStart);
+            playerStatusEffectManager.Initialize(ctx.playerStats, ctx.statusEffectsOnStart);
 
             if (LobbyServerHandler.Instance != null)
                 LobbyServerHandler.OnPlayerRegistered.AddListener(OnPlayerRegistered);

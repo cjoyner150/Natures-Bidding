@@ -17,11 +17,11 @@ public class Dash : State
     {
         ctx.anim.SetBool("Dashing", true);
 
-        ctx.desiredMaxSpeed = ctx.dashSpeed;
+        ctx.desiredMaxSpeed = ctx.dashSpeed * ctx.playerStats.DashDistance;
 
         momentumDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
 
-        dashTimer = ctx.dashTime;
+        dashTimer = ctx.dashTime + (ctx.dashTime / 2 * (ctx.playerStats.DashDistance - 1));
         exitDash = false;
     }
 
@@ -29,7 +29,7 @@ public class Dash : State
     {
         ctx.anim.SetBool("Dashing", false);
 
-        ctx.dashCDTimer = ctx.dashCD;
+        ctx.dashCDTimer = ctx.playerStats.DashCooldown;
     }
 
     protected override void OnUpdate(float deltaTime)

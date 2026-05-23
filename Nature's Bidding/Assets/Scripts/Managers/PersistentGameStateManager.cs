@@ -164,6 +164,11 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         if (NetworkSessionManager.Instance.HasActiveSession)
             await NetworkSessionManager.Instance.LeaveSession();
 
+        await UniTask.WaitUntil(() =>
+            NetworkManager.Singleton == null ||
+            !NetworkManager.Singleton.IsListening
+        );
+
         SetLoadingState("Returning to Menu...", true);
 
         await LoadSceneAsync(1);

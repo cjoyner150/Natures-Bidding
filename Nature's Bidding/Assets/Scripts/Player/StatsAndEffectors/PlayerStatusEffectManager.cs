@@ -21,6 +21,7 @@ public class PlayerStatusEffectManager : MonoBehaviour
         playerStats = stats;
 
         AddModifiers();
+        print("[Player Stats] Modifiers Initialized. "+playerStats?.ToString());
     }
 
     void AddModifiers()
@@ -39,7 +40,6 @@ public class PlayerStatusEffectManager : MonoBehaviour
     private void Update()
     {
         statsMediator?.Update(Time.deltaTime);
-        print("[Player Stats]:  "+playerStats?.ToString());
     }
 
 }

@@ -17,15 +17,16 @@ public class Attack : State
 
     protected override void OnEnter()
     {
-        ctx.desiredMaxSpeed = ctx.attackSpeed;
+        ctx.desiredMaxSpeed = ctx.attackSpeed * ctx.playerStats.MoveSpeed;
         ctx.forceMode = ForceMode.Force;
 
         ctx.anim.SetTrigger("Attack");
+        ctx.anim.SetFloat("AttackSpeed", 1 + ((ctx.playerStats.AttackSpeed - 1) / 2f));
         SetAttackActive(ctx.attackActiveDelay);
 
         momentumDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
 
-        attackTimer = ctx.attackTime;
+        attackTimer = ctx.attackTime / ctx.playerStats.AttackSpeed;
         exitAttack = false;
 
     }
@@ -55,7 +56,7 @@ public class Attack : State
     protected override void OnExit()
     {
         ctx.forceToAdd = Vector3.zero;
-        ctx.attackCDTimer = ctx.attackCD;
+        ctx.attackCDTimer = ctx.attackCD / ctx.playerStats.AttackSpeed;
         ctx.playerAttackManager.EndAttack();
 
         ctx.hitResponse = false;

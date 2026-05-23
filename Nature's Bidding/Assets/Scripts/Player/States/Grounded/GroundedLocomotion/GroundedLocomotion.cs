@@ -23,9 +23,11 @@ public class GroundedLocomotion : State
 
     protected override State GetTransition()
     {
+        if (ctx.shouldStunSelf) return GetParentOfType<Grounded>().groundedStunned;
         if (ctx.jumpPressed) return GetParentOfType<PlayerRoot>().airborne.jump;
         if (ctx.attackPressed && !ctx.attackOnCooldown) return GetParentOfType<Grounded>().groundedAction.attack;
         if (ctx.dashPressed && !ctx.dashOnCooldown) return GetParentOfType<Grounded>().groundedAction.dash;
+        if (ctx.parryPressed && !ctx.parryOnCooldown) return GetParentOfType<Grounded>().groundedAction.parry;
         else return null;
     }
 

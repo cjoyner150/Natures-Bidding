@@ -18,8 +18,8 @@ MonoBehaviour:
   MoveSpeed: 1
   ParryDuration: 1
   ParryCooldown: 4
-  DashDistance: 5
-  DashCooldown: 4
+  DashDistance: 1
+  DashCooldown: 3.65
   CritChance: 10
   CritDamageMultiplier: 1.5
   Momentum: 0

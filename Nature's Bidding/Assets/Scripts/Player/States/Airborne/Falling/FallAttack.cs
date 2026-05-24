@@ -21,15 +21,16 @@ public class FallAttack : State
     protected override void OnEnter()
     {
         ctx.attackPressed = false;
-        ctx.desiredMaxSpeed = ctx.attackSpeed;
+        ctx.desiredMaxSpeed = ctx.attackSpeed * ctx.playerStats.MoveSpeed;
 
         ctx.anim.SetTrigger("FallAttack");
+        ctx.anim.SetFloat("AttackSpeed", 1 + ((ctx.playerStats.AttackSpeed - 1) / 2f));
         SetAttackActive(ctx.attackActiveDelay);
 
         facingDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
         momentumDirection = (facingDirection + -ctx.modelHolder.up).normalized;
 
-        attackTimer = ctx.fallAttackTime;
+        attackTimer = ctx.fallAttackTime / ctx.playerStats.AttackSpeed;
         exitAttack = false;
     }
 
@@ -63,7 +64,7 @@ public class FallAttack : State
     protected override void OnExit()
     {
         ctx.forceToAdd = Vector3.zero;
-        ctx.attackCDTimer = ctx.attackCD;
+        ctx.attackCDTimer = ctx.attackCD / ctx.playerStats.AttackSpeed;
 
         ctx.playerAttackManager.EndAttack();
         ctx.rb.useGravity = true;

@@ -1,0 +1,125 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityUtils;
+
+public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGameServerHandler
+{
+    private HashSet<ulong> players = new();
+    private HashSet<ulong> _readiedPlayers = new();
+
+    public static UnityEvent OnPlayerRegistered = new UnityEvent();
+    public static UnityEvent OnEnoughPlayersRegistered = new UnityEvent();
+    public static UnityEvent OnNoLongerEnoughPlayersRegistered = new UnityEvent();
+    public static UnityEvent OnAllPlayersReadied = new UnityEvent();
+
+    public int PlayersRequiredBeforeStart;
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        PersistentGameStateManager.Instance.OnLobbySceneReady();
+    }
+
+    protected override void RegisterCallbacks()
+    {
+        NetworkManager.OnClientConnectedCallback += OnClientConnected;
+        NetworkManager.OnClientDisconnectCallback += OnClientDisconnected;
+    }
+
+    protected override void UnregisterCallbacks()
+    {
+        NetworkManager.OnClientConnectedCallback -= OnClientConnected;
+        NetworkManager.OnClientDisconnectCallback -= OnClientDisconnected;
+    }
+
+    protected override void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage)
+    {
+        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position);
+    }
+
+    private void OnClientConnected(ulong clientId)
+    {
+        Debug.Log($"Client {clientId} connected.");
+    }
+
+    private void OnClientDisconnected(ulong clientId)
+    {
+        PersistentPlayerRegistry.Instance.UnregisterLobbyPlayer(clientId);
+        _readiedPlayers.Remove(clientId);
+
+        if (PersistentPlayerRegistry.Instance.GetAllPlayers().Count < PlayersRequiredBeforeStart)
+            UnderPlayerRequirementClientRpc();
+    }
+
+    public void SpawnAndRegisterPlayer(ulong clientId)
+    {
+        if (!PersistentPlayerRegistry.Instance.HasPlayer(clientId))
+        {
+            Debug.LogWarning($"Client {clientId} has no registry entry yet, cannot spawn.");
+            return;
+        }
+
+        if (players.Contains(clientId)) return;
+
+        NetworkObject playerNetObj = GameplaySpawnManager.Instance.SpawnPlayer(clientId);
+        players.Add(clientId);
+
+        var playerHandler = playerNetObj.GetComponent<PlayerNetworkBehavior>();
+        playerHandler.NotifyRegisteredRpc(clientId, players.Count);
+
+        if (players.Count >= PlayersRequiredBeforeStart)
+            EnoughPlayersRegisteredClientRpc();
+    }
+
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+    private void EnoughPlayersRegisteredClientRpc()
+    {
+        OnEnoughPlayersRegistered?.Invoke();
+    }
+
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+    private void UnderPlayerRequirementClientRpc()
+    {
+        OnNoLongerEnoughPlayersRegistered?.Invoke();
+    }
+
+    [Rpc(SendTo.Server, DeferLocal = true, InvokePermission = RpcInvokePermission.Everyone)]
+    public void PlayerReadiedServerRpc(RpcParams rpcParams = default)
+    {
+        if (!IsServer) return;
+
+        ulong clientId = rpcParams.Receive.SenderClientId;
+        _readiedPlayers.Add(clientId);
+
+        if (CheckPlayersReady())
+            AllPlayersReadiedClientRpc();
+    }
+
+    private bool CheckPlayersReady() =>
+        _readiedPlayers.Count >= PlayersRequiredBeforeStart &&
+        PersistentPlayerRegistry.Instance.GetAllPlayers()
+        .All(p => _readiedPlayers.Contains(p.clientId));
+
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+    private void AllPlayersReadiedClientRpc()
+    {
+        OnAllPlayersReadied?.Invoke();
+    }
+
+    protected override void OnPlayerReconnected(ulong clientId, PersistentPlayerData data)
+    {
+        Debug.LogWarning($"Unexpected reconnect: {data.playerName} tried to reconnect in lobby. Ignoring.");
+    }
+
+    protected override void OnNewPlayerConnected(ulong clientId, string authId, string playerName)
+    {
+        PersistentPlayerRegistry.Instance.RegisterPlayer(clientId, authId, playerName);
+        SpawnAndRegisterPlayer(clientId);
+    }
+
+    public void OnPlayerDeath(ulong clientId) { }
+}

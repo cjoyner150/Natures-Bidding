@@ -52,6 +52,10 @@ public class PlayerRoot : State
         {
             ctx.dashCDTimer -= deltaTime;
         }
+        if (ctx.parryOnCooldown)
+        {
+            ctx.parryCDTimer -= deltaTime;
+        }
     }
 
     protected override State GetInitialState() => ctx.isGrounded ? grounded : airborne;

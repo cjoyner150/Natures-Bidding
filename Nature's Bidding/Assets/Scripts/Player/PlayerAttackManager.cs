@@ -13,7 +13,6 @@ public class PlayerAttackManager : NetworkBehaviour
 
     [SerializeField] private float attackRadius;
     [SerializeField] private float attackLength;
-    [SerializeField] private float attackDamage;
 
     PlayerContext ctx;
 
@@ -68,7 +67,7 @@ public class PlayerAttackManager : NetworkBehaviour
                 {
                     if (damagedObjectsOnThisAttack.Contains(damageable)) continue;
                     
-                    damageable.Hit(attackDamage, selfPlayerHealth.OwnerClientId, out IDamageable.HitCallbackContext callbackContext);
+                    damageable.Hit(ctx.playerStats.Damage, selfPlayerHealth.OwnerClientId, out IDamageable.HitCallbackContext callbackContext);
                     damagedObjectsOnThisAttack.Add(damageable);
 
                     if (callbackContext == IDamageable.HitCallbackContext.success)
@@ -77,6 +76,10 @@ public class PlayerAttackManager : NetworkBehaviour
                         ctx.rb.linearVelocity = (selfPlayerHealth.transform.position - go.transform.position).normalized * ctx.attackResponseForce;
                         ctx.hitResponse = true;
                         ctx.dashCDTimer = 0;
+                    }
+                    else if (callbackContext == IDamageable.HitCallbackContext.parried)
+                    {
+                        ctx.shouldStunSelf = true;
                     }
                 }
             }

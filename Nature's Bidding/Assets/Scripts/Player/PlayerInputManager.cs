@@ -17,6 +17,7 @@ public class PlayerInputManager : MonoBehaviour
     private InputAction jump;
     private InputAction parry;
     private InputAction attack;
+    private InputAction pause;
 
     private bool allowInputs = false;
     public bool allowSprint = true;
@@ -24,6 +25,9 @@ public class PlayerInputManager : MonoBehaviour
     public bool allowJump = true;
     public bool allowAttack = true;
     public bool allowParry = true;
+    public bool allowPause = true;
+
+    private bool paused = false;
 
     private StateMachine sm;
     private State root;
@@ -39,6 +43,7 @@ public class PlayerInputManager : MonoBehaviour
         jump = controls.PlayerGameplay.Jump;
         attack = controls.PlayerGameplay.Attack;
         parry = controls.PlayerGameplay.Parry;
+        pause = controls.PlayerGameplay.Pause;
 
         ctx.orientation = Instantiate(new GameObject(), transform).transform;
         ctx.orientation.rotation = transform.rotation;
@@ -51,12 +56,18 @@ public class PlayerInputManager : MonoBehaviour
 
         sm = builder.Build();
 
+        controls.Enable();
         move.Enable();
         sprint.Enable();
         dash.Enable();
         jump.Enable();
         attack.Enable();
         parry.Enable();
+        pause.Enable();
+
+        pause.performed += OnPausePressed;
+        PlayerPauseManager.Instance.OnPaused += OnPaused;
+        PlayerPauseManager.Instance.OnResumed += OnResumed;
 
         allowInputs = true;
         
@@ -72,12 +83,23 @@ public class PlayerInputManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        move.Disable();
-        sprint.Disable();
-        dash.Disable();
-        jump.Disable();
-        attack.Disable();
-        parry.Disable();
+        controls?.Disable();
+        move?.Disable();
+        sprint?.Disable();
+        dash?.Disable();
+        jump?.Disable();
+        attack?.Disable();
+        parry?.Disable();
+        pause?.Disable();
+
+        if (pause != null)
+            pause.performed -= OnPausePressed;
+
+        if (PlayerPauseManager.HasInstance)
+        {
+            PlayerPauseManager.Instance.OnPaused -= OnPaused;
+            PlayerPauseManager.Instance.OnResumed -= OnResumed;
+        }
     }
 
     void Update()
@@ -90,7 +112,7 @@ public class PlayerInputManager : MonoBehaviour
 
         sm.Tick(Time.deltaTime);
 
-        DebugCurrentState();
+        //DebugCurrentState();
     }
 
     private void FixedUpdate()
@@ -143,14 +165,22 @@ public class PlayerInputManager : MonoBehaviour
 
     }
 
-    void OnPauseGame()
+    void OnPausePressed(InputAction.CallbackContext callback)
     {
-        allowInputs = false;
+        if (allowPause)
+        {
+            PlayerPauseManager.Instance.OnPausePressed?.Invoke();
+        }
     }
 
-    async void OnUnpauseGame()
+    void OnPaused()
     {
-        await UniTask.Delay(500);
-        allowInputs = true;
+        allowInputs = !PlayerPauseManager.Instance.Paused;
     }
+
+    void OnResumed()
+    {
+        allowInputs = !PlayerPauseManager.Instance.Paused;
+    }
+
 }

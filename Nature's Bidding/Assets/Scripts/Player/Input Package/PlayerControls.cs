@@ -145,6 +145,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""8107aa03-c3fb-4ac2-bc5a-5ea96f60a773"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -345,6 +354,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Parry"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6169e963-3dbf-4e42-8c92-c5b2a2c5bcf0"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8ffe9f86-6906-4434-bfbb-0652a7abf528"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -359,6 +390,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerGameplay_Jump = m_PlayerGameplay.FindAction("Jump", throwIfNotFound: true);
         m_PlayerGameplay_Attack = m_PlayerGameplay.FindAction("Attack", throwIfNotFound: true);
         m_PlayerGameplay_Parry = m_PlayerGameplay.FindAction("Parry", throwIfNotFound: true);
+        m_PlayerGameplay_Pause = m_PlayerGameplay.FindAction("Pause", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -445,6 +477,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerGameplay_Jump;
     private readonly InputAction m_PlayerGameplay_Attack;
     private readonly InputAction m_PlayerGameplay_Parry;
+    private readonly InputAction m_PlayerGameplay_Pause;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerGameplay".
     /// </summary>
@@ -480,6 +513,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerGameplay/Parry".
         /// </summary>
         public InputAction @Parry => m_Wrapper.m_PlayerGameplay_Parry;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerGameplay/Pause".
+        /// </summary>
+        public InputAction @Pause => m_Wrapper.m_PlayerGameplay_Pause;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -524,6 +561,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Parry.started += instance.OnParry;
             @Parry.performed += instance.OnParry;
             @Parry.canceled += instance.OnParry;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         /// <summary>
@@ -553,6 +593,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Parry.started -= instance.OnParry;
             @Parry.performed -= instance.OnParry;
             @Parry.canceled -= instance.OnParry;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         /// <summary>
@@ -635,5 +678,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnParry(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPause(InputAction.CallbackContext context);
     }
 }

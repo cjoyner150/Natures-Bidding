@@ -19,18 +19,19 @@ public class JumpAttack : State
     protected override void OnEnter()
     {
         ctx.attackPressed = false;
-        ctx.desiredMaxSpeed = ctx.attackSpeed;
+        ctx.desiredMaxSpeed = ctx.attackSpeed * ctx.playerStats.MoveSpeed;
         ctx.forceMode = ForceMode.Force;
 
         ctx.rb.useGravity = false;
 
         ctx.anim.SetTrigger("JumpAttack");
+        ctx.anim.SetFloat("AttackSpeed", 1 + ((ctx.playerStats.AttackSpeed - 1) / 2f));
         SetAttackActive(ctx.attackActiveDelay);
 
         facingDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
         momentumDirection = (facingDirection + ctx.modelHolder.up).normalized;
 
-        attackTimer = ctx.jumpAttackTime;
+        attackTimer = ctx.jumpAttackTime / ctx.playerStats.AttackSpeed;
         exitAttack = false;
     }
 
@@ -64,7 +65,7 @@ public class JumpAttack : State
     protected override void OnExit()
     {
         ctx.forceToAdd = Vector3.zero;
-        ctx.attackCDTimer = ctx.attackCD;
+        ctx.attackCDTimer = ctx.attackCD / ctx.playerStats.AttackSpeed;
 
         ctx.rb.useGravity = true;
         ctx.playerAttackManager.EndAttack();

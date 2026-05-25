@@ -12,7 +12,7 @@ public class FallLocomotion : State
 
     protected override void OnEnter()
     {
-        ctx.desiredMaxSpeed = ctx.airSpeed;
+        ctx.desiredMaxSpeed = ctx.airSpeed * ctx.playerStats.MoveSpeed;
     }
 
     protected override void OnUpdate(float deltaTime)

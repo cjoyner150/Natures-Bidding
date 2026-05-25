@@ -17,7 +17,7 @@ public class Fall : State
 
     protected override void OnEnter()
     {
-        ctx.desiredMaxSpeed = ctx.airSpeed;
+        ctx.desiredMaxSpeed = ctx.airSpeed * ctx.playerStats.MoveSpeed;
     }
 
     protected override void OnExit()
@@ -26,4 +26,10 @@ public class Fall : State
     }
 
     protected override State GetInitialState() => (ctx.attackPressed && !ctx.attackOnCooldown) ? fallAttack : fallLocomotion;
+
+    protected override State GetTransition()
+    {
+        if (ctx.shouldStunSelf || ctx.isStunned) return GetParentOfType<Airborne>().airborneStunned;
+        else return null;
+    }
 }

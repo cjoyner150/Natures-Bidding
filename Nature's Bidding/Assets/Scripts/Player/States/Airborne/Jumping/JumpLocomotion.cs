@@ -17,7 +17,7 @@ public class JumpLocomotion : State
     {
         checkFallDelay = .1f;
 
-        ctx.desiredMaxSpeed = ctx.airSpeed;
+        ctx.desiredMaxSpeed = ctx.airSpeed * ctx.playerStats.MoveSpeed;
         spaceHeld = true;
         spaceHeldTimer = ctx.jumpHeldAllowedTime;
     }

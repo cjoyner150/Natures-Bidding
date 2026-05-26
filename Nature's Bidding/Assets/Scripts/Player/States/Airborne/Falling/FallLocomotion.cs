@@ -12,12 +12,12 @@ public class FallLocomotion : State
 
     protected override void OnEnter()
     {
-        ctx.desiredMaxSpeed = ctx.airSpeed;
+        ctx.desiredMaxSpeed = ctx.airSpeed * ctx.playerStats.MoveSpeed;
     }
 
     protected override void OnUpdate(float deltaTime)
     {
-        ctx.forceToAdd = (ctx.moveInput * ctx.acceleration * ctx.airControlMultiplier);
+        ctx.forceToAdd = (ctx.moveInput * ctx.acceleration * ctx.airControlMultiplier) + (-ctx.modelHolder.transform.up * ctx.acceleration * ctx.extraGravityMultiplier);
         HandleRotation(deltaTime);
     }
 

@@ -21,4 +21,10 @@ public class Jump : State
     }
 
     protected override State GetInitialState() => (ctx.attackPressed && !ctx.attackOnCooldown) ? jumpAttack : jumpLocomotion;
+
+    protected override State GetTransition()
+    {
+        if (ctx.shouldStunSelf || ctx.isStunned) return GetParentOfType<Airborne>().airborneStunned;
+        else return null;
+    }
 }

@@ -19,9 +19,33 @@ namespace HSM
         Task DeactivateAsync(CancellationToken ct);
     }
 
-    public class RetainKnockbackOnUnexpectedTransition : Activity
+
+    public class PauseInAirActivity : Activity
     {
-        
+        PlayerContext ctx;
+        float seconds;
+
+        public PauseInAirActivity(PlayerContext ctx, float seconds)
+        {
+            this.ctx = ctx;
+            this.seconds = seconds;
+        }
+
+        public override async Task ActivateAsync(CancellationToken ct)
+        {
+            ctx.rb.useGravity = false;
+            ctx.rb.linearVelocity = Vector3.zero;
+            await Task.Delay(TimeSpan.FromSeconds(seconds), ct);
+            await base.ActivateAsync(ct);
+        }
+
+        //public override async Task DeactivateAsync(CancellationToken ct)
+        //{
+        //    ctx.rb.linearVelocity = Vector3.zero;
+        //    await base.DeactivateAsync(ct);
+        //    await Task.Delay(TimeSpan.FromSeconds(seconds), ct);
+        //    ctx.rb.useGravity = true;
+        //}
     }
 
     public class DelayActivationActivity : Activity

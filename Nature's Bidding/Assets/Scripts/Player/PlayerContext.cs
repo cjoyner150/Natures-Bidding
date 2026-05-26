@@ -1,8 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class PlayerContext
 {
+    public bool allowInputs = true;
+
+    [Header("Stats")]
+    public BasePlayerStats BaseStats;
+    public List<StatusEffectorSO> statusEffectsOnStart;
+    public Stats playerStats;
+
     [Header("World Context")]
     public bool isGrounded;
     public LayerMask isGroundLayers;
@@ -14,6 +22,7 @@ public class PlayerContext
     public Transform orientation;
     public Camera cam;
     public PlayerAttackManager playerAttackManager;
+    public PlayerHealth playerHealth;
 
     [Header("Speed")]
 
@@ -41,22 +50,37 @@ public class PlayerContext
     public float jumpImpulse;
     public float jumpHeldForce;
     public float jumpHeldAllowedTime;
+    public float extraGravityMultiplier;
 
     [Header("Attacks")]
-    public float damage;
     public float attackTime;
     public float jumpAttackTime;
     public float fallAttackTime;
     public float attackCD;
     public float attackCDTimer;
     public bool attackOnCooldown => attackCDTimer > 0;
+    public float attackResponseForce;
+    public bool hitResponse;
+    public int attackActiveDelay;
+
+    [Header("Parry")]
+    public bool parryResponse;
+    public float parryCDTimer;
+    public bool parryOnCooldown => parryCDTimer > 0;
+    public int parryWarmUpDelay;
+
+    [Header("Stun")]
+    public bool shouldStunSelf;
+    public bool isStunned;
+    public float stunTime;
+    public float stunRecoveryTimer;
 
     [Header("Dash")]
     public float dashTime;
-    public float dashCD;
     public float dashCDTimer;
     public bool dashOnCooldown => dashCDTimer > 0;
     public float dashRotateMultiplier;
+
 
     [Header("Knockback")]
     public float knockbackTime;

@@ -17,7 +17,7 @@ public class JumpLocomotion : State
     {
         checkFallDelay = .1f;
 
-        ctx.desiredMaxSpeed = ctx.airSpeed;
+        ctx.desiredMaxSpeed = ctx.airSpeed * ctx.playerStats.MoveSpeed;
         spaceHeld = true;
         spaceHeldTimer = ctx.jumpHeldAllowedTime;
     }
@@ -28,7 +28,7 @@ public class JumpLocomotion : State
 
         HandleRotation(deltaTime);
 
-        if (!spaceHeld) { ctx.forceToAdd = Vector3.zero; return; }
+        if (!spaceHeld) { ctx.forceToAdd = (ctx.moveInput * (ctx.acceleration * ctx.airControlMultiplier)); return; }
 
         spaceHeld = ctx.jumpPressed;
         spaceHeldTimer -= deltaTime;

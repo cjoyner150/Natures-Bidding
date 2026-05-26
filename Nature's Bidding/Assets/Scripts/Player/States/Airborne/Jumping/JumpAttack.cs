@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using HSM;
+using Cysharp.Threading.Tasks;
+
 public class JumpAttack : State
 {
     private readonly PlayerContext ctx;
@@ -17,23 +19,36 @@ public class JumpAttack : State
     protected override void OnEnter()
     {
         ctx.attackPressed = false;
-        ctx.desiredMaxSpeed = ctx.attackSpeed;
+        ctx.desiredMaxSpeed = ctx.attackSpeed * ctx.playerStats.MoveSpeed;
         ctx.forceMode = ForceMode.Force;
 
         ctx.rb.useGravity = false;
 
         ctx.anim.SetTrigger("JumpAttack");
-        ctx.playerAttackManager.BeginAttack();
+        ctx.anim.SetFloat("AttackSpeed", 1 + ((ctx.playerStats.AttackSpeed - 1) / 2f));
+        SetAttackActive(ctx.attackActiveDelay);
 
         facingDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
         momentumDirection = (facingDirection + ctx.modelHolder.up).normalized;
 
-        attackTimer = ctx.jumpAttackTime;
+        attackTimer = ctx.jumpAttackTime / ctx.playerStats.AttackSpeed;
         exitAttack = false;
+    }
+
+    async void SetAttackActive(int delay)
+    {
+        await UniTask.Delay(delay);
+        ctx.playerAttackManager.BeginAttack();
     }
 
     protected override void OnUpdate(float deltaTime)
     {
+        if (ctx.hitResponse)
+        {
+            exitAttack = true;
+            return;
+        }
+
         HandleRotation(deltaTime);
 
         ctx.forceToAdd = momentumDirection * ctx.acceleration;
@@ -50,7 +65,7 @@ public class JumpAttack : State
     protected override void OnExit()
     {
         ctx.forceToAdd = Vector3.zero;
-        ctx.attackCDTimer = ctx.attackCD;
+        ctx.attackCDTimer = ctx.attackCD / ctx.playerStats.AttackSpeed;
 
         ctx.rb.useGravity = true;
         ctx.playerAttackManager.EndAttack();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -12,13 +13,24 @@ public class PlayerAttackManager : NetworkBehaviour
 
     [SerializeField] private float attackRadius;
     [SerializeField] private float attackLength;
-    [SerializeField] private float attackDamage;
+
+    PlayerContext ctx;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
         
         selfPlayerHealth = GetComponent<PlayerHealth>();
+        if (IsOwner)
+        {
+            UpdateContextNextFrame();
+        }
+    }
+
+    async void UpdateContextNextFrame()
+    {
+        await UniTask.NextFrame();
+        ctx = selfPlayerHealth.GetPlayerContext();
     }
 
     public void BeginAttack()
@@ -55,8 +67,20 @@ public class PlayerAttackManager : NetworkBehaviour
                 {
                     if (damagedObjectsOnThisAttack.Contains(damageable)) continue;
                     
-                    damageable.Hit(attackDamage, selfPlayerHealth.OwnerClientId, out IDamageable.HitCallbackContext ctx);
+                    damageable.Hit(ctx.playerStats.Damage, selfPlayerHealth.OwnerClientId, out IDamageable.HitCallbackContext callbackContext);
                     damagedObjectsOnThisAttack.Add(damageable);
+
+                    if (callbackContext == IDamageable.HitCallbackContext.success)
+                    {
+                        ctx.forceToAdd = Vector3.zero;
+                        ctx.rb.linearVelocity = (selfPlayerHealth.transform.position - go.transform.position).normalized * ctx.attackResponseForce;
+                        ctx.hitResponse = true;
+                        ctx.dashCDTimer = 0;
+                    }
+                    else if (callbackContext == IDamageable.HitCallbackContext.parried)
+                    {
+                        ctx.shouldStunSelf = true;
+                    }
                 }
             }
         }

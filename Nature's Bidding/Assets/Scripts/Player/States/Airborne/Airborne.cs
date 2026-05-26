@@ -6,8 +6,10 @@ public class Airborne : State
     public readonly Fall fall;
     public readonly AirDash airDash;
     public readonly AirKnockback airKnockback;
+    public readonly AirborneStunned airborneStunned;
 
-    private float regroundedCooldown = .2f;
+    private float regroundedCooldown = .4f;
+    private float regroundedCooldownTimer;
     private bool canGround;
 
     public Airborne(StateMachine machine, PlayerContext ctx, State parent = null) : base(machine, parent)
@@ -18,12 +20,13 @@ public class Airborne : State
         fall = new Fall(machine, ctx, this);
         airDash = new AirDash(machine, ctx, this);
         airKnockback = new AirKnockback(machine, ctx, this);
+        airborneStunned = new AirborneStunned(machine, ctx, this);
     }
 
     protected override void OnEnter()
     {
         ctx.rb.linearDamping = ctx.airDrag;
-        regroundedCooldown = .2f;
+        regroundedCooldownTimer = regroundedCooldown;
         canGround = false;
     }
 
@@ -31,9 +34,9 @@ public class Airborne : State
     {
         if (!canGround)
         {
-            regroundedCooldown -= deltaTime;
+            regroundedCooldownTimer -= deltaTime;
 
-            if (regroundedCooldown <= 0)
+            if (regroundedCooldownTimer <= 0)
             {
                 canGround = true;
             }
@@ -43,6 +46,7 @@ public class Airborne : State
     protected override State GetInitialState()
     {
         if (ctx.shouldTakeKnockback) return airKnockback;
+        else if (ctx.shouldStunSelf || ctx.isStunned) return airborneStunned;
         else if (ctx.jumpPressed) return jump;
         else return fall;
     }
@@ -50,7 +54,8 @@ public class Airborne : State
     protected override State GetTransition() 
     {
         if (ctx.shouldTakeKnockback) return airKnockback;
-        return (ctx.isGrounded && canGround) ? GetParentOfType<PlayerRoot>().grounded : null; 
+        else if (ctx.isGrounded && canGround) return GetParentOfType<PlayerRoot>().grounded;
+        else return null;
     }
 
 }

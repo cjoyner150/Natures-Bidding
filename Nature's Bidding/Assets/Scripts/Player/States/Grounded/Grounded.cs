@@ -6,6 +6,7 @@ public class Grounded : State
     private readonly PlayerContext ctx;
     public readonly GroundedLocomotion groundedLocomotion;
     public readonly GroundedAction groundedAction;
+    public readonly GroundedStunned groundedStunned;
 
     public Grounded(StateMachine machine, PlayerContext ctx, State parent = null) : base(machine, parent)
     {
@@ -13,6 +14,7 @@ public class Grounded : State
 
         groundedLocomotion = new GroundedLocomotion(machine, ctx, this);
         groundedAction = new GroundedAction(machine, ctx, this);
+        groundedStunned = new GroundedStunned(machine, ctx, this);
     }
 
     protected override void OnEnter()
@@ -27,5 +29,5 @@ public class Grounded : State
         else return null;
     }
 
-    protected override State GetInitialState() => groundedLocomotion;
+    protected override State GetInitialState() => ctx.isStunned || ctx.shouldStunSelf ? groundedStunned : groundedLocomotion;
 }

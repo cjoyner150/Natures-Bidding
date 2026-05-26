@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using HSM;
+using Cysharp.Threading.Tasks;
+
 public class Attack : State
 {
     private readonly PlayerContext ctx;
@@ -15,20 +17,34 @@ public class Attack : State
 
     protected override void OnEnter()
     {
-        ctx.desiredMaxSpeed = ctx.attackSpeed;
+        ctx.desiredMaxSpeed = ctx.attackSpeed * ctx.playerStats.MoveSpeed;
         ctx.forceMode = ForceMode.Force;
 
         ctx.anim.SetTrigger("Attack");
-        ctx.playerAttackManager.BeginAttack();
+        ctx.anim.SetFloat("AttackSpeed", 1 + ((ctx.playerStats.AttackSpeed - 1) / 2f));
+        SetAttackActive(ctx.attackActiveDelay);
 
         momentumDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
 
-        attackTimer = ctx.attackTime;
+        attackTimer = ctx.attackTime / ctx.playerStats.AttackSpeed;
         exitAttack = false;
+
+    }
+
+    async void SetAttackActive(int delay)
+    {
+        await UniTask.Delay(delay);
+        ctx.playerAttackManager.BeginAttack();
     }
 
     protected override void OnUpdate(float deltaTime)
     {
+        if (ctx.hitResponse)
+        {
+            exitAttack = true;
+            return;
+        }
+
         ctx.forceToAdd = ctx.modelHolder.forward * ctx.acceleration * 10f;
 
         HandleRotation(deltaTime);
@@ -40,8 +56,10 @@ public class Attack : State
     protected override void OnExit()
     {
         ctx.forceToAdd = Vector3.zero;
-        ctx.attackCDTimer = ctx.attackCD;
+        ctx.attackCDTimer = ctx.attackCD / ctx.playerStats.AttackSpeed;
         ctx.playerAttackManager.EndAttack();
+
+        ctx.hitResponse = false;
     }
 
     void HandleRotation(float deltaTime)

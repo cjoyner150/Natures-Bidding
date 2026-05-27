@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97ab8516c7ac3b64cbf8d316ef48807a, type: 3}
+  m_Name: Hermet
+  m_EditorClassIdentifier: Assembly-CSharp::TarotCardReward
+  cardName: The Hermit
+  flavorText: 'your largely attack is buffed but your health is moderately lowered '
+  cardFaceSprite: {fileID: 21300000, guid: 846a4dc9060c9194eba67a1d2c5eb8b0, type: 3}
+  cardBackSprite: {fileID: 21300000, guid: fabc87e1b5e54924d959550cd1f7823b, type: 3}
+  rewardType: 6
+  effectValue: 0.3
+  rewardSummary: +60% Damage, -30% Health
+  rarity: 1

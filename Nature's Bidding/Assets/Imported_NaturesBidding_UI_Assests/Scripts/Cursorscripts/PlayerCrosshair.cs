@@ -108,7 +108,7 @@ public class PlayerCrosshair : NetworkBehaviour
 
     private void CreateCursor()
     {
-        if (!CursorManager.Instance.cursorEnabled) { enabled = false; return; }
+        if (CursorManager.Instance == null || !CursorManager.Instance.cursorEnabled) return;
         if (CursorManager.Instance.cursorUIPrefab == null) { enabled = false; return; }
 
         if (IsLocalPlayer) Cursor.visible = false;
@@ -138,6 +138,13 @@ public class PlayerCrosshair : NetworkBehaviour
     {
         if (!IsLocalPlayer) return;
 
+        if (_cursorImage == null)
+        {
+            if (CursorManager.Instance != null && CursorManager.Instance.cursorEnabled)
+                CreateCursor();
+            return;
+        }
+
         if (Keyboard.current != null && Keyboard.current.pKey.wasPressedThisFrame)
         {
             _cursorPaused = !_cursorPaused;
@@ -160,7 +167,7 @@ public class PlayerCrosshair : NetworkBehaviour
         }
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         if (_cursorImage != null) Destroy(_cursorImage.gameObject);
         if (IsLocalPlayer && CursorManager.Instance != null && CursorManager.Instance.cursorEnabled)

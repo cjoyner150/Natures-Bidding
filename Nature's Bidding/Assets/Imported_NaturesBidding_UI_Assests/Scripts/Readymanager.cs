@@ -101,7 +101,7 @@ public class ReadyManager : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void AllReadyRpc()
     {
-        GameFlowManager.Instance?.StartInventoryPhaseRpc();
+        GameFlowManager.Instance?.StartCombatPhaseRpc();
     }
 
     #endregion

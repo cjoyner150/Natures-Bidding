@@ -14,7 +14,7 @@ using TMPro;
 ///   • All bids are hidden until everyone has submitted.
 ///   • Once the last bid is in, all are revealed at once.
 ///   • Lowest unique bid wins the item for that round.
-///   • Ties: no winner that round, a new item is picked next round.
+///   • Ties: the lowest tied bidder is chosen at random.
 ///   • After all rounds are done, transition to shop automatically.
 ///   • Bid amount is controlled through keyboard input.
 /// </summary>
@@ -123,8 +123,8 @@ public class BiddingManager : NetworkBehaviour
         CurrentRound.OnValueChanged += (_, round) => RefreshRoundCounter();
         TotalRounds.OnValueChanged  += (_, _total)  => RefreshRoundCounter();
 
-        bidHUDPanel?.SetActive(false);
-        resultsPanel?.SetActive(false);
+        if (bidHUDPanel != null) bidHUDPanel.SetActive(false);
+        if (resultsPanel != null) resultsPanel.SetActive(false);
     }
 
     public void OnBiddingPhaseStart()
@@ -147,13 +147,25 @@ public class BiddingManager : NetworkBehaviour
         foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
             _allPlayers.Add(kvp.Key);
 
+        // Respawn player objects for this scene so bid submission can resolve PlayerData again.
+        foreach (var playerData in PersistentPlayerRegistry.Instance.GetAllPlayers())
+        {
+            if (NetworkManager.Singleton.ConnectedClients.ContainsKey(playerData.clientId))
+                GameplaySpawnManager.Instance.SpawnPlayer(playerData.clientId);
+        }
+
+        if (GameplaySpawnManager.Instance == null || !GameplaySpawnManager.Instance.HasConfiguredPlayerPrefab())
+        {
+            Debug.LogError("[BiddingManager] Cannot start bidding: GameplaySpawnManager has no player prefab configured.");
+            return;
+        }
+
         int playerCount      = _allPlayers.Count;
         TotalPlayers.Value   = playerCount;
         TotalRounds.Value    = playerCount;   // One round per player
         CurrentRound.Value   = 0;
 
-        BiddingArenaManager.Instance?.AssignPlayersToSeats();
-        StartCoroutine(RunAllRounds());
+        StartCoroutine(BeginRoundsWhenPlayersReady());
     }
 
     [Rpc(SendTo.Server)]
@@ -234,6 +246,34 @@ public class BiddingManager : NetworkBehaviour
         yield return new WaitForSeconds(resultsDisplayTime);
     }
 
+    IEnumerator BeginRoundsWhenPlayersReady()
+    {
+        const int maxWaitFrames = 120;
+        int waitedFrames = 0;
+
+        while (waitedFrames < maxWaitFrames)
+        {
+            bool allReady = true;
+            foreach (ulong clientId in _allPlayers)
+            {
+                if (PlayerData.GetPlayer(clientId) == null)
+                {
+                    allReady = false;
+                    break;
+                }
+            }
+
+            if (allReady)
+                break;
+
+            waitedFrames++;
+            yield return null;
+        }
+
+        BiddingArenaManager.Instance?.AssignPlayersToSeats();
+        StartCoroutine(RunAllRounds());
+    }
+
     IEnumerator RoundTimer()
     {
         int t = (int)roundTimerSeconds;
@@ -253,8 +293,8 @@ public class BiddingManager : NetworkBehaviour
 
     ulong DetermineWinner()
     {
-        ulong winnerId = ulong.MaxValue;
-        int lowestBid  = int.MaxValue;
+        List<ulong> tiedLowestBidders = new List<ulong>();
+        int lowestBid = int.MaxValue;
 
         foreach (var kvp in _bids)
         {
@@ -262,14 +302,19 @@ public class BiddingManager : NetworkBehaviour
             if (kvp.Value < lowestBid)
             {
                 lowestBid = kvp.Value;
-                winnerId  = kvp.Key;
+                tiedLowestBidders.Clear();
+                tiedLowestBidders.Add(kvp.Key);
             }
             else if (kvp.Value == lowestBid)
             {
-                winnerId = ulong.MaxValue;              // Tie
+                tiedLowestBidders.Add(kvp.Key);
             }
         }
-        return winnerId;
+
+        if (tiedLowestBidders.Count == 0)
+            return ulong.MaxValue;
+
+        return tiedLowestBidders[Random.Range(0, tiedLowestBidders.Count)];
     }
 
     #endregion
@@ -282,8 +327,8 @@ public class BiddingManager : NetworkBehaviour
         _localBidSubmitted  = false;
         _localBidAmount     = startingBid;
 
-        resultsPanel?.SetActive(false);
-        bidHUDPanel?.SetActive(true);           // Everyone sees the bid panel simultaneously
+        if (resultsPanel != null) resultsPanel.SetActive(false);
+        if (bidHUDPanel != null) bidHUDPanel.SetActive(true);           // Everyone sees the bid panel simultaneously
 
         if (statusText)      statusText.text      = "Place your bid — Lowest wins!";
         if (waitingCountText) waitingCountText.text = $"0 / {TotalPlayers.Value} bids submitted";
@@ -295,8 +340,8 @@ public class BiddingManager : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void RevealResultsRpc(string packedBids, string winnerIdStr, int winningBid, string winnerName, string itemName)
     {
-        bidHUDPanel?.SetActive(false);
-        resultsPanel?.SetActive(true);
+        if (bidHUDPanel != null) bidHUDPanel.SetActive(false);
+        if (resultsPanel != null) resultsPanel.SetActive(true);
 
         PointerNPC.Instance?.CelebrateTwo();
         PointerNPC.Instance?.SayBiddingFinished();
@@ -305,21 +350,28 @@ public class BiddingManager : NetworkBehaviour
         else
             PointerNPC.Instance?.SayWinner(winnerName, itemName);
 
-        foreach (Transform child in resultsContainer) Destroy(child.gameObject);
-
-        foreach (string entry in packedBids.Split(','))
+        if (resultsContainer != null)
         {
-            string[] parts = entry.Split(':');
-            if (parts.Length != 2) continue;
+            foreach (Transform child in resultsContainer) Destroy(child.gameObject);
+        }
 
-            ulong pid    = ulong.Parse(parts[0]);
-            int amount   = int.Parse(parts[1]);
-            bool winner  = parts[0] == winnerIdStr;
-            bool skipped = amount == -1;
+        if (resultsContainer != null && resultRowPrefab != null)
+        {
+            foreach (string entry in packedBids.Split(','))
+            {
+                string[] parts = entry.Split(':');
+                if (parts.Length != 2) continue;
 
-            var row   = Instantiate(resultRowPrefab, resultsContainer);
-            var label = row.GetComponentInChildren<TMP_Text>();
-            label.text = $"{GetPlayerName(pid)}: {(skipped ? "[SKIP] Timed out" : amount + " coins")} {(winner ? "[WIN] Wins!" : "")}";
+                ulong pid    = ulong.Parse(parts[0]);
+                int amount   = int.Parse(parts[1]);
+                bool winner  = parts[0] == winnerIdStr;
+                bool skipped = amount == -1;
+
+                var row   = Instantiate(resultRowPrefab, resultsContainer);
+                var label = row.GetComponentInChildren<TMP_Text>();
+                if (label != null)
+                    label.text = $"{GetPlayerName(pid)}: {(skipped ? "[SKIP] Timed out" : amount + " coins")} {(winner ? "[WIN] Wins!" : "")}";
+            }
         }
 
         bool tie = winnerIdStr == ulong.MaxValue.ToString();
@@ -332,8 +384,8 @@ public class BiddingManager : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void ShowTransitionMessageRpc(string message)
     {
-        bidHUDPanel?.SetActive(false);
-        resultsPanel?.SetActive(false);
+        if (bidHUDPanel != null) bidHUDPanel.SetActive(false);
+        if (resultsPanel != null) resultsPanel.SetActive(false);
         PointerNPC.Instance?.SetIdle();
         PointerNPC.Instance?.SayTransition();
         if (statusText) statusText.text = message;
@@ -367,6 +419,7 @@ public class BiddingManager : NetworkBehaviour
 
         _localBidSubmitted = true;
         RefreshSubmitButton();
+        SetBidDisplayVisible(false);
         if (statusText) statusText.text = $"Bid of {_localBidAmount} submitted! Waiting for others...";
 
         SubmitBidRpc(_localBidAmount);
@@ -383,7 +436,12 @@ public class BiddingManager : NetworkBehaviour
 
         // Validate the player has enough coins
         var player = PlayerData.GetPlayer(sender);
-        if (player == null) return;
+        if (player == null)
+        {
+            Debug.LogWarning($"[BiddingManager] Bid rejected for client {sender}: PlayerData not ready.");
+            BidRejectedRpc("Player data not ready yet.", RpcTarget.Single(sender, RpcTargetUse.Temp));
+            return;
+        }
 
         if (player.Coins.Value < amount)
         {
@@ -409,13 +467,16 @@ public class BiddingManager : NetworkBehaviour
         _localBidSubmitted = false;
         RefreshSubmitButton();
         if (statusText)     statusText.text = $"Bid rejected: {reason}";
-        bidHUDPanel?.SetActive(true);
+        if (bidHUDPanel != null) bidHUDPanel.SetActive(true);
+        SetBidDisplayVisible(true);
     }
 
     void RefreshBidDisplay(bool animate)
     {
         if (bidAmountDisplay)
             bidAmountDisplay.text = _localBidAmount.ToString();
+
+        SetBidDisplayVisible(true);
 
         if (animate)
             RestartBidFlipAnimation();
@@ -435,6 +496,15 @@ public class BiddingManager : NetworkBehaviour
         if (bidDisplayCard) return bidDisplayCard;
         if (bidAmountDisplay) return bidAmountDisplay.rectTransform;
         return null;
+    }
+
+    void SetBidDisplayVisible(bool visible)
+    {
+        if (bidDisplayCard != null)
+            bidDisplayCard.gameObject.SetActive(visible);
+
+        if (bidAmountDisplay != null)
+            bidAmountDisplay.gameObject.SetActive(visible);
     }
 
     void ResetBidFlipVisual()

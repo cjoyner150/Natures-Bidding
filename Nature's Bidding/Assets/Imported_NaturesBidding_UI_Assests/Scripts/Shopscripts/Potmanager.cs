@@ -74,6 +74,7 @@ public class PotManager : NetworkBehaviour
     private int                  _clicksRemaining;
     private bool                 _waitingForClicks;
     private bool                 _cardsDealt;
+    private bool                 _sequenceRunning;
 
     private List<TarotCardReward> _dealtRewards = new List<TarotCardReward>();
     private List<TarotCardUI>     _spawnedCards = new List<TarotCardUI>();
@@ -119,6 +120,9 @@ public class PotManager : NetworkBehaviour
     /// <summary>Called by ShopManager after coins deducted. isGrand = which pot type.</summary>
     public void OpenSequence(bool isGrand)
     {
+        if (_sequenceRunning)
+            return;
+
         _currentPotType = isGrand ? grandPot : smallPot;
         if (_currentPotType == null)
         {
@@ -129,6 +133,7 @@ public class PotManager : NetworkBehaviour
         if (isGrand) _potUsedGrand = true;
         else         _potUsedSmall = true;
 
+        _sequenceRunning = true;
         StartCoroutine(RunPotSequence());
     }
 
@@ -150,6 +155,8 @@ public class PotManager : NetworkBehaviour
             if (c.isRootCanvas) { _rootCanvas = c; break; }
 
         // Show overlay
+        if (potOverlay == null)
+            Debug.LogWarning("[PotManager] potOverlay is not assigned, the pot UI will not be visible.");
         potOverlay?.SetActive(true);
         if (overlayCanvasGroup != null)
         {
@@ -541,6 +548,13 @@ public class PotManager : NetworkBehaviour
         ClearCards();
         DestroyTooltip();
         _selectedCards.Clear();
+        _sequenceRunning = false;
+    }
+
+    public override void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
     }
 
     #endregion

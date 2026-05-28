@@ -273,6 +273,7 @@ public class ShopManager : NetworkBehaviour
     /// <summary>Called by the local player's panel when Buy is clicked on the pot card.</summary>
     public void LocalPlayerBuyPot(PlayerShopPanel sourcePanel, bool isGrand)
     {
+        Debug.Log($"[ShopManager] LocalPlayerBuyPot requested. isGrand:{isGrand} localClient:{NetworkManager.Singleton?.LocalClientId}");
         BuyPotRpc(isGrand);
     }
 
@@ -281,10 +282,20 @@ public class ShopManager : NetworkBehaviour
     {
         ulong buyer  = rpcParams.Receive.SenderClientId;
         var player   = PlayerData.GetPlayer(buyer);
-        if (player == null) return;
+        if (player == null)
+        {
+            Debug.LogWarning($"[ShopManager] BuyPotRpc rejected for client {buyer}: PlayerData not found.");
+            return;
+        }
 
         int cost = isGrand ? grandPotCost : smallPotCost;
-        if (player.Coins.Value < cost) return;
+        if (player.Coins.Value < cost)
+        {
+            Debug.LogWarning($"[ShopManager] BuyPotRpc rejected for client {buyer}: not enough coins ({player.Coins.Value}/{cost}).");
+            return;
+        }
+
+        Debug.Log($"[ShopManager] BuyPotRpc accepted for client {buyer}. Deducting {cost} and opening {(isGrand ? "Grand" : "Small")} pot.");
 
         player.SpendCoins(cost);
         PotUsedRpc(buyer, isGrand);
@@ -302,7 +313,18 @@ public class ShopManager : NetworkBehaviour
     [Rpc(SendTo.SpecifiedInParams)]
     void OpenPotSequenceRpc(bool isGrand, RpcParams rpcParams = default)
     {
-        PotManager.Instance?.OpenSequence(isGrand);
+        var potManager = PotManager.Instance;
+        if (potManager == null)
+            potManager = FindFirstObjectByType<PotManager>();
+
+        if (potManager == null)
+        {
+            Debug.LogError("[ShopManager] Could not find PotManager to open the pot UI.");
+            return;
+        }
+
+        Debug.Log($"[ShopManager] Opening pot UI sequence on client. isGrand:{isGrand}");
+        potManager.OpenSequence(isGrand);
     }
 
     #endregion

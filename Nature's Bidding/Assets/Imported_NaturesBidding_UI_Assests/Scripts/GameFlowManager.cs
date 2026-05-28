@@ -4,25 +4,23 @@ using System.Collections;
 
 /// <summary>
 /// GameFlowManager — Server-authoritative phase state machine.
-/// Phases: Lobby → Bidding → Shop → Inventory → Bidding → ...
+/// Phases: Lobby → Bidding → Shop → Combat → Bidding → ...
 /// </summary>
 public class GameFlowManager : NetworkBehaviour
 {
     public static GameFlowManager Instance { get; private set; }
 
-    public enum GamePhase { Lobby, Bidding, ShopReview, Inventory }
+    public enum GamePhase { Lobby, Bidding, ShopReview, Combat }
 
     #region Inspector Fields
 
     [Header("Phase Canvases")]
     public GameObject biddingCanvas;
     public GameObject shopCanvas;
-    public GameObject inventoryCanvas;
 
     [Header("Managers")]
     public BiddingManager        biddingManager;
     public ShopManager           shopManager;
-    public InventoryScreenManager inventoryScreenManager;
     public ReadyManager          readyManager;
 
     #endregion
@@ -46,6 +44,7 @@ public class GameFlowManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        PersistentGameStateManager.Instance?.OnBiddingSceneReady();
         CurrentPhase.OnValueChanged += OnPhaseChanged;
         ApplyPhase(CurrentPhase.Value);
 
@@ -84,11 +83,11 @@ public class GameFlowManager : NetworkBehaviour
         shopManager?.OnShopPhaseStart();
     }
 
-    void BeginInventoryPhase()
+    void BeginCombatPhase()
     {
         if (!IsServer) return;
-        CurrentPhase.Value = GamePhase.Inventory;
-        inventoryScreenManager?.OnInventoryPhaseStart();
+        CurrentPhase.Value = GamePhase.Combat;
+        PersistentGameStateManager.Instance?.LoadCombatLevel();
     }
 
     #endregion
@@ -108,9 +107,9 @@ public class GameFlowManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    public void StartInventoryPhaseRpc()
+    public void StartCombatPhaseRpc()
     {
-        BeginInventoryPhase();
+        BeginCombatPhase();
     }
 
     #endregion
@@ -123,7 +122,12 @@ public class GameFlowManager : NetworkBehaviour
     {
         if (biddingCanvas)   biddingCanvas.SetActive(phase == GamePhase.Bidding);
         if (shopCanvas)      shopCanvas.SetActive(phase == GamePhase.ShopReview);
-        if (inventoryCanvas) inventoryCanvas.SetActive(phase == GamePhase.Inventory);
+
+        if (CursorManager.Instance != null)
+        {
+            CursorManager.Instance.cursorEnabled = phase == GamePhase.Bidding || phase == GamePhase.ShopReview;
+            Cursor.visible = CursorManager.Instance.cursorEnabled;
+        }
 
         switch (phase)
         {
@@ -133,8 +137,9 @@ public class GameFlowManager : NetworkBehaviour
             case GamePhase.ShopReview:
                 shopManager?.OnShopPhaseStart();
                 break;
-            case GamePhase.Inventory:
-                inventoryScreenManager?.OnInventoryPhaseStart();
+            case GamePhase.Combat:
+                biddingCanvas?.SetActive(false);
+                shopCanvas?.SetActive(false);
                 break;
         }
     }

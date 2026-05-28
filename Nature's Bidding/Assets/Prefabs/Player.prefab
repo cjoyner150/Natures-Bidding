@@ -17,6 +17,9 @@ GameObject:
   - component: {fileID: 9193257734005782328}
   - component: {fileID: 2143706486958459292}
   - component: {fileID: 5498611325975013428}
+  - component: {fileID: 2427196603344720073}
+  - component: {fileID: 7009729560093524178}
+  - component: {fileID: 3196028041904995079}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -301,6 +304,61 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVisualEffectManager
   ShowTopMostFoldoutHeaderGroup: 1
   hitReactParticle: {fileID: 7822037515226980387}
+--- !u!114 &2427196603344720073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104365586213191800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55fbf9bca502744288464d25b610da2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCrosshair
+  ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &7009729560093524178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104365586213191800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8becc9bc7c7670e43b481ccab130fd96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerData
+  ShowTopMostFoldoutHeaderGroup: 1
+  Coins:
+    m_InternalValue: 100
+  PlayerName:
+    m_InternalValue:
+      Value: Player
+  SpeedMultiplier:
+    m_InternalValue: 1
+  JumpMultiplier:
+    m_InternalValue: 1
+  DamageMultiplier:
+    m_InternalValue: 1
+  DefenseMultiplier:
+    m_InternalValue: 1
+  MaxHealthBonus:
+    m_InternalValue: 0
+  standInRenderer: {fileID: 0}
+  standInLabel: {fileID: 0}
+--- !u!114 &3196028041904995079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104365586213191800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbd44730ff51bb044adba5048beacf49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
 --- !u!1 &3949436915247687260
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,13 @@ using TMPro;
 /// </summary>
 public class PlayerData : NetworkBehaviour
 {
+    #region Starting Values
+
+    [Header("Starting Values")]
+    [SerializeField] private int startingCoins = 1000;
+
+    #endregion
+
     #region Static Registry
 
     private static readonly Dictionary<ulong, PlayerData> _registry = new Dictionary<ulong, PlayerData>();
@@ -49,7 +56,7 @@ public class PlayerData : NetworkBehaviour
     #region Network Variables — synced to all clients
 
     public NetworkVariable<int> Coins = new NetworkVariable<int>(
-        1000,
+        0,
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Server);
 
@@ -89,6 +96,9 @@ public class PlayerData : NetworkBehaviour
     {
         _registry[OwnerClientId] = this;
         Debug.Log($"[PlayerData] Registered client {OwnerClientId} — total in registry: {_registry.Count}");
+
+        if (IsServer)
+            Coins.Value = Mathf.Max(0, startingCoins);
 
         if (IsOwner)
         {

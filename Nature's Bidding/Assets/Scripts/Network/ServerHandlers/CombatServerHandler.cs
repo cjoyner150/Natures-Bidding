@@ -105,9 +105,20 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
     public void OnRoundEndRpc(ulong winningPlayer)
     {
+        if (NetworkManager.ConnectedClients.TryGetValue(winningPlayer, out var winningClient) &&
+            winningClient.PlayerObject != null)
+        {
+            var winningHealth = winningClient.PlayerObject.GetComponent<PlayerHealth>();
+            if (winningHealth != null)
+                winningHealth.isRoundWinner.Value = true;
+        }
+
         WinSequence(winningPlayer);
         NetworkManager.ConnectedClients[winningPlayer].PlayerObject
             .GetComponent<PlayerHealth>()?.OnWinRound(victoryLapDelay);
+
+        if (IsServer)
+            PersistentGameStateManager.Instance.HandleCombatRoundEnded(winningPlayer).Forget();
     }
 
     private async void WinSequence(ulong winningPlayer)

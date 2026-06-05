@@ -7,6 +7,9 @@ public class PlayerVisualEffectManager : NetworkBehaviour
 {
     PlayerContext ctx;
     [SerializeField] GameObject hitReactParticle;
+    [SerializeField] GameObject deflectParticle;
+    [SerializeField] GameObject parryParticle;
+    [SerializeField] GameObject attackParticle;
 
     // Locally call event from anywhere in normal code with the clientId
     public static Action<ulong> SpawnHitReactionEffectsOnPlayer;
@@ -52,4 +55,29 @@ public class PlayerVisualEffectManager : NetworkBehaviour
 
         hitReactParticle.SetActive(false);
     }
+    private async void SpawnParryParticles()
+    {
+        hitReactParticle.SetActive(true);
+
+        await UniTask.Delay(1000);
+
+        hitReactParticle.SetActive(false);
+    }
+    private async void SpawnDeflectParticles()
+    {
+        deflectParticle.SetActive(true);
+
+        await UniTask.Delay(1000);
+
+        deflectParticle.SetActive(false);
+    }
+    private async void SpawnAttackParticles()
+    {
+        attackParticle.SetActive(true);
+
+        await UniTask.Delay(1000);
+
+        attackParticle.SetActive(false);
+    }
 }
+

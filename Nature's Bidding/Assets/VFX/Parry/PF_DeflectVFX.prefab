@@ -14692,7 +14692,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6673453822337826515}
   m_Layer: 0
-  m_Name: PF_ParryVFX
+  m_Name: PF_DeflectVFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

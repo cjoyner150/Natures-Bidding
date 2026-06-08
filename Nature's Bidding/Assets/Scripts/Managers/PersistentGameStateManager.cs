@@ -9,11 +9,15 @@ using UnityUtils;
 
 public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 {
+    private const string BiddingSceneName = "Bidding_Scene";
+    private const string CombatSceneName = "CliffGameplay";
+
     [SerializeField] private GameObject loadingPanel;
     public GameObject LoadingPanel => loadingPanel;
 
     [SerializeField] TextMeshProUGUI loadingStatus;
     [SerializeField] TextMeshProUGUI loadingProgress;
+    [SerializeField] private int combatWinsRequiredToEnd = 3;
 
 
     private bool _isReturningToMenu = false;
@@ -132,7 +136,15 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     {
         SetLoadingState("Loading Lobby...");
 
-        await LoadNetworkedSceneAsync(2);
+        await LoadNetworkedSceneAsync("LobbyScene");
+    }
+
+    public async UniTask LoadBiddingLevel()
+    {
+        SetLoadingState("Loading bidding...", true);
+
+        State = GameState.Bidding;
+        await LoadNetworkedSceneAsync(BiddingSceneName);
     }
 
     public async void OnLobbySceneReady()
@@ -147,8 +159,14 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         ClearLoadingState();
     }
 
+    public void OnBiddingSceneReady()
+    {
+        State = GameState.Bidding;
+        ClearLoadingState();
+    }
 
-    public async void ReturnToMenu()
+
+    public async UniTask ReturnToMenu()
     {
         if (IsReturningToMenu) return;
         IsReturningToMenu = true;
@@ -195,13 +213,18 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private async UniTask LoadNetworkedSceneAsync(int idx)
     {
-        Debug.Log($"LoadNetworkedSceneAsync. IsServer: {NetworkManager.Singleton.IsServer}, IsListening: {NetworkManager.Singleton.IsListening}");
-
-        _sceneLoadTcs = new UniTaskCompletionSource();
-
         string sceneName = System.IO.Path.GetFileNameWithoutExtension(
             SceneUtility.GetScenePathByBuildIndex(idx)
         );
+
+        await LoadNetworkedSceneAsync(sceneName);
+    }
+
+    private async UniTask LoadNetworkedSceneAsync(string sceneName)
+    {
+        Debug.Log($"LoadNetworkedSceneAsync. IsServer: {NetworkManager.Singleton.IsServer}, IsListening: {NetworkManager.Singleton.IsListening}");
+
+        _sceneLoadTcs = new UniTaskCompletionSource();
 
         Debug.Log($"Loading scene: {sceneName}");
 
@@ -209,12 +232,12 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
         if (NetworkManager.Singleton.IsServer)
         {
-            Debug.Log("IsServer — calling LoadScene.");
+            Debug.Log("IsServer ï¿½ calling LoadScene.");
             NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
         }
         else
         {
-            Debug.Log("Not server — waiting for scene sync from server.");
+            Debug.Log("Not server ï¿½ waiting for scene sync from server.");
         }
 
         try
@@ -299,18 +322,37 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private void OnAllPlayersReadied()
     {
-        LoadCombatLevel();
+        LoadBiddingLevel();
     }
 
     public async void LoadCombatLevel()
     {
         SetLoadingState("Loading combat...", true);
-        await LoadNetworkedSceneAsync(3);
+        await LoadNetworkedSceneAsync(CombatSceneName);
     }
 
     public void OnCombatSceneReady()
     {
         ClearLoadingState();
         State = GameState.Combat;
+    }
+
+    public async UniTask HandleCombatRoundEnded(ulong winningPlayerId)
+    {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer)
+            return;
+
+        PersistentPlayerRegistry.Instance.AddCombatWin(winningPlayerId);
+
+        PersistentPlayerData winningPlayer = PersistentPlayerRegistry.Instance.GetByClientId(winningPlayerId);
+        if (winningPlayer != null && winningPlayer.combatWins >= combatWinsRequiredToEnd)
+        {
+            State = GameState.Menu;
+            await ReturnToMenu();
+            return;
+        }
+
+        State = GameState.Bidding;
+        await LoadBiddingLevel();
     }
 }

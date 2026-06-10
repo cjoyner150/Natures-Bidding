@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2036068895
+  GlobalObjectIdHash: 1770671079
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -93,12 +93,7 @@ MonoBehaviour:
     allowInputs: 1
     BaseStats: {fileID: 11400000, guid: 00d09b787490d4b47851779da1458683, type: 2}
     statusEffectsOnStart:
-    - {fileID: 11400000, guid: cea7273baa150d84a9d5e3486302760f, type: 2}
-    - {fileID: 11400000, guid: 168bec0935f5ced4b8d02683b062176f, type: 2}
-    - {fileID: 11400000, guid: 25ea21ee61385524a89ba0f9b1dd49c0, type: 2}
-    - {fileID: 11400000, guid: d934063e5b6ab2d4ab0b35dc01376d1e, type: 2}
-    - {fileID: 11400000, guid: c2dc47b2c1b9cd549907a3cb4c0d4477, type: 2}
-    - {fileID: 11400000, guid: 6799a27e90352ef49b41ac34eaadb7f5, type: 2}
+    - {fileID: 11400000, guid: ed49091a3ba211540a2faaf9253a53f6, type: 2}
     isGrounded: 0
     isGroundLayers:
       serializedVersion: 2
@@ -138,6 +133,9 @@ MonoBehaviour:
     attackResponseForce: 5
     hitResponse: 0
     attackActiveDelay: 100
+    comboCD: 0
+    comboCDTimer: 0
+    combo: 0
     parryResponse: 0
     parryCDTimer: 0
     parryWarmUpDelay: 100
@@ -304,6 +302,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVisualEffectManager
   ShowTopMostFoldoutHeaderGroup: 1
   hitReactParticle: {fileID: 7822037515226980387}
+  deflectParticle: {fileID: 0}
+  parryParticle: {fileID: 0}
+  attackParticle: {fileID: 0}
 --- !u!114 &2427196603344720073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,6 +331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
   ShowTopMostFoldoutHeaderGroup: 1
+  startingCoins: 1000
   Coins:
     m_InternalValue: 100
   PlayerName:

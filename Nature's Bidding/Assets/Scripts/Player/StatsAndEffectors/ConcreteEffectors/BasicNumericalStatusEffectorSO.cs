@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Basic Status Effector", menuName = "Stats/Status Effects/Basic")]
-public class BasicStatusEffectorSO : StatusEffectorSO
+[CreateAssetMenu(fileName = "New Basic Status Effector", menuName = "Stats/Status Effects/Basic Numerical")]
+public class BasicNumericalStatusEffectorSO : StatusEffectorSO
 {
     public StatType Stat;
     public float Value;
@@ -10,7 +10,7 @@ public class BasicStatusEffectorSO : StatusEffectorSO
 
     public override List<StatusEffect> GetStatusEffects()
     {
-        return new List<StatusEffect> { new BasicStatusEffect
+        return new List<StatusEffect> { new BasicNumericalStatusEffect
         {
             Stat = Stat,
             Value = Value,

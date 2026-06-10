@@ -21,7 +21,6 @@ public class PlayerStatusEffectManager : MonoBehaviour
         playerStats = stats;
 
         AddModifiers();
-        print("[Player Stats] Modifiers Initialized. "+playerStats?.ToString());
     }
 
     void AddModifiers()
@@ -30,7 +29,9 @@ public class PlayerStatusEffectManager : MonoBehaviour
         {
             foreach (var effect in effector.GetStatusEffects())
             {
-                var modifier = effect.GetModifier();
+                effect.Initialize(playerStats);
+
+                var modifier = effect.GetStatsModifier();
 
                 if (modifier != null) statsMediator?.AddModifier(modifier);
             }
@@ -40,6 +41,16 @@ public class PlayerStatusEffectManager : MonoBehaviour
     private void Update()
     {
         statsMediator?.Update(Time.deltaTime);
+
+        foreach (var effector in StatusEffectors)
+        {
+            foreach (var effect in effector.GetStatusEffects())
+            {
+                effect.OnTick(Time.deltaTime);
+            }
+        }
+
+        print("[Player Stats] Modifiers Initialized. "+playerStats?.ToString());
     }
 
 }

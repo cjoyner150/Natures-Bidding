@@ -62,6 +62,9 @@ public class PlayerContext
     public float attackResponseForce;
     public bool hitResponse;
     public int attackActiveDelay;
+    public float comboCD;
+    public float comboCDTimer;
+    public int combo;
 
     [Header("Parry")]
     public bool parryResponse;

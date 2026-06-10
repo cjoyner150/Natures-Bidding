@@ -13,8 +13,9 @@ public enum StatType
     CritChance,
     CritDamageMultiplier,
     Momentum,
-    ComboMultiplier,
-    Stealing
+    ComboDamage,
+    Stealing,
+    Lifesteal
 }
 
 public class Stats
@@ -36,7 +37,7 @@ public class Stats
                $"MoveSpeed: {MoveSpeed}, ParryDuration: {ParryDuration}, ParryCooldown: {ParryCooldown}, " +
                $"DashDistance: {DashDistance}, DashCooldown: {DashCooldown}, CritChance: {CritChance}, " +
                $"CritDamageMultiplier: {CritDamageMultiplier}, Momentum: {Momentum}, " +
-               $"ComboMultiplier: {ComboMultiplier}, Stealing: {Stealing}";
+               $"ComboMultiplier: {ComboDamage}, Stealing: {Stealing}";
     }
 
     public float MaxHealth
@@ -149,11 +150,11 @@ public class Stats
         }
     }
     
-    public float ComboMultiplier
+    public float ComboDamage
     {
         get
         {
-            var q = new Query(StatType.ComboMultiplier, baseStats.ComboMultiplier);
+            var q = new Query(StatType.ComboDamage, baseStats.ComboDamage);
             mediator.PerformQuery(this, q);
             return q.Value;
         }
@@ -167,5 +168,34 @@ public class Stats
             mediator.PerformQuery(this, q);
             return q.Value;
         }
+    }
+    
+    public float Lifesteal
+    {
+        get
+        {
+            var q = new Query(StatType.Lifesteal, baseStats.Lifesteal);
+            mediator.PerformQuery(this, q);
+            return q.Value;
+        }
+    }
+
+    public float GetStatByType(StatType type)
+    {
+        return type == StatType.MaxHealth ? MaxHealth
+            : type == StatType.Damage ? Damage
+            : type == StatType.AttackSpeed ? AttackSpeed
+            : type == StatType.MoveSpeed ? MoveSpeed
+            : type == StatType.ParryDuration ? ParryDuration
+            : type == StatType.ParryCooldown ? ParryCooldown
+            : type == StatType.DashDistance ? DashDistance
+            : type == StatType.DashCooldown ? DashCooldown
+            : type == StatType.CritChance ? CritChance
+            : type == StatType.CritDamageMultiplier ? CritDamageMultiplier
+            : type == StatType.Momentum ? Momentum
+            : type == StatType.ComboDamage ? ComboDamage
+            : type == StatType.Stealing ? Stealing
+            : type == StatType.Lifesteal ? Lifesteal
+            : throw new Exception($"Unhandled StatType: {type}");
     }
 }

@@ -9,6 +9,7 @@ public class PersistentPlayerData
     public int gold;
     public int combatWins;
 
+    // stringIds for items are internal names that are mapped to scriptable objs
     public List<string> masks = new();
     public List<string> tarotCards = new();
     public List<string> artifacts = new();

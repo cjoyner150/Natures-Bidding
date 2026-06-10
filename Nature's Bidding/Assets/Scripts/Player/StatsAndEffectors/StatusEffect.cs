@@ -7,23 +7,29 @@ public abstract class StatusEffect
     public StatType Stat;
     public float Value;
     public float Duration;
-    public abstract StatsModifier GetModifier();
-}
+    protected Stats Stats { get; private set; }
 
-[System.Serializable]
-public class BasicStatusEffect : StatusEffect
-{
-    public OperatorType OperationType;
-
-    public override StatsModifier GetModifier()
+    public void Initialize(Stats stats)
     {
-        var modifier = OperationType == OperatorType.Multiplication ? new BasicStatsModifier(Stat, Duration, x => x * Value)
-            : OperationType == OperatorType.Addition ? new BasicStatsModifier(Stat, Duration, x => x + Value)
-            : OperationType == OperatorType.Division ? new BasicStatsModifier(Stat, Duration, x => x / Value)
-            : OperationType == OperatorType.Subtraction ? new BasicStatsModifier(Stat, Duration, x => x - Value)
+        Stats = stats;
+        OnInitialize();
+        OnStart();
+    }
+
+    public abstract StatsModifier GetStatsModifier();
+    public virtual void OnInitialize() { }
+    public virtual void OnStart() { }
+    public virtual void OnTick(float delta) { }
+    public virtual void OnEnd() { }
+
+    public static Func<float, float> GetFuncByOperation(OperatorType opType, float val)
+    {
+        Func<float, float> func = opType == OperatorType.Multiplication ? x => x * val
+            : opType == OperatorType.Addition ? x => x + val
+            : opType == OperatorType.Division ? x => x / val
+            : opType == OperatorType.Subtraction ? x => x - val
             : throw new Exception("Basic Operation should only be of a base operation type");
 
-        return modifier;
+        return func;
     }
 }
-

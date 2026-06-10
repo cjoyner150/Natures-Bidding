@@ -94,6 +94,7 @@ MonoBehaviour:
     BaseStats: {fileID: 11400000, guid: 00d09b787490d4b47851779da1458683, type: 2}
     statusEffectsOnStart:
     - {fileID: 11400000, guid: ed49091a3ba211540a2faaf9253a53f6, type: 2}
+    - {fileID: 11400000, guid: 96be2d294bd977f4ea133647a4c12901, type: 2}
     isGrounded: 0
     isGroundLayers:
       serializedVersion: 2

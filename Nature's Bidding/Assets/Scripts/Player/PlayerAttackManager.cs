@@ -97,11 +97,11 @@ public class PlayerAttackManager : NetworkBehaviour
             ctx.comboCDTimer = ctx.comboCD;
             ctx.combo++;
 
-            if (ctx.playerStats.Stealing > 0) RequestStealServerRpc(OwnerClientId, damagedObject.GetComponent<NetworkObject>().OwnerClientId, (int)(ctx.playerStats.Stealing));
             
             if (PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Combat)
             {
-
+                if (ctx.playerStats.Stealing > 0) RequestStealServerRpc(OwnerClientId, damagedObject.GetComponent<NetworkObject>().OwnerClientId, (int)(ctx.playerStats.Stealing));
+                if (ctx.playerStats.Lifesteal > 0) selfPlayerHealth.Heal(ctx.playerStats.Lifesteal);
             }
         }
         else if (callbackContext == IDamageable.HitCallbackContext.parried)

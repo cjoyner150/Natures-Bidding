@@ -80,6 +80,7 @@ public class PlayerAttackManager : NetworkBehaviour
                     else if (callbackContext == IDamageable.HitCallbackContext.parried)
                     {
                         ctx.shouldStunSelf = true;
+                        PlayerDeflectFeedbackClientRpc(attackTransform);
                     }
                 }
             }
@@ -94,4 +95,16 @@ public class PlayerAttackManager : NetworkBehaviour
         Gizmos.DrawLine(attackTransform.position, attackTransform.position + (transform.forward * attackLength));
     }
 
+
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+    public void PlayerDeflectFeedbackClientRpc(Vector3 fromPosition)
+    {
+        PlayerVisualEffectManager.SpawnDeflectEffectsOnPlayer?.Invoke(fromPosition);
+    }
+
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+    public void PlayerAttackFeedbackClientRpc(Vector3 fromPosition)
+    {
+        PlayerVisualEffectManager.SpawnAttackEffectsOnPlayer?.Invoke(OwnerClientId);
+    }
 }

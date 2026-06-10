@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_BlockAura
+  m_Name: M_LavaSplashCylinder
   m_Shader: {fileID: -6465566751694194690, guid: 4e8b250be0420cd47983ba5ce924c0dc, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -121,7 +121,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Tiling: {r: 3, g: 1, b: 0, a: 0}
-    - _Tint: {r: 0, g: 0.6298302, b: 1.4980392, a: 1}
+    - _Tint: {r: 3.9999995, g: 0.43671477, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &455914371515939252

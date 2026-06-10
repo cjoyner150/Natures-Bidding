@@ -62,4 +62,9 @@ public class Parry : State
         else return null;
     }
 
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+    public void PlayerParryFeedbackClientRpc(Vector3 fromPosition)
+    {
+        PlayerVisualEffectManager.SpawnParryEffectsOnPlayer?.Invoke(OwnerClientId);
+    }
 }

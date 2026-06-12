@@ -22,10 +22,8 @@ using TMPro;
 ///   Click Buy  → upgrade: deduct coins, apply stat.
 ///              → pot: deduct coins, open full-screen PotManager sequence.
 /// </summary>
-public class ShopManager : NetworkBehaviour
+public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandler
 {
-    public static ShopManager Instance { get; private set; }
-
     public static int SmallPotCost => Instance?.smallPotCost ?? 20;
     public static int GrandPotCost => Instance?.grandPotCost ?? 50;
     public static int PotCost      => SmallPotCost; // legacy fallback
@@ -65,10 +63,9 @@ public class ShopManager : NetworkBehaviour
 
     #region Lifecycle
 
-    void Awake()
+    protected override void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
-        Instance = this;
+        base.Awake();
     }
 
     public override void OnNetworkSpawn()
@@ -83,6 +80,14 @@ public class ShopManager : NetworkBehaviour
 
         if (IsServer)
             ServerRollAllOfferings();
+    }
+
+    [Rpc(SendTo.Server)]
+    public void StartShopPhaseRpc()
+    {
+        if (!IsServer) return;
+
+        PersistentGameStateManager.Instance?.BeginShopPhaseServer();
     }
 
     public void PopulateShopsServerSide() { }
@@ -380,7 +385,9 @@ public class ShopManager : NetworkBehaviour
 
     #region Navigation
 
-    public void OnBackToBidding() => GameFlowManager.Instance?.StartBiddingPhaseRpc();
+    public void OnBackToBidding() => BiddingManager.Instance?.StartBiddingPhaseRpc();
+
+    public void OnPlayerDeath(ulong clientId) { }
 
     #endregion
 }

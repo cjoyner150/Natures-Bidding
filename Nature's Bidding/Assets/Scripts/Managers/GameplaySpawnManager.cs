@@ -17,7 +17,7 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
     [SerializeField] private GameObject playerHealthBarPrefab;
     [SerializeField] private Transform playerHealthBarParent;
 
-    private void Awake()
+    protected override void Awake()
     {
         if (HasInstance)
         {

@@ -117,7 +117,9 @@ MonoBehaviour:
     airControlMultiplier: 0.75
     forceToAdd: {x: 0, y: 0, z: 0}
     forceMode: 0
-    jumpImpulse: 2
+    maxJumps: 0
+    currentJumps: 0
+    jumpHeight: 1
     jumpHeldForce: 800
     jumpHeldAllowedTime: 0.2
     extraGravityMultiplier: 1

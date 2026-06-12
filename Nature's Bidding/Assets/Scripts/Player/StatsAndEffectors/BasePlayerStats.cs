@@ -7,6 +7,9 @@ public class BasePlayerStats : ScriptableObject
     public float Damage;
     public float AttackSpeed;
     public float MoveSpeed;
+    public float Jumps;
+    public float Size;
+    public float KnockbackResistance;
     public float ParryDuration;
     public float ParryCooldown;
     public float DashDistance;

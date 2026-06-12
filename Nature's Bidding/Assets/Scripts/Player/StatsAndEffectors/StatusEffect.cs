@@ -28,6 +28,7 @@ public abstract class StatusEffect
             : opType == OperatorType.Addition ? x => x + val
             : opType == OperatorType.Division ? x => x / val
             : opType == OperatorType.Subtraction ? x => x - val
+            : opType == OperatorType.SetEqual ? x => val
             : throw new Exception("Basic Operation should only be of a base operation type");
 
         return func;

@@ -46,7 +46,9 @@ public class PlayerContext
     public ForceMode forceMode;
 
     [Header("Jump Values")]
-    public float jumpImpulse;
+    public float maxJumps;
+    public float currentJumps;
+    public float jumpHeight;
     public float jumpHeldForce;
     public float jumpHeldAllowedTime;
     public float extraGravityMultiplier;

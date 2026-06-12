@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public enum OperatorType { Addition, Multiplication, Division, Subtraction}
+public enum OperatorType { Addition, Multiplication, Division, Subtraction, SetEqual }
 
 public abstract class StatusEffectorSO : ScriptableObject
 {

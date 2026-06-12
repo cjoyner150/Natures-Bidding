@@ -56,7 +56,8 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
                 "damage_up",
                 "dash_distance_up",
                 "fast_hands",
-                "absorber"
+                "absorber",
+                "snake_mask"
             }
         };
 

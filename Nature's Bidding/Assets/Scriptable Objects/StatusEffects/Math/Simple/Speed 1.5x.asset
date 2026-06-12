@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce4ee29c916845b4fb8bc73834bef549, type: 3}
   m_Name: Speed 1.5x
   m_EditorClassIdentifier: Assembly-CSharp::BasicStatusEffectorSO
-  Name: 
+  _id: speed_1.5x
+  Title: Speed 1.5x
   Description: 
   Duration: -1
   Stat: 3

@@ -8,7 +8,6 @@ public class PlayerContext
 
     [Header("Stats")]
     public BasePlayerStats BaseStats;
-    public List<StatusEffectorSO> statusEffectsOnStart;
     public Stats playerStats;
 
     [Header("World Context")]

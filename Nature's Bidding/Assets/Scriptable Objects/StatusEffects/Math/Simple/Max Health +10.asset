@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce4ee29c916845b4fb8bc73834bef549, type: 3}
   m_Name: Max Health +10
   m_EditorClassIdentifier: Assembly-CSharp::BasicStatusEffectorSO
-  Name: 
+  _id: max_health_+10
+  Title: Max Health +10
   Description: 
   Duration: -1
   Stat: 0

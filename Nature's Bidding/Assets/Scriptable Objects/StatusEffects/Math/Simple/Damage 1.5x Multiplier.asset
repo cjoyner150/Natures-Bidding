@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce4ee29c916845b4fb8bc73834bef549, type: 3}
   m_Name: Damage 1.5x Multiplier
   m_EditorClassIdentifier: Assembly-CSharp::BasicStatusEffectorSO
-  Name: 
+  _id: damage_1.5x_multiplier
+  Title: Damage 1.5x Multiplier
   Description: 
   Duration: -1
   Stat: 1

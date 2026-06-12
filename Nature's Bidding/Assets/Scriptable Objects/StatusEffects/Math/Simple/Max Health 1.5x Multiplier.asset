@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce4ee29c916845b4fb8bc73834bef549, type: 3}
   m_Name: Max Health 1.5x Multiplier
   m_EditorClassIdentifier: Assembly-CSharp::BasicStatusEffectorSO
-  Name: 
+  _id: max_health_1.5x_multiplier
+  Title: Max Health 1.5x Multiplier
   Description: 
   Duration: -1
   Stat: 0

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4efec467e6a1e7d45abd4adac07c4b70, type: 3}
   m_Name: Gain Health By Movement Speed
   m_EditorClassIdentifier: Assembly-CSharp::ComplexNumericalStatusEffectorSO
-  Name: 
+  _id: gain_health_by_movement_speed
+  Title: Gain Health By Movement Speed
   Description: 
   Duration: -1
   Stat: 0

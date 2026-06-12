@@ -29,7 +29,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             ctx.playerStats = new Stats(statsMediator, ctx.BaseStats);
 
             playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
-            playerStatusEffectManager.Initialize(ctx.playerStats, ctx.statusEffectsOnStart);
+            playerStatusEffectManager.Initialize(ctx.playerStats, OwnerClientId);
 
             if (LobbyServerHandler.Instance != null)
                 LobbyServerHandler.OnPlayerRegistered.AddListener(OnPlayerRegistered);

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce4ee29c916845b4fb8bc73834bef549, type: 3}
   m_Name: Attack Speed +5
   m_EditorClassIdentifier: Assembly-CSharp::BasicStatusEffectorSO
-  Name: 
+  _id: attack_speed_+5
+  Title: Attack Speed +5
   Description: 
   Duration: -1
   Stat: 2

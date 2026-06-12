@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityUtils;
 
@@ -11,9 +12,9 @@ public class PlayerStatusEffectManager : MonoBehaviour
     private StatsMediator statsMediator;
     private Stats playerStats;
     
-    public void Initialize(Stats stats, List<StatusEffectorSO> effectorSOs)
+    public void Initialize(Stats stats, ulong clientId)
     {
-        StatusEffectors = effectorSOs;
+        StatusEffectors = GetStatusEffectors(clientId);
         _debugStatusEffectors = StatusEffectors;
 
         statsMediator = stats.Mediator;
@@ -21,6 +22,20 @@ public class PlayerStatusEffectManager : MonoBehaviour
         playerStats = stats;
 
         AddModifiers();
+    }
+
+    List<StatusEffectorSO> GetStatusEffectors(ulong clientId)
+    {
+        PersistentPlayerData data = PersistentPlayerRegistry.Instance.GetByClientId(clientId);
+
+        List<StatusEffectorSO> effectors = new();
+
+        effectors = data.GetArtifactEffectors()
+            .Concat(data.GetMaskEffectors())
+            .Concat(data.GetTarotEffectors())
+            .ToList();
+
+        return effectors;
     }
 
     void AddModifiers()

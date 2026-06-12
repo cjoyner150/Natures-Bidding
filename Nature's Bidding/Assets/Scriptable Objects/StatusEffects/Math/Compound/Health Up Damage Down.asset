@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f67ded6ec6d69594f86cb4f731577c05, type: 3}
   m_Name: Health Up Damage Down
   m_EditorClassIdentifier: Assembly-CSharp::CompositeStatusEffectorSO
-  Name: 
+  _id: health_up_damage_down
+  Title: Health Up Damage Down
   Description: 
   Duration: -1
   Effects:

@@ -16,8 +16,8 @@ public class StatusEffectorSOEditor : Editor
 
     private void CheckForDuplicates()
     {
-        var so = (StatusEffectorSO)target;
-        if (string.IsNullOrEmpty(so.Id)) return;
+        var so = target as StatusEffectorSO;
+        if (so == null || string.IsNullOrEmpty(so.Id)) return;
 
         string[] guids = AssetDatabase.FindAssets($"t:{typeof(StatusEffectorSO).Name}");
 
@@ -27,7 +27,7 @@ public class StatusEffectorSOEditor : Editor
         foreach (var guid in guids)
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
-            var other = AssetDatabase.LoadAssetAtPath<StatusEffectorSO>(path);
+            var other = AssetDatabase.LoadAssetAtPath<ScriptableObject>(path) as StatusEffectorSO;
 
             if (other == null || other == target) continue;
 

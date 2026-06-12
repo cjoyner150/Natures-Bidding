@@ -15,17 +15,19 @@ public enum StatType
     Momentum,
     ComboDamage,
     Stealing,
-    Lifesteal
+    Lifesteal,
+    Gold
 }
 
 public class Stats
 {
     readonly StatsMediator mediator;
     readonly BasePlayerStats baseStats;
+    readonly PersistentPlayerData playerData;
 
     public StatsMediator Mediator => mediator;
 
-    public Stats(StatsMediator mediator, BasePlayerStats baseStats)
+    public Stats(StatsMediator mediator, BasePlayerStats baseStats, PersistentPlayerData playerData)
     {
         this.mediator=mediator;
         this.baseStats=baseStats;
@@ -196,6 +198,7 @@ public class Stats
             : type == StatType.ComboDamage ? ComboDamage
             : type == StatType.Stealing ? Stealing
             : type == StatType.Lifesteal ? Lifesteal
+            : type == StatType.Gold ? playerData.gold
             : throw new Exception($"Unhandled StatType: {type}");
     }
 }

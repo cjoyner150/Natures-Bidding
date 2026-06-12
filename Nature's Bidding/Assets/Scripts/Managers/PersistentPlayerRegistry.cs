@@ -48,7 +48,14 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
             playerName = playerName,
             playerIndex = index,
             gold = 100,
-            combatWins = 0
+            combatWins = 0,
+
+            artifacts =
+            {
+                "hp_up",
+                "damage_up",
+                "dash_distance_up"
+            }
         };
 
         _playerData[authId] = data;

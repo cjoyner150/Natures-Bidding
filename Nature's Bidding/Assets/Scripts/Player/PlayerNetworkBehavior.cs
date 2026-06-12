@@ -26,7 +26,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             playerInput.InitializePlayer(ctx);
 
             var statsMediator = new StatsMediator();
-            ctx.playerStats = new Stats(statsMediator, ctx.BaseStats);
+            ctx.playerStats = new Stats(statsMediator, ctx.BaseStats, PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId));
 
             playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
             playerStatusEffectManager.Initialize(ctx.playerStats, OwnerClientId);

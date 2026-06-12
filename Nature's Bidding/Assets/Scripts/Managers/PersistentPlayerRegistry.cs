@@ -54,7 +54,9 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
             {
                 "hp_up",
                 "damage_up",
-                "dash_distance_up"
+                "dash_distance_up",
+                "fast_hands",
+                "absorber"
             }
         };
 

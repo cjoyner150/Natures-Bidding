@@ -29,6 +29,7 @@ public class Stats
 
     public Stats(StatsMediator mediator, BasePlayerStats baseStats, PersistentPlayerData playerData)
     {
+        this.playerData = playerData;
         this.mediator=mediator;
         this.baseStats=baseStats;
     }
@@ -39,7 +40,7 @@ public class Stats
                $"MoveSpeed: {MoveSpeed}, ParryDuration: {ParryDuration}, ParryCooldown: {ParryCooldown}, " +
                $"DashDistance: {DashDistance}, DashCooldown: {DashCooldown}, CritChance: {CritChance}, " +
                $"CritDamageMultiplier: {CritDamageMultiplier}, Momentum: {Momentum}, " +
-               $"ComboMultiplier: {ComboDamage}, Stealing: {Stealing}";
+               $"ComboMultiplier: {ComboDamage}, Stealing: {Stealing}, Lifesteal: {Lifesteal}, Gold: {playerData.gold}";
     }
 
     public float MaxHealth

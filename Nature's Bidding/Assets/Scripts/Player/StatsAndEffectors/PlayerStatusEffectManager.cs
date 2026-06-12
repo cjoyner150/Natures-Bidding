@@ -8,6 +8,7 @@ public class PlayerStatusEffectManager : MonoBehaviour
     [SerializeField] List<StatusEffectorSO> _debugStatusEffectors = new();
 
     List<StatusEffectorSO> StatusEffectors = new();
+    List<StatusEffect> activeEffects = new();
 
     private StatsMediator statsMediator;
     private Stats playerStats;
@@ -45,6 +46,7 @@ public class PlayerStatusEffectManager : MonoBehaviour
             foreach (var effect in effector.GetStatusEffects())
             {
                 effect.Initialize(playerStats);
+                activeEffects.Add(effect);
 
                 var modifier = effect.GetStatsModifier();
 
@@ -57,13 +59,11 @@ public class PlayerStatusEffectManager : MonoBehaviour
     {
         statsMediator?.Update(Time.deltaTime);
 
-        foreach (var effector in StatusEffectors)
+        foreach (var effect in activeEffects)
         {
-            foreach (var effect in effector.GetStatusEffects())
-            {
-                effect.OnTick(Time.deltaTime);
-            }
+            effect.OnTick(Time.deltaTime);
         }
+        
 
         print("[Player Stats] Modifiers Initialized. "+playerStats?.ToString());
     }

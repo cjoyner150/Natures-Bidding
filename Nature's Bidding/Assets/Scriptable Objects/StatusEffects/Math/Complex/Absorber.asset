@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ComplexNumericalStatusEffectorSO
   _id: absorber
   Title: Absorber
-  Description: Take a little bit of your opponents health
+  Description: Absorb your opponents health. More effective with higher max health.
   Duration: -1
   Stat: 13
   TargetOperationType: 0

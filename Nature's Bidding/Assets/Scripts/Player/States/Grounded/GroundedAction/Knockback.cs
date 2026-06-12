@@ -36,7 +36,7 @@ public class Knockback : State
 
     protected override void OnUpdate(float deltaTime)
     {
-        ctx.rb.linearVelocity = momentumDirection * ctx.desiredMaxSpeed;
+        ctx.rb.linearVelocity = momentumDirection * ctx.desiredMaxSpeed / ctx.playerStats.KnockbackResistance;
 
         HandleRotation(deltaTime);
 

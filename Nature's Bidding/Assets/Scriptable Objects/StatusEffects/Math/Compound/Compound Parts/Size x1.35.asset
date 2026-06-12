@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce4ee29c916845b4fb8bc73834bef549, type: 3}
-  m_Name: Snake Mask
+  m_Name: Size x1.35
   m_EditorClassIdentifier: Assembly-CSharp::BasicNumericalStatusEffectorSO
-  _id: snake_mask
-  Title: Snake Mask
-  Description: Snakes don't jump
+  _id: size_x1.35
+  Title: Size x1.35
+  Description: 
   Duration: -1
-  Stat: 4
-  Value: 0
-  OperationType: 4
+  Stat: 5
+  Value: 1.35
+  OperationType: 1

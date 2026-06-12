@@ -50,6 +50,11 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
             gold = 100,
             combatWins = 0,
 
+            masks =
+            {
+                "butterfly_mask"
+            },
+
             artifacts =
             {
                 "hp_up",
@@ -57,7 +62,6 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
                 "dash_distance_up",
                 "fast_hands",
                 "absorber",
-                "snake_mask"
             }
         };
 

@@ -17,8 +17,9 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
     [SerializeField] private GameObject playerHealthBarPrefab;
     [SerializeField] private Transform playerHealthBarParent;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         if (HasInstance)
         {
             Destroy(gameObject);
@@ -26,7 +27,6 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
         }
 
         base.Awake();
-        DontDestroyOnLoad(gameObject);
         ResolvePlayerPrefabFromNetworkManager();
     }
 

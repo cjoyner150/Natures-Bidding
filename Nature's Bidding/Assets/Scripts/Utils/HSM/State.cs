@@ -1,3 +1,4 @@
+﻿using MoreMountains.Tools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,10 +7,11 @@ using UnityEngine;
 
 namespace HSM
 {
-    public abstract class State {
+    public abstract class State
+    {
         public readonly StateMachine Machine;
         public readonly State Parent;
-        public State ActiveChild;
+        public State ActiveChild { get; internal set; }
 
         readonly List<IActivity> activities = new List<IActivity>();
         public IReadOnlyList<IActivity> Activities => activities;
@@ -20,118 +22,113 @@ namespace HSM
             Parent = parent;
         }
 
-        public void Add(IActivity a) { if (a != null)  activities.Add(a); }
+        public void Add(IActivity a) { if (a != null) activities.Add(a); }
+
+        // ─── Overridable lifecycle ────────────────────────────────────────────
 
         /// <summary>
-        /// Get the initial child state that should be entered when this state begins (null = this is the leaf)
+        /// Return the child state that should be active when this state is
+        /// entered with no explicit target. Returning null means this is a leaf.
         /// </summary>
-        /// <returns></returns>
         protected virtual State GetInitialState() => null;
 
         /// <summary>
-        /// Target state to switch to this frame (null = stay in this state this frame)
+        /// Return a non-null state to request a transition this tick.
         /// </summary>
-        /// <returns></returns>
         protected virtual State GetTransition() => null;
-
-        #region Overridable lifecycle methods
 
         protected virtual void OnEnter() { }
         protected virtual void OnExit() { }
         protected virtual void OnUpdate(float deltaTime) { }
 
-        #endregion
-
-        #region Invariable sequence methods
+        // ─── Internal lifecycle (called by StateMachine / TransitionSequencer) ─
 
         /// <summary>
-        /// Invariable enter method. Behavior should be implemented in overriden OnEnter().
+        /// Pure lifecycle enter. No child cascading — path resolution is the
+        /// sequencer's responsibility.
         /// </summary>
-        internal void Enter() {
-            //Debug.Log($"{this.GetType().Name} is being entered");
-
+        internal void Enter()
+        {
+            HSMDebug.Log($"[Enter] {GetType().Name}");
             if (Parent != null) Parent.ActiveChild = this;
-            
             OnEnter();
-
-            // If there is an initial child state defined, enter it
-            State init = GetInitialState();
-            if (init != null) init.Enter();
         }
 
         /// <summary>
-        /// Invariable exit method. Behavior should be implemented in overriden OnExit().
+        /// Recursive exit — exits active child first, then self.
         /// </summary>
         internal void Exit()
         {
+            HSMDebug.Log($"[Exit] {GetType().Name}");
             if (ActiveChild != null) ActiveChild.Exit();
             ActiveChild = null;
-
             OnExit();
         }
 
-        /// <summary>
-        /// Invariable update method. Behavior should be implemented in overriden OnUpdate().
-        /// </summary>
-        internal void Update(float deltaTime) {
-
-            State t = GetTransition(); 
-            if (t != null) // If we find a transition this frame, request a transition and return out of update
+        internal void Update(float deltaTime)
+        {
+            State t = GetTransition();
+            if (t != null)
             {
                 Machine.Sequencer.RequestTransition(Leaf(), t);
                 return;
             }
-
             if (ActiveChild != null) ActiveChild.Update(deltaTime);
-
             OnUpdate(deltaTime);
         }
 
-        #endregion
-
-        #region Helper methods
+        // ─── Internal path resolution ─────────────────────────────────────────
 
         /// <summary>
-        /// Returns deepest currently active state. (The leaf of the active path)
+        /// Walks GetInitialState() from this state down to the leaf that would
+        /// be entered if this state were targeted in a transition.
+        /// Includes cycle detection.
         /// </summary>
-        /// <returns></returns>
+        internal State ResolveLeaf()
+        {
+            var visited = new HashSet<State>();
+            State s = this;
+            while (true)
+            {
+                if (!visited.Add(s))
+                {
+                    Debug.LogError($"[HSM] Cycle detected in GetInitialState() at {s.GetType().Name}. Stopping resolution.");
+                    return s;
+                }
+                State next = s.GetInitialState();
+                if (next == null) return s;
+                s = next;
+            }
+        }
+
+        // ─── Public helpers ───────────────────────────────────────────────────
+
+        /// <summary>
+        /// Returns the deepest currently active state.
+        /// </summary>
         public State Leaf()
         {
             State s = this;
             while (s.ActiveChild != null) s = s.ActiveChild;
-
             return s;
         }
 
         /// <summary>
-        /// Yields this state and then each state up the path. (self -> parent -> ... -> root)
+        /// Walks up the parent chain and returns the first ancestor of type T.
         /// </summary>
-        /// <returns></returns>
-        public IEnumerable<State> GetActivePath()
-        {
-            for (State s = this; s != null; s = s.Parent) yield return s;
-        }
-
         public T GetParentOfType<T>() where T : State
         {
-            State p = this;
-
-            while (p != null)
-            {
-                if (p.IsConvertibleTo<T>(true))
-                {
-                    return (T)p;
-                }
-
-                p = p.Parent;
-
-            }
-
+            for (State p = Parent; p != null; p = p.Parent)
+                if (p is T t) return t;
             return null;
         }
 
-        #endregion
-
+        /// <summary>
+        /// Yields self and each ancestor up to the root.
+        /// </summary>
+        public IEnumerable<State> AncestorPath()
+        {
+            for (State s = this; s != null; s = s.Parent) yield return s;
+        }
     }
-
 }

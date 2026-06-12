@@ -144,7 +144,7 @@ public class PlayerInputManager : MonoBehaviour
 
     static string ActivePathString(State s)
     {
-        return string.Join(" > ", s.GetActivePath().AsEnumerable().Reverse().Select(n => n.GetType().Name));
+        return string.Join(" > ", s.AncestorPath().Reverse().Select(n => n.GetType().Name));
     }
 
     void PlayerInput()

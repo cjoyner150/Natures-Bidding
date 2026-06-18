@@ -26,7 +26,7 @@ public class Stats
 {
     readonly StatsMediator mediator;
     readonly BasePlayerStats baseStats;
-    readonly PersistentPlayerData playerData;
+    public readonly PersistentPlayerData playerData;
 
     public StatsMediator Mediator => mediator;
 

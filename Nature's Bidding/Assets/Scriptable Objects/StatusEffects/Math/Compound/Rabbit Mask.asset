@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CompositeStatusEffectorSO
   _id: rabbit_mask
   Title: Rabbit Mask
-  Description: 
+  Description: Decreases health and size
   Duration: -1
   Effects:
   - {fileID: 11400000, guid: b312be5b2fb916741909a1b9ef17505c, type: 2}

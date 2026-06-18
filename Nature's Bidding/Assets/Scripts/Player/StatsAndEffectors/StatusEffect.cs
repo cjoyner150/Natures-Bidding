@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using Unity.Netcode;
+using UnityEngine;
 
 [System.Serializable]
 public abstract class StatusEffect
@@ -13,14 +16,19 @@ public abstract class StatusEffect
     {
         Stats = stats;
         OnInitialize();
-        OnStart();
     }
 
     public abstract StatsModifier GetStatsModifier();
     public virtual void OnInitialize() { }
-    public virtual void OnStart() { }
     public virtual void OnTick(float delta) { }
     public virtual void OnEnd() { }
+
+    public GameObject GetAttachedPlayer()
+    {
+        ulong clientId = Stats.playerData.clientId;
+        NetworkObject networkObject = NetworkManager.Singleton.ConnectedClientsList.First(x => x.ClientId == clientId).PlayerObject;
+        return networkObject.gameObject;
+    }
 
     public static Func<float, float> GetFuncByOperation(OperatorType opType, float val)
     {

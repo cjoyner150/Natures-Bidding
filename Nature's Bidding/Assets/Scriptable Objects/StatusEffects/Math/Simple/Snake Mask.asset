@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BasicNumericalStatusEffectorSO
   _id: snake_mask
   Title: Snake Mask
-  Description: Snakes don't jump
+  Description: Snakes can't jump
   Duration: -1
   Stat: 4
   Value: 0

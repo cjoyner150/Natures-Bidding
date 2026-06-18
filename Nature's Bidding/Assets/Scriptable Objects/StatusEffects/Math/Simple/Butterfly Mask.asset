@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BasicNumericalStatusEffectorSO
   _id: butterfly_mask
   Title: Butterfly Mask
-  Description: 
+  Description: Take more knockback
   Duration: -1
   Stat: 6
   Value: 3
-  OperationType: 1
+  OperationType: 2

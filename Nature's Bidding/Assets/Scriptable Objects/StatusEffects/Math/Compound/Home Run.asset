@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CompositeStatusEffectorSO
   _id: home_run
   Title: Home Run
-  Description: 
+  Description: Drastically slows attack speed, and increases damage
   Duration: -1
   Effects:
   - {fileID: 11400000, guid: 119926a473709b340b9f0955d0de0c45, type: 2}

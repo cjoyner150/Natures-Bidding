@@ -11,6 +11,7 @@ public class PlayerInputManager : MonoBehaviour
 
     [Header("Player Controls")]
     private PlayerControls controls;
+    private ReversedPlayerControls reversedControls;
     private InputAction move;
     private InputAction sprint;
     private InputAction dash;
@@ -37,13 +38,13 @@ public class PlayerInputManager : MonoBehaviour
         ctx = context;
 
         controls = new PlayerControls();
-        move = controls.PlayerGameplay.Move;
-        sprint = controls.PlayerGameplay.Sprint;
-        dash = controls.PlayerGameplay.Dash;
-        jump = controls.PlayerGameplay.Jump;
-        attack = controls.PlayerGameplay.Attack;
-        parry = controls.PlayerGameplay.Parry;
-        pause = controls.PlayerGameplay.Pause;
+        move ??= controls.PlayerGameplay.Move;
+        sprint ??= controls.PlayerGameplay.Sprint;
+        dash ??= controls.PlayerGameplay.Dash;
+        jump ??= controls.PlayerGameplay.Jump;
+        attack ??= controls.PlayerGameplay.Attack;
+        parry ??= controls.PlayerGameplay.Parry;
+        pause ??= controls.PlayerGameplay.Pause;
 
         ctx.orientation = Instantiate(new GameObject(), transform).transform;
         ctx.orientation.rotation = transform.rotation;
@@ -83,6 +84,9 @@ public class PlayerInputManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        reversedControls?.Dispose();
+        controls?.Dispose();
+
         controls?.Disable();
         move?.Disable();
         sprint?.Disable();
@@ -163,6 +167,54 @@ public class PlayerInputManager : MonoBehaviour
 
         ctx.moveInput = moveDirection;
 
+    }
+
+    public void ReverseControls()
+    {
+        controls?.Dispose();
+
+        reversedControls ??= new();
+        reversedControls.Enable();
+
+        move = reversedControls.PlayerGameplay.Move;
+        sprint = reversedControls.PlayerGameplay.Sprint;
+        dash = reversedControls.PlayerGameplay.Dash;
+        jump = reversedControls.PlayerGameplay.Jump;
+        attack = reversedControls.PlayerGameplay.Attack;
+        parry = reversedControls.PlayerGameplay.Parry;
+        pause = reversedControls.PlayerGameplay.Pause;
+
+        move.Enable();
+        sprint.Enable();
+        dash.Enable();
+        jump.Enable();
+        attack.Enable();
+        parry.Enable();
+        pause.Enable();
+    }
+
+    public void ResetControls()
+    {
+        reversedControls?.Dispose();
+
+        controls ??= new();
+        controls.Enable();
+
+        move = controls.PlayerGameplay.Move;
+        sprint = controls.PlayerGameplay.Sprint;
+        dash = controls.PlayerGameplay.Dash;
+        jump = controls.PlayerGameplay.Jump;
+        attack = controls.PlayerGameplay.Attack;
+        parry = controls.PlayerGameplay.Parry;
+        pause = controls.PlayerGameplay.Pause;
+
+        move.Enable();
+        sprint.Enable();
+        dash.Enable();
+        jump.Enable();
+        attack.Enable();
+        parry.Enable();
+        pause.Enable();
     }
 
     void OnPausePressed(InputAction.CallbackContext callback)

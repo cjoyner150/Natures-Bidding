@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ComplexNumericalStatusEffectorSO
   _id: fast_hands
   Title: Fast Hands
-  Description: An experienced thief moves quickly
+  Description: An experienced thief can move a little quicker with more gold in their
+    purse
   Duration: -1
   Stat: 2
   TargetOperationType: 0

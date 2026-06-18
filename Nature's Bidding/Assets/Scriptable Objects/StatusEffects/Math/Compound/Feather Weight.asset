@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CompositeStatusEffectorSO
   _id: feather_weight
   Title: Feather Weight
-  Description: Move like a falcon
+  Description: Attack rapidly for decreased damage
   Duration: -1
   Effects:
   - {fileID: 11400000, guid: 01041b7e822d06b4888ab9f749434ecf, type: 2}

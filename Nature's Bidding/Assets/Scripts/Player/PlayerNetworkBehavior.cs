@@ -26,12 +26,12 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             var statsMediator = new StatsMediator();
             ctx.playerStats = new Stats(statsMediator, ctx.BaseStats, PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId));
 
-
-            playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
-            playerStatusEffectManager.Initialize(ctx.playerStats, OwnerClientId);
-            
             playerInput = gameObject.AddComponent<PlayerInputManager>();
+            playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
+
+            playerStatusEffectManager.Initialize(ctx.playerStats, OwnerClientId);
             playerInput.InitializePlayer(ctx);
+            
             
             ctx.maxJumps = ctx.playerStats.Jumps;
             transform.localScale *= ctx.playerStats.Size;

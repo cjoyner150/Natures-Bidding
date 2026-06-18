@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BasicNumericalStatusEffectorSO
   _id: turtle_mask
   Title: Turtle Mask
-  Description: 
+  Description: Drastically decreases movement speed
   Duration: -1
   Stat: 3
   Value: 0.1

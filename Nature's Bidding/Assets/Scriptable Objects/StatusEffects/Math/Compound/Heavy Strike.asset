@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CompositeStatusEffectorSO
   _id: heavy_strike
   Title: Heavy Strike
-  Description: Slow and heavy
+  Description: Doubles attack damage, but at the cost of half attack speed
   Duration: -1
   Effects:
   - {fileID: 11400000, guid: 25db85082c46af8408793ca37fc3e784, type: 2}

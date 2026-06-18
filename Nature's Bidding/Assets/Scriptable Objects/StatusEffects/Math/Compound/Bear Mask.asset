@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CompositeStatusEffectorSO
   _id: bear_mask
   Title: Bear Mask
-  Description: 
+  Description: Increases size and decreases movement speed
   Duration: -1
   Effects:
   - {fileID: 11400000, guid: 8e9e26aecf6a06744a08bc089657243b, type: 2}

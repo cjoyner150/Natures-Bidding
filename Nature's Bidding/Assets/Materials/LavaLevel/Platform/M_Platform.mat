@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: playerCloak
+  m_Name: M_Platform
   m_Shader: {fileID: 4800000, guid: d4b1f8e8d330f2b49989b5d7a3a6ade5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -26,11 +26,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 47d2c7f333de627438e4128c44d0aacf, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 91c83c90b34a21e47bc2c0ba2711ae13, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -38,7 +38,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailMask:
-        m_Texture: {fileID: 2800000, guid: 5c53d01d17ca0054c9f35a9cb9ef8fdf, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailNormalMap:
@@ -54,7 +54,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 47d2c7f333de627438e4128c44d0aacf, type: 3}
+        m_Texture: {fileID: 2800000, guid: f71dbcc0aa77cca4fb6509d03be5a65b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -62,7 +62,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 77d0b0d138d767a4d9a755f461d715b1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -159,7 +159,7 @@ Material:
     - _SpecularSize: 0.4
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
-    - _StepAmount: 2
+    - _StepAmount: 3
     - _StepWidth: 0.25
     - _Surface: 0
     - _UseRampTexture: 0
@@ -184,13 +184,13 @@ Material:
     - _RampDark: {r: 0.34905657, g: 0.34905657, b: 0.34905657, a: 0}
     - _RampLight: {r: 1, g: 1, b: 1, a: 0}
     - _RimColor: {r: 0, g: 0.7342432, b: 1, a: 1}
-    - _ShadowColor: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
+    - _ShadowColor: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 2, g: 2, b: 2, a: 1}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &711538717148924296
+--- !u!114 &880051855979492181
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

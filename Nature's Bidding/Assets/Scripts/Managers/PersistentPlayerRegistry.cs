@@ -52,7 +52,8 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
 
             masks =
             {
-                "butterfly_mask"
+                "butterfly_mask",
+                "bat_mask"
             },
 
             artifacts =
@@ -62,7 +63,6 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
                 "dash_distance_up",
                 "fast_hands",
                 "absorber",
-                "bat_mask"
             }
         };
 

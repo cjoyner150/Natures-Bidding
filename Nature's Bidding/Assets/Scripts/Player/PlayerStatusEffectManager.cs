@@ -45,7 +45,7 @@ public class PlayerStatusEffectManager : MonoBehaviour
         {
             foreach (var effect in effector.GetStatusEffects())
             {
-                effect.Initialize(playerStats);
+                effect.Initialize(playerStats, this);
                 activeEffects.Add(effect);
 
                 var modifier = effect.GetStatsModifier();

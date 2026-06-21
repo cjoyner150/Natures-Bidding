@@ -21,15 +21,6 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     [SerializeField] TextMeshProUGUI loadingProgress;
     [SerializeField] private int combatWinsRequiredToEnd = 3;
 
-    [Header("Game Flow")]
-    [SerializeField] private GameObject biddingCanvas;
-    [SerializeField] private GameObject shopCanvas;
-
-    [Header("Flow Managers")]
-    [SerializeField] private BiddingManager biddingManager;
-    [SerializeField] private ShopManager shopManager;
-    [SerializeField] private ReadyManager readyManager;
-
 
     private bool _isReturningToMenu = false;
     public bool IsReturningToMenu {
@@ -153,7 +144,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         await LoadNetworkedSceneAsync("LobbyScene");
     }
 
-    public async UniTask LoadBiddingLevel()
+    public async void LoadBiddingLevel()
     {
         SetLoadingState("Loading bidding...", true);
 
@@ -466,7 +457,14 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private void OnAllPlayersReadied()
     {
-        LoadBiddingLevel();
+        if (skipToCombat)
+        {
+            LoadCombatLevel();
+        }
+        else
+        {
+            LoadBiddingLevel();
+        }
     }
 
     public async void LoadCombatLevel()
@@ -497,6 +495,6 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         }
 
         State = GameState.Bidding;
-        await LoadBiddingLevel();
+        LoadBiddingLevel();
     }
 }

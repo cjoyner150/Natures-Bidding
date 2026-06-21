@@ -44,6 +44,17 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
         }
     }
 
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void RequestHealServerRpc(ulong targetClientId, float amount)
+    {
+        if (!IsServer) return;
+
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(targetClientId, out var targetClient)) return;
+
+        var playerHealth = targetClient.PlayerObject.GetComponent<PlayerHealth>();
+        playerHealth.health.Value = Mathf.Clamp(playerHealth.health.Value + amount, 0, playerHealth.maxHealth.Value);
+    }
+
     protected virtual void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage)
     {
         hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position);
@@ -134,5 +145,6 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
 public interface IGameServerHandler
 {
     void RequestHitPlayerServerRpc(ulong attackingPlayerId, ulong hitPlayerId, float damage);
+    void RequestHealServerRpc(ulong targetClientId, float amount);
     void OnPlayerDeath(ulong clientId);
 }

@@ -58,13 +58,13 @@ public class Parry : State
 
     protected override State GetTransition() 
     {
-        if (exitParry) return GetParentOfType<Grounded>().groundedLocomotion;
+        if (exitParry) return GetParentOfType<Grounded>().groundedLocomotion.idle; 
         else return null;
     }
 
-    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
-    public void PlayerParryFeedbackClientRpc(Vector3 fromPosition)
-    {
-        PlayerVisualEffectManager.SpawnParryEffectsOnPlayer?.Invoke(OwnerClientId);
-    }
+    //[Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+    //public void PlayerParryFeedbackClientRpc(Vector3 fromPosition)
+    //{
+    //    PlayerVisualEffectManager.SpawnParryEffectsOnPlayer?.Invoke(OwnerClientId);
+    //}
 }

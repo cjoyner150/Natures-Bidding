@@ -93,6 +93,12 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         }
     }
 
+    public void Heal(float amount)
+    {
+        if (!isDead && health.Value > 0)
+            _serverHandler.RequestHealServerRpc(OwnerClientId, amount);
+    }
+
     public void BeginParry()
     {
         isParrying.Value = true;
@@ -102,6 +108,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         isParrying.Value = false;
     }
+
 
     private void OnHealthChanged(float from, float to)
     {

@@ -22,14 +22,19 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
         if (IsOwner)
         {
-            playerInput = gameObject.AddComponent<PlayerInputManager>();
-            playerInput.InitializePlayer(ctx);
 
             var statsMediator = new StatsMediator();
-            ctx.playerStats = new Stats(statsMediator, ctx.BaseStats);
+            ctx.playerStats = new Stats(statsMediator, ctx.BaseStats, PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId));
 
+            playerInput = gameObject.AddComponent<PlayerInputManager>();
             playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
-            playerStatusEffectManager.Initialize(ctx.playerStats, ctx.statusEffectsOnStart);
+
+            playerStatusEffectManager.Initialize(ctx.playerStats, OwnerClientId);
+            playerInput.InitializePlayer(ctx);
+            
+            
+            ctx.maxJumps = ctx.playerStats.Jumps;
+            transform.localScale *= ctx.playerStats.Size;
 
             if (LobbyServerHandler.Instance != null)
                 LobbyServerHandler.OnPlayerRegistered.AddListener(OnPlayerRegistered);

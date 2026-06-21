@@ -34,8 +34,8 @@ public class FallLocomotion : State
     protected override State GetTransition()
     {
         State transition = (ctx.attackPressed && !ctx.attackOnCooldown) ? GetParentOfType<Fall>().fallAttack : null;
-
         transition ??= (ctx.dashPressed && !ctx.dashOnCooldown) ? GetParentOfType<Airborne>().airDash : null;
+        transition ??= (ctx.jumpPressed && ctx.currentJumps > 0) ? GetParentOfType<Airborne>().jump : null;
 
         return transition;
 

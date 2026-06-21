@@ -19,6 +19,7 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
 
     protected override void Awake()
     {
+        base.Awake();
         if (HasInstance)
         {
             Destroy(gameObject);
@@ -26,7 +27,6 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
         }
 
         base.Awake();
-        DontDestroyOnLoad(gameObject);
         ResolvePlayerPrefabFromNetworkManager();
     }
 

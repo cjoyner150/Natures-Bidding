@@ -8,7 +8,6 @@ public class PlayerContext
 
     [Header("Stats")]
     public BasePlayerStats BaseStats;
-    public List<StatusEffectorSO> statusEffectsOnStart;
     public Stats playerStats;
 
     [Header("World Context")]
@@ -47,7 +46,9 @@ public class PlayerContext
     public ForceMode forceMode;
 
     [Header("Jump Values")]
-    public float jumpImpulse;
+    public float maxJumps;
+    public float currentJumps;
+    public float jumpHeight;
     public float jumpHeldForce;
     public float jumpHeldAllowedTime;
     public float extraGravityMultiplier;
@@ -62,6 +63,9 @@ public class PlayerContext
     public float attackResponseForce;
     public bool hitResponse;
     public int attackActiveDelay;
+    public float comboCD;
+    public float comboCDTimer;
+    public int combo;
 
     [Header("Parry")]
     public bool parryResponse;

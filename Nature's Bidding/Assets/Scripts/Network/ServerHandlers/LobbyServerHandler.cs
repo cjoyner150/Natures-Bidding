@@ -8,7 +8,7 @@ using UnityUtils;
 
 public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGameServerHandler
 {
-    private HashSet<ulong> players = new();
+    private HashSet<ulong> _spawnedPlayers = new();
     private HashSet<ulong> _readiedPlayers = new();
 
     public static UnityEvent OnPlayerRegistered = new UnityEvent();
@@ -50,6 +50,7 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
     {
         PersistentPlayerRegistry.Instance.UnregisterLobbyPlayer(clientId);
         _readiedPlayers.Remove(clientId);
+        _spawnedPlayers.Remove(clientId);
 
         if (PersistentPlayerRegistry.Instance.GetAllPlayers().Count < PlayersRequiredBeforeStart)
             UnderPlayerRequirementClientRpc();
@@ -63,15 +64,15 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
             return;
         }
 
-        if (players.Contains(clientId)) return;
+        if (_spawnedPlayers.Contains(clientId)) return;
 
         NetworkObject playerNetObj = GameplaySpawnManager.Instance.SpawnPlayer(clientId);
-        players.Add(clientId);
+        _spawnedPlayers.Add(clientId);
 
         var playerHandler = playerNetObj.GetComponent<PlayerNetworkBehavior>();
-        playerHandler.NotifyRegisteredRpc(clientId, players.Count);
+        playerHandler.NotifyRegisteredRpc(clientId, _spawnedPlayers.Count);
 
-        if (players.Count >= PlayersRequiredBeforeStart)
+        if (_spawnedPlayers.Count >= PlayersRequiredBeforeStart)
             EnoughPlayersRegisteredClientRpc();
     }
 
@@ -113,10 +114,13 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
     protected override void OnPlayerReconnected(ulong clientId, PersistentPlayerData data)
     {
         Debug.LogWarning($"Unexpected reconnect: {data.playerName} tried to reconnect in lobby. Ignoring.");
+        PersistentPlayerRegistry.Instance.UnregisterLobbyPlayer(clientId);
+        OnNewPlayerConnected(clientId, data.authenticationId, data.playerName);
     }
 
     protected override void OnNewPlayerConnected(ulong clientId, string authId, string playerName)
     {
+        PersistentPlayerRegistry.Instance.SyncAllToClient(clientId);
         PersistentPlayerRegistry.Instance.RegisterPlayer(clientId, authId, playerName);
         SpawnAndRegisterPlayer(clientId);
     }

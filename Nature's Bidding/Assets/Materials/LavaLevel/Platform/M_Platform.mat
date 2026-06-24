@@ -147,8 +147,8 @@ Material:
     - _SecondaryTextureStrength: 0
     - _ShadowBlur: 1
     - _ShadowMixMode: 0
-    - _ShadowSize: 0.5
-    - _ShadowStrength: 1
+    - _ShadowSize: 0.575
+    - _ShadowStrength: 0.288
     - _SharpRimLight: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
@@ -159,7 +159,7 @@ Material:
     - _SpecularSize: 0.4
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
-    - _StepAmount: 3
+    - _StepAmount: 14
     - _StepWidth: 0.25
     - _Surface: 0
     - _UseRampTexture: 0

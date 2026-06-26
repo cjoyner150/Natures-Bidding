@@ -5,9 +5,9 @@ using UnityUtils;
 
 public class PlayerStatusEffectManager : MonoBehaviour
 {
-    [SerializeField] List<StatusEffectorSO> _debugStatusEffectors = new();
+    [SerializeField] List<StatusEffectorSO> _debugShowCurrentStatusEffectors = new();
+    [SerializeField] List<StatusEffectorSO> _debugAddStatusEffectors = new();
 
-    List<StatusEffectorSO> StatusEffectors = new();
     List<StatusEffect> activeEffects = new();
 
     private StatsMediator statsMediator;
@@ -15,14 +15,12 @@ public class PlayerStatusEffectManager : MonoBehaviour
     
     public void Initialize(Stats stats, ulong clientId)
     {
-        StatusEffectors = GetStatusEffectors(clientId);
-        _debugStatusEffectors = StatusEffectors;
+        List<StatusEffectorSO> StatusEffectors = GetStatusEffectors(clientId);
 
         statsMediator = stats.Mediator;
-
         playerStats = stats;
 
-        AddModifiers();
+        AddModifiers(StatusEffectors);
     }
 
     List<StatusEffectorSO> GetStatusEffectors(ulong clientId)
@@ -39,9 +37,12 @@ public class PlayerStatusEffectManager : MonoBehaviour
         return effectors;
     }
 
-    void AddModifiers()
+    public void AddModifiers(List<StatusEffectorSO> addedEffects)
     {
-        foreach (var effector in StatusEffectors)
+        Debug.Log($"Added modifiers: {string.Join(", ", addedEffects.Select(x => x.Id))}");
+        _debugShowCurrentStatusEffectors.AddRange(addedEffects);
+
+        foreach (var effector in addedEffects)
         {
             foreach (var effect in effector.GetStatusEffects())
             {
@@ -53,6 +54,12 @@ public class PlayerStatusEffectManager : MonoBehaviour
                 if (modifier != null) statsMediator?.AddModifier(modifier);
             }
         }
+    }
+
+    [ContextMenu("Add Debug Modifiers")]
+    public void DebugAddModifiers()
+    {
+        AddModifiers(_debugAddStatusEffectors);
     }
 
     private void Update()

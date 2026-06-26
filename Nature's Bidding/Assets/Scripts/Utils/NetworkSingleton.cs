@@ -10,11 +10,19 @@ public class NetworkSingleton<T> : NetworkBehaviour where T : NetworkBehaviour
 {
     public static T Instance { get; private set; }
 
-    protected virtual void Awake()
+    public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
+
         if (Instance == null)
             Instance = this as T;
         else
             Destroy(gameObject);
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+        Instance = null;
     }
 }

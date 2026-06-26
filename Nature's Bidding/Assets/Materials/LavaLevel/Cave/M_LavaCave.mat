@@ -7,32 +7,33 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: playerCloak
-  m_Shader: {fileID: 4800000, guid: d4b1f8e8d330f2b49989b5d7a3a6ade5, type: 3}
+  m_Name: M_LavaCave
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _HIDERIMUNDERSHADOW_ON
-  - _SHADOWMIXMODE_MULTIPLY
-  - _SHARPRIMLIGHT_ON
-  - _USERIMLIGHT_ON
+  - _NORMALMAP
+  - _OCCLUSIONMAP
+  - _PARALLAXMAP
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 47d2c7f333de627438e4128c44d0aacf, type: 3}
+        m_Texture: {fileID: 2800000, guid: c948c6258b6f6a24b994f57e087c1e08, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 91c83c90b34a21e47bc2c0ba2711ae13, type: 3}
+        m_Texture: {fileID: 2800000, guid: ed43bd5584644ac45a2afecb824f7f4e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -40,7 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailMask:
-        m_Texture: {fileID: 2800000, guid: 5c53d01d17ca0054c9f35a9cb9ef8fdf, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailNormalMap:
@@ -51,47 +52,23 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _EmissionTexture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 47d2c7f333de627438e4128c44d0aacf, type: 3}
+        m_Texture: {fileID: 2800000, guid: c948c6258b6f6a24b994f57e087c1e08, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Normal:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: bae727c6cd93d0c41a1d7826d0f3886a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 5125bfaf842bb044fb9384471e45a346, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _RampTexture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SecondaryTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 5125bfaf842bb044fb9384471e45a346, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _VertexOffsetNoiseTexture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -111,69 +88,33 @@ Material:
     m_Floats:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
-    - _AlphaCutoff: 0.5
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _Contrast: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _Desaturation: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EmissionForce: 0
     - _EnvironmentReflections: 1
-    - _Framerate: 5
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HideRimUnderShadow: 1
     - _Metallic: 0
-    - _OcclusionStrength: 1
-    - _OutlineAlpha: 0
-    - _OutlineWidth: 0
-    - _Parallax: 0.005
-    - _QueueControl: 0
+    - _OcclusionStrength: 0.451
+    - _Parallax: 0.036
     - _QueueOffset: 0
-    - _RampOffset: 0.5
     - _ReceiveShadows: 1
-    - _RimAmount: 0.377
-    - _RimPower: 0.705
-    - _SecondaryTextureSize: 1
-    - _SecondaryTextureSpeedFactor: 0
-    - _SecondaryTextureStrength: 0
-    - _ShadowBlur: 1
-    - _ShadowMixMode: 0
-    - _ShadowSize: 0.5
-    - _ShadowStrength: 1
-    - _SharpRimLight: 1
-    - _Smoothness: 0.5
+    - _Smoothness: 0.301
     - _SmoothnessTextureChannel: 0
-    - _SpecularFalloff: 1
-    - _SpecularForceUnderShadow: 0
     - _SpecularHighlights: 1
-    - _SpecularPower: 1
-    - _SpecularSize: 0.4
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
-    - _StepAmount: 2
-    - _StepWidth: 0.25
     - _Surface: 0
-    - _UseRampTexture: 0
-    - _UseRimLight: 1
-    - _UseSpecular: 0
-    - _UseVertexColors: 0
-    - _UseVertexOffset: 0
-    - _VertexOffsetFrequency: 2
-    - _VertexOffsetMagnitude: 0.05
-    - _VertexOffsetX: 0.5
-    - _VertexOffsetY: 0.5
-    - _VertexOffsetZ: 0.5
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
@@ -181,18 +122,10 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RampDark: {r: 0.34905657, g: 0.34905657, b: 0.34905657, a: 0}
-    - _RampLight: {r: 1, g: 1, b: 1, a: 0}
-    - _RimColor: {r: 0.23584908, g: 0.23584908, b: 0.23584908, a: 1}
-    - _ShadowColor: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _SpecularColor: {r: 2, g: 2, b: 2, a: 1}
-    - _Tint: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &711538717148924296
+--- !u!114 &1474490365418465919
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

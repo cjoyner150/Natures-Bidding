@@ -10,12 +10,14 @@ public class PlayerStatusEffectManager : MonoBehaviour
 
     List<StatusEffect> activeEffects = new();
 
+    private PlayerHealth playerHealth;
     private StatsMediator statsMediator;
     private Stats playerStats;
     
     public void Initialize(Stats stats, ulong clientId)
     {
         List<StatusEffectorSO> StatusEffectors = GetStatusEffectors(clientId);
+        playerHealth = GetComponent<PlayerHealth>();
 
         statsMediator = stats.Mediator;
         playerStats = stats;
@@ -54,6 +56,8 @@ public class PlayerStatusEffectManager : MonoBehaviour
                 if (modifier != null) statsMediator?.AddModifier(modifier);
             }
         }
+
+        playerHealth.SendMaxHealthToServerRpc(playerStats.MaxHealth, playerHealth.OwnerClientId);
     }
 
     [ContextMenu("Add Debug Modifiers")]

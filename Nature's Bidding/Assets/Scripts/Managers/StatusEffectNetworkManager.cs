@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
@@ -17,11 +18,20 @@ public class StatusEffectNetworkManager : NetworkSingleton<StatusEffectNetworkMa
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void ApplyToPlayerServerRpc(ulong playerId, string effectIds)
     {
-        Debug.Log($"Server received {(string.Join(", ", effectIds))} for {playerId}");
-        if (NetworkManager.Singleton.ConnectedClientsIds.Contains(playerId))
-        {
-            ApplyToPlayerClientRpc(effectIds, RpcTarget.Single(playerId, RpcTargetUse.Temp));
-        }
+        Debug.Log($"Server received {effectIds} for {playerId}");
+        ApplyToPlayerWhenReady(playerId, effectIds).Forget();
+    }
+
+    private async UniTaskVoid ApplyToPlayerWhenReady(ulong playerId, string effectIds)
+    {
+        await UniTask.WaitUntil(() =>
+            NetworkManager.Singleton.ConnectedClients.TryGetValue(playerId, out var client) &&
+            client.PlayerObject != null
+        );
+
+        if (!NetworkManager.Singleton.ConnectedClientsIds.Contains(playerId)) return;
+
+        ApplyToPlayerClientRpc(effectIds, RpcTarget.Single(playerId, RpcTargetUse.Temp));
     }
 
     [Rpc(SendTo.SpecifiedInParams, InvokePermission = RpcInvokePermission.Server)]

@@ -27,9 +27,13 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             ctx.playerStats = new Stats(statsMediator, ctx.BaseStats, PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId));
 
             playerInput = gameObject.AddComponent<PlayerInputManager>();
-            playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
 
-            playerStatusEffectManager.Initialize(ctx.playerStats, OwnerClientId);
+            if (PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Combat)
+            {
+                playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
+                playerStatusEffectManager.Initialize(ctx.playerStats, OwnerClientId);
+            }
+            
             playerInput.InitializePlayer(ctx);
             
             

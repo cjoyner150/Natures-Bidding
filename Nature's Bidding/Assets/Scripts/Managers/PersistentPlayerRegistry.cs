@@ -39,7 +39,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         int index = AssignIndex();
         if (index == -1)
         {
-            Debug.LogError("No available player indices.");
+            Debug.LogError($"[PersistentPlayerRegistry] No available player indices for {playerName} (authId: {authId}). Current pool state: {string.Join(",", _indexPool)}");
             return null;
         }
 
@@ -51,8 +51,9 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
             playerIndex = index,
             gold = 100,
             combatWins = 0,
-            masks = { "butterfly_mask", "bat_mask" },
-            artifacts = { "hp_up", "damage_up", "dash_distance_up", "fast_hands", "absorber" }
+            masks = { "bee_mask" },
+            tarotCards = {  },
+            artifacts = {  }
         };
 
         _playerData[authId] = data;

@@ -5,8 +5,6 @@ using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
-public enum TargetPlayerType { Everyone, Self, NotSelf, Random, RandomExclusive }
-
 public class ApplyXToTargetPlayersStatusEffect : StatusEffect
 {
     protected TargetPlayerType target;

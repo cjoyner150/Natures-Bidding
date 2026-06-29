@@ -9,6 +9,7 @@ using UnityUtils;
 
 public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 {
+    private const string MainMenuSceneName = "MainMenu";
     private const string BiddingSceneName = "Bidding_Scene";
     private const string CombatSceneName = "CliffGameplay";
 
@@ -20,6 +21,18 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     [SerializeField] TextMeshProUGUI loadingStatus;
     [SerializeField] TextMeshProUGUI loadingProgress;
     [SerializeField] private int combatWinsRequiredToEnd = 3;
+
+    [Header("Game Flow")]
+    [SerializeField] private GameObject biddingCanvas;
+    [SerializeField] private GameObject shopCanvas;
+
+    [Header("Flow Managers")]
+    [SerializeField] private BiddingManager biddingManager;
+    [SerializeField] private ShopManager shopManager;
+    [SerializeField] private ReadyManager readyManager;
+
+    [Header("Debug")]
+    [SerializeField] bool skipToCombat;
 
 
     private bool _isReturningToMenu = false;
@@ -107,7 +120,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     {
         SetLoadingState("Loading Menu...", true);
 
-        await LoadSceneAsync(1);
+        await LoadSceneAsync(MainMenuSceneName);
     }
 
     public void SetLoadingProgress(float progress)
@@ -324,7 +337,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
         SetLoadingState("Returning to Menu...", true);
 
-        await LoadSceneAsync(1);
+        await LoadSceneAsync(MainMenuSceneName);
 
         await UniTask.WaitUntil(() => NetworkManager.Singleton != null);
         IsReturningToMenu = false;
@@ -341,6 +354,18 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         else
         {
             await LoadStandaloneSceneAsync(idx);
+        }
+    }
+
+    private async UniTask LoadSceneAsync(string sceneName)
+    {
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+        {
+            await LoadNetworkedSceneAsync(sceneName);
+        }
+        else
+        {
+            await LoadStandaloneSceneAsync(sceneName);
         }
     }
 
@@ -423,6 +448,23 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     private async UniTask LoadStandaloneSceneAsync(int idx)
     {
         AsyncOperation op = SceneManager.LoadSceneAsync(idx);
+        op.allowSceneActivation = false;
+
+        TrackLoadProgress(op).Forget();
+
+        await UniTask.WaitUntil(() => op.progress >= .9f);
+
+        SetLoadingProgress(100);
+
+        await UniTask.Delay(200);
+        op.allowSceneActivation = true;
+
+        await UniTask.WaitUntil(() => op.isDone);
+    }
+
+    private async UniTask LoadStandaloneSceneAsync(string sceneName)
+    {
+        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
         op.allowSceneActivation = false;
 
         TrackLoadProgress(op).Forget();

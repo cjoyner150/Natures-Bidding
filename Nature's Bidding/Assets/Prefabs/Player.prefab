@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 2143706486958459292}
   - component: {fileID: 5498611325975013428}
   - component: {fileID: 2427196603344720073}
+  - component: {fileID: 5244136785983927063}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -316,6 +317,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCrosshair
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &5244136785983927063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104365586213191800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8becc9bc7c7670e43b481ccab130fd96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerData
+  ShowTopMostFoldoutHeaderGroup: 1
+  startingCoins: 1000
+  Coins:
+    m_InternalValue: 0
+  PlayerName:
+    m_InternalValue:
+      Value: Player
+  SpeedMultiplier:
+    m_InternalValue: 1
+  JumpMultiplier:
+    m_InternalValue: 1
+  DamageMultiplier:
+    m_InternalValue: 1
+  DefenseMultiplier:
+    m_InternalValue: 1
+  MaxHealthBonus:
+    m_InternalValue: 0
+  enablePersistentSave: 1
+  standInRenderer: {fileID: 0}
+  standInLabel: {fileID: 0}
 --- !u!1 &3949436915247687260
 GameObject:
   m_ObjectHideFlags: 0

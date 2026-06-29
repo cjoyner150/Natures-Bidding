@@ -189,6 +189,8 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
     {
         PersistentGameStateManager.Instance.SetLoadingState("Creating session...");
 
+        await EnsureNetworkStoppedAsync();
+
         NetworkManager.Singleton.NetworkConfig.ConnectionApproval = true;
         NetworkManager.Singleton.ConnectionApprovalCallback = (request, response) =>
         {
@@ -234,6 +236,8 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
     {
         PersistentGameStateManager.Instance.SetLoadingState("Joining session...");
 
+        await EnsureNetworkStoppedAsync();
+
         ActiveSession = await MultiplayerService.Instance.JoinSessionByCodeAsync(sessionCode);
 
         if (ActiveSession != null)
@@ -250,6 +254,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         const int maxRetries = 3;
 
         await UniTask.WaitUntil(() => !_isBusy && !PersistentGameStateManager.Instance.IsReturningToMenu);
+        await EnsureNetworkStoppedAsync();
         if (HasActiveSession)
         {
             Debug.LogWarning("QuickJoin called with an active session. Leave the session before joining a new one.");
@@ -291,7 +296,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         {
             if (retryCount < maxRetries)
             {
-                Debug.LogWarning($"Network metadata exception — retrying QuickJoin ({retryCount + 1}/{maxRetries}).");
+                Debug.LogWarning($"Network metadata exception ï¿½ retrying QuickJoin ({retryCount + 1}/{maxRetries}).");
                 PersistentGameStateManager.Instance.SetLoadingState($"Retrying... ({retryCount + 1}/{maxRetries})");
                 _isBusy = false;
                 await UniTask.Delay(2000);
@@ -369,6 +374,17 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
                 ActiveSession = null;
             }
         }
+
+        await EnsureNetworkStoppedAsync();
+    }
+
+    private async UniTask EnsureNetworkStoppedAsync()
+    {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
+            return;
+
+        NetworkManager.Singleton.Shutdown();
+        await UniTask.WaitUntil(() => NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening);
     }
 
     async UniTaskVoid KickPlayer(string playerId)

@@ -298,11 +298,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09cca13542e5f5d41a44cf03763e8667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVisualEffectManager
-  ShowTopMostFoldoutHeaderGroup: 1
   hitReactParticle: {fileID: 7822037515226980387}
   deflectParticle: {fileID: 0}
   parryParticle: {fileID: 0}
   attackParticle: {fileID: 0}
+  explosionParticle: {fileID: 489954815737543743, guid: da44f8b94fa88da469e29fe424ddee4b, type: 3}
 --- !u!114 &2427196603344720073
 MonoBehaviour:
   m_ObjectHideFlags: 0

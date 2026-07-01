@@ -1,14 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Scripted Status Effect", menuName = "Stats/Status Effects/Scripted Status Effect")]
 public class ScriptedStatusEffectorSO : StatusEffectorSO
 {
-    [HideInInspector] [SerializeField] private string _effectTypeName;
+    [HideInInspector][SerializeField] private string _effectTypeName;
+
+    [Serializable]
+    public class EffectParameter
+    {
+        public string ParamName;
+        public float Value;
+    }
+
+    [HideInInspector][SerializeField] private List<EffectParameter> _parameters = new();
+
+    public string EffectTypeName => _effectTypeName;
+    public List<EffectParameter> Parameters => _parameters;
 
     public override List<StatusEffect> GetStatusEffects()
     {
@@ -31,7 +41,35 @@ public class ScriptedStatusEffectorSO : StatusEffectorSO
             return new List<StatusEffect>();
         }
 
-        var effect = (StatusEffect)Activator.CreateInstance(type);
+        var constructor = type.GetConstructors().FirstOrDefault();
+        StatusEffect effect;
+
+        if (constructor == null || constructor.GetParameters().Length == 0)
+        {
+            effect = (StatusEffect)Activator.CreateInstance(type);
+        }
+        else
+        {
+            var paramInfos = constructor.GetParameters();
+            object[] args = new object[paramInfos.Length];
+
+            for (int i = 0; i < paramInfos.Length; i++)
+            {
+                var match = _parameters.FirstOrDefault(p => p.ParamName == paramInfos[i].Name);
+                if (match == null)
+                {
+                    Debug.LogError($"[{name}] Missing parameter '{paramInfos[i].Name}' for {type.Name}.");
+                    args[i] = GetDefault(paramInfos[i].ParameterType);
+                    continue;
+                }
+                args[i] = Convert.ChangeType(match.Value, paramInfos[i].ParameterType);
+            }
+
+            effect = (StatusEffect)Activator.CreateInstance(type, args);
+        }
+
         return new List<StatusEffect> { effect };
     }
+
+    private object GetDefault(Type t) => t.IsValueType ? Activator.CreateInstance(t) : null;
 }

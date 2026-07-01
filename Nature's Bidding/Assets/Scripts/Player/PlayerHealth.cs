@@ -150,6 +150,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         isParrying.Value = false;
     }
 
+    public void Boom(float damage, float radius)
+    {
+        CombatServerHandler combatHandler = _serverHandler as CombatServerHandler;
+        if (combatHandler == null) return;
+
+        combatHandler.RequestPlayerBoomServerRpc(OwnerClientId, damage, radius);
+    }
 
     private void OnHealthChanged(float from, float to)
     {
@@ -172,8 +179,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
     public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition)
     {
-        // Call event with your own client id to spawn it on yourself, or you could use another client id to spawn on another player
-        PlayerVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId);
+        NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId);
         
         if (!IsOwner) return;
         ctx.lastHitFromPosition = fromPosition;

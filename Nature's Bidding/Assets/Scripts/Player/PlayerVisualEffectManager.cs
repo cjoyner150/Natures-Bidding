@@ -1,83 +1,37 @@
 using Cysharp.Threading.Tasks;
 using System;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerVisualEffectManager : NetworkBehaviour
+public class PlayerVisualEffectManager : MonoBehaviour
 {
     PlayerContext ctx;
     [SerializeField] GameObject hitReactParticle;
-    [SerializeField] GameObject deflectParticle;
-    [SerializeField] GameObject parryParticle;
-    [SerializeField] GameObject attackParticle;
+    [SerializeField] GameObject explosionParticle;
 
-    // Locally call event from anywhere in normal code with the clientId
-    public static Action<ulong> SpawnHitReactionEffectsOnPlayer;
-
-    public override void OnNetworkSpawn()
+    public void Awake()
     {
         ctx = GetComponent<PlayerNetworkBehavior>().ctx;
-
-        SpawnHitReactionEffectsOnPlayer += OnSpawnHitReactionEffectsOnPlayer;
     }
 
-    public override void OnNetworkDespawn()
+    public void SpawnExplosionParticles(Vector3 spawnPos)
     {
-        SpawnHitReactionEffectsOnPlayer -= OnSpawnHitReactionEffectsOnPlayer;
+        GameObject go = Instantiate(explosionParticle, spawnPos, Quaternion.identity);
+        SafeDispose(go, 2000).Forget();
     }
 
-    public void OnSpawnHitReactionEffectsOnPlayer(ulong clientId)
+    public void SpawnHitReactParticles()
     {
-        if (OwnerClientId == clientId)
-        {
-            SpawnHitReactParticles();
-        }
-        else
-        {
-            SpawnHitReactionEffectsClientRpc(clientId);
-        }
+        GameObject go = Instantiate(hitReactParticle, transform);
+        SafeDispose(go, 1000).Forget();
     }
 
-    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
-    public void SpawnHitReactionEffectsClientRpc(ulong clientId)
+    private static async UniTask SafeDispose(GameObject obj, int milliseconds)
     {
-        if (OwnerClientId == clientId)
-        {
-            SpawnHitReactParticles();
-        } 
-    }
+        await UniTask.Delay(milliseconds);
 
-    private async void SpawnHitReactParticles()
-    {
-        hitReactParticle.SetActive(true);
-
-        await UniTask.Delay(1000);
-
-        hitReactParticle.SetActive(false);
-    }
-    private async void SpawnParryParticles()
-    {
-        hitReactParticle.SetActive(true);
-
-        await UniTask.Delay(1000);
-
-        hitReactParticle.SetActive(false);
-    }
-    private async void SpawnDeflectParticles()
-    {
-        deflectParticle.SetActive(true);
-
-        await UniTask.Delay(1000);
-
-        deflectParticle.SetActive(false);
-    }
-    private async void SpawnAttackParticles()
-    {
-        attackParticle.SetActive(true);
-
-        await UniTask.Delay(1000);
-
-        attackParticle.SetActive(false);
+        if (obj != null && !obj.IsDestroyed()) Destroy(obj);
     }
 }
 

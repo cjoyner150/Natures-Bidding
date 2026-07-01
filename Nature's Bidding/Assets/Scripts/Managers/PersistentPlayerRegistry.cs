@@ -51,7 +51,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
             playerIndex = index,
             gold = 100,
             combatWins = 0,
-            masks = { "bee_mask" },
+            masks = {  },
             tarotCards = {  },
             artifacts = {  }
         };

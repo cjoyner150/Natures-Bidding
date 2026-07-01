@@ -16,7 +16,7 @@ MonoBehaviour:
   Title: Absorber
   Description: Absorb your opponents health. More effective with higher max health.
   Duration: -1
-  Stat: 13
+  Stat: 16
   TargetOperationType: 0
   EffectByStat: 0
   ChangeEffectByOperation: 2

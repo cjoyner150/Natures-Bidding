@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityUtils;
@@ -8,7 +9,9 @@ public class PlayerStatusEffectManager : MonoBehaviour
     [SerializeField] List<StatusEffectorSO> _debugShowCurrentStatusEffectors = new();
     [SerializeField] List<StatusEffectorSO> _debugAddStatusEffectors = new();
 
-    List<StatusEffect> activeEffects = new();
+    public Action OnInitializeCompleted;
+
+    List<EffectorData> activeEffectors = new();
 
     private PlayerHealth playerHealth;
     private StatsMediator statsMediator;
@@ -16,48 +19,59 @@ public class PlayerStatusEffectManager : MonoBehaviour
     
     public void Initialize(Stats stats, ulong clientId)
     {
-        List<StatusEffectorSO> StatusEffectors = GetStatusEffectors(clientId);
+        IEnumerable<StatusEffectorSO> StatusEffectors = GetStatusEffectors(clientId);
         playerHealth = GetComponent<PlayerHealth>();
 
         statsMediator = stats.Mediator;
         playerStats = stats;
 
         AddModifiers(StatusEffectors);
+        OnInitializeCompleted?.Invoke();
     }
 
-    List<StatusEffectorSO> GetStatusEffectors(ulong clientId)
+    IEnumerable<StatusEffectorSO> GetStatusEffectors(ulong clientId)
     {
         PersistentPlayerData data = PersistentPlayerRegistry.Instance.GetByClientId(clientId);
 
-        List<StatusEffectorSO> effectors = new();
-
-        effectors = data.GetArtifactEffectors()
+        var effectors = data.GetArtifactEffectors()
             .Concat(data.GetMaskEffectors())
-            .Concat(data.GetTarotEffectors())
-            .ToList();
+            .Concat(data.GetTarotEffectors());
 
         return effectors;
     }
 
-    public void AddModifiers(List<StatusEffectorSO> addedEffects)
+    public void AddModifiers(IEnumerable<StatusEffectorSO> addedEffects)
     {
         Debug.Log($"Added modifiers: {string.Join(", ", addedEffects.Select(x => x.Id))}");
         _debugShowCurrentStatusEffectors.AddRange(addedEffects);
 
         foreach (var effector in addedEffects)
         {
-            foreach (var effect in effector.GetStatusEffects())
-            {
-                effect.Initialize(playerStats, this);
-                activeEffects.Add(effect);
-
-                var modifier = effect.GetStatsModifier();
-
-                if (modifier != null) statsMediator?.AddModifier(modifier);
-            }
+            var effectData = new EffectorData(effector, playerStats, this, statsMediator);
+            activeEffectors.Add(effectData);
         }
 
         playerHealth.SendMaxHealthToServerRpc(playerStats.MaxHealth, playerHealth.OwnerClientId);
+    }
+
+    public void RemoveModifiers(IEnumerable<string> ids)
+    {
+        foreach (var id in ids)
+        {
+            var effectData = activeEffectors.Find(e => e.Id == id);
+
+            if (effectData != null)
+            {
+                effectData.Dispose();
+                activeEffectors.Remove(effectData);
+            }
+
+            var debugEffect = _debugShowCurrentStatusEffectors.Find(e => e.Id == id);
+            if (debugEffect != null)
+            {
+                _debugShowCurrentStatusEffectors.Remove(debugEffect);
+            }
+        }
     }
 
     [ContextMenu("Add Debug Modifiers")]
@@ -70,7 +84,7 @@ public class PlayerStatusEffectManager : MonoBehaviour
     {
         statsMediator?.Update(Time.deltaTime);
 
-        foreach (var effect in activeEffects)
+        foreach (var effect in activeEffectors)
         {
             effect.OnTick(Time.deltaTime);
         }

@@ -27,11 +27,22 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         SpawnExplosionAtPosition -= OnSpawnExplosionAtPosition;
     }
 
-    public void OnSpawnExplosionAtPosition(Vector3 spawnPos) => SpawnExplosionAtPositionClientRpc(spawnPos);
-    public void OnSpawnHitReactionEffectsOnPlayer(ulong clientId) => SpawnHitReactionEffectsClientRpc(clientId);
+    public void OnSpawnExplosionAtPosition(Vector3 spawnPos) 
+    {
+        var localVFXManager = GetFirstValidEffectManager();
+        if (localVFXManager != null) localVFXManager.SpawnExplosionParticles(spawnPos);
 
+        SpawnExplosionAtPositionClientRpc(spawnPos);
+    }
+    public void OnSpawnHitReactionEffectsOnPlayer(ulong clientId)
+    {
+        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        if (localVFXManager != null) localVFXManager.SpawnHitReactParticles();
 
-    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
+        SpawnHitReactionEffectsClientRpc(clientId);
+    }
+
+    [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
     public void SpawnExplosionAtPositionClientRpc(Vector3 spawnPos)
     {
         var playerEffectManager = GetFirstValidEffectManager();
@@ -46,7 +57,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
     }
 
-    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
+    [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
     public void SpawnHitReactionEffectsClientRpc(ulong clientId)
     {
         var playerEffectManager = GetPlayerEffectManagerById(clientId);

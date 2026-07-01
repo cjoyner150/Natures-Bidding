@@ -51,8 +51,8 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
             playerIndex = index,
             gold = 100,
             combatWins = 0,
-            masks = {  },
-            tarotCards = {  },
+            masks = { "crow_mask" },
+            tarotCards = { "absorber", "defensive_stance", "home_run" },
             artifacts = {  }
         };
 
@@ -60,10 +60,13 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         Debug.Log($"New player {playerName} registered with index {index}");
 
         PlayerRegistryNetworkSync.Instance?.BroadcastPlayerData(clientId, authId, playerName, index, data.gold, 0);
+
         foreach (var mask in data.masks)
             PlayerRegistryNetworkSync.Instance?.BroadcastItem(clientId, mask, ItemType.Mask);
         foreach (var artifact in data.artifacts)
             PlayerRegistryNetworkSync.Instance?.BroadcastItem(clientId, artifact, ItemType.Artifact);
+        foreach (var tarot in data.tarotCards)
+            PlayerRegistryNetworkSync.Instance?.BroadcastItem(clientId, tarot, ItemType.TarotCard);
 
         return data;
     }

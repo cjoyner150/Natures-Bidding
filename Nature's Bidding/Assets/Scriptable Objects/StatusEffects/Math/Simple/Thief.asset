@@ -16,6 +16,6 @@ MonoBehaviour:
   Title: Thief
   Description: They won't notice it missing...
   Duration: -1
-  Stat: 12
+  Stat: 15
   Value: 2
   OperationType: 0

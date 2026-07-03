@@ -16,6 +16,6 @@ MonoBehaviour:
   Title: Dash Distance Up
   Description: Increases Dash Distance
   Duration: -1
-  Stat: 6
+  Stat: 9
   Value: 0.2
   OperationType: 0

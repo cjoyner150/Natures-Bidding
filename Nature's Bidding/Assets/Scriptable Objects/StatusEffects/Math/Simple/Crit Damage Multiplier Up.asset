@@ -16,6 +16,6 @@ MonoBehaviour:
   Title: Crit Damage Multiplier Up
   Description: Increases Damage dealt by Critical Hits
   Duration: -1
-  Stat: 9
+  Stat: 12
   Value: 0.5
   OperationType: 0

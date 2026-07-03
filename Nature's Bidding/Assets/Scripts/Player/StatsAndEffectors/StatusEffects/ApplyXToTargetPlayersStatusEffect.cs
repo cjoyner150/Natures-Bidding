@@ -26,7 +26,7 @@ public class ApplyXToTargetPlayersStatusEffect : StatusEffect
         ApplyToTargets();
     }
 
-    private void ApplyToTargets()
+    protected void ApplyToTargets()
     {
         var clients = NetworkManager.Singleton.ConnectedClientsList.ToList();
         ulong selfId = Stats.playerData.clientId;

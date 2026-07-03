@@ -19,6 +19,6 @@ MonoBehaviour:
   Duration: -1
   Stat: 2
   TargetOperationType: 0
-  EffectByStat: 14
+  EffectByStat: 17
   ChangeEffectByOperation: 2
   ChangeEffectByOperationValue: 300

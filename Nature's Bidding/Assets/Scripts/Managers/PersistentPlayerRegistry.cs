@@ -49,10 +49,10 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
             authenticationId = authId,
             playerName = playerName,
             playerIndex = index,
-            gold = 100,
+            gold = Random.Range(80, 120),
             combatWins = 0,
-            masks = { "crow_mask" },
-            tarotCards = { "absorber", "defensive_stance", "home_run" },
+            masks = { },
+            tarotCards = { "the_emperor_tarot" },
             artifacts = {  }
         };
 

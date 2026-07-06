@@ -48,7 +48,7 @@ public class StatusEffectNetworkManager : NetworkSingleton<StatusEffectNetworkMa
 
             foreach(var id in ids)
             {
-                effectors.Add(itemDatabase.Get(id));
+                effectors.Add(itemDatabase.Get<StatusEffectorSO>(id));
             }
 
             playerStatusManager.AddModifiers(effectors);

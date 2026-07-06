@@ -13,6 +13,7 @@ public class ScriptedStatusEffectorSO : StatusEffectorSO
     {
         public string ParamName;
         public float Value;
+        public string StringValue;
     }
 
     [HideInInspector][SerializeField] private List<EffectParameter> _parameters = new();
@@ -62,7 +63,9 @@ public class ScriptedStatusEffectorSO : StatusEffectorSO
                     args[i] = GetDefault(paramInfos[i].ParameterType);
                     continue;
                 }
-                args[i] = Convert.ChangeType(match.Value, paramInfos[i].ParameterType);
+                args[i] = paramInfos[i].ParameterType == typeof(string)
+                    ? (object)match.StringValue
+                    : Convert.ChangeType(match.Value, paramInfos[i].ParameterType);
             }
 
             effect = (StatusEffect)Activator.CreateInstance(type, args);

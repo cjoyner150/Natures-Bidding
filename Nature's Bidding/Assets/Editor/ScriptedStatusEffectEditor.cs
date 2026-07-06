@@ -72,10 +72,19 @@ public class ScriptedStatusEffectorSOEditor : Editor
 
                     foreach (var p in ctorParams)
                     {
-                        int idx = FindOrCreateParam(paramsProp, p.Name);
-                        var valueProp = paramsProp.GetArrayElementAtIndex(idx)
-                            .FindPropertyRelative("Value");
-                        EditorGUILayout.PropertyField(valueProp, new GUIContent(p.Name));
+                        int idx = FindOrCreateParam(paramsProp, p.Name, p.ParameterType);
+                        var element = paramsProp.GetArrayElementAtIndex(idx);
+
+                        if (p.ParameterType == typeof(string))
+                        {
+                            var stringValueProp = element.FindPropertyRelative("StringValue");
+                            EditorGUILayout.PropertyField(stringValueProp, new GUIContent(p.Name));
+                        }
+                        else
+                        {
+                            var valueProp = element.FindPropertyRelative("Value");
+                            EditorGUILayout.PropertyField(valueProp, new GUIContent(p.Name));
+                        }
                     }
 
                     serializedObject.ApplyModifiedProperties();
@@ -91,7 +100,7 @@ public class ScriptedStatusEffectorSOEditor : Editor
             .FirstOrDefault(t => t.Name == name && typeof(StatusEffect).IsAssignableFrom(t));
     }
 
-    private int FindOrCreateParam(SerializedProperty paramsProp, string paramName)
+    private int FindOrCreateParam(SerializedProperty paramsProp, string paramName, System.Type paramType)
     {
         for (int i = 0; i < paramsProp.arraySize; i++)
         {
@@ -104,6 +113,7 @@ public class ScriptedStatusEffectorSOEditor : Editor
         var newElement = paramsProp.GetArrayElementAtIndex(newIndex);
         newElement.FindPropertyRelative("ParamName").stringValue = paramName;
         newElement.FindPropertyRelative("Value").floatValue = 0f;
+        newElement.FindPropertyRelative("StringValue").stringValue = "";
         return newIndex;
     }
 
@@ -125,6 +135,7 @@ public class ScriptedStatusEffectorSOEditor : Editor
             var elem = paramsProp.GetArrayElementAtIndex(idx);
             elem.FindPropertyRelative("ParamName").stringValue = p.Name;
             elem.FindPropertyRelative("Value").floatValue = 0f;
+            elem.FindPropertyRelative("StringValue").stringValue = "";
         }
 
         serializedObject.ApplyModifiedProperties();

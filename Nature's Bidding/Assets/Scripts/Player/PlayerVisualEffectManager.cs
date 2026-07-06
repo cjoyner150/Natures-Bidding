@@ -21,6 +21,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
         SafeDispose(go, 2000).Forget();
     }
 
+    [ContextMenu("SpawnHitReact")]
     public void SpawnHitReactParticles()
     {
         GameObject go = Instantiate(hitReactParticle, transform);

@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 308b2a1f1cca3cd47ab0818901c29a7b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.01
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 308b2a1f1cca3cd47ab0818901c29a7b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.01
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 308b2a1f1cca3cd47ab0818901c29a7b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.01
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 308b2a1f1cca3cd47ab0818901c29a7b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -166,9 +166,9 @@ LODGroup:
   - screenRelativeHeight: 0.01974226
     fadeTransitionWidth: 0
     renderers:
-    - renderer: {fileID: 7869118853525089802}
+    - renderer: {fileID: -7511558181221131132, guid: 188e7f49849d0d34f9fa8ac04c2c8689, type: 3}
   - screenRelativeHeight: 0.0060962313
     fadeTransitionWidth: 0
     renderers:
-    - renderer: {fileID: 7869118853525089802}
+    - renderer: {fileID: -7511558181221131132, guid: 188e7f49849d0d34f9fa8ac04c2c8689, type: 3}
   m_Enabled: 1

@@ -16,8 +16,12 @@ public class Jump : State
 
     protected override void OnEnter()
     {
+        ctx.currentJumps--;
+        Debug.Log($"Jumping! Jumps now {ctx.currentJumps}");
         ctx.anim.SetTrigger("Jump");
-        ctx.rb.AddForce(ctx.jumpImpulse * ctx.rb.transform.up, ForceMode.Impulse);
+        Vector3 vel = ctx.rb.linearVelocity;
+        vel.y = Mathf.Sqrt(2f * Physics.gravity.magnitude * ctx.jumpHeight);
+        ctx.rb.linearVelocity = vel;
     }
 
     protected override State GetInitialState() => (ctx.attackPressed && !ctx.attackOnCooldown) ? jumpAttack : jumpLocomotion;

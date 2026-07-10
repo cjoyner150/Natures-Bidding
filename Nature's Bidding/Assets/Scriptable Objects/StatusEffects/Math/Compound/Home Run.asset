@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f67ded6ec6d69594f86cb4f731577c05, type: 3}
+  m_Name: Home Run
+  m_EditorClassIdentifier: Assembly-CSharp::CompositeStatusEffectorSO
+  _id: home_run
+  Title: Home Run
+  Description: Drastically slows attack speed, and increases damage
+  Duration: -1
+  Effects:
+  - {fileID: 11400000, guid: 119926a473709b340b9f0955d0de0c45, type: 2}
+  - {fileID: 11400000, guid: b3b5d833fc2b0c048a64f307b5f86cdb, type: 2}

@@ -80,7 +80,7 @@ public class PlayerAttackManager : NetworkBehaviour
         bool crit = Random.value * 100f < ctx.playerStats.CritChance;
         float damage = ctx.playerStats.Damage;
 
-        damage += ctx.playerStats.Momentum * ctx.rb.linearVelocity.magnitude;
+        damage += ctx.playerStats.Momentum * (ctx.rb.linearVelocity.magnitude / 10f);
         damage += ctx.playerStats.ComboDamage * ctx.combo;
         damage *= crit ? ctx.playerStats.CritDamageMultiplier : 1;
 

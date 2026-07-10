@@ -12,6 +12,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     private const string BiddingSceneName = "Bidding_Scene";
     private const string CombatSceneName = "CliffGameplay";
 
+    [SerializeField] private GameObject[] spawnableNetworkSingletons; 
     [SerializeField] private GameObject loadingPanel;
     public GameObject LoadingPanel => loadingPanel;
 
@@ -132,6 +133,11 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private void OnSessionHosted()
     {
+        foreach (var prefab in spawnableNetworkSingletons)
+        {
+            var go = Instantiate(prefab);
+            go.GetComponent<NetworkObject>().Spawn();
+        }
         LoadLobbyLevel();
     }
 
@@ -152,10 +158,15 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     public async void OnLobbySceneReady()
     {
-        SetLoadingState("Spawning...");
+        SetLoadingState("Registering Data...");
 
         State = GameState.Lobby;
+
+        await UniTask.WaitUntil(() => PlayerRegistryNetworkSync.Instance != null && StatusEffectNetworkManager.Instance != null);
+
         RegisterAuthData();
+
+        SetLoadingState("Spawning...");
 
         await UniTask.WaitUntil(() => NetworkManager.Singleton.LocalClient.PlayerObject != null);
 

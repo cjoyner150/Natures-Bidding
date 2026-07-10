@@ -8,6 +8,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     public SkinnedMeshRenderer skinnedMeshRenderer;
     public PlayerContext ctx;
     private PlayerInputManager playerInput;
+    private PlayerWeaponManager playerWeaponManager;
     private PlayerStatusEffectManager playerStatusEffectManager;
     private CinemachineTargetGroup cameraTargetGroup;
 
@@ -22,14 +23,31 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
         if (IsOwner)
         {
-            playerInput = gameObject.AddComponent<PlayerInputManager>();
-            playerInput.InitializePlayer(ctx);
 
             var statsMediator = new StatsMediator();
-            ctx.playerStats = new Stats(statsMediator, ctx.BaseStats);
+            ctx.playerStats = new Stats(statsMediator, ctx.BaseStats, PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId));
 
-            playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
-            playerStatusEffectManager.Initialize(ctx.playerStats, OwnerClientId);
+            playerInput = gameObject.AddComponent<PlayerInputManager>();
+
+            if (PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Combat)
+            {
+                playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
+
+                playerWeaponManager = GetComponent<PlayerWeaponManager>();
+                if (playerWeaponManager == null)
+                {
+                    Debug.LogError("[PlayerNetworkBehavior] Player Weapon Manager is null.");
+                }
+
+                playerWeaponManager.Initialize(playerStatusEffectManager);
+                playerStatusEffectManager.Initialize(ctx.playerStats, OwnerClientId);
+            }
+            
+            playerInput.InitializePlayer(ctx);
+
+            
+            ctx.maxJumps = ctx.playerStats.Jumps;
+            transform.localScale *= ctx.playerStats.Size;
 
             if (LobbyServerHandler.Instance != null)
                 LobbyServerHandler.OnPlayerRegistered.AddListener(OnPlayerRegistered);

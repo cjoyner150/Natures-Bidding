@@ -16,6 +16,9 @@ MonoBehaviour:
   Damage: 10
   AttackSpeed: 1
   MoveSpeed: 1
+  Jumps: 1
+  Size: 1
+  KnockbackResistance: 1
   ParryDuration: 1
   ParryCooldown: 4
   DashDistance: 1
@@ -23,5 +26,6 @@ MonoBehaviour:
   CritChance: 10
   CritDamageMultiplier: 1.5
   Momentum: 0
-  ComboMultiplier: 1
+  ComboDamage: 0
   Stealing: 0
+  Lifesteal: 0

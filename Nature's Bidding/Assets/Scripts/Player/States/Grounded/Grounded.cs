@@ -20,6 +20,7 @@ public class Grounded : State
     protected override void OnEnter()
     {
         ctx.rb.linearDamping = ctx.groundDrag;
+        ctx.currentJumps = ctx.maxJumps;
     }
 
     protected override State GetTransition()

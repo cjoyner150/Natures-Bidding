@@ -131,6 +131,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         session.RemovedFromSession += OnRemovedFromSession;
         NetworkManager.Singleton.SceneManager.OnSceneEvent += OnNetworkSceneEvent;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnDisconnectedFromHost;
+        NetworkManager.Singleton.OnTransportFailure += OnTransportFailure;
 
         if (session.IsHost) { 
             StartLobbyHeartbeat();
@@ -146,22 +147,30 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         if (NetworkManager.Singleton?.SceneManager != null)
         {
             NetworkManager.Singleton.SceneManager.OnSceneEvent -= OnNetworkSceneEvent;
-            NetworkManager.Singleton.OnClientDisconnectCallback -= OnDisconnectedFromHost;
         }
 
+        NetworkManager.Singleton.OnClientDisconnectCallback -= OnDisconnectedFromHost;
+        NetworkManager.Singleton.OnTransportFailure -= OnTransportFailure;
+
         StopLobbyHeartbeat();
+    }
+
+    private void OnTransportFailure()
+    {
+        Debug.Log("Unity Transport Failed.");
+        _ = PersistentGameStateManager.Instance.ReturnToMenu();
     }
 
     private void OnSessionDeleted()
     {
         Debug.Log("Session deleted by host.");
-        PersistentGameStateManager.Instance.ReturnToMenu();
+        _ = PersistentGameStateManager.Instance.ReturnToMenu();
     }
 
     private void OnRemovedFromSession()
     {
         Debug.Log("Removed from session.");
-        PersistentGameStateManager.Instance.ReturnToMenu();
+        _ = PersistentGameStateManager.Instance.ReturnToMenu();
     }
 
     private void OnDisconnectedFromHost(ulong clientId)
@@ -169,7 +178,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         if (NetworkManager.Singleton.IsServer) return;
         if (_isBusy) return;
         Debug.Log("Disconnected from host.");
-        PersistentGameStateManager.Instance.ReturnToMenu();
+        _ = PersistentGameStateManager.Instance.ReturnToMenu();
     }
 
     #endregion

@@ -58,7 +58,7 @@ public class Parry : State
 
     protected override State GetTransition() 
     {
-        if (exitParry) return GetParentOfType<Grounded>().groundedLocomotion;
+        if (exitParry) return GetParentOfType<Grounded>().groundedLocomotion.idle; 
         else return null;
     }
 

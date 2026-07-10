@@ -132,12 +132,12 @@ public class PlayerData : NetworkBehaviour
         SavePersistentState();
     }
 
-    public void AddUpgradeServerSide(string upgradeName, float effectValue, UpgradeType upgradeType)
+    public void AddUpgradeServerSide(string upgradeId, float effectValue, UpgradeType upgradeType)
     {
         if (!IsServer) return;
 
-        if (!UpgradeCounts.ContainsKey(upgradeName)) UpgradeCounts[upgradeName] = 0;
-        UpgradeCounts[upgradeName]++;
+        if (!UpgradeCounts.ContainsKey(upgradeId)) UpgradeCounts[upgradeId] = 0;
+        UpgradeCounts[upgradeId]++;
 
         ApplyUpgradeEffect(upgradeType, effectValue);
         SavePersistentState();

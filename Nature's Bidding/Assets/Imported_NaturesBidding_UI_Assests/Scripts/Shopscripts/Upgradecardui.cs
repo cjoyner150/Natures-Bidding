@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using System;
+using UnityEngine.Serialization;
 
 public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -18,17 +19,18 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public Button   cardButton;
 
     [Header("Selection Visuals")]
-    public Image    shadowImage;        // Always-on darkened copy
-    public Image    selectedImage;      // Toggles on/off when selected (will be an outline)
+    [FormerlySerializedAs("shadowImage")]
+    public Image    outlineImage;       // Always-on outline copy
+    public Image    selectedImage;      // Toggles on/off when selected (stronger outline)
 
     [Header("Colors")]
     public Color normalColor   = new Color(0.15f, 0.15f, 0.2f, 1f);
     public Color selectedColor = new Color(0.2f,  0.4f,  0.7f, 1f);
     public Color maxedColor    = new Color(0.25f, 0.25f, 0.25f, 1f);
 
-    [Header("Shadow Settings")]
-    public float shadowScale = 1.05f;
-    public Color shadowColor = new Color(0f, 0f, 0f, 0.5f);
+    [Header("Outline Settings")]
+    public float outlineScale = 1.08f;
+    public Color outlineColor = new Color(1f, 0.8f, 0f, 1f);
 
     [Header("Selected Outline Settings")]   // NEW
     public float selectedScale = 1.15f;     // larger than shadow for outline effect
@@ -60,8 +62,8 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (cardButton == null)
             cardButton = GetComponent<Button>();
 
-        if (shadowImage != null)
-            shadowImage.raycastTarget = false;
+        if (outlineImage != null)
+            outlineImage.raycastTarget = false;
         if (selectedImage != null)
         {
             selectedImage.raycastTarget = false;
@@ -103,7 +105,7 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             iconImage.sprite = upgrade.icon;
             _originalIconSprite = upgrade.icon;
-            SetupVisuals();   // creates both shadow and selected images from the icon
+            SetupVisuals();   // creates both outline layers from the icon
         }
 
         UpdateOwnedCount(ownedCount);
@@ -180,8 +182,8 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (cardBackground != null)
             cardBackground.color = maxedColor;
 
-        if (shadowImage != null)
-            shadowImage.gameObject.SetActive(false);
+        if (outlineImage != null)
+            outlineImage.gameObject.SetActive(false);
 
         if (selectedImage != null)
             selectedImage.gameObject.SetActive(false);
@@ -224,21 +226,21 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     #endregion
 
-    #region Visuals Setup (Shadow + Selected Outline)
+    #region Visuals Setup (Outline + Selected Outline)
 
     private void SetupVisuals()
     {
         if (iconImage == null || iconImage.sprite == null) return;
 
-        // Setup shadow (always-on)
-        if (shadowImage != null)
+        // Setup outline (always-on)
+        if (outlineImage != null)
         {
-            shadowImage.sprite = iconImage.sprite;
-            shadowImage.color = shadowColor;
-            CopyRectTransform(iconImage, shadowImage);
-            shadowImage.transform.localScale = new Vector3(shadowScale, shadowScale, 1f);
-            EnsureBehind(iconImage, shadowImage);
-            shadowImage.gameObject.SetActive(true);
+            outlineImage.sprite = iconImage.sprite;
+            outlineImage.color = outlineColor;
+            CopyRectTransform(iconImage, outlineImage);
+            outlineImage.transform.localScale = new Vector3(outlineScale, outlineScale, 1f);
+            EnsureBehind(iconImage, outlineImage);
+            outlineImage.gameObject.SetActive(true);
         }
 
         // Setup selected outline (starts invisible)
@@ -288,8 +290,8 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (selectedImage != null)
             selectedImage.gameObject.SetActive(selected);
             
-        if (shadowImage != null)
-            shadowImage.gameObject.SetActive(!selected && !_lockedOut);  // Sold cards keep shadow hidden
+        if (outlineImage != null)
+            outlineImage.gameObject.SetActive(!_lockedOut);
 
         // Optional background color change
         if (cardBackground && Upgrade != null)

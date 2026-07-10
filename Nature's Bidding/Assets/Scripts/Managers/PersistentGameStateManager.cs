@@ -48,7 +48,8 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         set
         {
             _isLoading = value;
-            loadingPanel.SetActive(value);
+            if (loadingPanel != null)
+                loadingPanel.SetActive(value);
         }
     }
 
@@ -131,18 +132,28 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     public void SetLoadingState(string status, bool showProgress = false)
     {
         IsLoading = true;
-        loadingStatus.text = status;
-        loadingProgress.gameObject.SetActive(showProgress);
-        if (!showProgress)
-            loadingProgress.text = "";
+        if (loadingStatus != null)
+            loadingStatus.text = status;
+
+        if (loadingProgress != null)
+        {
+            loadingProgress.gameObject.SetActive(showProgress);
+            if (!showProgress)
+                loadingProgress.text = "";
+        }
     }
 
     public void ClearLoadingState()
     {
         IsLoading = false;
-        loadingStatus.text = "";
-        loadingProgress.text = "";
-        loadingProgress.gameObject.SetActive(true);
+        if (loadingStatus != null)
+            loadingStatus.text = "";
+
+        if (loadingProgress != null)
+        {
+            loadingProgress.text = "";
+            loadingProgress.gameObject.SetActive(true);
+        }
     }
 
     private void OnSessionHosted()
@@ -501,7 +512,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     {
         if (skipToCombat)
         {
-            LoadCombatLevel();
+            BeginCombatPhaseServer();
         }
         else
         {

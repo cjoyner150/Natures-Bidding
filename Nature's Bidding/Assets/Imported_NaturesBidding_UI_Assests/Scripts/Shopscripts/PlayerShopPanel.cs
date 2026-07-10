@@ -580,20 +580,20 @@ public class PlayerShopPanel : MonoBehaviour
 
     #region Server-side State Updates
 
-    public void OnUpgradePurchased(string upgradeName)
+    public void OnUpgradePurchased(string upgradeId)
     {
         DestroyTooltip();
 
-        if (!_purchaseCounts.ContainsKey(upgradeName))
-            _purchaseCounts[upgradeName] = 0;
-        _purchaseCounts[upgradeName]++;
+        if (!_purchaseCounts.ContainsKey(upgradeId))
+            _purchaseCounts[upgradeId] = 0;
+        _purchaseCounts[upgradeId]++;
 
         // Find the purchased card and keep it in the layout while disabling interaction
         UpgradeCardUI purchasedCard = null;
         ShopUpgrade   purchasedUpgrade = null;
         foreach (var card in _upgradeCards)
         {
-            if (card != null && card.Upgrade != null && card.Upgrade.name == upgradeName)
+            if (card != null && card.Upgrade != null && card.Upgrade.Id == upgradeId)
             {
                 purchasedCard    = card;
                 purchasedUpgrade = card.Upgrade;
@@ -703,7 +703,7 @@ public class PlayerShopPanel : MonoBehaviour
     int GetOwned(ShopUpgrade upgrade)
     {
         if (upgrade == null) return 0;
-        _purchaseCounts.TryGetValue(upgrade.name, out int c);
+        _purchaseCounts.TryGetValue(upgrade.Id, out int c);
         return c;
     }
 

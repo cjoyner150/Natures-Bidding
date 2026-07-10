@@ -59,6 +59,8 @@ public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandle
     // clientId → free rerolls granted (e.g. from tarot)
     private Dictionary<ulong, int> _freeRerolls               = new Dictionary<ulong, int>();
 
+    private Dictionary<string, ShopUpgrade> _upgradeLookup    = new Dictionary<string, ShopUpgrade>();
+
     #endregion
 
     #region Lifecycle
@@ -71,6 +73,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandle
     public override void OnNetworkSpawn()
     {
         backToBiddingButton?.gameObject.SetActive(IsHost);
+        BuildUpgradeLookup();
     }
 
     public void OnShopPhaseStart()
@@ -102,6 +105,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandle
     /// </summary>
     void ServerRollAllOfferings()
     {
+        BuildUpgradeLookup();
         _offerings.Clear();
         _freeRerolls.Clear();
 
@@ -149,19 +153,37 @@ public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandle
     {
         var names = new List<string>();
         foreach (var u in offerings)
-            names.Add(u != null ? u.name : "null");
+            names.Add(u != null ? u.Id : "null");
         return string.Join("|", names);
     }
 
     List<ShopUpgrade> UnpackOfferings(string packed)
     {
         var result = new List<ShopUpgrade>();
-        foreach (var name in packed.Split('|'))
+        foreach (var id in packed.Split('|'))
         {
-            var upgrade = upgradePool.Find(u => u != null && u.name == name);
-            if (upgrade != null) result.Add(upgrade);
+            if (_upgradeLookup.TryGetValue(id, out var upgrade))
+                result.Add(upgrade);
         }
         return result;
+    }
+
+    void BuildUpgradeLookup()
+    {
+        _upgradeLookup.Clear();
+        foreach (var upgrade in upgradePool)
+        {
+            if (upgrade == null || string.IsNullOrWhiteSpace(upgrade.Id))
+                continue;
+
+            if (_upgradeLookup.ContainsKey(upgrade.Id))
+            {
+                Debug.LogWarning($"[ShopManager] Duplicate upgrade ID '{upgrade.Id}' on '{upgrade.name}'.");
+                continue;
+            }
+
+            _upgradeLookup[upgrade.Id] = upgrade;
+        }
     }
 
     #endregion
@@ -225,18 +247,18 @@ public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandle
     /// <summary>Called by the local player's panel when Buy is clicked on an upgrade.</summary>
     public void LocalPlayerBuyUpgrade(ShopUpgrade upgrade, PlayerShopPanel sourcePanel)
     {
-        BuyUpgradeRpc(upgrade.name);
+        BuyUpgradeRpc(upgrade.Id);
     }
 
     [Rpc(SendTo.Server)]
-    void BuyUpgradeRpc(string upgradeName, RpcParams rpcParams = default)
+    void BuyUpgradeRpc(string upgradeId, RpcParams rpcParams = default)
     {
         ulong buyer  = rpcParams.Receive.SenderClientId;
         var player   = PlayerData.GetPlayer(buyer);
         if (player == null) return;
 
-        var upgrade = upgradePool.Find(u => u != null && u.name == upgradeName);
-        if (upgrade == null) return;
+        if (!_upgradeLookup.TryGetValue(upgradeId, out var upgrade))
+            return;
 
         if (player.Coins.Value < upgrade.cost)
         {
@@ -245,18 +267,18 @@ public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandle
         }
 
         player.SpendCoins(upgrade.cost);
-        player.AddUpgradeServerSide(upgradeName, upgrade.effectValue, upgrade.upgradeType);
+        player.AddUpgradeServerSide(upgradeId, upgrade.effectValue, upgrade.upgradeType);
 
         // Tell all clients so every panel can refresh that player's stats
-        UpgradePurchasedRpc(buyer, upgradeName);
+        UpgradePurchasedRpc(buyer, upgradeId);
     }
 
     /// <summary>Broadcast to everyone so all panels showing this player refresh.</summary>
     [Rpc(SendTo.Everyone)]
-    void UpgradePurchasedRpc(ulong buyer, string upgradeName)
+    void UpgradePurchasedRpc(ulong buyer, string upgradeId)
     {
         if (_panels.TryGetValue(buyer, out var panel))
-            panel.OnUpgradePurchased(upgradeName);
+            panel.OnUpgradePurchased(upgradeId);
     }
 
     [Rpc(SendTo.SpecifiedInParams)]

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,11 +8,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewUpgrade", menuName = "Bidding/Shop Upgrade")]
 public class ShopUpgrade : ScriptableObject
 {
+    private static readonly Dictionary<string, ShopUpgrade> _registry = new Dictionary<string, ShopUpgrade>();
+
     [Header("Identity")]
+    [SerializeField, HideInInspector] private string _id;
     public string upgradeName    = "Speed Boost";
     [TextArea(2, 4)]
     public string description    = "Increases movement speed by 5%.";
     public Sprite icon;
+
+    [Header("Effectors")]
+    public List<StatusEffectorSO> effectors = new List<StatusEffectorSO>();
 
     [Header("Effect")]
     public UpgradeType upgradeType;
@@ -24,6 +31,52 @@ public class ShopUpgrade : ScriptableObject
 
     [Header("Visuals")]
     public Color cardColor       = new Color(0.15f, 0.15f, 0.2f, 1f);
+
+    public string Id => _id;
+
+    public static bool TryGet(string id, out ShopUpgrade upgrade)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            upgrade = null;
+            return false;
+        }
+
+        return _registry.TryGetValue(id, out upgrade);
+    }
+
+    private void OnEnable()
+    {
+        UpdateIdentity();
+    }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        UpdateIdentity();
+    }
+#endif
+
+    private void UpdateIdentity()
+    {
+        string assetName = name;
+        if (string.IsNullOrWhiteSpace(assetName))
+            return;
+
+        string normalizedId = assetName.ToLower().Replace(" ", "_");
+        bool changed = _id != normalizedId;
+
+        if (changed)
+            _id = normalizedId;
+
+        if (_registry.TryGetValue(_id, out ShopUpgrade existing) && existing != null && existing != this)
+        {
+            Debug.LogWarning($"[ShopUpgrade] Duplicate ID '{_id}' found on '{name}'. Existing asset: '{existing.name}'.");
+            return;
+        }
+
+        _registry[_id] = this;
+    }
 
     public string FormattedEffect()
     {

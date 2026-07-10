@@ -16,6 +16,6 @@ MonoBehaviour:
   Title: Dash Cooldown Down
   Description: Decreases Dash Cooldown
   Duration: -1
-  Stat: 7
+  Stat: 10
   Value: 0.5
   OperationType: 3

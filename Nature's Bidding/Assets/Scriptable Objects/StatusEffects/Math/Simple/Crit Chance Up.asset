@@ -16,6 +16,6 @@ MonoBehaviour:
   Title: Crit Chance Up
   Description: Increases Crit Chance
   Duration: -1
-  Stat: 8
+  Stat: 11
   Value: 10
   OperationType: 0

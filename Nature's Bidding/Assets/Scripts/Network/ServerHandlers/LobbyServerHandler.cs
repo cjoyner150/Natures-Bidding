@@ -21,6 +21,7 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
         PersistentGameStateManager.Instance.OnLobbySceneReady();
     }
 
@@ -120,7 +121,7 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
 
     protected override void OnNewPlayerConnected(ulong clientId, string authId, string playerName)
     {
-        PersistentPlayerRegistry.Instance.SyncAllToClient(clientId);
+        PlayerRegistryNetworkSync.Instance.SyncAllToClient(clientId);
         PersistentPlayerRegistry.Instance.RegisterPlayer(clientId, authId, playerName);
         SpawnAndRegisterPlayer(clientId);
     }

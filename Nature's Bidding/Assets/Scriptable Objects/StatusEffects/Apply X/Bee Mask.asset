@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3387ff8d5c88dd4ca509da0f447f2fd, type: 3}
+  m_Name: Bee Mask
+  m_EditorClassIdentifier: Assembly-CSharp::ApplyXToTargetPlayersStatusEffector
+  _id: bee_mask
+  Title: Bee Mask
+  Description: All your friends get buffs!
+  Duration: -1
+  Target: 2
+  Effects:
+  - {fileID: 11400000, guid: b97ad79bdb8b4c04e9f1b9ea03f2eef7, type: 2}
+  - {fileID: 11400000, guid: 67e1c46d322bee64989f77a3c823182f, type: 2}

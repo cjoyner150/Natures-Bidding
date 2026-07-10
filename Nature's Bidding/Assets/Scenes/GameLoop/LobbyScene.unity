@@ -3450,6 +3450,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LobbyServerHandler
   ShowTopMostFoldoutHeaderGroup: 1
   acceptableAttackRange: 100
+  otherPlayersLayer:
+    serializedVersion: 2
+    m_Bits: 128
   PlayersRequiredBeforeStart: 2
 --- !u!4 &1894731453 stripped
 Transform:

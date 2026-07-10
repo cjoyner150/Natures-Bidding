@@ -16,6 +16,6 @@ MonoBehaviour:
   Title: Wombo Combo
   Description: Deal increased damage when you hit higher combos
   Duration: -1
-  Stat: 11
+  Stat: 14
   Value: 5
   OperationType: 0

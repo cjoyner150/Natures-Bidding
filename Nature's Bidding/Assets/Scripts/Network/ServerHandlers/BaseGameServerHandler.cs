@@ -26,7 +26,7 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void RequestHitPlayerServerRpc(ulong attackingPlayerId, ulong hitPlayerId, float damage)
+    public void RequestHitPlayerServerRpc(ulong attackingPlayerId, ulong hitPlayerId, float damage, bool critical)
     {
         if (!IsServer) return;
 
@@ -41,7 +41,7 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
 
         if (Vector3.Distance(hitNetObj.transform.position, attackingNetObj.transform.position) <= acceptableAttackRange)
         {
-            OnPlayerHit(hitNetObj, attackingNetObj, damage);
+            OnPlayerHit(hitNetObj, attackingNetObj, damage, critical);
         }
     }
 
@@ -100,9 +100,9 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
         playerHealth.health.Value = Mathf.Clamp(playerHealth.health.Value + amount, 0, playerHealth.maxHealth.Value);
     }
 
-    protected virtual void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage)
+    protected virtual void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage, bool critical)
     {
-        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position);
+        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, critical);
     }
 
     private Dictionary<ulong, TaskCompletionSource<string>> playerNameRequests = new();
@@ -189,7 +189,7 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
 
 public interface IGameServerHandler
 {
-    void RequestHitPlayerServerRpc(ulong attackingPlayerId, ulong hitPlayerId, float damage);
+    void RequestHitPlayerServerRpc(ulong attackingPlayerId, ulong hitPlayerId, float damage, bool critical = false);
     void RequestHealServerRpc(ulong targetClientId, float amount);
     void OnPlayerDeath(ulong clientId);
 }

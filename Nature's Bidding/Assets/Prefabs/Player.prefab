@@ -301,6 +301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVisualEffectManager
   hitReactParticle: {fileID: 4595470619510423577, guid: fd3b76cd1c207284e833827d7d37d957, type: 3}
   explosionParticle: {fileID: 489954815737543743, guid: da44f8b94fa88da469e29fe424ddee4b, type: 3}
+  weaponHolderTransform: {fileID: 4987226103521437686}
 --- !u!114 &2427196603344720073
 MonoBehaviour:
   m_ObjectHideFlags: 0

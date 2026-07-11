@@ -6,12 +6,19 @@ using UnityEngine;
 
 public class PlayerVisualEffectManager : MonoBehaviour
 {
+    [Header("Particle Prefabs")]
     [SerializeField] GameObject hitReactParticle;
     [SerializeField] GameObject explosionParticle;
 
+    [Header("References")]
+    [SerializeField] Transform weaponHolderTransform;
+
     public void SpawnSlashEffectParticles()
     {
-        GameObject go = Instantiate(explosionParticle, transform);
+        GameObject go = Instantiate(explosionParticle, weaponHolderTransform, false);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localRotation = Quaternion.identity;
+
         SafeDispose(go, 1000).Forget();
     }
 

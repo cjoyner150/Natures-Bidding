@@ -64,13 +64,13 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         NetworkManager.OnClientDisconnectCallback -= OnClientDisconnected;
     }
 
-    protected override void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage)
+    protected override void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage, bool critical)
     {
         var health = hitPlayer.GetComponent<PlayerHealth>();
         if (health == null) return;
 
         health.health.Value -= damage;
-        health.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position);
+        health.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, critical);
     }
 
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]

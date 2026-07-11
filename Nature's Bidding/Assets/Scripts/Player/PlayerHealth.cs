@@ -116,13 +116,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     }
 
-    public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context)
+    public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context, bool critical = false)
     {
         if (!isInvulnerable.Value && !isParrying.Value)
         {
             context = IDamageable.HitCallbackContext.success;
             
-            _serverHandler.RequestHitPlayerServerRpc(fromPlayerId, selfNetworkObject.OwnerClientId, damage);
+            _serverHandler.RequestHitPlayerServerRpc(fromPlayerId, selfNetworkObject.OwnerClientId, damage, critical);
         }
         else if (isParrying.Value)
         {
@@ -177,9 +177,9 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     }
 
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
-    public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition)
+    public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition, bool critical = false)
     {
-        NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId);
+        NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId, critical);
         
         if (!IsOwner) return;
         ctx.lastHitFromPosition = fromPosition;

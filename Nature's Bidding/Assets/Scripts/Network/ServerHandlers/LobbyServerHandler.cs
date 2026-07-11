@@ -37,9 +37,9 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
         NetworkManager.OnClientDisconnectCallback -= OnClientDisconnected;
     }
 
-    protected override void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage)
+    protected override void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage, bool critical = false)
     {
-        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position);
+        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, critical);
     }
 
     private void OnClientConnected(ulong clientId)

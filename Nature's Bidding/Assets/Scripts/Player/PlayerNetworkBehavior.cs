@@ -1,4 +1,6 @@
 using Cinemachine;
+using Cysharp.Threading.Tasks;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -19,7 +21,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         cameraTargetGroup = FindAnyObjectByType<CinemachineTargetGroup>();
         cameraTargetGroup?.AddMember(transform, 1, 10);
 
-        skinnedMeshRenderer.materials[2].color = colors[OwnerClientId];
+        SyncAllPlayerColors();
 
         if (IsOwner)
         {
@@ -77,6 +79,22 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         var data = PersistentPlayerRegistry.Instance.GetByClientId(clientId);
         Debug.Log($"Registered: clientId {clientId}, name {data?.playerName}. Total: {playerCount}");
         LobbyServerHandler.OnPlayerRegistered?.Invoke();
+    }
+
+    private async void SyncAllPlayerColors()
+    {
+        skinnedMeshRenderer.materials[2].SetColor("_Tint", colors[PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId).playerIndex]);
+
+        await UniTask.WaitUntil(() => NetworkManager.Singleton.ConnectedClientsList.All(p => p.PlayerObject != null));
+
+        var players = PersistentPlayerRegistry.Instance.GetAllPlayers().Where(p => p.clientId != OwnerClientId);
+
+        foreach ( var player in players )
+        {
+            var playerNetworkBehavior = NetworkManager.Singleton.ConnectedClients[player.clientId].PlayerObject.GetComponent<PlayerNetworkBehavior>();
+            playerNetworkBehavior.skinnedMeshRenderer.materials[2].SetColor("_Tint", colors[player.playerIndex]);
+        }
+
     }
 
     private void OnDrawGizmosSelected()

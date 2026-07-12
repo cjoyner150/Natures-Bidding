@@ -10,10 +10,15 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     // Locally call event from anywhere in normal code with the clientId
     public static Action<ulong> SpawnSlashEffectsOnPlayer;
-    public static Action<ulong> SpawnParryEffectsOnPlayer;
-    public static Action<ulong> SpawnParrySuccessReactEffectsOnPlayer;
     public static Action<ulong> SpawnDashEffectsOnPlayer;
     public static Action<ulong> SpawnJumpEffectsOnPlayer;
+    public static Action<ulong> SpawnParrySuccessReactEffectsOnPlayer;
+    public static Action<ulong> SpawnConfettiEffectsOnPlayer;
+    public static Action<ulong> SpawnBatConfusionEffectsOnPlayer;
+    public static Action<ulong> RemoveBatConfusionEffectsOnPlayer;
+
+    public static Action<ulong, int> SpawnParryEffectsOnPlayer;
+    public static Action<ulong, int> SpawnStunEffectsOnPlayer;
 
     public static Action<ulong, bool> SpawnHitReactionEffectsOnPlayer;
     public static Action<Vector3> SpawnExplosionAtPosition;
@@ -29,6 +34,10 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         SpawnParrySuccessReactEffectsOnPlayer += OnSpawnParrySuccessReactEffectsOnPlayer;
         SpawnDashEffectsOnPlayer += OnSpawnDashEffectsOnPlayer;
         SpawnJumpEffectsOnPlayer += OnSpawnJumpEffectsOnPlayer;
+        SpawnStunEffectsOnPlayer += OnSpawnStunEffectsOnPlayer;
+        SpawnConfettiEffectsOnPlayer += OnSpawnConfettiEffectsOnPlayer;
+        SpawnBatConfusionEffectsOnPlayer += OnSpawnBatConfusionEffectsOnPlayer;
+        RemoveBatConfusionEffectsOnPlayer += OnRemoveBatConfusionEffectsOnPlayer;
         SpawnHitReactionEffectsOnPlayer += OnSpawnHitReactionEffectsOnPlayer;
         SpawnExplosionAtPosition += OnSpawnExplosionAtPosition;
     }
@@ -40,6 +49,10 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         SpawnParrySuccessReactEffectsOnPlayer -= OnSpawnParrySuccessReactEffectsOnPlayer;
         SpawnDashEffectsOnPlayer -= OnSpawnDashEffectsOnPlayer;
         SpawnJumpEffectsOnPlayer -= OnSpawnJumpEffectsOnPlayer;
+        SpawnStunEffectsOnPlayer -= OnSpawnStunEffectsOnPlayer;
+        SpawnConfettiEffectsOnPlayer -= OnSpawnConfettiEffectsOnPlayer;
+        SpawnBatConfusionEffectsOnPlayer -= OnSpawnBatConfusionEffectsOnPlayer;
+        RemoveBatConfusionEffectsOnPlayer -= OnRemoveBatConfusionEffectsOnPlayer;
         SpawnHitReactionEffectsOnPlayer -= OnSpawnHitReactionEffectsOnPlayer;
         SpawnExplosionAtPosition -= OnSpawnExplosionAtPosition;
     }
@@ -67,12 +80,12 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         SpawnSlashEffectClientRpc(clientId);
     }
 
-    public void OnSpawnParryEffectOnPlayer(ulong clientId)
+    public void OnSpawnParryEffectOnPlayer(ulong clientId, int milliseconds)
     {
         var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
-        if (localVFXManager != null) localVFXManager.SpawnParryEffectParticles();
+        if (localVFXManager != null) localVFXManager.SpawnParryEffectParticles(milliseconds);
 
-        SpawnParryEffectClientRpc(clientId);
+        SpawnParryEffectClientRpc(clientId, milliseconds);
     }
 
     public void OnSpawnParrySuccessReactEffectsOnPlayer(ulong clientId)
@@ -97,6 +110,38 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         if (localVFXManager != null) localVFXManager.SpawnJumpParticles();
 
         SpawnJumpEffectsClientRpc(clientId);
+    }
+
+    public void OnSpawnStunEffectsOnPlayer(ulong clientId, int milliseconds)
+    {
+        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        if (localVFXManager != null) localVFXManager.SpawnStunParticles(milliseconds);
+
+        SpawnStunEffectsClientRpc(clientId, milliseconds);
+    }
+
+    public void OnSpawnConfettiEffectsOnPlayer(ulong clientId)
+    {
+        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        if (localVFXManager != null) localVFXManager.SpawnConfettiParticles();
+
+        SpawnConfettiEffectsClientRpc(clientId);
+    }
+
+    public void OnSpawnBatConfusionEffectsOnPlayer(ulong clientId)
+    {
+        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        if (localVFXManager != null) localVFXManager.SpawnBatConfusionParticles();
+
+        SpawnBatConfusionEffectsClientRpc(clientId);
+    }
+
+    public void OnRemoveBatConfusionEffectsOnPlayer(ulong clientId)
+    {
+        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        if (localVFXManager != null) localVFXManager.RemoveBatConfusionParticles();
+
+        RemoveBatConfusionEffectsClientRpc(clientId);
     }
 
     [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
@@ -145,13 +190,13 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     }
 
     [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
-    public void SpawnParryEffectClientRpc(ulong clientId)
+    public void SpawnParryEffectClientRpc(ulong clientId, int milliseconds)
     {
         var playerEffectManager = GetPlayerEffectManagerById(clientId);
 
         if (playerEffectManager != null)
         {
-            playerEffectManager.SpawnParryEffectParticles();
+            playerEffectManager.SpawnParryEffectParticles(milliseconds);
         }
         else
         {
@@ -197,6 +242,66 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         if (playerEffectManager != null)
         {
             playerEffectManager.SpawnJumpParticles();
+        }
+        else
+        {
+            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+        }
+    }
+
+    [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SpawnStunEffectsClientRpc(ulong clientId, int milliseconds)
+    {
+        var playerEffectManager = GetPlayerEffectManagerById(clientId);
+
+        if (playerEffectManager != null)
+        {
+            playerEffectManager.SpawnStunParticles(milliseconds);
+        }
+        else
+        {
+            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+        }
+    }
+
+    [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SpawnConfettiEffectsClientRpc(ulong clientId)
+    {
+        var playerEffectManager = GetPlayerEffectManagerById(clientId);
+
+        if (playerEffectManager != null)
+        {
+            playerEffectManager.SpawnConfettiParticles();
+        }
+        else
+        {
+            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+        }
+    }
+
+    [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SpawnBatConfusionEffectsClientRpc(ulong clientId)
+    {
+        var playerEffectManager = GetPlayerEffectManagerById(clientId);
+
+        if (playerEffectManager != null)
+        {
+            playerEffectManager.SpawnBatConfusionParticles();
+        }
+        else
+        {
+            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+        }
+    }
+
+    [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
+    public void RemoveBatConfusionEffectsClientRpc(ulong clientId)
+    {
+        var playerEffectManager = GetPlayerEffectManagerById(clientId);
+
+        if (playerEffectManager != null)
+        {
+            playerEffectManager.SpawnBatConfusionParticles();
         }
         else
         {

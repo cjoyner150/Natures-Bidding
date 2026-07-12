@@ -120,12 +120,16 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         NetworkManager.ConnectedClients[winningPlayer].PlayerObject.GetComponent<PlayerHealth>()?.OnWinRound(victoryLapDelay);
         await WinSequence(winningPlayer);
 
+        if (this == null) return;
+
         if (IsServer)
             PersistentGameStateManager.Instance.HandleCombatRoundEnded(winningPlayer).Forget();
     }
 
     private async UniTask WinSequence(ulong winningPlayer)
     {
+        NetworkVisualEffectManager.SpawnConfettiEffectsOnPlayer?.Invoke(winningPlayer);
+
         Transform winningPlayerTransform = NetworkManager.ConnectedClients[winningPlayer]
             .PlayerObject.transform;
 
@@ -134,6 +138,8 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         winCamera.enabled = true;
 
         await UniTask.Delay(victoryLapDelay);
+
+        if (this == null || gameOverUI == null) return;
 
         if (winCamera != null && winCamera.isActiveAndEnabled)
             winCamera.enabled = false;

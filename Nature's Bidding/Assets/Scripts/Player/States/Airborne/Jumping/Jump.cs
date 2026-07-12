@@ -19,6 +19,7 @@ public class Jump : State
         ctx.currentJumps--;
         Debug.Log($"Jumping! Jumps now {ctx.currentJumps}");
         ctx.anim.SetTrigger("Jump");
+        NetworkVisualEffectManager.SpawnJumpEffectsOnPlayer?.Invoke(ctx.playerHealth.OwnerClientId);
         Vector3 vel = ctx.rb.linearVelocity;
         vel.y = Mathf.Sqrt(2f * Physics.gravity.magnitude * ctx.jumpHeight);
         ctx.rb.linearVelocity = vel;

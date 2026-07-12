@@ -10,6 +10,10 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     // Locally call event from anywhere in normal code with the clientId
     public static Action<ulong> SpawnSlashEffectsOnPlayer;
+    public static Action<ulong> SpawnParryEffectsOnPlayer;
+    public static Action<ulong> SpawnParrySuccessReactEffectsOnPlayer;
+    public static Action<ulong> SpawnDashEffectsOnPlayer;
+    public static Action<ulong> SpawnJumpEffectsOnPlayer;
 
     public static Action<ulong, bool> SpawnHitReactionEffectsOnPlayer;
     public static Action<Vector3> SpawnExplosionAtPosition;
@@ -21,6 +25,10 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         DontDestroyOnLoad(gameObject);
 
         SpawnSlashEffectsOnPlayer += OnSpawnSlashEffectOnPlayer;
+        SpawnParryEffectsOnPlayer += OnSpawnParryEffectOnPlayer;
+        SpawnParrySuccessReactEffectsOnPlayer += OnSpawnParrySuccessReactEffectsOnPlayer;
+        SpawnDashEffectsOnPlayer += OnSpawnDashEffectsOnPlayer;
+        SpawnJumpEffectsOnPlayer += OnSpawnJumpEffectsOnPlayer;
         SpawnHitReactionEffectsOnPlayer += OnSpawnHitReactionEffectsOnPlayer;
         SpawnExplosionAtPosition += OnSpawnExplosionAtPosition;
     }
@@ -28,6 +36,10 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     public override void OnNetworkDespawn()
     {
         SpawnSlashEffectsOnPlayer -= OnSpawnSlashEffectOnPlayer;
+        SpawnParryEffectsOnPlayer -= OnSpawnParryEffectOnPlayer;
+        SpawnParrySuccessReactEffectsOnPlayer -= OnSpawnParrySuccessReactEffectsOnPlayer;
+        SpawnDashEffectsOnPlayer -= OnSpawnDashEffectsOnPlayer;
+        SpawnJumpEffectsOnPlayer -= OnSpawnJumpEffectsOnPlayer;
         SpawnHitReactionEffectsOnPlayer -= OnSpawnHitReactionEffectsOnPlayer;
         SpawnExplosionAtPosition -= OnSpawnExplosionAtPosition;
     }
@@ -53,6 +65,38 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         if (localVFXManager != null) localVFXManager.SpawnSlashEffectParticles();
 
         SpawnSlashEffectClientRpc(clientId);
+    }
+
+    public void OnSpawnParryEffectOnPlayer(ulong clientId)
+    {
+        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        if (localVFXManager != null) localVFXManager.SpawnParryEffectParticles();
+
+        SpawnParryEffectClientRpc(clientId);
+    }
+
+    public void OnSpawnParrySuccessReactEffectsOnPlayer(ulong clientId)
+    {
+        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        if (localVFXManager != null) localVFXManager.SpawnParrySuccessReactionParticles();
+
+        SpawnParrySuccessReactEffectsClientRpc(clientId);
+    }
+
+    public void OnSpawnDashEffectsOnPlayer(ulong clientId)
+    {
+        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        if (localVFXManager != null) localVFXManager.SpawnDashParticles();
+
+        SpawnDashEffectsClientRpc(clientId);
+    }
+
+    public void OnSpawnJumpEffectsOnPlayer(ulong clientId)
+    {
+        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        if (localVFXManager != null) localVFXManager.SpawnJumpParticles();
+
+        SpawnJumpEffectsClientRpc(clientId);
     }
 
     [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
@@ -93,6 +137,66 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         if (playerEffectManager != null)
         {
             playerEffectManager.SpawnSlashEffectParticles();
+        }
+        else
+        {
+            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+        }
+    }
+
+    [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SpawnParryEffectClientRpc(ulong clientId)
+    {
+        var playerEffectManager = GetPlayerEffectManagerById(clientId);
+
+        if (playerEffectManager != null)
+        {
+            playerEffectManager.SpawnParryEffectParticles();
+        }
+        else
+        {
+            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+        }
+    }
+
+    [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SpawnParrySuccessReactEffectsClientRpc(ulong clientId)
+    {
+        var playerEffectManager = GetPlayerEffectManagerById(clientId);
+
+        if (playerEffectManager != null)
+        {
+            playerEffectManager.SpawnParrySuccessReactionParticles();
+        }
+        else
+        {
+            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+        }
+    }
+
+    [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SpawnDashEffectsClientRpc(ulong clientId)
+    {
+        var playerEffectManager = GetPlayerEffectManagerById(clientId);
+
+        if (playerEffectManager != null)
+        {
+            playerEffectManager.SpawnDashParticles();
+        }
+        else
+        {
+            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+        }
+    }
+
+    [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SpawnJumpEffectsClientRpc(ulong clientId)
+    {
+        var playerEffectManager = GetPlayerEffectManagerById(clientId);
+
+        if (playerEffectManager != null)
+        {
+            playerEffectManager.SpawnJumpParticles();
         }
         else
         {

@@ -2,13 +2,13 @@
 using Unity.Netcode;
 using System.Linq;
 using UnityUtils;
+using Cysharp.Threading.Tasks;
 
 public class PlayerWeaponManager : MonoBehaviour
 {
     [SerializeField] Transform weaponHolderTransform;
 
     PlayerStatusEffectManager playerStatusEffectManager;
-    WeaponFactory weaponFactory = new();
     Weapon currentWeapon = null;
 
     public void Initialize(PlayerStatusEffectManager sm)
@@ -16,38 +16,42 @@ public class PlayerWeaponManager : MonoBehaviour
         playerStatusEffectManager = sm;
     }
 
-    public void EquipWeapon(WeaponConfigSO so)
+    public async UniTask EquipWeapon(string weaponId)
     {
-        if (weaponFactory.CreateWeapon(so, weaponHolderTransform, out var weapon))
+        Debug.Log($"[PlayerWeaponManager] EquipWeapon START. LocalClientId={NetworkManager.Singleton.LocalClientId}, weaponId={weaponId}");
+
+        var go = await NetworkedWeaponFactory.Instance.EquipWeapon(NetworkManager.Singleton.LocalClientId, weaponId);
+
+        Debug.Log($"[PlayerWeaponManager] EquipWeapon got result. go={(go == null ? "NULL" : go.name)}");
+
+        if (go == null)
         {
-            UnequipWeapon();
-            currentWeapon = weapon;
-
-            if (!currentWeapon.HeldEffects.IsNullOrEmpty())
-            {
-                playerStatusEffectManager.AddModifiers(currentWeapon.HeldEffects);
-            }
+            Debug.LogWarning($"Failed to equip weapon '{weaponId}'.");
+            return;
         }
-    }
 
-    public void EquipWeapon(string weaponId)
-    {
+        UnequipWeapon();
+
         var so = GameDataManager.Instance.GetWeapon(weaponId);
-        EquipWeapon(so);
+        currentWeapon = new Weapon(so, go);
+
+        if (!currentWeapon.HeldEffects.IsNullOrEmpty())
+        {
+            playerStatusEffectManager.AddModifiers(currentWeapon.HeldEffects);
+        }
     }
 
     public void UnequipWeapon()
     {
-        if (currentWeapon != null)
-        {
-            if (!currentWeapon.HeldEffects.IsNullOrEmpty())
-            {
-                playerStatusEffectManager.RemoveModifiers(currentWeapon.HeldEffects.Select(e => e.Id));
-            }
+        if (currentWeapon == null) return;
 
-            Destroy(currentWeapon.WeaponGameObject);
-            currentWeapon = null;
+        if (!currentWeapon.HeldEffects.IsNullOrEmpty())
+        {
+            playerStatusEffectManager.RemoveModifiers(currentWeapon.HeldEffects.Select(e => e.Id));
         }
+
+        NetworkedWeaponFactory.Instance.UnequipWeapon(NetworkManager.Singleton.LocalClientId);
+        currentWeapon = null;
     }
 
     public bool TryRemoveWeapon(string weaponId)

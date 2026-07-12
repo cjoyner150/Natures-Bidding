@@ -108,8 +108,10 @@ public class PlayerAttackManager : NetworkBehaviour
         }
         else if (callbackContext == IDamageable.HitCallbackContext.parried)
         {
+            Debug.Log("[PlayerHealth] Parry Callback Received");
             ctx.combo = 0;
             ctx.shouldStunSelf = true;
+            NetworkVisualEffectManager.SpawnParrySuccessReactEffectsOnPlayer?.Invoke(OwnerClientId);
         }
     }
 

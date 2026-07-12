@@ -126,6 +126,10 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         }
         else if (isParrying.Value)
         {
+            Debug.Log("[PlayerHealth] Hit Parried");
+
+            // TODO -> Tell parrying player of success
+
             context = IDamageable.HitCallbackContext.parried;
         }
         else
@@ -142,11 +146,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     public void BeginParry()
     {
+        Debug.Log("[PlayerHealth] Parry Begun");
         isParrying.Value = true;
     }
 
     public void EndParry()
     {
+        Debug.Log("[PlayerHealth] Parry End");
         isParrying.Value = false;
     }
 

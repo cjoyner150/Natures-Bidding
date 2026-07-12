@@ -15,22 +15,23 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnSlashEffectParticles()
     {
-        GameObject go = Instantiate(explosionParticle, weaponHolderTransform, false);
-        go.transform.localPosition = Vector3.zero;
-        go.transform.localRotation = Quaternion.identity;
+        //GameObject go = Instantiate(explosionParticle, weaponHolderTransform, false);
+        //go.transform.localPosition = Vector3.zero;
+        //go.transform.localRotation = Quaternion.identity;
 
-        SafeDispose(go, 1000).Forget();
+        //SafeDispose(go, 1000).Forget();
     }
 
     public void SpawnParryEffectParticles()
     {
-        GameObject go = Instantiate(explosionParticle, transform);
+        GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+        go.transform.localPosition = Vector3.zero;
         SafeDispose(go, 1000).Forget();
     }
 
     public void SpawnParrySuccessReactionParticles()
     {
-        GameObject go = Instantiate(hitReactParticle, transform);
+        GameObject go = Instantiate(hitReactParticle, weaponHolderTransform);
         SafeDispose(go, 1000).Forget();
     }
 
@@ -39,29 +40,31 @@ public class PlayerVisualEffectManager : MonoBehaviour
         if (critical)
         {
             // Do something else here
-            GameObject go = Instantiate(hitReactParticle, transform);
+            GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+            go.transform.localPosition = Vector3.zero;
             SafeDispose(go, 1000).Forget();
         }
         else
         {
-            GameObject go = Instantiate(hitReactParticle, transform);
+            GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
+            go.transform.localPosition = Vector3.zero;
             SafeDispose(go, 1000).Forget();
         }
     }
 
     public void SpawnDashParticles()
     {
-
+        GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
+        go.transform.localPosition = Vector3.zero;
+        SafeDispose(go, 1000).Forget();
     }
 
     public void SpawnJumpParticles()
     {
-
-    }
-
-    public void SpawnLifestealParticles()
-    {
-
+        GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.SetParent(null);
+        SafeDispose(go, 1000).Forget();
     }
 
     public void SpawnExplosionParticles(Vector3 spawnPos)

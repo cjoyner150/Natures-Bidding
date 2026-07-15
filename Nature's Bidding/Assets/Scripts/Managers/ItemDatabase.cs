@@ -6,9 +6,11 @@ public class ItemDatabase : ScriptableObject
 {
     [SerializeField] private List<StatusEffectorSO> allStatusEffectors;
     [SerializeField] private List<WeaponConfigSO> allWeapons;
+    [SerializeField] private List<MaskVisualSO> allMaskVisuals;
 
     private Dictionary<string, StatusEffectorSO> statusLookup;
     private Dictionary<string, WeaponConfigSO> weaponLookup;
+    private Dictionary<string, MaskVisualSO> maskVisualLookup;
 
     public void Initialize()
     {
@@ -43,6 +45,22 @@ public class ItemDatabase : ScriptableObject
             }
             weaponLookup[weapon.Id] = weapon;
         }
+
+        maskVisualLookup = new Dictionary<string, MaskVisualSO>();
+        foreach (var mask in allMaskVisuals)
+        {
+            if (string.IsNullOrEmpty(mask.Id))
+            {
+                Debug.LogError($"Effector {mask.name} has no ID - skipping.");
+                continue;
+            }
+            if (maskVisualLookup.ContainsKey(mask.Id))
+            {
+                Debug.LogError($"Duplicate ID: {mask.Id} on {mask.name}");
+                continue;
+            }
+            maskVisualLookup[mask.Id] = mask;
+        }
     }
 
     public T Get<T>(string id)
@@ -65,6 +83,14 @@ public class ItemDatabase : ScriptableObject
         else if (typeof(T) == typeof(WeaponConfigSO) || typeof(T).IsSubclassOf(typeof(WeaponConfigSO)))
         {
             if (weaponLookup.TryGetValue(id, out var weapon) && weapon is T result)
+            {
+                item = result;
+                return true;
+            }
+        }
+        else if (typeof(T) == typeof(MaskVisualSO) || typeof(T).IsSubclassOf(typeof(MaskVisualSO)))
+        {
+            if (maskVisualLookup.TryGetValue(id, out var weapon) && weapon is T result)
             {
                 item = result;
                 return true;

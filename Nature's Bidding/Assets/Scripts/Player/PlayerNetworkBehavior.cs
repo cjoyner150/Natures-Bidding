@@ -6,12 +6,14 @@ using UnityEngine;
 
 public class PlayerNetworkBehavior : NetworkBehaviour
 {
+    public Camera RenderCamera;
     public Color[] colors;
     public SkinnedMeshRenderer skinnedMeshRenderer;
     public PlayerContext ctx;
     private PlayerInputManager playerInput;
     private PlayerWeaponManager playerWeaponManager;
     private PlayerStatusEffectManager playerStatusEffectManager;
+    private PlayerMaskVisualManager playerMaskVisualManager;
     private CinemachineTargetGroup cameraTargetGroup;
 
     public override void OnNetworkSpawn()
@@ -21,11 +23,18 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         cameraTargetGroup = FindAnyObjectByType<CinemachineTargetGroup>();
         cameraTargetGroup?.AddMember(transform, 1, 10);
 
+        Debug.Log("[PlayerNetworkBehavior] Player is spawning on network...");
+
+        if (PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Combat)
+        {
+            playerMaskVisualManager = GetComponent<PlayerMaskVisualManager>();
+            playerMaskVisualManager.Initialize(OwnerClientId);
+        }
+
         SyncAllPlayerColors();
 
         if (IsOwner)
         {
-
             var statsMediator = new StatsMediator();
             ctx.playerStats = new Stats(statsMediator, ctx.BaseStats, PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId));
 

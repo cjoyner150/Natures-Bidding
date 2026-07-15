@@ -48,3 +48,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9788ed1c5de3a33409525b0708d798f0, type: 2}
   allWeapons:
   - {fileID: 11400000, guid: 7ad51f3274f399f4aa5dcfd592269e7b, type: 2}
+  allMaskVisuals:
+  - {fileID: 11400000, guid: b261faa1a61a2ab46bde9e55c03a471b, type: 2}
+  - {fileID: 11400000, guid: 4d42200778d8aae4b9a5ec3f10663f1d, type: 2}
+  - {fileID: 11400000, guid: 6ad12cce7ea395e44b7208f4385ae27c, type: 2}
+  - {fileID: 11400000, guid: b0f695d6d4099c246bc5d57a33e6da83, type: 2}
+  - {fileID: 11400000, guid: 17b9ddefea639b74888edcedd12e3b22, type: 2}
+  - {fileID: 11400000, guid: af442b0c76b88264cb384bacd5c16f26, type: 2}
+  - {fileID: 11400000, guid: 343beb4a2bac07941b18822f2f6a618c, type: 2}
+  - {fileID: 11400000, guid: 64856748bdf286d4cb66c04380eb59ef, type: 2}
+  - {fileID: 11400000, guid: b1c0c8f2b9ee29849a6b4079ce0109a5, type: 2}
+  - {fileID: 11400000, guid: 0e0d9b544ecb0b5409790653ecc8674f, type: 2}

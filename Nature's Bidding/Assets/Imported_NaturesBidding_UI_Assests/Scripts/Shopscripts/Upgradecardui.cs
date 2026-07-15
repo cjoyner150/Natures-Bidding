@@ -6,7 +6,7 @@ using TMPro;
 using System;
 using UnityEngine.Serialization;
 
-public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [Header("Card UI Elements")]
     public Image    cardBackground;
@@ -56,11 +56,14 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private Vector2 _iconStartPosition;
     private Vector2 _costIconStartPosition;
     private Coroutine _soldRoutine;
+    private int _lastClickFrame = -1;
 
     void Awake()
     {
         if (cardButton == null)
             cardButton = GetComponent<Button>();
+        if (cardButton == null)
+            cardButton = GetComponentInChildren<Button>(true);
 
         if (outlineImage != null)
             outlineImage.raycastTarget = false;
@@ -112,7 +115,7 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (cardButton != null)
         {
             cardButton.onClick.RemoveAllListeners();
-            cardButton.onClick.AddListener(() => _onClick?.Invoke());
+            cardButton.onClick.AddListener(HandleCardClicked);
         }
 
         if (cardBackground) cardBackground.color = upgrade.cardColor;
@@ -144,7 +147,7 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             cardButton.interactable = !used;
             cardButton.onClick.RemoveAllListeners();
-            cardButton.onClick.AddListener(() => _onClick?.Invoke());
+            cardButton.onClick.AddListener(HandleCardClicked);
         }
 
         SetSelected(false);
@@ -336,6 +339,23 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (_lockedOut) return;
         _onHoverExit?.Invoke();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData == null || eventData.button != PointerEventData.InputButton.Left)
+            return;
+
+        HandleCardClicked();
+    }
+
+    private void HandleCardClicked()
+    {
+        if (_lockedOut) return;
+        if (_lastClickFrame == Time.frameCount) return;
+
+        _lastClickFrame = Time.frameCount;
+        _onClick?.Invoke();
     }
 
     #endregion

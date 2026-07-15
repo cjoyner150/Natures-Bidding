@@ -302,6 +302,9 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         if (biddingCanvas) biddingCanvas.SetActive(phase == GameFlowPhase.Bidding);
         if (shopCanvas) shopCanvas.SetActive(phase == GameFlowPhase.ShopReview);
 
+        if (phase == GameFlowPhase.ShopReview)
+            PointerNPC.Instance?.HideSpeechBubble();
+
         if (CursorManager.Instance != null)
         {
             CursorManager.Instance.cursorEnabled =

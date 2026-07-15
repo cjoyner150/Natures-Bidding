@@ -16,6 +16,6 @@ MonoBehaviour:
   Title: Momentum Strike
   Description: Deal more damage while moving quickly
   Duration: -1
-  Stat: 10
+  Stat: 13
   Value: 10
   OperationType: 0

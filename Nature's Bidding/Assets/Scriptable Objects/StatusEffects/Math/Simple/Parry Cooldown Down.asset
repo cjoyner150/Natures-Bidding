@@ -16,6 +16,6 @@ MonoBehaviour:
   Title: Parry Cooldown Down
   Description: Decreases Parry Cooldown
   Duration: -1
-  Stat: 5
+  Stat: 8
   Value: 1
   OperationType: 3

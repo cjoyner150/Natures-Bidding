@@ -4,36 +4,74 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ItemDatabase", menuName = "Game/Item Database")]
 public class ItemDatabase : ScriptableObject
 {
-    [SerializeField] private List<StatusEffectorSO> _allStatusEffectors;
+    [SerializeField] private List<StatusEffectorSO> allStatusEffectors;
+    [SerializeField] private List<WeaponConfigSO> allWeapons;
 
-    private Dictionary<string, StatusEffectorSO> _lookup;
+    private Dictionary<string, StatusEffectorSO> statusLookup;
+    private Dictionary<string, WeaponConfigSO> weaponLookup;
 
     public void Initialize()
     {
-        _lookup = new Dictionary<string, StatusEffectorSO>();
-        foreach (var effector in _allStatusEffectors)
+        statusLookup = new Dictionary<string, StatusEffectorSO>();
+        foreach (var effector in allStatusEffectors)
         {
             if (string.IsNullOrEmpty(effector.Id))
             {
-                Debug.LogError($"Effector {effector.name} has no ID — skipping.");
+                Debug.LogError($"Effector {effector.name} has no ID - skipping.");
                 continue;
             }
-            if (_lookup.ContainsKey(effector.Id))
+            if (statusLookup.ContainsKey(effector.Id))
             {
                 Debug.LogError($"Duplicate ID: {effector.Id} on {effector.name}");
                 continue;
             }
-            _lookup[effector.Id] = effector;
+            statusLookup[effector.Id] = effector;
+        }
+
+        weaponLookup = new Dictionary<string, WeaponConfigSO>();
+        foreach (var weapon in allWeapons)
+        {
+            if (string.IsNullOrEmpty(weapon.Id))
+            {
+                Debug.LogError($"Effector {weapon.name} has no ID - skipping.");
+                continue;
+            }
+            if (weaponLookup.ContainsKey(weapon.Id))
+            {
+                Debug.LogError($"Duplicate ID: {weapon.Id} on {weapon.name}");
+                continue;
+            }
+            weaponLookup[weapon.Id] = weapon;
         }
     }
 
-    public StatusEffectorSO Get(string id)
+    public T Get<T>(string id)
     {
-        if (_lookup.TryGetValue(id, out var effector)) return effector;
-        Debug.LogError($"ItemDatabase: no effector found for id '{id}'");
-        return null;
+        if (TryGet<T>(id, out var item)) return item;
+        Debug.LogError($"ItemDatabase: no item found for id '{id}'");
+        return default(T);
     }
 
-    public bool TryGet(string id, out StatusEffectorSO effector) =>
-        _lookup.TryGetValue(id, out effector);
+    public bool TryGet<T>(string id, out T item)
+    {
+        if (typeof(T) == typeof(StatusEffectorSO) || typeof(T).IsSubclassOf(typeof(StatusEffectorSO)))
+        {
+            if (statusLookup.TryGetValue(id, out var effector) && effector is T result)
+            {
+                item = result;
+                return true;
+            }
+        }
+        else if (typeof(T) == typeof(WeaponConfigSO) || typeof(T).IsSubclassOf(typeof(WeaponConfigSO)))
+        {
+            if (weaponLookup.TryGetValue(id, out var weapon) && weapon is T result)
+            {
+                item = result;
+                return true;
+            }
+        }
+
+        item = default;
+        return false;
+    }
 }

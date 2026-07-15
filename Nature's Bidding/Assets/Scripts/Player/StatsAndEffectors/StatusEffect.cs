@@ -11,10 +11,12 @@ public abstract class StatusEffect
     public float Value;
     public float Duration;
     protected Stats Stats { get; private set; }
+    protected PlayerStatusEffectManager StatusEffectManager { get; private set; }
 
-    public void Initialize(Stats stats)
+    public void Initialize(Stats stats, PlayerStatusEffectManager playerStatusEffectManager)
     {
         Stats = stats;
+        StatusEffectManager = playerStatusEffectManager;
         OnInitialize();
     }
 
@@ -22,13 +24,6 @@ public abstract class StatusEffect
     public virtual void OnInitialize() { }
     public virtual void OnTick(float delta) { }
     public virtual void OnEnd() { }
-
-    public GameObject GetAttachedPlayer()
-    {
-        ulong clientId = Stats.playerData.clientId;
-        NetworkObject networkObject = NetworkManager.Singleton.ConnectedClientsList.First(x => x.ClientId == clientId).PlayerObject;
-        return networkObject.gameObject;
-    }
 
     public static Func<float, float> GetFuncByOperation(OperatorType opType, float val)
     {

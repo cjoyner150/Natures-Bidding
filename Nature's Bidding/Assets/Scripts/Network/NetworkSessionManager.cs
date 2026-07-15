@@ -15,9 +15,14 @@ using Unity.Collections;
 using System.Threading;
 using Steamworks;
 using Steamworks.Data;
+using System.IO;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 
 public class NetworkSessionManager : Singleton<NetworkSessionManager>
 {
+    private const bool EnableSessionDebugLogging = false;
+
     ISession activeSession;
 
     public ISession ActiveSession
@@ -37,14 +42,18 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
     public bool IsBusy => _isBusy;
     private bool _isBusy = false;
 
+    private DateTime _lastLeaveTime = DateTime.MinValue;
+    private const int MinTimeSinceLeaveMs = 2000;
+
     protected override void Awake()
     {
         if (HasInstance) Destroy(gameObject);
         else
         {
             base.Awake();
-
             DontDestroyOnLoad(gameObject);
+            if (EnableSessionDebugLogging)
+                File.WriteAllText(LogFilePath, $"=== Session started {DateTime.Now} ===\n");
         }
     }
 
@@ -131,6 +140,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         session.RemovedFromSession += OnRemovedFromSession;
         NetworkManager.Singleton.SceneManager.OnSceneEvent += OnNetworkSceneEvent;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnDisconnectedFromHost;
+        NetworkManager.Singleton.OnTransportFailure += OnTransportFailure;
 
         if (session.IsHost) { 
             StartLobbyHeartbeat();
@@ -146,22 +156,30 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         if (NetworkManager.Singleton?.SceneManager != null)
         {
             NetworkManager.Singleton.SceneManager.OnSceneEvent -= OnNetworkSceneEvent;
-            NetworkManager.Singleton.OnClientDisconnectCallback -= OnDisconnectedFromHost;
         }
 
+        NetworkManager.Singleton.OnClientDisconnectCallback -= OnDisconnectedFromHost;
+        NetworkManager.Singleton.OnTransportFailure -= OnTransportFailure;
+
         StopLobbyHeartbeat();
+    }
+
+    private void OnTransportFailure()
+    {
+        Debug.Log("Unity Transport Failed.");
+        _ = PersistentGameStateManager.Instance.ReturnToMenu();
     }
 
     private void OnSessionDeleted()
     {
         Debug.Log("Session deleted by host.");
-        PersistentGameStateManager.Instance.ReturnToMenu();
+        _ = PersistentGameStateManager.Instance.ReturnToMenu();
     }
 
     private void OnRemovedFromSession()
     {
         Debug.Log("Removed from session.");
-        PersistentGameStateManager.Instance.ReturnToMenu();
+        _ = PersistentGameStateManager.Instance.ReturnToMenu();
     }
 
     private void OnDisconnectedFromHost(ulong clientId)
@@ -169,7 +187,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         if (NetworkManager.Singleton.IsServer) return;
         if (_isBusy) return;
         Debug.Log("Disconnected from host.");
-        PersistentGameStateManager.Instance.ReturnToMenu();
+        _ = PersistentGameStateManager.Instance.ReturnToMenu();
     }
 
     #endregion
@@ -187,9 +205,8 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
     public async UniTask StartSessionAsHost(int maxRetries = 3)
     {
+        WriteLog("[StartSessionAsHost] START");
         PersistentGameStateManager.Instance.SetLoadingState("Creating session...");
-
-        await EnsureNetworkStoppedAsync();
 
         NetworkManager.Singleton.NetworkConfig.ConnectionApproval = true;
         NetworkManager.Singleton.ConnectionApprovalCallback = (request, response) =>
@@ -210,15 +227,17 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
             try
             {
                 ActiveSession = await MultiplayerService.Instance.CreateSessionAsync(options);
-                Debug.Log($"Session started. Id: {ActiveSession.Id}, Code: {ActiveSession.Code}");
+                WriteLog($"[StartSessionAsHost] Session created. Id: {ActiveSession.Id}, Code: {ActiveSession.Code}");
                 OnSessionConnected(ActiveSession);
+                WriteLog("[StartSessionAsHost] OnSessionConnected complete, returning");
                 return;
             }
             catch (SessionException e) when (e.Message.Contains("fetch relay join code") || e.Message.Contains("timeout"))
             {
+                WriteLog($"[StartSessionAsHost] Retry-worthy exception: {e.Message}");
                 if (i < maxRetries - 1)
                 {
-                    Debug.LogWarning($"Failed to create session, retrying... (attempt {i + 1}/{maxRetries})");
+                    WriteLog($"[StartSessionAsHost] retrying attempt {i + 1}/{maxRetries}");
                     await UniTask.Delay(1000);
                 }
                 else throw;
@@ -236,8 +255,6 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
     {
         PersistentGameStateManager.Instance.SetLoadingState("Joining session...");
 
-        await EnsureNetworkStoppedAsync();
-
         ActiveSession = await MultiplayerService.Instance.JoinSessionByCodeAsync(sessionCode);
 
         if (ActiveSession != null)
@@ -253,80 +270,98 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
     {
         const int maxRetries = 3;
 
+        WriteLog($"[QuickJoin] START retryCount={retryCount}, _isBusy={_isBusy}");
         await UniTask.WaitUntil(() => !_isBusy && !PersistentGameStateManager.Instance.IsReturningToMenu);
-        await EnsureNetworkStoppedAsync();
+        WriteLog("[QuickJoin] passed busy/returning wait");
+
+        var timeSinceLeave = (DateTime.UtcNow - _lastLeaveTime).TotalMilliseconds;
+        WriteLog($"[QuickJoin] timeSinceLeave={timeSinceLeave}ms");
+        if (timeSinceLeave < MinTimeSinceLeaveMs)
+        {
+            int waitMs = MinTimeSinceLeaveMs - (int)timeSinceLeave;
+            WriteLog($"[QuickJoin] waiting {waitMs}ms cooldown");
+            await UniTask.Delay(waitMs);
+        }
+
         if (HasActiveSession)
         {
-            Debug.LogWarning("QuickJoin called with an active session. Leave the session before joining a new one.");
+            WriteLog("[QuickJoin] already has active session, aborting");
             return;
         }
+
         _isBusy = true;
+        WriteLog("[QuickJoin] _isBusy = true, querying sessions");
         bool shouldReturnToMenu = false;
         try
         {
             var sessions = (await QuerySessions()).ToList();
+            WriteLog($"[QuickJoin] found {sessions.Count} sessions");
+
             if (sessions.Count > 0)
             {
-                Debug.Log($"Found {sessions.Count} session(s). Joining {sessions[0].Id}...");
+                WriteLog($"[QuickJoin] joining session {sessions[0].Id}");
                 try
                 {
-                    ActiveSession = await JoinSessionWithRetry(sessions[0].Id, 5);
+                    ActiveSession = await JoinSessionWithRetry(sessions[0].Id, 3);
+                    WriteLog("[QuickJoin] JoinSessionWithRetry SUCCESS");
                     OnSessionConnected(ActiveSession);
-                    Debug.Log($"Joined session. Code: {ActiveSession.Code}");
+                    WriteLog($"[QuickJoin] Joined. Code: {ActiveSession.Code}");
                 }
                 catch (InvalidOperationException e)
                 {
-                    Debug.LogWarning($"HookSessionEvents failed: {e.Message}");
+                    WriteLog($"[QuickJoin] InvalidOperationException: {e.Message}");
                     await SafeLeaveAsync();
                     shouldReturnToMenu = true;
                 }
                 catch (SessionException e) when (e.Message.Contains("lobby not found") || e.Message.Contains("not found"))
                 {
-                    Debug.LogWarning($"Session gone, starting as host. ({e.Message})");
+                    WriteLog($"[QuickJoin] Session gone: {e.Message}");
                     await StartSessionAsHost();
                 }
             }
             else
             {
-                Debug.Log("No sessions found. Starting as host...");
+                WriteLog("[QuickJoin] no sessions, hosting");
                 await StartSessionAsHost();
             }
         }
         catch (Exception e) when (e.Message.Contains("Unexpected exception processing network metadata"))
         {
+            WriteLog($"[QuickJoin] METADATA EXCEPTION at retryCount={retryCount}: {e.Message}");
             if (retryCount < maxRetries)
             {
-                Debug.LogWarning($"Network metadata exception � retrying QuickJoin ({retryCount + 1}/{maxRetries}).");
-                PersistentGameStateManager.Instance.SetLoadingState($"Retrying... ({retryCount + 1}/{maxRetries})");
                 _isBusy = false;
                 await UniTask.Delay(2000);
                 await QuickJoin(retryCount + 1);
                 return;
             }
-            Debug.LogError($"QuickJoin failed after {maxRetries} retries.");
-            PersistentGameStateManager.Instance.SetLoadingState("Failed to connect. Returning to menu...");
-            await UniTask.Delay(2000);
+            WriteLog("[QuickJoin] Max retries hit, giving up.");
             ActiveSession = null;
             shouldReturnToMenu = true;
         }
         catch (SessionException e)
         {
-            Debug.LogError($"QuickJoin failed: {e.Message}");
+            WriteLog($"[QuickJoin] SessionException: {e.GetType().FullName}: {e.Message}");
             ActiveSession = null;
             shouldReturnToMenu = true;
         }
         catch (Exception e)
         {
-            Debug.LogException(e);
+            WriteLog($"[QuickJoin] Exception: {e.GetType().FullName}: {e.Message}\n{e.StackTrace}");
             ActiveSession = null;
             shouldReturnToMenu = true;
         }
         finally
         {
             _isBusy = false;
+            WriteLog("[QuickJoin] finally, _isBusy=false");
         }
         if (shouldReturnToMenu)
+        {
+            WriteLog("[QuickJoin] returning to menu");
             PersistentGameStateManager.Instance.ReturnToMenu();
+        }
+        WriteLog("[QuickJoin] END");
     }
 
     private async UniTask<ISession> JoinSessionWithRetry(string sessionId, int maxRetries = 3)
@@ -352,7 +387,6 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
     async UniTask SafeLeaveAsync()
     {
-
         if (ActiveSession != null)
         {
             OnSessionDisconnected(ActiveSession);
@@ -363,7 +397,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
             }
             catch (SessionException e) when (e.Message.Contains("connection was lost"))
             {
-                Debug.LogWarning($"Exception type: {e.GetType().FullName}, Session leave warning (non-fatal): {e.Message}");
+                Debug.LogWarning($"Session leave warning (non-fatal): {e.Message}");
             }
             catch (Exception e)
             {
@@ -372,19 +406,9 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
             finally
             {
                 ActiveSession = null;
+                _lastLeaveTime = DateTime.UtcNow;
             }
         }
-
-        await EnsureNetworkStoppedAsync();
-    }
-
-    private async UniTask EnsureNetworkStoppedAsync()
-    {
-        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
-            return;
-
-        NetworkManager.Singleton.Shutdown();
-        await UniTask.WaitUntil(() => NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening);
     }
 
     async UniTaskVoid KickPlayer(string playerId)
@@ -499,5 +523,15 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
     }
 
     #endregion
+    private static string LogFilePath => Path.Combine(
+    Application.persistentDataPath,
+    $"session_debug_pid{Process.GetCurrentProcess().Id}.log"
+    );
 
+    private void WriteLog(string message)
+    {
+        string line = $"[{DateTime.Now:HH:mm:ss.fff}] {message}";
+        Debug.Log(line);
+        File.AppendAllText(LogFilePath, line + "\n");
+    }
 }

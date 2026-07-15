@@ -1,12 +1,15 @@
 using Cysharp.Threading.Tasks;
 using MoreMountains.Tools;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerHealth : NetworkBehaviour, IDamageable
 {
-    public NetworkVariable<float> health =  new(100, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    public NetworkVariable<float> maxHealth = new(100, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    public NetworkVariable<float> health =  new(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    public NetworkVariable<float> maxHealth = new(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<bool> isInvulnerable = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isParrying = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isRoundWinner = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
@@ -16,6 +19,10 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     private IGameServerHandler _serverHandler;
     private PlayerGameplayUI playerGameplayUI;
     private MMProgressBar healthProgressBarVisual;
+
+    private readonly Queue<float> pendingMaxHealthUpdates = new();
+    private bool isProcessingHealthQueue = false;
+    private bool isHealthInitialized = false;
 
     bool isDead = false;
 
@@ -41,7 +48,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
         if (IsOwner)
         {
-            SendMaxHealthToServerRpc(ctx.playerStats.MaxHealth);
+            SendMaxHealthToServerRpc(ctx.playerStats.MaxHealth, OwnerClientId);
         }
 
         if (IsServer && IsOwner)
@@ -49,15 +56,49 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
             // Host sets their own health immediately since they are both owner and server
             maxHealth.Value = ctx.playerStats.MaxHealth;
             health.Value = ctx.playerStats.MaxHealth;
-            healthProgressBarVisual.SetBar01(1f);
+            healthProgressBarVisual.SetBar01(1f); 
         }
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    private void SendMaxHealthToServerRpc(float maxHealthValue)
+    public void SendMaxHealthToServerRpc(float maxHealthValue, ulong clientId)
     {
-        maxHealth.Value = maxHealthValue;
-        health.Value = maxHealthValue;
+        pendingMaxHealthUpdates.Enqueue(maxHealthValue);
+
+        if (!isProcessingHealthQueue)
+            DrainMaxHealthQueue().Forget();
+    }
+
+    private async UniTaskVoid DrainMaxHealthQueue()
+    {
+        isProcessingHealthQueue = true;
+
+        if (!IsSpawned)
+        {
+            await UniTask.WaitUntil(() => IsSpawned);
+        }
+
+        while (pendingMaxHealthUpdates.Count > 0)
+        {
+            float to = pendingMaxHealthUpdates.Dequeue();
+            float from = maxHealth.Value;
+
+            maxHealth.Value = to;
+
+            if (!isHealthInitialized)
+            {
+                health.Value = to;
+                isHealthInitialized = true;
+            }
+            else
+            {
+                health.Value += to - from;
+            }
+
+            Debug.Log($"[PlayerHealth] Health changed on client {OwnerClientId}. From: {from}, To: {to}, New max health: {maxHealth.Value}, New health: {health.Value}");
+        }
+
+        isProcessingHealthQueue = false;
     }
 
     public override void OnNetworkDespawn()
@@ -75,16 +116,20 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     }
 
-    public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context)
+    public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context, bool critical = false)
     {
         if (!isInvulnerable.Value && !isParrying.Value)
         {
             context = IDamageable.HitCallbackContext.success;
             
-            _serverHandler.RequestHitPlayerServerRpc(fromPlayerId, selfNetworkObject.OwnerClientId, damage);
+            _serverHandler.RequestHitPlayerServerRpc(fromPlayerId, selfNetworkObject.OwnerClientId, damage, critical);
         }
         else if (isParrying.Value)
         {
+            Debug.Log("[PlayerHealth] Hit Parried");
+
+            // TODO -> Tell parrying player of success
+
             context = IDamageable.HitCallbackContext.parried;
         }
         else
@@ -101,14 +146,23 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     public void BeginParry()
     {
+        Debug.Log("[PlayerHealth] Parry Begun");
         isParrying.Value = true;
     }
 
     public void EndParry()
     {
+        Debug.Log("[PlayerHealth] Parry End");
         isParrying.Value = false;
     }
 
+    public void Boom(float damage, float radius)
+    {
+        CombatServerHandler combatHandler = _serverHandler as CombatServerHandler;
+        if (combatHandler == null) return;
+
+        combatHandler.RequestPlayerBoomServerRpc(OwnerClientId, damage, radius);
+    }
 
     private void OnHealthChanged(float from, float to)
     {
@@ -129,10 +183,9 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     }
 
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
-    public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition)
+    public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition, bool critical = false)
     {
-        // Call event with your own client id to spawn it on yourself, or you could use another client id to spawn on another player
-        PlayerVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId);
+        NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId, critical);
         
         if (!IsOwner) return;
         ctx.lastHitFromPosition = fromPosition;

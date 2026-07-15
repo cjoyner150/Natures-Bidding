@@ -19,11 +19,11 @@ MonoBehaviour:
   Jumps: 1
   Size: 1
   KnockbackResistance: 1
-  ParryDuration: 1
+  ParryDuration: 3
   ParryCooldown: 4
   DashDistance: 1
   DashCooldown: 3.65
-  CritChance: 10
+  CritChance: 30
   CritDamageMultiplier: 1.5
   Momentum: 0
   ComboDamage: 0

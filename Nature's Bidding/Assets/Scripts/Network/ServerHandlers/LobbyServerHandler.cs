@@ -21,6 +21,7 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
         PersistentGameStateManager.Instance.OnLobbySceneReady();
     }
 
@@ -36,9 +37,9 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
         NetworkManager.OnClientDisconnectCallback -= OnClientDisconnected;
     }
 
-    protected override void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage)
+    protected override void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage, bool critical = false)
     {
-        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position);
+        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, critical);
     }
 
     private void OnClientConnected(ulong clientId)
@@ -120,7 +121,7 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
 
     protected override void OnNewPlayerConnected(ulong clientId, string authId, string playerName)
     {
-        PersistentPlayerRegistry.Instance.SyncAllToClient(clientId);
+        PlayerRegistryNetworkSync.Instance.SyncAllToClient(clientId);
         PersistentPlayerRegistry.Instance.RegisterPlayer(clientId, authId, playerName);
         SpawnAndRegisterPlayer(clientId);
     }

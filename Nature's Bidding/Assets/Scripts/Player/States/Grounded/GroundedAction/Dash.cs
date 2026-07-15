@@ -16,6 +16,7 @@ public class Dash : State
     protected override void OnEnter()
     {
         ctx.anim.SetBool("Dashing", true);
+        NetworkVisualEffectManager.SpawnDashEffectsOnPlayer?.Invoke(ctx.playerHealth.OwnerClientId);
 
         ctx.desiredMaxSpeed = ctx.dashSpeed * ctx.playerStats.DashDistance;
 

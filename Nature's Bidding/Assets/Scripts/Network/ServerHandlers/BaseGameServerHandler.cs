@@ -186,10 +186,3 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
 
     protected virtual void OnNewPlayerConnected(ulong clientId, string authId, string playerName) { }
 }
-
-public interface IGameServerHandler
-{
-    void RequestHitPlayerServerRpc(ulong attackingPlayerId, ulong hitPlayerId, float damage, bool critical = false);
-    void RequestHealServerRpc(ulong targetClientId, float amount);
-    void OnPlayerDeath(ulong clientId);
-}

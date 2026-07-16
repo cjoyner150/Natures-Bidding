@@ -31,4 +31,11 @@ public class GameDataManager : Singleton<GameDataManager>
         ids.Select(id => itemDatabase.Get<WeaponConfigSO>(id))
             .Where(w => w != null)
             .ToList();
+
+    public MaskVisualSO GetMask(string id) => itemDatabase.Get<MaskVisualSO>(id);
+
+    public List<MaskVisualSO> GetMasks(IEnumerable<string> ids) =>
+        ids.Select(id => itemDatabase.Get<MaskVisualSO>(id))
+            .Where(w => w != null)
+            .ToList();
 }

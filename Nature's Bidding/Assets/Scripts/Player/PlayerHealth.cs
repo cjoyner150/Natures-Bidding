@@ -128,7 +128,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         {
             Debug.Log("[PlayerHealth] Hit Parried");
 
-            // TODO -> Tell parrying player of success
+            NotifyParrySuccessClientRpc();
 
             context = IDamageable.HitCallbackContext.parried;
         }
@@ -136,6 +136,12 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         {
             context = IDamageable.HitCallbackContext.failed;
         }
+    }
+
+    [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Everyone)]
+    public void NotifyParrySuccessClientRpc()
+    {
+        ctx.parryResponse = true;
     }
 
     public void Heal(float amount)

@@ -20,7 +20,7 @@ public class Parry : State
         ctx.forceToAdd = Vector3.zero;
 
         ctx.anim.SetTrigger("Parry");
-        NetworkVisualEffectManager.SpawnParryEffectsOnPlayer?.Invoke(ctx.playerHealth.OwnerClientId);
+        NetworkVisualEffectManager.SpawnParryEffectsOnPlayer?.Invoke(ctx.playerHealth.OwnerClientId, (int)(ctx.playerStats.ParryDuration * 1000));
 
         SetParryActive(ctx.parryWarmUpDelay);
 
@@ -68,9 +68,4 @@ public class Parry : State
         else return null;
     }
 
-    //[Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
-    //public void PlayerParryFeedbackClientRpc(Vector3 fromPosition)
-    //{
-    //    PlayerVisualEffectManager.SpawnParryEffectsOnPlayer?.Invoke(OwnerClientId);
-    //}
 }

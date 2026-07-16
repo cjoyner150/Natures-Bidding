@@ -3,7 +3,42 @@ guid: 507ac8baad585ba498813736f9927805
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Leaf
+    second: {fileID: 2100000, guid: 39b82bf9e46506b478cd9b908ac82b7a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bark
+    second: {fileID: 2100000, guid: c2374077bbb4fd24ab7735ca8460890a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: darkness
+    second: {fileID: 2100000, guid: 2cdc14cc305781447a79719b986adcd8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: stick bark
+    second: {fileID: 2100000, guid: 173d30ff5179e7d45a0e3b348bfb8df8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: stick leaf
+    second: {fileID: 2100000, guid: 7d7de4489efcd804e8566cc1b0290fc5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: stick wood
+    second: {fileID: 2100000, guid: 779745a21fb9c7642838819b82ee02ca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wood
+    second: {fileID: 2100000, guid: 7521a05b1eaae624e88406d3a34c68ba, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

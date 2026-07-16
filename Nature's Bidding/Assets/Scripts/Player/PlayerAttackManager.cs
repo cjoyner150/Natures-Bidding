@@ -15,8 +15,11 @@ public class PlayerAttackManager : NetworkBehaviour
 
     [SerializeField] private float attackRadius;
     [SerializeField] private float attackLength;
+    [SerializeField] private ParticleSystem attackVFX;
 
     PlayerContext ctx;
+
+    
 
     public override void OnNetworkSpawn()
     {
@@ -39,13 +42,13 @@ public class PlayerAttackManager : NetworkBehaviour
     {
         damagedObjectsOnThisAttack.Clear();
         isAttacking = true;
-
-        NetworkVisualEffectManager.SpawnSlashEffectsOnPlayer?.Invoke(OwnerClientId);
+        attackVFX.SetActive(true);
     }
 
     public void EndAttack()
     {
         isAttacking = false;
+        attackVFX.SetActive(false);
     }
 
     void FixedUpdate()
@@ -86,7 +89,7 @@ public class PlayerAttackManager : NetworkBehaviour
         damage += ctx.playerStats.ComboDamage * ctx.combo;
         damage *= crit ? ctx.playerStats.CritDamageMultiplier : 1;
 
-        damageable.Hit(damage, selfPlayerHealth.OwnerClientId, out IDamageable.HitCallbackContext callbackContext, crit);
+        damageable.Hit(damage, selfPlayerHealth.OwnerClientId, out IDamageable.HitCallbackContext callbackContext);
         damagedObjectsOnThisAttack.Add(damageable);
 
         if (callbackContext == IDamageable.HitCallbackContext.success)
@@ -108,10 +111,8 @@ public class PlayerAttackManager : NetworkBehaviour
         }
         else if (callbackContext == IDamageable.HitCallbackContext.parried)
         {
-            Debug.Log("[PlayerHealth] Parry Callback Received");
             ctx.combo = 0;
             ctx.shouldStunSelf = true;
-            NetworkVisualEffectManager.SpawnParrySuccessReactEffectsOnPlayer?.Invoke(OwnerClientId);
         }
     }
 

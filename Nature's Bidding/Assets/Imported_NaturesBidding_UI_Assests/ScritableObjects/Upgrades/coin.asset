@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c64c524e213d78a469ace7eb02e09a47, type: 3}
   m_Name: coin
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
+  _id: coin
   upgradeName: coin boost
   description: Increases movement speed by 5%.
   icon: {fileID: 21300000, guid: 3682d88ae1ce13f47991ce7f7fca7435, type: 3}
+  effectors:
+  - {fileID: 11400000, guid: f2f5f9799867d264693573683cae36dd, type: 2}
   upgradeType: 4
   effectValue: 0.05
   cost: 50

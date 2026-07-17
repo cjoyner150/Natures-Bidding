@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c64c524e213d78a469ace7eb02e09a47, type: 3}
   m_Name: jump
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
+  _id: jump
   upgradeName: Jump Boost
   description: Increases jump by 5%.
   icon: {fileID: 21300000, guid: 3242a2a5fb0f0ab4094df612e1dc21f9, type: 3}
+  effectors:
+  - {fileID: 11400000, guid: 611f0f13d6aed124e86c5c90bcf03799, type: 2}
   upgradeType: 1
   effectValue: 0.05
   cost: 50

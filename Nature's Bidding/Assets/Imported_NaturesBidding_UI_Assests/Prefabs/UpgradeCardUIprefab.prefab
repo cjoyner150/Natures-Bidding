@@ -421,20 +421,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeCardUI
   cardBackground: {fileID: 0}
   iconImage: {fileID: 3734185962045412082}
+  costIconImage: {fileID: 0}
   nameText: {fileID: 0}
   effectText: {fileID: 0}
   costText: {fileID: 454335914212135985}
   ownedText: {fileID: 0}
   cardButton: {fileID: 4522932594160991211}
-  shadowImage: {fileID: 2404812571341854994}
+  outlineImage: {fileID: 2404812571341854994}
   selectedImage: {fileID: 8496486627103898705}
   normalColor: {r: 0.15, g: 0.15, b: 0.2, a: 1}
   selectedColor: {r: 0.9826398, g: 1, b: 0, a: 1}
   maxedColor: {r: 0.25, g: 0.25, b: 0.25, a: 1}
-  shadowScale: 1.2
-  shadowColor: {r: 0, g: 0, b: 0, a: 0.5}
+  outlineScale: 1.08
+  outlineColor: {r: 1, g: 0.8, b: 0, a: 1}
   selectedScale: 1.2
   selectedOutlineColor: {r: 0.57520777, g: 1, b: 0.36862743, a: 0.6509804}
+  soldIconSprite: {fileID: 0}
+  soldCostIconSprite: {fileID: 0}
+  soldLabelText: SOLD
+  soldLiftAmount: 16
+  soldLiftDuration: 0.18
+  soldDisableDelay: 0.08
 --- !u!114 &4522932594160991211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,7 +485,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2457172883342708408}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8021745439400905810
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,7 +15,6 @@ public class PlayerAttackManager : NetworkBehaviour
 
     [SerializeField] private float attackRadius;
     [SerializeField] private float attackLength;
-    [SerializeField] private ParticleSystem attackVFX;
 
     PlayerContext ctx;
 
@@ -42,13 +41,11 @@ public class PlayerAttackManager : NetworkBehaviour
     {
         damagedObjectsOnThisAttack.Clear();
         isAttacking = true;
-        attackVFX.SetActive(true);
     }
 
     public void EndAttack()
     {
         isAttacking = false;
-        attackVFX.SetActive(false);
     }
 
     void FixedUpdate()

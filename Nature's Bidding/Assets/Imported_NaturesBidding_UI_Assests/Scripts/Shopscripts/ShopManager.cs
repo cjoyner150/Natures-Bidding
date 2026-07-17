@@ -65,13 +65,11 @@ public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandle
 
     #region Lifecycle
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
+    void Awake() { }
 
     public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
         backToBiddingButton?.gameObject.SetActive(IsHost);
         BuildUpgradeLookup();
     }
@@ -197,8 +195,8 @@ public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandle
     [Rpc(SendTo.Everyone)]
     void SyncAllOfferingsRpc(string packedAll)
     {
-        foreach (var panel in _panels.Values)
-            if (panel) Destroy(panel.gameObject);
+        foreach (Transform child in shopPanelsContainer)
+            if (child != null) Destroy(child.gameObject);
         _panels.Clear();
 
         if (playerShopPanelPrefab == null)
@@ -213,6 +211,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandle
         }
 
         var playerEntries = packedAll.Split(';');
+        int createdPanels = 0;
         foreach (var entry in playerEntries)
         {
             if (string.IsNullOrEmpty(entry)) continue;
@@ -237,6 +236,22 @@ public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandle
             Debug.Log($"[ShopManager] Building panel for client {clientId} isLocal:{isLocal} offerings:{offerings.Count}");
             panel.Initialise(clientId, offerings, isLocal);
             _panels[clientId] = panel;
+            createdPanels++;
+        }
+
+        const int targetPanelCount = 4;
+        while (createdPanels < targetPanelCount)
+        {
+            var go = Instantiate(playerShopPanelPrefab, shopPanelsContainer);
+            var panel = go.GetComponent<PlayerShopPanel>();
+            if (panel == null)
+            {
+                Destroy(go);
+                break;
+            }
+
+            panel.InitialisePlaceholder($"Open Slot {createdPanels + 1}", new List<ShopUpgrade>());
+            createdPanels++;
         }
     }
 
@@ -247,6 +262,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandle
     /// <summary>Called by the local player's panel when Buy is clicked on an upgrade.</summary>
     public void LocalPlayerBuyUpgrade(ShopUpgrade upgrade, PlayerShopPanel sourcePanel)
     {
+        Debug.Log($"[ShopManager] LocalPlayerBuyUpgrade requested. id:{upgrade?.Id} localClient:{NetworkManager.Singleton?.LocalClientId}");
         BuyUpgradeRpc(upgrade.Id);
     }
 

@@ -179,6 +179,15 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             iconImage.color = new Color(1f, 1f, 1f, 0.75f);
         }
 
+        if (selectedImage != null)
+        {
+            selectedImage.sprite = Upgrade != null && Upgrade.shadowSprite != null
+                ? Upgrade.shadowSprite
+                : _originalIconSprite;
+            selectedImage.color = new Color(1f, 1f, 1f, 0.55f);
+            selectedImage.gameObject.SetActive(true);
+        }
+
         if (costIconImage != null && soldCostIconSprite != null)
             costIconImage.sprite = soldCostIconSprite;
 

@@ -39,13 +39,11 @@ public class ReadyManager : BaseGameServerHandler<ReadyManager>, IGameServerHand
 
     #region Lifecycle
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
+    void Awake() { }
 
     public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
         ReadyCount.OnValueChanged += (_, count) => RefreshUI(count);
         RefreshUI(ReadyCount.Value);
     }

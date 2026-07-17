@@ -31,6 +31,7 @@ public class ShopUpgrade : ScriptableObject
 
     [Header("Visuals")]
     public Color cardColor       = new Color(0.15f, 0.15f, 0.2f, 1f);
+    public Sprite shadowSprite;
 
     public string Id => _id;
 

@@ -83,10 +83,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>, IGameServer
 
     #region Lifecycle
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
+    void Awake() { }
 
     void Update()
     {
@@ -106,6 +103,8 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>, IGameServer
 
     public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
+
         TimeRemaining.OnValueChanged += (_, t) =>
         {
             if (timerText) timerText.text = $"{t}s";

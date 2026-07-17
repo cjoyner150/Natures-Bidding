@@ -89,6 +89,7 @@ public class PlayerShopPanel : MonoBehaviour
     private Coroutine               _rerollAnimationRoutine;
 
     private Dictionary<string, int> _purchaseCounts = new Dictionary<string, int>();
+    private bool                    _isPlaceholder;
 
     #endregion
 
@@ -109,6 +110,7 @@ public class PlayerShopPanel : MonoBehaviour
 
         _clientId  = clientId;
         _isLocal   = isLocal;
+        _isPlaceholder = false;
         _offerings = offerings;
         _smallPotUsed = false;
         _grandPotUsed = false;
@@ -152,6 +154,52 @@ public class PlayerShopPanel : MonoBehaviour
             StartCoroutine(RetryRefreshStats());
         
     }
+
+    public void InitialisePlaceholder(string slotLabel, List<ShopUpgrade> offerings)
+    {
+        gameObject.SetActive(true);
+
+        _canvas = GetComponentInParent<Canvas>();
+        while (_canvas != null && !_canvas.isRootCanvas)
+            _canvas = _canvas.transform.parent?.GetComponentInParent<Canvas>();
+        if (_canvas == null)
+            _canvas = FindFirstObjectByType<Canvas>();
+
+        _clientId = 0;
+        _isLocal = false;
+        _isPlaceholder = true;
+        _offerings = offerings ?? new List<ShopUpgrade>();
+        _smallPotUsed = false;
+        _grandPotUsed = false;
+
+        if (panelBackground) panelBackground.color = remoteColor;
+        if (localPlayerBorder) localPlayerBorder.gameObject.SetActive(false);
+
+        if (playerNameText) playerNameText.text = slotLabel;
+        if (coinsText) coinsText.text = "--";
+        if (mobilityText) mobilityText.text = "--";
+        if (powerText) powerText.text = "--";
+        if (defenseText) defenseText.text = "--";
+
+        if (detailPanel) detailPanel.SetActive(false);
+        if (buyButton) buyButton.gameObject.SetActive(false);
+
+        if (rerollButton != null)
+        {
+            rerollButton.onClick.RemoveAllListeners();
+            rerollButton.gameObject.SetActive(false);
+            rerollButton.interactable = false;
+        }
+
+        if (readyButton != null)
+        {
+            readyButton.onClick.RemoveAllListeners();
+            readyButton.gameObject.SetActive(false);
+            readyButton.interactable = false;
+        }
+
+        BuildCards();
+    }
     void SubscribeAndRefresh()
     {
         if (_playerData == null) return;
@@ -189,6 +237,9 @@ public class PlayerShopPanel : MonoBehaviour
 
     IEnumerator RetryRefreshStats()
     {
+        if (_isPlaceholder)
+            yield break;
+
         for (int i = 0; i < 20; i++)
         {
             yield return new WaitForSeconds(0.25f);
@@ -274,6 +325,9 @@ public class PlayerShopPanel : MonoBehaviour
         _upgradeCards.Clear();
         if (_smallPotCard != null) { Destroy(_smallPotCard.gameObject); _smallPotCard = null; }
         if (_grandPotCard != null) { Destroy(_grandPotCard.gameObject); _grandPotCard = null; }
+
+        if (_isPlaceholder)
+            return;
 
         if (upgradeCardPrefab == null)
         {
@@ -451,11 +505,7 @@ public class PlayerShopPanel : MonoBehaviour
         if (owned >= upgrade.maxPurchases)
             return;
 
-        int coins = GetCoins();
-        if (coins < upgrade.cost)
-            return;
-
-        // Immediately purchase
+        // Immediately purchase on click instead of waiting for the Buy button.
         ShopManager.Instance?.LocalPlayerBuyUpgrade(upgrade, this);
     }
 
@@ -491,6 +541,7 @@ public class PlayerShopPanel : MonoBehaviour
     /// <summary>Updates the buy button based on what is currently selected.</summary>
     void RefreshBuyButton()
     {
+        if (_isPlaceholder) return;
         if (buyButton == null) return;
 
         if (_smallPotSelected)
@@ -648,6 +699,8 @@ public class PlayerShopPanel : MonoBehaviour
 
     public void RefreshStats()
     {
+        if (_isPlaceholder) return;
+
         _playerData = PlayerData.GetPlayer(_clientId);
         if (_playerData == null) return;
 
@@ -709,6 +762,7 @@ public class PlayerShopPanel : MonoBehaviour
 
     int GetCoins()
     {
+        if (_isPlaceholder) return 0;
         var inv = PlayerInventory.Local;
         return inv != null ? inv.Coins : 0;
     }

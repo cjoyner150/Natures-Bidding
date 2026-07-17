@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
 public class StatsMediator
 {
@@ -18,7 +16,16 @@ public class StatsMediator
 
         modifier.OnDispose += _ =>
         {
+            Debug.Log($"Disposing {modifier.GetType().Name}");
             modifiers.Remove(modifier);
+
+            string printMods = "";
+            foreach (StatsModifier modifier in modifiers)
+            {
+                printMods += modifier.GetType().Name;
+            }
+            Debug.Log("new list " + printMods);
+
             Queries -= modifier.Handle;
         };
     }

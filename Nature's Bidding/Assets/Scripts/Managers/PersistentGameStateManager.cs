@@ -9,9 +9,12 @@ using UnityUtils;
 
 public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 {
+    public enum GameFlowPhase { Lobby, Bidding, ShopReview, Combat }
+
     private const string BiddingSceneName = "Bidding_Scene";
     private const string CombatSceneName = "CliffGameplay";
 
+    [SerializeField] private GameObject[] spawnableNetworkSingletons; 
     [SerializeField] private GameObject loadingPanel;
     public GameObject LoadingPanel => loadingPanel;
 
@@ -21,6 +24,15 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     [Header("Debug")]
     [SerializeField] bool skipToCombat;
+
+    [Header("Game Flow")]
+    [SerializeField] private GameObject biddingCanvas;
+    [SerializeField] private GameObject shopCanvas;
+
+    [Header("Flow Managers")]
+    [SerializeField] private BiddingManager biddingManager;
+    [SerializeField] private ShopManager shopManager;
+    [SerializeField] private ReadyManager readyManager;
 
 
     private bool _isReturningToMenu = false;
@@ -132,6 +144,11 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private void OnSessionHosted()
     {
+        foreach (var prefab in spawnableNetworkSingletons)
+        {
+            var go = Instantiate(prefab);
+            go.GetComponent<NetworkObject>().Spawn();
+        }
         LoadLobbyLevel();
     }
 
@@ -152,10 +169,21 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     public async void OnLobbySceneReady()
     {
-        SetLoadingState("Spawning...");
+        SetLoadingState("Registering Data...");
 
         State = GameState.Lobby;
+
+        await UniTask.WhenAny(
+            UniTask.WaitUntil(() => PlayerRegistryNetworkSync.Instance != null && StatusEffectNetworkManager.Instance != null),
+            UniTask.Delay(3000)
+        );
+
+        if (PlayerRegistryNetworkSync.Instance == null || StatusEffectNetworkManager.Instance == null)
+            Debug.LogWarning("[PersistentGameStateManager] Lobby bootstrap singletons were not ready in time; continuing anyway.");
+
         RegisterAuthData();
+
+        SetLoadingState("Spawning...");
 
         await UniTask.WaitUntil(() => NetworkManager.Singleton.LocalClient.PlayerObject != null);
 
@@ -166,6 +194,103 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     {
         State = GameState.Bidding;
         ClearLoadingState();
+    }
+
+    public void ConfigureGameFlowReferences(
+        GameObject newBiddingCanvas,
+        GameObject newShopCanvas,
+        BiddingManager newBiddingManager,
+        ShopManager newShopManager,
+        ReadyManager newReadyManager)
+    {
+        biddingCanvas = newBiddingCanvas;
+        shopCanvas = newShopCanvas;
+        biddingManager = newBiddingManager;
+        shopManager = newShopManager;
+        readyManager = newReadyManager;
+    }
+
+    public async UniTask InitializeBiddingFlowIfServer()
+    {
+        await UniTask.Yield();
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
+            BeginBiddingPhaseServer();
+    }
+
+    public void SyncFlowPhase(GameFlowPhase phase)
+    {
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
+            return;
+
+        ApplyFlowPhase(phase);
+    }
+
+    public void RequestStartShopPhase()
+    {
+        if (NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)
+        {
+            ShopManager.Instance?.StartShopPhaseRpc();
+            return;
+        }
+
+        BeginShopPhaseServer();
+    }
+
+    public void RequestStartBiddingPhase()
+    {
+        if (NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)
+        {
+            BiddingManager.Instance?.StartBiddingPhaseRpc();
+            return;
+        }
+
+        BeginBiddingPhaseServer();
+    }
+
+    public void RequestStartCombatPhase()
+    {
+        if (NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)
+        {
+            ReadyManager.Instance?.StartCombatPhaseRpc();
+            return;
+        }
+
+        BeginCombatPhaseServer();
+    }
+
+    public void BeginBiddingPhaseServer()
+    {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
+
+        if (GameFlowManager.Instance != null)
+            GameFlowManager.Instance.CurrentPhase.Value = GameFlowManager.GamePhase.Bidding;
+
+        readyManager?.ResetForNewPhase();
+        ApplyFlowPhase(GameFlowPhase.Bidding);
+        biddingManager?.BeginBiddingPhase();
+    }
+
+    public void BeginShopPhaseServer()
+    {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
+
+        if (GameFlowManager.Instance != null)
+            GameFlowManager.Instance.CurrentPhase.Value = GameFlowManager.GamePhase.ShopReview;
+
+        readyManager?.ResetForNewPhase();
+        ApplyFlowPhase(GameFlowPhase.ShopReview);
+        shopManager?.OnShopPhaseStart();
+    }
+
+    public void BeginCombatPhaseServer()
+    {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
+
+        if (GameFlowManager.Instance != null)
+            GameFlowManager.Instance.CurrentPhase.Value = GameFlowManager.GamePhase.Combat;
+
+        ApplyFlowPhase(GameFlowPhase.Combat);
+        LoadCombatLevel();
     }
 
 
@@ -327,11 +452,57 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     {
         if (skipToCombat)
         {
-            LoadCombatLevel();
+            BeginCombatPhaseServer();
         }
         else
         {
             LoadBiddingLevel();
+        }
+    }
+
+    private void ApplyFlowPhase(GameFlowPhase phase)
+    {
+        switch (phase)
+        {
+            case GameFlowPhase.Lobby:
+                State = GameState.Lobby;
+                break;
+            case GameFlowPhase.Bidding:
+                State = GameState.Bidding;
+                break;
+            case GameFlowPhase.ShopReview:
+                State = GameState.Shopping;
+                break;
+            case GameFlowPhase.Combat:
+                State = GameState.Combat;
+                break;
+        }
+
+        if (biddingCanvas) biddingCanvas.SetActive(phase == GameFlowPhase.Bidding);
+        if (shopCanvas) shopCanvas.SetActive(phase == GameFlowPhase.ShopReview);
+
+        if (phase == GameFlowPhase.ShopReview)
+            PointerNPC.Instance?.HideSpeechBubble();
+
+        if (CursorManager.Instance != null)
+        {
+            CursorManager.Instance.cursorEnabled =
+                phase == GameFlowPhase.Bidding || phase == GameFlowPhase.ShopReview;
+            Cursor.visible = CursorManager.Instance.cursorEnabled;
+        }
+
+        switch (phase)
+        {
+            case GameFlowPhase.Bidding:
+                biddingManager?.OnBiddingPhaseStart();
+                break;
+            case GameFlowPhase.ShopReview:
+                shopManager?.OnShopPhaseStart();
+                break;
+            case GameFlowPhase.Combat:
+                biddingCanvas?.SetActive(false);
+                shopCanvas?.SetActive(false);
+                break;
         }
     }
 

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cf1a810d6e85a64aa9e4d27e1081524, type: 3}
+  m_Name: Stick
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponConfigSO
+  Id: stick
+  Name: Stick
+  heldEffects:
+  - {fileID: 11400000, guid: b97ad79bdb8b4c04e9f1b9ea03f2eef7, type: 2}
+  applyEffects: []
+  weaponPrefab: {fileID: 5405618815215461842, guid: b5a29847c2ae89945aa1cd0bdbf68bd1, type: 3}
+  weaponCollectablePrefab: {fileID: 0}
+  weaponSprite: {fileID: 0}

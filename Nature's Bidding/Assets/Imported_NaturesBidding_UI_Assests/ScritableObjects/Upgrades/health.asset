@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c64c524e213d78a469ace7eb02e09a47, type: 3}
   m_Name: health
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
+  _id: health
   upgradeName: Health Boost
   description: Increases health by 5%.
   icon: {fileID: 21300000, guid: 028c3b2e471bf294fbe5bf4722ae705d, type: 3}
+  effectors:
+  - {fileID: 11400000, guid: 12e8befdca7c4fc41a9307c2a35a2839, type: 2}
   upgradeType: 5
   effectValue: 0.05
   cost: 50

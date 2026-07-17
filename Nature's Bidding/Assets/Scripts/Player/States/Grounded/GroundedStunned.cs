@@ -19,6 +19,7 @@ public class GroundedStunned: State
     protected override void OnEnter()
     {
         ctx.anim.SetBool("Stunned", true);
+        NetworkVisualEffectManager.SpawnStunEffectsOnPlayer?.Invoke(ctx.playerHealth.OwnerClientId, (int)(ctx.stunTime * 1000));
 
         ctx.isStunned = true;
         ctx.desiredMaxSpeed = 0;
@@ -28,7 +29,7 @@ public class GroundedStunned: State
 
         exitStunned = false;
         ctx.stunRecoveryTimer = ctx.stunTime;
-        ctx.shouldStunSelf = false;
+        //ctx.shouldStunSelf = false;
     }
 
     protected override void OnUpdate(float deltaTime)

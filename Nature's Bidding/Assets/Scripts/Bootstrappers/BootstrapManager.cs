@@ -10,6 +10,9 @@ using UnityEngine;
 
 public class BootstrapManager : MonoBehaviour
 {
+
+    
+
     async void Start()
     {
         PersistentGameStateManager.Instance.SetLoadingState("Initializing...");

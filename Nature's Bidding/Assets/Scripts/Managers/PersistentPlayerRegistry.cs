@@ -5,11 +5,13 @@ using UnityUtils;
 
 public enum ItemType { Mask, TarotCard, Artifact }
 
-public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistry>
+public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 {
     private Dictionary<string, PersistentPlayerData> _playerData = new();
     private bool[] _indexPool = new bool[4];
     private Dictionary<ulong, string> _clientToAuth = new();
+
+    private bool IsServer => NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer;
 
     protected override void Awake()
     {
@@ -29,15 +31,15 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
         {
             existing.clientId = clientId;
             Debug.Log($"Returning player {playerName} rejoined with index {existing.playerIndex}");
-
-            BroadcastPlayerDataRpc(clientId, authId, playerName, existing.playerIndex, existing.gold, existing.combatWins);
+            PlayerRegistryNetworkSync.Instance?.BroadcastPlayerData(
+                clientId, authId, playerName, existing.playerIndex, existing.gold, existing.combatWins);
             return existing;
         }
 
         int index = AssignIndex();
         if (index == -1)
         {
-            Debug.LogError("No available player indices.");
+            Debug.LogError($"[PersistentPlayerRegistry] No available player indices for {playerName} (authId: {authId}). Current pool state: {string.Join(",", _indexPool)}");
             return null;
         }
 
@@ -47,29 +49,25 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
             authenticationId = authId,
             playerName = playerName,
             playerIndex = index,
-            gold = 100,
+            gold = Random.Range(80, 120),
             combatWins = 0,
-
-            masks =
-            {
-                "butterfly_mask"
-            },
-
-            artifacts =
-            {
-                "hp_up",
-                "damage_up",
-                "dash_distance_up",
-                "fast_hands",
-                "absorber",
-                "bat_mask"
-            }
+            masks = { "bee_mask" },
+            tarotCards = { "the_weapon_tarot" },
+            artifacts = {  }
         };
 
         _playerData[authId] = data;
         Debug.Log($"New player {playerName} registered with index {index}");
 
-        BroadcastPlayerDataRpc(clientId, authId, playerName, index, 0, 0);
+        PlayerRegistryNetworkSync.Instance?.BroadcastPlayerData(clientId, authId, playerName, index, data.gold, 0);
+
+        foreach (var mask in data.masks)
+            PlayerRegistryNetworkSync.Instance?.BroadcastItem(clientId, mask, ItemType.Mask);
+        foreach (var artifact in data.artifacts)
+            PlayerRegistryNetworkSync.Instance?.BroadcastItem(clientId, artifact, ItemType.Artifact);
+        foreach (var tarot in data.tarotCards)
+            PlayerRegistryNetworkSync.Instance?.BroadcastItem(clientId, tarot, ItemType.TarotCard);
+
         return data;
     }
 
@@ -85,7 +83,7 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
         }
 
         _clientToAuth.Remove(clientId);
-        BroadcastUnregisterRpc(clientId, authId);
+        PlayerRegistryNetworkSync.Instance?.BroadcastUnregister(clientId, authId);
     }
 
     public void MarkPlayerDisconnected(ulong clientId)
@@ -105,36 +103,13 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
             data.clientId = newClientId;
             _clientToAuth[newClientId] = authId;
             Debug.Log($"Player {authId} reconnected as clientId {newClientId}");
-            BroadcastPlayerDataRpc(newClientId, authId, data.playerName, data.playerIndex, data.gold, data.combatWins);
+            PlayerRegistryNetworkSync.Instance?.BroadcastPlayerData(
+                newClientId, authId, data.playerName, data.playerIndex, data.gold, data.combatWins);
             return true;
         }
 
         data = null;
         return false;
-    }
-
-    public void SyncAllToClient(ulong targetClientId)
-    {
-        if (!IsServer) return;
-
-        foreach (var data in _playerData.Values)
-        {
-            SendPlayerDataToClientRpc(
-                data.clientId, data.authenticationId, data.playerName,
-                data.playerIndex, data.gold, data.combatWins,
-                NetworkManager.Singleton.RpcTarget.Single(targetClientId, RpcTargetUse.Temp)
-            );
-
-            foreach (var mask in data.masks)
-                SendItemToClientRpc(data.clientId, mask, ItemType.Mask,
-                    NetworkManager.Singleton.RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
-            foreach (var card in data.tarotCards)
-                SendItemToClientRpc(data.clientId, card, ItemType.TarotCard,
-                    NetworkManager.Singleton.RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
-            foreach (var artifact in data.artifacts)
-                SendItemToClientRpc(data.clientId, artifact, ItemType.Artifact,
-                    NetworkManager.Singleton.RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
-        }
     }
 
     public void Clear()
@@ -143,7 +118,7 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
         _playerData.Clear();
         _clientToAuth.Clear();
         _indexPool = new bool[4];
-        BroadcastClearRpc();
+        PlayerRegistryNetworkSync.Instance?.BroadcastClear();
     }
 
     #endregion
@@ -166,8 +141,7 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
 
     public bool HasPlayer(ulong clientId) => _clientToAuth.ContainsKey(clientId);
 
-    public List<PersistentPlayerData> GetAllPlayers() =>
-        new List<PersistentPlayerData>(_playerData.Values);
+    public List<PersistentPlayerData> GetAllPlayers() => new(_playerData.Values);
 
     #endregion
 
@@ -179,8 +153,7 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
         var data = GetByClientId(clientId);
         if (data == null || data.gold < amount) return false;
         data.gold -= amount;
-        Debug.Log($"[{GetType().Name}] client {data.playerName} gold has been set to {data.gold} by server.");
-        BroadcastGoldRpc(clientId, data.gold);
+        PlayerRegistryNetworkSync.Instance?.BroadcastGold(clientId, data.gold);
         return true;
     }
 
@@ -190,8 +163,7 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
         var data = GetByClientId(clientId);
         if (data == null) return;
         data.gold += amount;
-        Debug.Log($"[{GetType().Name}] client {data.playerName} gold has been set to {data.gold} by server.");
-        BroadcastGoldRpc(clientId, data.gold);
+        PlayerRegistryNetworkSync.Instance?.BroadcastGold(clientId, data.gold);
     }
 
     public void AddCombatWin(ulong clientId)
@@ -200,7 +172,7 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
         var data = GetByClientId(clientId);
         if (data == null) return;
         data.combatWins++;
-        BroadcastCombatWinsRpc(clientId, data.combatWins);
+        PlayerRegistryNetworkSync.Instance?.BroadcastCombatWins(clientId, data.combatWins);
     }
 
     public void AddItem(ulong clientId, string itemId, ItemType type)
@@ -208,36 +180,15 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
         if (!IsServer) return;
         var data = GetByClientId(clientId);
         if (data == null) return;
-
-        switch (type)
-        {
-            case ItemType.Mask: data.masks.Add(itemId); break;
-            case ItemType.TarotCard: data.tarotCards.Add(itemId); break;
-            case ItemType.Artifact: data.artifacts.Add(itemId); break;
-        }
-
-        BroadcastItemRpc(clientId, itemId, type);
+        ApplyItemLocal(data, itemId, type);
+        PlayerRegistryNetworkSync.Instance?.BroadcastItem(clientId, itemId, type);
     }
 
     #endregion
 
-    #region RPCs
+    #region Apply (called by network sync on clients)
 
-    [Rpc(SendTo.NotServer, InvokePermission = RpcInvokePermission.Server)]
-    private void BroadcastPlayerDataRpc(ulong clientId, string authId, string playerName,
-        int playerIndex, int gold, int combatWins)
-    {
-        ApplyPlayerData(clientId, authId, playerName, playerIndex, gold, combatWins);
-    }
-
-    [Rpc(SendTo.SpecifiedInParams, InvokePermission = RpcInvokePermission.Server)]
-    private void SendPlayerDataToClientRpc(ulong clientId, string authId, string playerName,
-        int playerIndex, int gold, int combatWins, RpcParams rpcParams = default)
-    {
-        ApplyPlayerData(clientId, authId, playerName, playerIndex, gold, combatWins);
-    }
-
-    private void ApplyPlayerData(ulong clientId, string authId, string playerName,
+    public void ApplyPlayerData(ulong clientId, string authId, string playerName,
         int playerIndex, int gold, int combatWins)
     {
         _clientToAuth[clientId] = authId;
@@ -263,45 +214,39 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
         }
     }
 
-    [Rpc(SendTo.NotServer, InvokePermission = RpcInvokePermission.Server)]
-    private void BroadcastGoldRpc(ulong clientId, int gold)
+    public void ApplyGold(ulong clientId, int gold)
     {
         var data = GetByClientId(clientId);
-        if (data == null)
-        {
-            Debug.LogWarning($"BroadcastGoldRpc: no entry for {clientId}");
-            return;
-        }
-        data.gold = gold;
-
-        Debug.Log($"[{GetType().Name}] client {data.playerName} gold has been set to {data.gold} by server.");
+        if (data != null) data.gold = gold;
     }
 
-    [Rpc(SendTo.NotServer, InvokePermission = RpcInvokePermission.Server)]
-    private void BroadcastCombatWinsRpc(ulong clientId, int wins)
+    public void ApplyCombatWins(ulong clientId, int wins)
     {
         var data = GetByClientId(clientId);
         if (data != null) data.combatWins = wins;
     }
 
-    [Rpc(SendTo.NotServer, InvokePermission = RpcInvokePermission.Server)]
-    private void BroadcastItemRpc(ulong clientId, string itemId, ItemType type)
+    public void ApplyItem(ulong clientId, string itemId, ItemType type)
     {
         var data = GetByClientId(clientId);
         if (data == null) return;
-        ApplyItem(data, itemId, type);
+        ApplyItemLocal(data, itemId, type);
     }
 
-    [Rpc(SendTo.SpecifiedInParams, InvokePermission = RpcInvokePermission.Server)]
-    private void SendItemToClientRpc(ulong clientId, string itemId, ItemType type,
-        RpcParams rpcParams = default)
+    public void ApplyUnregister(ulong clientId, string authId)
     {
-        var data = GetByClientId(clientId);
-        if (data == null) return;
-        ApplyItem(data, itemId, type);
+        _playerData.Remove(authId);
+        _clientToAuth.Remove(clientId);
     }
 
-    private void ApplyItem(PersistentPlayerData data, string itemId, ItemType type)
+    public void ApplyClear()
+    {
+        _playerData.Clear();
+        _clientToAuth.Clear();
+        _indexPool = new bool[4];
+    }
+
+    private void ApplyItemLocal(PersistentPlayerData data, string itemId, ItemType type)
     {
         switch (type)
         {
@@ -314,20 +259,7 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
         }
     }
 
-    [Rpc(SendTo.NotServer, InvokePermission = RpcInvokePermission.Server)]
-    private void BroadcastUnregisterRpc(ulong clientId, string authId)
-    {
-        _playerData.Remove(authId);
-        _clientToAuth.Remove(clientId);
-    }
-
-    [Rpc(SendTo.NotServer, InvokePermission = RpcInvokePermission.Server)]
-    private void BroadcastClearRpc()
-    {
-        _playerData.Clear();
-        _clientToAuth.Clear();
-        _indexPool = new bool[4];
-    }
+    public IEnumerable<PersistentPlayerData> GetSnapshot() => _playerData.Values;
 
     #endregion
 
@@ -336,13 +268,7 @@ public class PersistentPlayerRegistry : NetworkSingleton<PersistentPlayerRegistr
     private int AssignIndex()
     {
         for (int i = 0; i < _indexPool.Length; i++)
-        {
-            if (!_indexPool[i])
-            {
-                _indexPool[i] = true;
-                return i;
-            }
-        }
+            if (!_indexPool[i]) { _indexPool[i] = true; return i; }
         return -1;
     }
 

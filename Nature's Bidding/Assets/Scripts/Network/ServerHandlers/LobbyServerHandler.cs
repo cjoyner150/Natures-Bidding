@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,6 +22,7 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
         PersistentGameStateManager.Instance.OnLobbySceneReady();
     }
 
@@ -36,9 +38,9 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
         NetworkManager.OnClientDisconnectCallback -= OnClientDisconnected;
     }
 
-    protected override void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage)
+    protected override void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage, bool critical = false)
     {
-        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position);
+        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, critical);
     }
 
     private void OnClientConnected(ulong clientId)
@@ -120,9 +122,19 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
 
     protected override void OnNewPlayerConnected(ulong clientId, string authId, string playerName)
     {
-        PersistentPlayerRegistry.Instance.SyncAllToClient(clientId);
         PersistentPlayerRegistry.Instance.RegisterPlayer(clientId, authId, playerName);
         SpawnAndRegisterPlayer(clientId);
+        SyncLobbySnapshotWhenReady(clientId).Forget();
+    }
+
+    private async UniTaskVoid SyncLobbySnapshotWhenReady(ulong clientId)
+    {
+        await UniTask.WaitUntil(() => PlayerRegistryNetworkSync.Instance != null);
+
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer)
+            return;
+
+        PlayerRegistryNetworkSync.Instance.SyncAllToClient(clientId);
     }
 
     public void OnPlayerDeath(ulong clientId) { }

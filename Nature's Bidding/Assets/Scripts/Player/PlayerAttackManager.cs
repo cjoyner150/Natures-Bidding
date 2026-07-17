@@ -18,6 +18,8 @@ public class PlayerAttackManager : NetworkBehaviour
 
     PlayerContext ctx;
 
+    
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();

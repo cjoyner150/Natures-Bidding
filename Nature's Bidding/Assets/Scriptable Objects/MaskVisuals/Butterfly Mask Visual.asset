@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c16e90605013d04c953eb974c371ad3, type: 3}
+  m_Name: Butterfly Mask Visual
+  m_EditorClassIdentifier: Assembly-CSharp::MaskVisualSO
+  Id: butterfly_mask
+  MaskPrefab: {fileID: 2687728767732451186, guid: 73fb66291658c0e4c945c4d7fa34c11c, type: 3}

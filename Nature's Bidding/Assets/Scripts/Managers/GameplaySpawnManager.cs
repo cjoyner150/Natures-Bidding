@@ -124,6 +124,18 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
 
         nextSpawnIndex = 0;
     }
+
+    // Used for resetting player to a spawn point after lobby death
+    public Transform GetNextAvailableSpawnPoint()
+    {
+        if (nextSpawnIndex >= spawnPoints.Count)
+            nextSpawnIndex = 0;
+
+        Transform spawnPoint = spawnPoints[nextSpawnIndex];
+        nextSpawnIndex = (nextSpawnIndex + 1) % spawnPoints.Count;
+
+        return spawnPoint;
+    }
     
 }
 

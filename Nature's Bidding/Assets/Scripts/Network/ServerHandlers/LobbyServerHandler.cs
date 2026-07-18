@@ -138,4 +138,15 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
     }
 
     public void OnPlayerDeath(ulong clientId) { }
+
+    public void HandleInstantKill(PlayerHealth playerHealth)
+    {
+        Transform spawnPoint = GameplaySpawnManager.Instance.GetNextAvailableSpawnPoint();
+        var ctx = playerHealth.gameObject.GetComponent<PlayerContext>();
+        if (ctx != null && ctx.rb != null)
+        {
+            ctx.rb.position = spawnPoint.position;
+            ctx.modelHolder.rotation = spawnPoint.rotation;
+        }
+    }
 }

@@ -92,9 +92,17 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
     private async void SyncAllPlayerColors()
     {
-        skinnedMeshRenderer.materials[2].SetColor("_Tint", colors[PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId).playerIndex]);
+        await UniTask.WaitUntil(() => PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId) != null);
 
-        await UniTask.WaitUntil(() => NetworkManager.Singleton.ConnectedClientsList.All(p => p.PlayerObject != null));
+        var myData = PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId);
+        if (skinnedMeshRenderer == null) return;
+
+        skinnedMeshRenderer.materials[2].SetColor("_Tint", colors[myData.playerIndex]);
+
+        await UniTask.WaitUntil(() =>
+            NetworkManager.Singleton != null &&
+            NetworkManager.Singleton.ConnectedClientsList.All(p => p.PlayerObject != null)
+        );
 
         var players = PersistentPlayerRegistry.Instance.GetAllPlayers().Where(p => p.clientId != OwnerClientId);
 

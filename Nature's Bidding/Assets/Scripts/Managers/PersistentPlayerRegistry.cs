@@ -51,8 +51,8 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
             playerIndex = index,
             gold = Random.Range(80, 120),
             combatWins = 0,
-            masks = { "bee_mask" },
-            tarotCards = { "the_weapon_tarot" },
+            masks = { "butterfly_mask" },
+            tarotCards = { "the_star_tarot" },
             artifacts = {  }
         };
 

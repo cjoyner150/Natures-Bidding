@@ -10,14 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18b1c5f0415653a47b2c5522a5496489, type: 3}
-  m_Name: The Weapon Tarot
+  m_Name: The Magician Tarot
   m_EditorClassIdentifier: Assembly-CSharp::ScriptedStatusEffectorSO
-  _id: the_weapon_tarot
-  Title: The Weapon Tarot
-  Description: Take up arms!
+  _id: the_magician_tarot
+  Title: The Magician Tarot
+  Description: Poof!
   Duration: -1
-  _effectTypeName: TheWeaponTarotStatusEffect
-  _parameters:
-  - ParamName: weaponIdToEquip
-    Value: 0
-    StringValue: stick
+  _effectTypeName: TheMagicianTarotStatusEffect
+  _parameters: []

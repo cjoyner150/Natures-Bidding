@@ -18,8 +18,6 @@ public class PlayerAttackManager : NetworkBehaviour
 
     PlayerContext ctx;
 
-    
-
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -41,6 +39,8 @@ public class PlayerAttackManager : NetworkBehaviour
     {
         damagedObjectsOnThisAttack.Clear();
         isAttacking = true;
+
+        NetworkVisualEffectManager.SpawnSlashEffectsOnPlayer?.Invoke(OwnerClientId, (int)(ctx.attackTime / ctx.attackSpeed * 1000));
     }
 
     public void EndAttack()
@@ -59,14 +59,8 @@ public class PlayerAttackManager : NetworkBehaviour
             foreach (RaycastHit hit in hits)
             {
                 GameObject go = hit.collider.gameObject;
-                var damageable = go.GetComponent<IDamageable>();
-                
-                while (damageable == null && go.transform.parent != null)
-                {
-                    go = go.transform.parent.gameObject;
-                    damageable = go.GetComponent<IDamageable>();
-                }
-                
+                UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
+
                 if (damageable != null)
                 {
                     if (damagedObjectsOnThisAttack.Contains(damageable)) continue;
@@ -86,7 +80,7 @@ public class PlayerAttackManager : NetworkBehaviour
         damage += ctx.playerStats.ComboDamage * ctx.combo;
         damage *= crit ? ctx.playerStats.CritDamageMultiplier : 1;
 
-        damageable.Hit(damage, selfPlayerHealth.OwnerClientId, out IDamageable.HitCallbackContext callbackContext);
+        damageable.Hit(damage, selfPlayerHealth.OwnerClientId, out IDamageable.HitCallbackContext callbackContext, crit);
         damagedObjectsOnThisAttack.Add(damageable);
 
         if (callbackContext == IDamageable.HitCallbackContext.success)
@@ -108,8 +102,10 @@ public class PlayerAttackManager : NetworkBehaviour
         }
         else if (callbackContext == IDamageable.HitCallbackContext.parried)
         {
+            Debug.Log("[PlayerHealth] Parry Callback Received");
             ctx.combo = 0;
             ctx.shouldStunSelf = true;
+            NetworkVisualEffectManager.SpawnParrySuccessReactEffectsOnPlayer?.Invoke(OwnerClientId);
         }
     }
 

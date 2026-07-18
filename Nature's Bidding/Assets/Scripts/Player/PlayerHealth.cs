@@ -138,6 +138,21 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         }
     }
 
+    public void TickHealth(float damage)
+    {
+        if (!isInvulnerable.Value)
+        {
+            var combatHandler = _serverHandler as CombatServerHandler;
+            if (combatHandler == null)
+            {
+                Debug.LogError("[PlayerHealth] TickHealth: _serverHandler is not a CombatServerHandler!");
+                return;
+            }
+
+            combatHandler.RequestTickPlayerHealthServerRpc(selfNetworkObject.OwnerClientId, damage);
+        }
+    }
+
     [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Everyone)]
     public void NotifyParrySuccessClientRpc()
     {

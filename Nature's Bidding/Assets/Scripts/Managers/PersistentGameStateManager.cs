@@ -296,6 +296,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     public async UniTask ReturnToMenu()
     {
+        Debug.Log($"[ReturnToMenu] CALLED. Stack trace:\n{System.Environment.StackTrace}");
         if (IsReturningToMenu) return;
         IsReturningToMenu = true;
 

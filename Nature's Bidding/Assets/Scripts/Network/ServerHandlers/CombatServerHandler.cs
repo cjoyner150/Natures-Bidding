@@ -65,6 +65,30 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         NetworkManager.OnClientDisconnectCallback -= OnClientDisconnected;
     }
 
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void RequestTickPlayerHealthServerRpc(ulong playerId, float damage)
+    {
+        if (!IsServer) return;
+
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(playerId, out var hitClient)) return;
+
+        var hitNetObj = hitClient.PlayerObject;
+
+        if (hitNetObj == null) return;
+
+        OnTickDownPlayerHealth(hitNetObj, damage);
+    }
+
+    protected void OnTickDownPlayerHealth(NetworkObject hitPlayer, float damage)
+    {
+        var health = hitPlayer.GetComponent<PlayerHealth>();
+        if (health == null) return;
+
+        float before = health.health.Value;
+        health.health.Value -= damage;
+        Debug.Log($"[CombatServerHandler] Health ticked. Before={before}, After={health.health.Value}, Damage={damage}");
+    }
+
     protected override void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage, bool critical)
     {
         var health = hitPlayer.GetComponent<PlayerHealth>();
@@ -166,4 +190,13 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
         // Hook into UI here to show "Player X has rejoined"
     }
+
+    public void HandleInstantKill(PlayerHealth playerHealth)
+    {
+        if (!IsServer) return;
+
+        if (playerHealth != null)
+            playerHealth.health.Value = 0;
+    }
 }
+    

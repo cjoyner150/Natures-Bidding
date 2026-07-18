@@ -14,14 +14,15 @@ public class PlayerVisualEffectManager : MonoBehaviour
     [SerializeField] Transform weaponHolderTransform;
 
     GameObject batConfusionEffectCache;
+    GameObject starEffectCache;
 
-    public void SpawnSlashEffectParticles()
+    public void SpawnSlashEffectParticles(int milliseconds)
     {
         //GameObject go = Instantiate(explosionParticle, weaponHolderTransform, false);
         //go.transform.localPosition = Vector3.zero;
         //go.transform.localRotation = Quaternion.identity;
 
-        //SafeDispose(go, 1000).Forget();
+        //SafeDispose(go, milliseconds).Forget();
     }
 
     public void SpawnParryEffectParticles(int milliseconds)
@@ -58,6 +59,34 @@ public class PlayerVisualEffectManager : MonoBehaviour
         //GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
         //go.transform.localPosition = Vector3.zero;
         //SafeDispose(go, 1000).Forget();
+    }
+
+    public void SpawnTeleportParticles()
+    {
+        //GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+        //go.transform.localPosition = Vector3.zero;
+        //go.transform.SetParent(null, true);
+        //SafeDispose(go, 1000).Forget();
+    }
+
+    public void ToggleStarParticles(bool enabled)
+    {
+        if (enabled)
+        {
+            GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+            go.transform.localPosition = Vector3.zero;
+            
+            if (starEffectCache != null)
+            {
+                SafeDispose(starEffectCache, 0).Forget();
+            }
+
+            starEffectCache = go;
+        }
+        else
+        {
+            SafeDispose(starEffectCache, 0).Forget();
+        }
     }
 
     public void SpawnJumpParticles()

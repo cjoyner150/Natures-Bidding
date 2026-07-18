@@ -69,13 +69,7 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
         {
             GameObject go = hit.gameObject;
             print($"[BaseGameServerHandler] hit {go.name}");
-            var damageable = go.GetComponent<IDamageable>();
-
-            while (damageable == null && go.transform.parent != null)
-            {
-                go = go.transform.parent.gameObject;
-                damageable = go.GetComponent<IDamageable>();
-            }
+            UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
 
             if (damageable != null)
             {

@@ -40,7 +40,7 @@ public class PlayerAttackManager : NetworkBehaviour
         damagedObjectsOnThisAttack.Clear();
         isAttacking = true;
 
-        NetworkVisualEffectManager.SpawnSlashEffectsOnPlayer?.Invoke(OwnerClientId);
+        NetworkVisualEffectManager.SpawnSlashEffectsOnPlayer?.Invoke(OwnerClientId, (int)(ctx.attackTime / ctx.attackSpeed * 1000));
     }
 
     public void EndAttack()
@@ -59,14 +59,8 @@ public class PlayerAttackManager : NetworkBehaviour
             foreach (RaycastHit hit in hits)
             {
                 GameObject go = hit.collider.gameObject;
-                var damageable = go.GetComponent<IDamageable>();
-                
-                while (damageable == null && go.transform.parent != null)
-                {
-                    go = go.transform.parent.gameObject;
-                    damageable = go.GetComponent<IDamageable>();
-                }
-                
+                UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
+
                 if (damageable != null)
                 {
                     if (damagedObjectsOnThisAttack.Contains(damageable)) continue;

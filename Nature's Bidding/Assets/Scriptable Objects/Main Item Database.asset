@@ -46,6 +46,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 81ff4f8bb1c7344459c991a6cb7e6fdd, type: 2}
   - {fileID: 11400000, guid: eeeb8c366c17e194e9c203e61e25a183, type: 2}
   - {fileID: 11400000, guid: 9788ed1c5de3a33409525b0708d798f0, type: 2}
+  - {fileID: 11400000, guid: 7ae5190fb66ae144a86b3c3d1a2dd5d4, type: 2}
+  - {fileID: 11400000, guid: 1c174d1831b4bc044b48dd1cde7a6d4d, type: 2}
+  - {fileID: 11400000, guid: dc48db45838e5d044ad58b81fe3a74fa, type: 2}
   allWeapons:
   - {fileID: 11400000, guid: 7ad51f3274f399f4aa5dcfd592269e7b, type: 2}
   allMaskVisuals:

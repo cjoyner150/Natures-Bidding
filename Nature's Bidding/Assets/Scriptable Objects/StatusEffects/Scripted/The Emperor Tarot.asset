@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScriptedStatusEffectorSO
   _id: the_emperor_tarot
   Title: The Emperor Tarot
-  Description: 
+  Description: Your dominance expands with your wealth.
   Duration: -1
   _effectTypeName: TheEmperorTarotStatusEffect
   _parameters: []

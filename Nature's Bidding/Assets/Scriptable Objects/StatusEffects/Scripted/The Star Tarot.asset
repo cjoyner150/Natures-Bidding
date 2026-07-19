@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScriptedStatusEffectorSO
   _id: the_star_tarot
   Title: The Star Tarot
-  Description: The stars were here long before.
+  Description: Move like light and burn like a star.
   Duration: -1
   _effectTypeName: TheStarTarotStatusEffect
   _parameters:

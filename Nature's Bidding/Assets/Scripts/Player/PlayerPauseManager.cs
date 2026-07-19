@@ -1,4 +1,5 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityUtils;
@@ -46,8 +47,7 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
     {
         Paused = true;
 
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true;
+        NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerCursorNetworkBehavior>()?.EnableCursor();
 
         pausePanel.SetActive(true);
 
@@ -60,8 +60,7 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
     {
         Paused = false;
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerCursorNetworkBehavior>()?.DisableCursor();
 
         pausePanel.SetActive(false);
 

@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityUtils;
@@ -142,11 +144,48 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
     public void HandleInstantKill(PlayerHealth playerHealth)
     {
         Transform spawnPoint = GameplaySpawnManager.Instance.GetNextAvailableSpawnPoint();
-        var ctx = playerHealth.gameObject.GetComponent<PlayerContext>();
-        if (ctx != null && ctx.rb != null)
+        Vector3 targetPosition = spawnPoint.position + spawnPoint.up * 1f;
+
+        if (NetworkManager.LocalClientId != playerHealth.OwnerClientId)
         {
-            ctx.rb.position = spawnPoint.position;
-            ctx.modelHolder.rotation = spawnPoint.rotation;
+            TeleportToPositionClientRpc(targetPosition, spawnPoint.rotation,
+                RpcTarget.Single(playerHealth.OwnerClientId, RpcTargetUse.Temp));
         }
+        else
+        {
+            var ctx = playerHealth.GetComponent<PlayerNetworkBehavior>()?.ctx;
+            if (ctx == null || ctx.rb == null) return;
+            TeleportRigidbody(ctx.rb, targetPosition, spawnPoint.rotation, ctx.modelHolder);
+        }
+    }
+
+    [Rpc(SendTo.SpecifiedInParams, InvokePermission = RpcInvokePermission.Server)]
+    public void TeleportToPositionClientRpc(Vector3 position, Quaternion rotation, RpcParams rpcParams)
+    {
+        var playerObj = NetworkManager.LocalClient.PlayerObject;
+        var ctx = playerObj.GetComponent<PlayerNetworkBehavior>()?.ctx;
+        if (ctx == null || ctx.rb == null) return;
+
+        TeleportRigidbody(ctx.rb, position, rotation, ctx.modelHolder);
+    }
+
+    private void TeleportRigidbody(Rigidbody rb, Vector3 position, Quaternion rotation, Transform modelHolder)
+    {
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        var networkTransform = rb.gameObject.GetComponent<NetworkTransform>();
+
+        if (networkTransform != null)
+        {
+            networkTransform.Teleport(position, rotation, rb.transform.localScale);
+        }
+        else
+        {
+            rb.position = position;
+            modelHolder.rotation = rotation;
+        }
+
+        Physics.SyncTransforms();
     }
 }

@@ -53,7 +53,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
             combatWins = 0,
             masks = { "butterfly_mask" },
             tarotCards = { "the_star_tarot" },
-            artifacts = {  }
+            artifacts = { "move_speed_up", "sprinter" }
         };
 
         _playerData[authId] = data;

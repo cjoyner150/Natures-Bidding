@@ -25,5 +25,5 @@ MonoBehaviour:
     Value: 3
     StringValue: 
   - ParamName: starSpeedThreshold
-    Value: 8
+    Value: 7
     StringValue: 

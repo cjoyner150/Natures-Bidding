@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using HSM;
+﻿using HSM;
+using Unity.Netcode.Components;
+using UnityEngine;
 public class AirDash : State
 {
     private readonly PlayerContext ctx;
@@ -65,7 +66,7 @@ public class AirDash : State
     {
         ctx.modelHolder.forward = momentumDirection;
 
-        var boxCenter = ctx.rb.transform.position + (ctx.rb.transform.up * .5f * ctx.playerStats.Size);
+        var boxCenter = ctx.rb.transform.position + (ctx.rb.transform.up * 1.4f * ctx.playerStats.Size);
         var halfExtents = new Vector3(.5f, 1f, .5f) * ctx.playerStats.Size;
         var direction = ctx.modelHolder.forward;
         var orientation = Quaternion.identity;
@@ -73,7 +74,6 @@ public class AirDash : State
 
         bool didHit = Physics.BoxCast(boxCenter, halfExtents, direction, out RaycastHit hit, orientation, maxDistance, ctx.teleportBlockingLayer);
 
-        // Debug draws for box visualization
         if (ctx.debugTeleport)
         {
             DebugDrawBox(boxCenter, halfExtents, orientation, Color.green, 3f);
@@ -94,7 +94,17 @@ public class AirDash : State
             teleportPosition = ctx.rb.transform.position + (direction * maxDistance);
         }
 
-        ctx.rb.MovePosition(teleportPosition);
+        ctx.rb.linearVelocity = Vector3.zero;
+        ctx.rb.angularVelocity = Vector3.zero;
+
+        ctx.rb.position = teleportPosition;
+
+        var networkTransform = ctx.rb.gameObject.GetComponent<NetworkTransform>();
+        if (networkTransform != null)
+            networkTransform.Teleport(teleportPosition, ctx.modelHolder.rotation, ctx.rb.transform.localScale);
+
+        Physics.SyncTransforms();
+
         exitDash = true;
     }
 

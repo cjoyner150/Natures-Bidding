@@ -1226,6 +1226,9 @@ MonoBehaviour:
   - {fileID: 543347436}
   - {fileID: 1989715493}
   - {fileID: 598839363}
+  playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 384
   playerHealthBarPrefab: {fileID: 3078929919336392733, guid: 15346032f08ac424185e2bc49ea396d1, type: 3}
   playerHealthBarParent: {fileID: 0}
 --- !u!1 &755280885

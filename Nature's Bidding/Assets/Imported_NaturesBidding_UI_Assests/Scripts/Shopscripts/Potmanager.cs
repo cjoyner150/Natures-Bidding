@@ -401,7 +401,7 @@ public class PotManager : NetworkBehaviour
     void ApplyTarotRewardRpc(string rewardName, RpcParams rpcParams = default)
     {
         ulong buyer  = rpcParams.Receive.SenderClientId;
-        var player   = PlayerData.GetPlayer(buyer);
+        var player   = PersistentPlayerData.GetPlayer(buyer);
         var fx       = PlayerEffects.GetEffects(buyer);
         if (player == null) return;
 
@@ -411,7 +411,7 @@ public class PotManager : NetworkBehaviour
         ApplyTarotEffect(reward, buyer, player, fx);
     }
 
-    void ApplyTarotEffect(TarotCardReward reward, ulong buyer, PlayerData player, PlayerEffects fx)
+    void ApplyTarotEffect(TarotCardReward reward, ulong buyer, PersistentPlayerData player, PlayerEffects fx)
     {
         float v = reward.effectValue > 0 ? reward.effectValue : 0.1f; // default 10%
 

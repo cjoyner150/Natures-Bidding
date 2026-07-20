@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6058679478591386582}
   - component: {fileID: 8398732909397614475}
-  - component: {fileID: 1901692700152799320}
   m_Layer: 0
   m_Name: Playerdata
   m_TagString: Untagged
@@ -63,18 +62,6 @@ MonoBehaviour:
     m_InternalValue: 0
   standInRenderer: {fileID: 0}
   standInLabel: {fileID: 0}
---- !u!114 &1901692700152799320
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3312158151636506436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbd44730ff51bb044adba5048beacf49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
 --- !u!1 &6947474001905322135
 GameObject:
   m_ObjectHideFlags: 0

@@ -200,6 +200,18 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (selectedImage != null)
             selectedImage.gameObject.SetActive(false);
 
+        if (!isActiveAndEnabled)
+        {
+            if (iconImage != null)
+                iconImage.gameObject.SetActive(false);
+
+            if (costIconImage != null)
+                costIconImage.gameObject.SetActive(false);
+
+            _soldRoutine = null;
+            return;
+        }
+
         _soldRoutine = StartCoroutine(PlaySoldTransition());
     }
 

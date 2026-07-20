@@ -18,7 +18,7 @@ public class ShopUpgrade : ScriptableObject
     public Sprite icon;
 
     [Header("Effectors")]
-    public List<StatusEffectorSO> effectors = new List<StatusEffectorSO>();
+    public string effectorId = string.Empty;
 
     [Header("Effect")]
     public UpgradeType upgradeType;
@@ -92,6 +92,7 @@ public class ShopUpgrade : ScriptableObject
             default:                           return description;
         }
     }
+
 }
 
 public enum UpgradeType

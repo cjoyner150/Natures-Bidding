@@ -70,7 +70,7 @@ public class PlayerShopPanel : MonoBehaviour
 
     private ulong                   _clientId;
     private bool                    _isLocal;
-    private PlayerData              _playerData;
+    private PersistentPlayerState   _playerState;
 
     private List<UpgradeCardUI>     _upgradeCards   = new List<UpgradeCardUI>();
     private UpgradeCardUI           _smallPotCard;
@@ -145,11 +145,9 @@ public class PlayerShopPanel : MonoBehaviour
 
         BuildCards();
 
-        // Try PlayerData immediately — if not found yet, retry via coroutine
-        // gameObject is now active so StartCoroutine will work
-        _playerData = PlayerData.GetPlayer(clientId);
-        if (_playerData != null)
-            SubscribeAndRefresh();
+        _playerState = PersistentPlayerRegistry.Instance?.GetByClientId(clientId);
+        if (_playerState != null)
+            RefreshStats();
         else
             StartCoroutine(RetryRefreshStats());
         
@@ -200,40 +198,9 @@ public class PlayerShopPanel : MonoBehaviour
 
         BuildCards();
     }
-    void SubscribeAndRefresh()
-    {
-        if (_playerData == null) return;
+    void SubscribeAndRefresh() => RefreshStats();
 
-        // Unsubscribe first to avoid double-subscribing on reroll
-        UnsubscribeFromPlayerData();
-
-        // Subscribe to all NetworkVariables so UI updates the moment server writes them
-        _playerData.Coins.OnValueChanged           += OnDataChanged;
-        _playerData.SpeedMultiplier.OnValueChanged  += OnDataChanged;
-        _playerData.JumpMultiplier.OnValueChanged   += OnDataChanged;
-        _playerData.DamageMultiplier.OnValueChanged += OnDataChanged;
-        _playerData.DefenseMultiplier.OnValueChanged+= OnDataChanged;
-        _playerData.MaxHealthBonus.OnValueChanged   += OnDataChanged;
-        _playerData.PlayerName.OnValueChanged       += OnNameChanged;
-        
-        RefreshStats();
-    }
-
-    void UnsubscribeFromPlayerData()
-    {
-        if (_playerData == null) return;
-        _playerData.Coins.OnValueChanged           -= OnDataChanged;
-        _playerData.SpeedMultiplier.OnValueChanged  -= OnDataChanged;
-        _playerData.JumpMultiplier.OnValueChanged   -= OnDataChanged;
-        _playerData.DamageMultiplier.OnValueChanged -= OnDataChanged;
-        _playerData.DefenseMultiplier.OnValueChanged-= OnDataChanged;
-        _playerData.MaxHealthBonus.OnValueChanged   -= OnDataChanged;
-        _playerData.PlayerName.OnValueChanged       -= OnNameChanged;
-    }
-
-    void OnDataChanged(float old, float newVal) => RefreshStats();
-    void OnDataChanged(int old, int newVal)     => RefreshStats();
-    void OnNameChanged(NetworkString old, NetworkString newVal) => RefreshStats();
+    void UnsubscribeFromPlayerData() { }
 
     IEnumerator RetryRefreshStats()
     {
@@ -243,14 +210,14 @@ public class PlayerShopPanel : MonoBehaviour
         for (int i = 0; i < 20; i++)
         {
             yield return new WaitForSeconds(0.25f);
-            _playerData = PlayerData.GetPlayer(_clientId);
-            if (_playerData != null)
+            _playerState = PersistentPlayerRegistry.Instance?.GetByClientId(_clientId);
+            if (_playerState != null)
             {
-                SubscribeAndRefresh();
+                RefreshStats();
                 yield break;
             }
         }
-        Debug.LogWarning($"[PlayerShopPanel] Could not find PlayerData for client {_clientId} after retries.");
+        Debug.LogWarning($"[PlayerShopPanel] Could not find persistent registry data for client {_clientId} after retries.");
     }
 
     #endregion
@@ -701,22 +668,20 @@ public class PlayerShopPanel : MonoBehaviour
     {
         if (_isPlaceholder) return;
 
-        _playerData = PlayerData.GetPlayer(_clientId);
-        if (_playerData == null) return;
+        _playerState = PersistentPlayerRegistry.Instance?.GetByClientId(_clientId);
+        if (_playerState == null) return;
 
         if (playerNameText)
-            playerNameText.text = _playerData.PlayerName.Value.Value;
+            playerNameText.text = _playerState.playerName;
 
         if (coinsText)
-            coinsText.text = $"{_playerData.Coins.Value}";
+            coinsText.text = $"{_playerState.gold}";
 
         // ---- COMBINE STATS ----
-
-        float mobility = (_playerData.SpeedMultiplier.Value +
-                        _playerData.JumpMultiplier.Value) * 0.5f;
-
-        float power = _playerData.DamageMultiplier.Value;
-        float defense = _playerData.DefenseMultiplier.Value;
+        // These values are no longer pulled from a live player object in the shop scene.
+        float mobility = 1f;
+        float power    = 1f;
+        float defense  = 1f;
 
         // ---- TEXT ----
         if (mobilityText)
@@ -763,8 +728,8 @@ public class PlayerShopPanel : MonoBehaviour
     int GetCoins()
     {
         if (_isPlaceholder) return 0;
-        var inv = PlayerInventory.Local;
-        return inv != null ? inv.Coins : 0;
+        _playerState = PersistentPlayerRegistry.Instance?.GetByClientId(_clientId);
+        return _playerState != null ? _playerState.gold : 0;
     }
 
     #endregion

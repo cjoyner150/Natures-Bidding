@@ -6,6 +6,7 @@ public class TarotCardReward : ScriptableObject
     #region Identity
 
     [Header("Card Identity")]
+    public string cardId      = "the_moon";
     public string cardName      = "The Moon";
     [TextArea(2, 4)]
     public string flavorText    = "What is hidden shall be revealed.";

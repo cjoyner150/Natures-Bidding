@@ -1767,79 +1767,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 785054089}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &345257609
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 345257612}
-  - component: {fileID: 345257610}
-  - component: {fileID: 345257611}
-  m_Layer: 0
-  m_Name: Inventorymanager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &345257610
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 345257609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3393145389
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 0
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
---- !u!114 &345257611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 345257609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80bbc40a926fefa44a7931c1dafc4045, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventoryScreenManager
-  ShowTopMostFoldoutHeaderGroup: 1
-  panelsContainer: {fileID: 924602408}
-  playerInventoryPanelPrefab: {fileID: 7786274424010861874, guid: 026132c5d135f05419adef7472a3792c, type: 3}
---- !u!4 &345257612
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 345257609}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 630.69904, y: 485.44263, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &372003497
 GameObject:
   m_ObjectHideFlags: 0
@@ -5167,7 +5094,7 @@ MonoBehaviour:
   acceptableAttackRange: 0
   otherPlayersLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   upgradePool:
   - {fileID: 11400000, guid: 5c78b3d82c5e6564d8a51c62f907651b, type: 2}
   - {fileID: 11400000, guid: def82102a24aa0149b1cc5ff023ca716, type: 2}
@@ -5182,6 +5109,7 @@ MonoBehaviour:
   rerollCost: 15
   backToBiddingButton: {fileID: 0}
   phaseLabel: {fileID: 0}
+  shopCanvasRoot: {fileID: 264980705}
 --- !u!4 &1434504657
 Transform:
   m_ObjectHideFlags: 0
@@ -5272,84 +5200,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 630.69904, y: 485.44263, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1450824409
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1450824412}
-  - component: {fileID: 1450824410}
-  - component: {fileID: 1450824411}
-  m_Layer: 0
-  m_Name: GameFlowManagerObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1450824410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1450824409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1861814577
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 0
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
---- !u!114 &1450824411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1450824409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eed61ac1848270b4ba17bc4c8ad1647b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameFlowManager
-  ShowTopMostFoldoutHeaderGroup: 1
-  biddingCanvas: {fileID: 2009265870}
-  shopCanvas: {fileID: 264980705}
-  biddingManager: {fileID: 2025650893}
-  shopManager: {fileID: 1434504656}
-  readyManager: {fileID: 1446565924}
-  CurrentPhase:
-    m_InternalValue: 0
---- !u!4 &1450824412
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1450824409}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1046.48, y: 444.7107, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7639,14 +7489,12 @@ SceneRoots:
   m_Roots:
   - {fileID: 237469245}
   - {fileID: 1134766042}
-  - {fileID: 1450824412}
   - {fileID: 2025650894}
   - {fileID: 1434504657}
   - {fileID: 1559204626}
   - {fileID: 1029729256}
   - {fileID: 905186627}
   - {fileID: 1929779636}
-  - {fileID: 345257612}
   - {fileID: 1446565925}
   - {fileID: 1836170788}
   - {fileID: 1393754461}

@@ -9,7 +9,7 @@ using TMPro;
 /// When all connected players are ready, triggers the next phase.
 /// Attach to a NetworkObject in the scene.
 /// </summary>
-public class ReadyManager : BaseGameServerHandler<ReadyManager>, IGameServerHandler
+public class ReadyManager : BaseGameServerHandler<ReadyManager>
 {
     #region Inspector Fields
 

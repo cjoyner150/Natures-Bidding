@@ -22,7 +22,7 @@ using TMPro;
 ///   Click Buy  → upgrade: deduct coins, apply stat.
 ///              → pot: deduct coins, open full-screen PotManager sequence.
 /// </summary>
-public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandler
+public class ShopManager : BaseGameServerHandler<ShopManager>
 {
     public static int SmallPotCost => Instance?.smallPotCost ?? 20;
     public static int GrandPotCost => Instance?.grandPotCost ?? 50;

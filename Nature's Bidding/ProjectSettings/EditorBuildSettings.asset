@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameLoop/CliffGameplay.unity
     guid: d086b4925344f8e40830e2ff85b056a8
+  - enabled: 1
+    path: Assets/Scenes/GameLoop/LavaGameplay.unity
+    guid: 2a1deb699703023459781c2509897adc
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 708dcf6a8bd30934fb7c3e7f5636b2e0, type: 3}
   m_UseUCBPForAssetBundles: 0

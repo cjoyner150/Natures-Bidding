@@ -13,7 +13,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     public enum GameFlowPhase { Lobby, Bidding, ShopReview, Combat }
 
     private const string BiddingSceneName = "Bidding_Scene";
-    private const string CombatSceneName = "CliffGameplay";
+    private const string CombatSceneName = "LavaGameplay";
 
     [SerializeField] private GameObject[] spawnableNetworkSingletons; 
     [SerializeField] private GameObject loadingPanel;
@@ -486,18 +486,29 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
                 break;
         }
 
-        if (biddingCanvas) biddingCanvas.SetActive(phase == GameFlowPhase.Bidding);
-        if (shopCanvas) shopCanvas.SetActive(phase == GameFlowPhase.ShopReview);
+        // These checks have to be explicit because an empty serialized reference can be null but not equal to null,
+        // which causes a NullReferenceException when trying to call SetActive on it.
+        if (biddingCanvas != null)
+        {
+            biddingCanvas?.SetActive(phase == GameFlowPhase.Bidding);
+        }
+        else return;
+
+        if (shopCanvas != null)
+        {
+            shopCanvas?.SetActive(phase == GameFlowPhase.ShopReview);
+        }
+        else return;
 
         if (phase == GameFlowPhase.ShopReview)
             PointerNPC.Instance?.HideSpeechBubble();
 
-        if (CursorManager.Instance != null)
-        {
-            CursorManager.Instance.cursorEnabled =
-                phase == GameFlowPhase.Bidding || phase == GameFlowPhase.ShopReview;
-            Cursor.visible = CursorManager.Instance.cursorEnabled;
-        }
+        //if (CursorManager.Instance != null)
+        //{
+        //    CursorManager.Instance.cursorEnabled =
+        //        phase == GameFlowPhase.Bidding || phase == GameFlowPhase.ShopReview;
+        //    Cursor.visible = CursorManager.Instance.cursorEnabled;
+        //}
 
         switch (phase)
         {

@@ -1015,12 +1015,12 @@ MonoBehaviour:
   loadingStatus: {fileID: 416426921}
   loadingProgress: {fileID: 15051646}
   combatWinsRequiredToEnd: 3
+  skipToCombat: 1
   biddingCanvas: {fileID: 0}
   shopCanvas: {fileID: 0}
   biddingManager: {fileID: 0}
   shopManager: {fileID: 0}
   readyManager: {fileID: 0}
-  skipToCombat: 0
 --- !u!4 &1521590909
 Transform:
   m_ObjectHideFlags: 0

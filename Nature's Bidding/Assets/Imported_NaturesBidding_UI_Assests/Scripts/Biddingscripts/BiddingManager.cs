@@ -18,7 +18,7 @@ using TMPro;
 ///   • After all rounds are done, transition to shop automatically.
 ///   • Bid amount is controlled through keyboard input.
 /// </summary>
-public class BiddingManager : BaseGameServerHandler<BiddingManager>, IGameServerHandler
+public class BiddingManager : BaseGameServerHandler<BiddingManager>
 {
     #region Inspector Fields
 

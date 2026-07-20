@@ -12,7 +12,7 @@ public class CursorUIManager : Singleton<CursorUIManager>
     public bool cursorEnabled = true;
 
     [Header("Cursor Visual")]
-    [SerializeField] private GameObject localCursorUIPrefab;
+    [SerializeField] private GameObject playerCursorPrefab;
 
     [Header("Player Colors (Hardcoded for up to 4 players)")]
     [SerializeField] private List<Color> playerColors;
@@ -83,14 +83,14 @@ public class CursorUIManager : Singleton<CursorUIManager>
     public bool CheckCursorReady()
     {
         if (!cursorEnabled) return false;
-        if (localCursorUIPrefab == null) { return false; }
+        if (playerCursorPrefab == null) { return false; }
 
         return true;
     }
 
     public RectTransform SpawnCursor(bool syncCursorPosition, out Image _cursorImage)
     {
-        GameObject prefab = localCursorUIPrefab;
+        GameObject prefab = playerCursorPrefab;
 
         GameObject go = Instantiate(prefab, _cursorCanvas.transform);
         _cursorImage = go.GetComponentInChildren<Image>();

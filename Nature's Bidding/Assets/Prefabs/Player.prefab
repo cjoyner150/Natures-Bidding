@@ -324,7 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCrosshair
   ShowTopMostFoldoutHeaderGroup: 1
-  spawnNetworkedCursor: 1
+  syncCursorPosition: 0
 --- !u!114 &3073693938742891247
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1062,8 +1062,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CursorManager
   cursorEnabled: 1
-  networkCursorUIPrefab: {fileID: 3965396960649468124, guid: d019f99b35259d34ea1f9f1cf72659fd, type: 3}
-  localCursorUIPrefab: {fileID: 3965396960649468124, guid: 125b83baef302eb44a7b10c44345f578, type: 3}
+  playerCursorPrefab: {fileID: 3965396960649468124, guid: 125b83baef302eb44a7b10c44345f578, type: 3}
   playerColors:
   - {r: 1, g: 0.02745098, b: 0, a: 1}
   - {r: 0, g: 1, b: 0.043137256, a: 1}

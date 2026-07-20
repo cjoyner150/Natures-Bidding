@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8497094179583728581}
   - component: {fileID: 4420541981631168252}
   - component: {fileID: 3787601432394303414}
-  - component: {fileID: 3965120433932429932}
   m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
@@ -76,31 +75,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3965120433932429932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2990997442435847488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 487596518
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!1 &3965396960649468124
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,10 +87,9 @@ GameObject:
   - component: {fileID: 6034480663590256802}
   - component: {fileID: 700721575386193052}
   - component: {fileID: 5965014610260071647}
-  - component: {fileID: 6167016172303387661}
-  - component: {fileID: 3329489564687957046}
+  - component: {fileID: 9210675909113641118}
   m_Layer: 0
-  m_Name: NetworkedPlayerCursorPrefab
+  m_Name: PlayerCursorPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -279,32 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac096a9fc7d49c845a5488b64346cb27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VirtualMouseLimiter
---- !u!114 &6167016172303387661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3965396960649468124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 368986931
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
---- !u!114 &3329489564687957046
+--- !u!114 &9210675909113641118
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

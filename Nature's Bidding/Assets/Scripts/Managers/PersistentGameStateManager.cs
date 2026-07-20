@@ -5,6 +5,7 @@ using Unity.Netcode;
 using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityUtils;
 
 public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
@@ -16,6 +17,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     [SerializeField] private GameObject[] spawnableNetworkSingletons; 
     [SerializeField] private GameObject loadingPanel;
+    [SerializeField] private Slider loadingSlider;
     public GameObject LoadingPanel => loadingPanel;
 
     [SerializeField] TextMeshProUGUI loadingStatus;
@@ -123,6 +125,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     public void SetLoadingProgress(float progress)
     {
         loadingProgress.text = $"{progress:F1}%";
+        loadingSlider.value = progress / 100f;
     }
 
     public void SetLoadingState(string status, bool showProgress = false)
@@ -131,7 +134,10 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         loadingStatus.text = status;
         loadingProgress.gameObject.SetActive(showProgress);
         if (!showProgress)
+        {
             loadingProgress.text = "";
+            loadingSlider.value = 0;
+        }
     }
 
     public void ClearLoadingState()
@@ -140,6 +146,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         loadingStatus.text = "";
         loadingProgress.text = "";
         loadingProgress.gameObject.SetActive(true);
+        loadingSlider.value = 0f;
     }
 
     private void OnSessionHosted()

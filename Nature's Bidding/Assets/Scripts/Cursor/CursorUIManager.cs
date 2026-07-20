@@ -5,14 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityUtils;
 
-public class CursorManager : Singleton<CursorManager>
+public class CursorUIManager : Singleton<CursorUIManager>
 {
 
     [Header("Global Toggle for Testing")]
     public bool cursorEnabled = true;
 
     [Header("Cursor Visual")]
-    [SerializeField] private GameObject networkCursorUIPrefab;
     [SerializeField] private GameObject localCursorUIPrefab;
 
     [Header("Player Colors (Hardcoded for up to 4 players)")]
@@ -27,7 +26,7 @@ public class CursorManager : Singleton<CursorManager>
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
 
         DontDestroyOnLoad(gameObject);
-        Debug.Log("[CursorManager] Initialized.");
+        Debug.Log("[CursorUIManager] Initialized.");
         CreateCursorCanvas();
     }
 
@@ -57,7 +56,7 @@ public class CursorManager : Singleton<CursorManager>
     {
         if (playerColors.Count < PersistentPlayerRegistry.Instance.GetAllPlayers().Count)
         {
-            Debug.LogError("[CursorManager] Not enough player colors defined for the number of players. Please add more colors to the playerColors list.");
+            Debug.LogError("[CursorUIManager] Not enough player colors defined for the number of players. Please add more colors to the playerColors list.");
             return Color.white;
         }
 
@@ -75,7 +74,7 @@ public class CursorManager : Singleton<CursorManager>
             return playerColors[player.playerIndex];
         }
 
-        Debug.LogError("[CursorManager] No index assigned for player: " + clientId);
+        Debug.LogError("[CursorUIManager] No index assigned for player: " + clientId);
         // Fallback (should not happen if assigned properly)
         int fallbackIdx = (int)(clientId % (ulong)playerColors.Count);
         return playerColors[fallbackIdx];
@@ -84,21 +83,21 @@ public class CursorManager : Singleton<CursorManager>
     public bool CheckCursorReady()
     {
         if (!cursorEnabled) return false;
-        if (networkCursorUIPrefab == null || localCursorUIPrefab == null) { return false; }
+        if (localCursorUIPrefab == null) { return false; }
 
         return true;
     }
 
-    public RectTransform SpawnCursor(bool spawnNetworked, out Image _cursorImage)
+    public RectTransform SpawnCursor(bool syncCursorPosition, out Image _cursorImage)
     {
-        GameObject prefab = spawnNetworked ? networkCursorUIPrefab : localCursorUIPrefab;
+        GameObject prefab = localCursorUIPrefab;
 
         GameObject go = Instantiate(prefab, _cursorCanvas.transform);
         _cursorImage = go.GetComponentInChildren<Image>();
         if (_cursorImage == null) 
         { 
             Destroy(go); 
-            Debug.LogError("[CursorManager] Cursor prefab does not have an Image component.");
+            Debug.LogError("[CursorUIManager] Cursor prefab does not have an Image component.");
             return null;
         }
         return go.GetComponent<RectTransform>();

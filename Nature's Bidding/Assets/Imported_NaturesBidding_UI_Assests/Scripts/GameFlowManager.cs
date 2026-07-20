@@ -123,10 +123,10 @@ public class GameFlowManager : NetworkBehaviour
         if (biddingCanvas)   biddingCanvas.SetActive(phase == GamePhase.Bidding);
         if (shopCanvas)      shopCanvas.SetActive(phase == GamePhase.ShopReview);
 
-        if (CursorManager.Instance != null)
+        if (CursorUIManager.Instance != null)
         {
-            CursorManager.Instance.cursorEnabled = phase == GamePhase.Bidding || phase == GamePhase.ShopReview;
-            Cursor.visible = CursorManager.Instance.cursorEnabled;
+            CursorUIManager.Instance.cursorEnabled = phase == GamePhase.Bidding || phase == GamePhase.ShopReview;
+            Cursor.visible = CursorUIManager.Instance.cursorEnabled;
         }
 
         switch (phase)

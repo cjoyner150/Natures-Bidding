@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class PlayerCursorNetworkBehavior : NetworkBehaviour
 {
-    [SerializeField] private bool spawnNetworkedCursor = true;
+    [SerializeField] private bool syncCursorPosition = true;
 
     private NetworkVariable<Vector2> _normalizedCursorPos = new NetworkVariable<Vector2>(
         Vector2.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -20,6 +20,7 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
 
     private RectTransform cursorTransform;
     private CursorInputHandler cursorInput;
+    private VirtualMouseInput virtualMouseInput;
     private Image cursorImage;
 
     private static List<PlayerCursorNetworkBehavior> _allInstances = new List<PlayerCursorNetworkBehavior>();
@@ -37,23 +38,27 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
                 NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
 
-        if (CursorManager.Instance == null)
-            StartCoroutine(RetryCreateCursor());
-        else if (spawnNetworkedCursor || IsLocalPlayer)
-            CreateCursor();
-
-        if (spawnNetworkedCursor && !IsLocalPlayer)
+        if (syncCursorPosition && !IsLocalPlayer)
         {
             _normalizedCursorPos.OnValueChanged += (oldPos, newPos) =>
             {
                 interpTarget = new Vector2(newPos.x * Screen.width, newPos.y * Screen.height);
             };
         }
+
+        if (PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Combat || 
+            PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Lobby)
+        {
+            PlayerPauseManager.Instance.OnPaused += EnableCursor;
+            PlayerPauseManager.Instance.OnResumed += DisableCursor;
+        }
+
+        if (syncCursorPosition || IsLocalPlayer) CreateCursor();
     }
 
     private void OnClientConnected(ulong newClientId)
     {
-        if (!IsServer || !spawnNetworkedCursor) return;
+        if (!IsServer || !syncCursorPosition) return;
         StartCoroutine(DelayedSyncToNewClient(newClientId));
     }
 
@@ -96,32 +101,16 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
         base.OnNetworkDespawn();
     }
 
-    private IEnumerator RetryCreateCursor()
-    {
-        float timeout = 2f;
-        float start = Time.time;
-        while (CursorManager.Instance == null && Time.time - start < timeout)
-        {
-            yield return new WaitForSeconds(0.2f);
-        }
-        if (CursorManager.Instance != null && (spawnNetworkedCursor || IsLocalPlayer))
-            CreateCursor();
-        else
-        {
-            Debug.LogError("CursorManager still missing after timeout.");
-            enabled = false;
-        }
-    }
-
     private async void CreateCursor()
     {
-        if (!IsLocalPlayer && !spawnNetworkedCursor) return; 
+        if (!IsLocalPlayer && !syncCursorPosition) return; 
+        await UniTask.WaitUntil(() => CursorUIManager.Instance != null);
 
-        if (!CursorManager.Instance.CheckCursorReady()) { enabled = false; return; }
+        if (!CursorUIManager.Instance.CheckCursorReady()) { enabled = false; return; }
 
         if (IsLocalPlayer) Cursor.visible = false;
 
-        cursorTransform = CursorManager.Instance.SpawnCursor(spawnNetworkedCursor, out cursorImage);
+        cursorTransform = CursorUIManager.Instance.SpawnCursor(syncCursorPosition, out cursorImage);
         if (cursorImage == null) { enabled = false; return; }
 
         cursorTransform.pivot = new Vector2(0, 1);
@@ -130,36 +119,75 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
         cursorTransform.anchoredPosition = Vector2.zero;
 
         // Use the color index assigned by server
-        Color playerColor = await CursorManager.Instance.GetColorForPlayer(OwnerClientId);
+        Color playerColor = await CursorUIManager.Instance.GetColorForPlayer(OwnerClientId);
         cursorImage.color = playerColor;
         Debug.Log($"Cursor created for player {OwnerClientId} with color {playerColor} (index {_colorIndex.Value})");
         
         cursorInput = cursorTransform.GetComponent<CursorInputHandler>();
+        virtualMouseInput = cursorTransform.GetComponent<VirtualMouseInput>();
 
         if (!IsLocalPlayer)
         {
-            cursorTransform.GetComponent<VirtualMouseInput>().enabled = false;
-            enabled = false;
-
+            virtualMouseInput.enabled = false;
             cursorInput.enabled = false;
         }
 
-        if (IsLocalPlayer && spawnNetworkedCursor)
+        if (IsLocalPlayer && syncCursorPosition)
         {
-            cursorInput.InitializeNetworkSync(this, spawnNetworkedCursor);
+            cursorInput.InitializeNetworkSync(this, syncCursorPosition);
         }
+
+        if (IsLocalPlayer)
+        {
+            GivePrivateActionCopies();
+            DisableCursor();
+        }
+    }
+
+    private void GivePrivateActionCopies()
+    {
+        virtualMouseInput.stickAction = CloneActionProperty(virtualMouseInput.stickAction);
+        virtualMouseInput.leftButtonAction = CloneActionProperty(virtualMouseInput.leftButtonAction);
+        virtualMouseInput.rightButtonAction = CloneActionProperty(virtualMouseInput.rightButtonAction);
+        virtualMouseInput.middleButtonAction = CloneActionProperty(virtualMouseInput.middleButtonAction);
+        virtualMouseInput.forwardButtonAction = CloneActionProperty(virtualMouseInput.forwardButtonAction);
+        virtualMouseInput.backButtonAction = CloneActionProperty(virtualMouseInput.backButtonAction);
+    }
+
+    private void DisableInputActions()
+    {
+        virtualMouseInput.stickAction.action.Disable();
+        virtualMouseInput.leftButtonAction.action.Disable();
+        virtualMouseInput.rightButtonAction.action.Disable();
+        virtualMouseInput.middleButtonAction.action.Disable();
+        virtualMouseInput.forwardButtonAction.action.Disable();
+        virtualMouseInput.backButtonAction.action.Disable();
+    }
+
+    private void EnableInputActions()
+    {
+        virtualMouseInput.stickAction.action.Enable();
+        virtualMouseInput.leftButtonAction.action.Enable();
+        virtualMouseInput.rightButtonAction.action.Enable();
+        virtualMouseInput.middleButtonAction.action.Enable();
+        virtualMouseInput.forwardButtonAction.action.Enable();
+        virtualMouseInput.backButtonAction.action.Enable();
+    }
+
+    private InputActionProperty CloneActionProperty(InputActionProperty original)
+    {
+        var sourceAction = original.action;
+        if (sourceAction == null) return original;
+
+        var clonedAction = sourceAction.Clone();
+        clonedAction.Enable();
+
+        return new InputActionProperty(clonedAction);
     }
 
     private void Update()
     {
-        if (cursorImage == null)
-        {
-            if (CursorManager.Instance != null && CursorManager.Instance.cursorEnabled)
-                CreateCursor();
-            return;
-        }
-
-        if (IsLocalPlayer)
+        if (!IsLocalPlayer && syncCursorPosition)
         {
             cursorImage.rectTransform.anchoredPosition = Vector2.Lerp(cursorImage.rectTransform.anchoredPosition, interpTarget, Time.deltaTime * 10f);
         }
@@ -173,7 +201,9 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
 
         cursorImage.enabled = false;
 
-        if (spawnNetworkedCursor)
+        DisableInputActions();
+
+        if (syncCursorPosition)
             NotifyDisableCursorClientRpc();
     }
 
@@ -193,10 +223,12 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
         var mousePos = new Vector2(Screen.width / 2f, Screen.height / 2f);
         InputState.Change(mouse.position, mousePos);
 
+        EnableInputActions();
+
         cursorImage.rectTransform.anchoredPosition = mousePos;
         cursorImage.enabled = true;
 
-        if (spawnNetworkedCursor)
+        if (syncCursorPosition)
             NotifyEnableCursorClientRpc();
     }
 
@@ -206,12 +238,24 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
         cursorImage.enabled = true;
     }
 
+    public bool IsCursorReadyAndEnabled()
+    {
+        if (CursorUIManager.Instance == null) return false;
+        if (cursorImage == null) return false;
+        if (!cursorImage.enabled) return false;
+
+        return true;
+    }
+
     public override void OnDestroy()
     { 
+        PlayerPauseManager.Instance.OnPaused -= EnableCursor;
+        PlayerPauseManager.Instance.OnResumed -= DisableCursor;
+
         _normalizedCursorPos.OnValueChanged = null;
 
         if (cursorImage != null) Destroy(cursorImage.gameObject);
-        if (IsLocalPlayer && CursorManager.Instance != null && CursorManager.Instance.cursorEnabled)
+        if (IsLocalPlayer && CursorUIManager.Instance != null && CursorUIManager.Instance.cursorEnabled)
             Cursor.visible = true;
     }
 }

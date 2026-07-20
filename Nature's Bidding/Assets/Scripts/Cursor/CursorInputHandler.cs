@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 public class CursorInputHandler : MonoBehaviour
@@ -59,13 +60,15 @@ public class CursorInputHandler : MonoBehaviour
     private void Update()
     {
 
+        if (Cursor.visible) Cursor.visible = false;
+
         if (Keyboard.current != null && Keyboard.current.pKey.wasPressedThisFrame)
         {
             _cursorPaused = !_cursorPaused;
             Debug.Log($"Cursor pause: {(_cursorPaused ? "ON" : "OFF")}");
         }
 
-        if (CursorManager.Instance == null || !CursorManager.Instance.cursorEnabled)
+        if (CursorUIManager.Instance == null || !CursorUIManager.Instance.cursorEnabled)
         {
             if (cursorImage != null) cursorImage.gameObject.SetActive(false);
             return;

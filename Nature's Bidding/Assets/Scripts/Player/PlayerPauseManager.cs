@@ -47,8 +47,6 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
     {
         Paused = true;
 
-        NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerCursorNetworkBehavior>()?.EnableCursor();
-
         pausePanel.SetActive(true);
 
         if (lobbyWaitingPanel != null) lobbyWaitingPanel.SetActive(false);
@@ -59,8 +57,6 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
     void UnpauseGame()
     {
         Paused = false;
-
-        NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerCursorNetworkBehavior>()?.DisableCursor();
 
         pausePanel.SetActive(false);
 

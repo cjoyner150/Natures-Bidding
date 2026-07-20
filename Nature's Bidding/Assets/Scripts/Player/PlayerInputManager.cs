@@ -153,7 +153,15 @@ public class PlayerInputManager : MonoBehaviour
 
     void PlayerInput()
     {
-        if (!allowInputs || !ctx.allowInputs) return;
+        if (!allowInputs || !ctx.allowInputs) 
+        {
+            ctx.moveInput = Vector3.zero;
+            ctx.jumpPressed = false;
+            ctx.dashPressed = false;
+            ctx.attackPressed = false;
+            ctx.parryPressed = false;
+            return; 
+        }
 
         Vector2 moveInput = move.ReadValue<Vector2>();
         ctx.jumpPressed = allowJump && jump.IsPressed();
@@ -217,6 +225,32 @@ public class PlayerInputManager : MonoBehaviour
         pause.Enable();
     }
 
+    public void DisableInput()
+    {
+        reversedControls?.Disable();
+        controls?.Disable();
+        move?.Disable();
+        sprint?.Disable();
+        dash?.Disable();
+        jump?.Disable();
+        attack?.Disable();
+        parry?.Disable();
+        pause?.Disable();
+    }
+
+    public void EnableInput()
+    {
+        reversedControls?.Enable();
+        controls?.Enable();
+        move?.Enable();
+        sprint?.Enable();
+        dash?.Enable();
+        jump?.Enable();
+        attack?.Enable();
+        parry?.Enable();
+        pause?.Enable();
+    }
+
     void OnPausePressed(InputAction.CallbackContext callback)
     {
         if (allowPause)
@@ -228,11 +262,13 @@ public class PlayerInputManager : MonoBehaviour
     void OnPaused()
     {
         allowInputs = !PlayerPauseManager.Instance.Paused;
+        DisableInput();
     }
 
     void OnResumed()
     {
         allowInputs = !PlayerPauseManager.Instance.Paused;
+        EnableInput();
     }
 
 }

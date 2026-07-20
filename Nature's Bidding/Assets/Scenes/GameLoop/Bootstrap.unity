@@ -1011,6 +1011,7 @@ MonoBehaviour:
   - {fileID: 7351366833819207709, guid: a97b9f21c82540a4e9d62b50220896c5, type: 3}
   - {fileID: 5423198143826113961, guid: 3b740f45f5a21db4e8d48b797c1befe3, type: 3}
   loadingPanel: {fileID: 1328017596}
+  loadingSlider: {fileID: 1759741159}
   loadingStatus: {fileID: 416426921}
   loadingProgress: {fileID: 15051646}
   combatWinsRequiredToEnd: 3
@@ -1244,7 +1245,7 @@ GameObject:
   - component: {fileID: 1759741158}
   - component: {fileID: 1759741159}
   m_Layer: 5
-  m_Name: Player Health Progress Bar
+  m_Name: Loading Progress Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

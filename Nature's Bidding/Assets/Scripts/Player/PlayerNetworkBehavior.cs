@@ -3,10 +3,12 @@ using Cysharp.Threading.Tasks;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityUtils;
 
 public class PlayerNetworkBehavior : NetworkBehaviour
 {
     public Camera RenderCamera;
+    public Material sunMat;
     public Color[] colors;
     public SkinnedMeshRenderer skinnedMeshRenderer;
     public PlayerContext ctx;
@@ -21,7 +23,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         base.OnNetworkSpawn();
 
         cameraTargetGroup = FindAnyObjectByType<CinemachineTargetGroup>();
-        cameraTargetGroup?.AddMember(transform, 1, 10);
+        cameraTargetGroup?.AddMember(transform, 1, 4);
 
         Debug.Log("[PlayerNetworkBehavior] Player is spawning on network...");
 
@@ -112,6 +114,28 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             playerNetworkBehavior.skinnedMeshRenderer.materials[2].SetColor("_Tint", colors[player.playerIndex]);
         }
 
+    }
+
+    public void SwapMaterialOnPlayer()
+    {
+        ApplyMaterialSwap();
+        NotifyPlayerMaterialSwapClientRpc();
+    }
+
+    [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Owner)]
+    public void NotifyPlayerMaterialSwapClientRpc()
+    {
+        ApplyMaterialSwap();
+    }
+
+    private void ApplyMaterialSwap()
+    {
+        var mats = skinnedMeshRenderer.materials;
+        for (int i = 0; i < mats.Length; i++)
+        {
+            mats[i] = sunMat;
+        }
+        skinnedMeshRenderer.materials = mats;
     }
 
     private void OnDrawGizmosSelected()

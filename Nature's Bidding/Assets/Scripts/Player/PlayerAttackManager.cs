@@ -1,7 +1,9 @@
 ﻿using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityUtils;
 
 public class PlayerAttackManager : NetworkBehaviour
 {
@@ -45,6 +47,11 @@ public class PlayerAttackManager : NetworkBehaviour
 
     public void EndAttack()
     {
+        foreach (var health in damagedObjectsOnThisAttack.OfType<PlayerHealth>())
+        {
+            PlayerCombatHooks.TriggerOnAttack(health.OwnerClientId);
+        }
+
         isAttacking = false;
     }
 
@@ -102,10 +109,7 @@ public class PlayerAttackManager : NetworkBehaviour
         }
         else if (callbackContext == IDamageable.HitCallbackContext.parried)
         {
-            Debug.Log("[PlayerHealth] Parry Callback Received");
-            ctx.combo = 0;
-            ctx.shouldStunSelf = true;
-            NetworkVisualEffectManager.SpawnParrySuccessReactEffectsOnPlayer?.Invoke(OwnerClientId);
+            selfPlayerHealth.StunPlayer(0);
         }
     }
 

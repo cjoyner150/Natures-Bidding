@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityUtils;
 
 public class StatusEffectNetworkManager : NetworkSingleton<StatusEffectNetworkManager>
 {
@@ -24,6 +25,8 @@ public class StatusEffectNetworkManager : NetworkSingleton<StatusEffectNetworkMa
 
     private async UniTaskVoid ApplyToPlayerWhenReady(ulong playerId, string effectIds)
     {
+        if (effectIds.IsNullOrEmpty()) return;
+
         await UniTask.WaitUntil(() =>
             NetworkManager.Singleton.ConnectedClients.TryGetValue(playerId, out var client) &&
             client.PlayerObject != null

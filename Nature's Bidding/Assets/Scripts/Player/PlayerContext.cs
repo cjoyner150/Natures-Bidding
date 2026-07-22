@@ -78,6 +78,7 @@ public class PlayerContext
     public bool isStunned;
     public float stunTime;
     public float stunRecoveryTimer;
+    public float additionalStunTime = 0;
 
     [Header("Dash")]
     public float dashTime;

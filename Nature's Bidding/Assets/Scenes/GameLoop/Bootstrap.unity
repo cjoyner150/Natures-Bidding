@@ -157,7 +157,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100.0%
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 693430919429cff4d9e10f1225ca56c8, type: 2}
   m_sharedMaterial: {fileID: -2935581447736933011, guid: 693430919429cff4d9e10f1225ca56c8, type: 2}
@@ -313,7 +313,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Loading...
+  m_text: Returning to Menu...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 693430919429cff4d9e10f1225ca56c8, type: 2}
   m_sharedMaterial: {fileID: -2935581447736933011, guid: 693430919429cff4d9e10f1225ca56c8, type: 2}
@@ -603,6 +603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44d2beb22a646d145b0e7bcab5724801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRegistry
+  playerStartConfig: {fileID: 11400000, guid: 083582530a135ab438f2911f6c8c2084, type: 2}
 --- !u!4 &1166174665
 Transform:
   m_ObjectHideFlags: 0
@@ -1322,7 +1323,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.684
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

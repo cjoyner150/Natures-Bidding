@@ -18,10 +18,8 @@ using TMPro;
 ///   • After all rounds are done, transition to shop automatically.
 ///   • Bid amount is controlled through keyboard input.
 /// </summary>
-public class BiddingManager : NetworkBehaviour
+public class BiddingManager : BaseGameServerHandler<BiddingManager>
 {
-    public static BiddingManager Instance { get; private set; }
-
     #region Inspector Fields
 
     [Header("2D HUD")]
@@ -85,11 +83,7 @@ public class BiddingManager : NetworkBehaviour
 
     #region Lifecycle
 
-    void Awake()
-    {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
-        Instance = this;
-    }
+    void Awake() { }
 
     void Update()
     {
@@ -109,6 +103,8 @@ public class BiddingManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
+
         TimeRemaining.OnValueChanged += (_, t) =>
         {
             if (timerText) timerText.text = $"{t}s";
@@ -137,7 +133,7 @@ public class BiddingManager : NetworkBehaviour
 
     #region Entry Points
 
-    /// <summary>Called directly by GameFlowManager on the server.</summary>
+    /// <summary>Called by the server flow handler at the start of bidding.</summary>
     public void BeginBiddingPhase()
     {
         if (!IsServer) return;
@@ -171,6 +167,8 @@ public class BiddingManager : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void StartBiddingPhaseRpc() => BeginBiddingPhase();
 
+    public void OnPlayerDeath(ulong clientId) { }
+
     #endregion
 
     #region Round Loop
@@ -188,7 +186,7 @@ public class BiddingManager : NetworkBehaviour
         // All rounds complete
         ShowTransitionMessageRpc("Bidding over! Heading to the shop...");
         yield return new WaitForSeconds(2f);
-        GameFlowManager.Instance?.StartShopPhaseRpc();
+        PersistentGameStateManager.Instance?.RequestStartShopPhase();
     }
 
     IEnumerator RunSingleRound()

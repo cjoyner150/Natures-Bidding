@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c64c524e213d78a469ace7eb02e09a47, type: 3}
   m_Name: smpleupgrade
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
+  _id: smpleupgrade
   upgradeName: Speed Boost
   description: Increases movement speed by 5%.
   icon: {fileID: 21300000, guid: a4cf4835290eb0e488becc67babf5df6, type: 3}
+  effectors:
+  - {fileID: 11400000, guid: 8c345a3fcce29f640b1c3fa0a226c9b7, type: 2}
   upgradeType: 0
   effectValue: 0.05
   cost: 50

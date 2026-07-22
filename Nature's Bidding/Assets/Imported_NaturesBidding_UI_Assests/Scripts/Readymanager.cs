@@ -9,10 +9,8 @@ using TMPro;
 /// When all connected players are ready, triggers the next phase.
 /// Attach to a NetworkObject in the scene.
 /// </summary>
-public class ReadyManager : NetworkBehaviour
+public class ReadyManager : BaseGameServerHandler<ReadyManager>
 {
-    public static ReadyManager Instance { get; private set; }
-
     #region Inspector Fields
 
     [Header("Ready Button — place one in each PlayerShopPanel")]
@@ -41,14 +39,11 @@ public class ReadyManager : NetworkBehaviour
 
     #region Lifecycle
 
-    void Awake()
-    {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
-        Instance = this;
-    }
+    void Awake() { }
 
     public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
         ReadyCount.OnValueChanged += (_, count) => RefreshUI(count);
         RefreshUI(ReadyCount.Value);
     }
@@ -101,8 +96,19 @@ public class ReadyManager : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void AllReadyRpc()
     {
-        GameFlowManager.Instance?.StartCombatPhaseRpc();
+        if (IsServer)
+            PersistentGameStateManager.Instance?.BeginCombatPhaseServer();
     }
+
+    [Rpc(SendTo.Server)]
+    public void StartCombatPhaseRpc()
+    {
+        if (!IsServer) return;
+
+        PersistentGameStateManager.Instance?.BeginCombatPhaseServer();
+    }
+
+    public void OnPlayerDeath(ulong clientId) { }
 
     #endregion
 

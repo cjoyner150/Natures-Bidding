@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityUtils;
@@ -39,7 +42,7 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
 
     protected override void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage, bool critical = false)
     {
-        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, critical);
+        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, attackingPlayer.OwnerClientId, critical);
     }
 
     private void OnClientConnected(ulong clientId)
@@ -121,10 +124,68 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
 
     protected override void OnNewPlayerConnected(ulong clientId, string authId, string playerName)
     {
-        PlayerRegistryNetworkSync.Instance.SyncAllToClient(clientId);
         PersistentPlayerRegistry.Instance.RegisterPlayer(clientId, authId, playerName);
         SpawnAndRegisterPlayer(clientId);
+        SyncLobbySnapshotWhenReady(clientId).Forget();
+    }
+
+    private async UniTaskVoid SyncLobbySnapshotWhenReady(ulong clientId)
+    {
+        await UniTask.WaitUntil(() => PlayerRegistryNetworkSync.Instance != null);
+
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer)
+            return;
+
+        PlayerRegistryNetworkSync.Instance.SyncAllToClient(clientId);
     }
 
     public void OnPlayerDeath(ulong clientId) { }
+
+    public void HandleInstantKill(PlayerHealth playerHealth)
+    {
+        Transform spawnPoint = GameplaySpawnManager.Instance.GetNextAvailableSpawnPoint();
+        Vector3 targetPosition = spawnPoint.position + spawnPoint.up * 1f;
+
+        if (NetworkManager.LocalClientId != playerHealth.OwnerClientId)
+        {
+            TeleportToPositionClientRpc(targetPosition, spawnPoint.rotation,
+                RpcTarget.Single(playerHealth.OwnerClientId, RpcTargetUse.Temp));
+        }
+        else
+        {
+            var ctx = playerHealth.GetComponent<PlayerNetworkBehavior>()?.ctx;
+            if (ctx == null || ctx.rb == null) return;
+            TeleportRigidbody(ctx.rb, targetPosition, spawnPoint.rotation, ctx.modelHolder);
+        }
+    }
+
+    [Rpc(SendTo.SpecifiedInParams, InvokePermission = RpcInvokePermission.Server)]
+    public void TeleportToPositionClientRpc(Vector3 position, Quaternion rotation, RpcParams rpcParams)
+    {
+        var playerObj = NetworkManager.LocalClient.PlayerObject;
+        var ctx = playerObj.GetComponent<PlayerNetworkBehavior>()?.ctx;
+        if (ctx == null || ctx.rb == null) return;
+
+        TeleportRigidbody(ctx.rb, position, rotation, ctx.modelHolder);
+    }
+
+    private void TeleportRigidbody(Rigidbody rb, Vector3 position, Quaternion rotation, Transform modelHolder)
+    {
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        var networkTransform = rb.gameObject.GetComponent<NetworkTransform>();
+
+        if (networkTransform != null)
+        {
+            networkTransform.Teleport(position, rotation, rb.transform.localScale);
+        }
+        else
+        {
+            rb.position = position;
+            modelHolder.rotation = rotation;
+        }
+
+        Physics.SyncTransforms();
+    }
 }

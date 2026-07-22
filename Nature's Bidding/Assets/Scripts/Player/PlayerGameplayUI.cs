@@ -33,7 +33,8 @@ public class PlayerGameplayUI : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log($"[PlayerGameplayUI] rendercam is named: {renderCam.name} and is enabled: {renderCam.enabled}");
+        if (renderCam != null)
+            Debug.Log($"[PlayerGameplayUI] rendercam is named: {renderCam.name} and is enabled: {renderCam.enabled}");
     }
 
     private void OnDestroy()

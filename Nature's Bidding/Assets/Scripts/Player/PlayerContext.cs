@@ -78,13 +78,17 @@ public class PlayerContext
     public bool isStunned;
     public float stunTime;
     public float stunRecoveryTimer;
+    public float additionalStunTime = 0;
 
     [Header("Dash")]
     public float dashTime;
     public float dashCDTimer;
     public bool dashOnCooldown => dashCDTimer > 0;
     public float dashRotateMultiplier;
-
+    public bool teleportOnDash;
+    public float teleportDistance;
+    public LayerMask teleportBlockingLayer;
+    public bool debugTeleport;
 
     [Header("Knockback")]
     public float knockbackTime;
@@ -98,4 +102,7 @@ public class PlayerContext
     public bool jumpPressed;
     public bool attackPressed;
     public bool parryPressed;
+
+    [Header("ReferenceData")]
+    public LayerMask playerLayerMask;
 }

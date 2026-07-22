@@ -69,13 +69,7 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
         {
             GameObject go = hit.gameObject;
             print($"[BaseGameServerHandler] hit {go.name}");
-            var damageable = go.GetComponent<IDamageable>();
-
-            while (damageable == null && go.transform.parent != null)
-            {
-                go = go.transform.parent.gameObject;
-                damageable = go.GetComponent<IDamageable>();
-            }
+            UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
 
             if (damageable != null)
             {
@@ -102,7 +96,7 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
 
     protected virtual void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage, bool critical)
     {
-        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, critical);
+        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, attackingPlayer.OwnerClientId, critical);
     }
 
     private Dictionary<ulong, TaskCompletionSource<string>> playerNameRequests = new();

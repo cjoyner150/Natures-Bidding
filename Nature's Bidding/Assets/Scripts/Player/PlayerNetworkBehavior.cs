@@ -3,10 +3,12 @@ using Cysharp.Threading.Tasks;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityUtils;
 
 public class PlayerNetworkBehavior : NetworkBehaviour
 {
     public Camera RenderCamera;
+    public Material sunMat;
     public Color[] colors;
     public SkinnedMeshRenderer skinnedMeshRenderer;
     public PlayerContext ctx;
@@ -21,7 +23,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         base.OnNetworkSpawn();
 
         cameraTargetGroup = FindAnyObjectByType<CinemachineTargetGroup>();
-        cameraTargetGroup?.AddMember(transform, 1, 10);
+        cameraTargetGroup?.AddMember(transform, 1, 4);
 
         Debug.Log("[PlayerNetworkBehavior] Player is spawning on network...");
 
@@ -92,9 +94,17 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
     private async void SyncAllPlayerColors()
     {
-        skinnedMeshRenderer.materials[2].SetColor("_Tint", colors[PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId).playerIndex]);
+        await UniTask.WaitUntil(() => PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId) != null);
 
-        await UniTask.WaitUntil(() => NetworkManager.Singleton.ConnectedClientsList.All(p => p.PlayerObject != null));
+        var myData = PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId);
+        if (skinnedMeshRenderer == null) return;
+
+        skinnedMeshRenderer.materials[2].SetColor("_Tint", colors[myData.playerIndex]);
+
+        await UniTask.WaitUntil(() =>
+            NetworkManager.Singleton != null &&
+            NetworkManager.Singleton.ConnectedClientsList.All(p => p.PlayerObject != null)
+        );
 
         var players = PersistentPlayerRegistry.Instance.GetAllPlayers().Where(p => p.clientId != OwnerClientId);
 
@@ -104,6 +114,28 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             playerNetworkBehavior.skinnedMeshRenderer.materials[2].SetColor("_Tint", colors[player.playerIndex]);
         }
 
+    }
+
+    public void SwapMaterialOnPlayer()
+    {
+        ApplyMaterialSwap();
+        NotifyPlayerMaterialSwapClientRpc();
+    }
+
+    [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Owner)]
+    public void NotifyPlayerMaterialSwapClientRpc()
+    {
+        ApplyMaterialSwap();
+    }
+
+    private void ApplyMaterialSwap()
+    {
+        var mats = skinnedMeshRenderer.materials;
+        for (int i = 0; i < mats.Length; i++)
+        {
+            mats[i] = sunMat;
+        }
+        skinnedMeshRenderer.materials = mats;
     }
 
     private void OnDrawGizmosSelected()

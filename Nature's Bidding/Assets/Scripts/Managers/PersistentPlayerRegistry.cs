@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityUtils;
@@ -7,6 +8,8 @@ public enum ItemType { Mask, TarotCard, Artifact }
 
 public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 {
+    [SerializeField] PlayerStartConfigSO playerStartConfig;
+
     private Dictionary<string, PersistentPlayerData> _playerData = new();
     private bool[] _indexPool = new bool[4];
     private Dictionary<ulong, string> _clientToAuth = new();
@@ -49,11 +52,11 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
             authenticationId = authId,
             playerName = playerName,
             playerIndex = index,
-            gold = Random.Range(80, 120),
+            gold = playerStartConfig.gold,
             combatWins = 0,
-            masks = { "bee_mask" },
-            tarotCards = { "the_weapon_tarot" },
-            artifacts = {  }
+            masks = playerStartConfig.masks.Select(m => m.Id).ToList(),
+            tarotCards = playerStartConfig.tarots.Select(t => t.Id).ToList(),
+            artifacts = playerStartConfig.artifacts.Select(a => a.Id).ToList(),
         };
 
         _playerData[authId] = data;

@@ -10,4 +10,6 @@ public interface IDamageable
     }
 
     public void Hit(float damage, ulong fromPlayerId, out HitCallbackContext context, bool critical = false);
+
+    public void TickHealth(float damage, ulong fromPlayerId);
 }

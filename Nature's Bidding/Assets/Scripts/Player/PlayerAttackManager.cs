@@ -1,7 +1,9 @@
 ﻿using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityUtils;
 
 public class PlayerAttackManager : NetworkBehaviour
 {
@@ -17,8 +19,6 @@ public class PlayerAttackManager : NetworkBehaviour
     [SerializeField] private float attackLength;
 
     PlayerContext ctx;
-
-    
 
     public override void OnNetworkSpawn()
     {
@@ -41,10 +41,17 @@ public class PlayerAttackManager : NetworkBehaviour
     {
         damagedObjectsOnThisAttack.Clear();
         isAttacking = true;
+
+        NetworkVisualEffectManager.SpawnSlashEffectsOnPlayer?.Invoke(OwnerClientId, (int)(ctx.attackTime / ctx.attackSpeed * 1000));
     }
 
     public void EndAttack()
     {
+        foreach (var health in damagedObjectsOnThisAttack.OfType<PlayerHealth>())
+        {
+            PlayerCombatHooks.TriggerOnAttack(health.OwnerClientId);
+        }
+
         isAttacking = false;
     }
 
@@ -59,14 +66,8 @@ public class PlayerAttackManager : NetworkBehaviour
             foreach (RaycastHit hit in hits)
             {
                 GameObject go = hit.collider.gameObject;
-                var damageable = go.GetComponent<IDamageable>();
-                
-                while (damageable == null && go.transform.parent != null)
-                {
-                    go = go.transform.parent.gameObject;
-                    damageable = go.GetComponent<IDamageable>();
-                }
-                
+                UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
+
                 if (damageable != null)
                 {
                     if (damagedObjectsOnThisAttack.Contains(damageable)) continue;
@@ -86,7 +87,7 @@ public class PlayerAttackManager : NetworkBehaviour
         damage += ctx.playerStats.ComboDamage * ctx.combo;
         damage *= crit ? ctx.playerStats.CritDamageMultiplier : 1;
 
-        damageable.Hit(damage, selfPlayerHealth.OwnerClientId, out IDamageable.HitCallbackContext callbackContext);
+        damageable.Hit(damage, selfPlayerHealth.OwnerClientId, out IDamageable.HitCallbackContext callbackContext, crit);
         damagedObjectsOnThisAttack.Add(damageable);
 
         if (callbackContext == IDamageable.HitCallbackContext.success)
@@ -108,8 +109,7 @@ public class PlayerAttackManager : NetworkBehaviour
         }
         else if (callbackContext == IDamageable.HitCallbackContext.parried)
         {
-            ctx.combo = 0;
-            ctx.shouldStunSelf = true;
+            selfPlayerHealth.StunPlayer(0);
         }
     }
 

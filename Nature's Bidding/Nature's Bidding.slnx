@@ -18,5 +18,7 @@
   <Project Path="Lofelt.NiceVibrations.Demo.csproj" />
   <Project Path="Lofelt.NiceVibrations.Editor.csproj" />
   <Project Path="Ak.Wwise.Api.WAAPI.csproj" />
+  <Project Path="kTools.Mirrors.Editor.csproj" />
+  <Project Path="kTools.Mirrors.Runtime.csproj" />
   <Project Path="AK.Wwise.Unity.AddressableUpdater.csproj" />
 </Solution>

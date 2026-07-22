@@ -17,11 +17,11 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnSlashEffectParticles()
     {
-        //GameObject go = Instantiate(explosionParticle, weaponHolderTransform, false);
-        //go.transform.localPosition = Vector3.zero;
-        //go.transform.localRotation = Quaternion.identity;
+        GameObject go = Instantiate(explosionParticle, weaponHolderTransform, false);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localRotation = Quaternion.identity;
 
-        //SafeDispose(go, 1000).Forget();
+        SafeDispose(go, 1000).Forget();
     }
 
     public void SpawnParryEffectParticles(int milliseconds)

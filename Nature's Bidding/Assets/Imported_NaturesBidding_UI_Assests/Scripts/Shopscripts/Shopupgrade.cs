@@ -19,6 +19,7 @@ public class ShopUpgrade : ScriptableObject
 
     [Header("Effectors")]
     public string effectorId = string.Empty;
+    public ItemType effectorBucket = ItemType.Artifact;
 
     [Header("Effect")]
     public UpgradeType upgradeType;

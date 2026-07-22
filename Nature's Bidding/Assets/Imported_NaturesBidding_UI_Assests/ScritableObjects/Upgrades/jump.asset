@@ -16,11 +16,11 @@ MonoBehaviour:
   upgradeName: Jump Boost
   description: Increases jump by 5%.
   icon: {fileID: 21300000, guid: 3242a2a5fb0f0ab4094df612e1dc21f9, type: 3}
-  effectors:
-  - {fileID: 11400000, guid: 611f0f13d6aed124e86c5c90bcf03799, type: 2}
+  effectorId: test_id
   upgradeType: 1
   effectValue: 0.05
   cost: 50
   maxPurchases: 3
   isConsumable: 0
   cardColor: {r: 0.6608886, g: 0.9496855, b: 0.6181914, a: 1}
+  shadowSprite: {fileID: 0}

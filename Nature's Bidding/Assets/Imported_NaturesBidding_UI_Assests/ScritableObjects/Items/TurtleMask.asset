@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16b8f994c1e4e6e498fdb723c8718a8d, type: 3}
   m_Name: TurtleMask
   m_EditorClassIdentifier: Assembly-CSharp::BiddableItem
+  itemId: Turtle_mask
   itemName: Turtle Mask
   description: Slow and Steady wins the race
   icon: {fileID: 21300000, guid: 235a27ee3a73ea5448984a87551d56cd, type: 3}

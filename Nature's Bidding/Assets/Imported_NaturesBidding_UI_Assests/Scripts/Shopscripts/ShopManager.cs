@@ -305,6 +305,9 @@ public class ShopManager : BaseGameServerHandler<ShopManager>, IGameServerHandle
             return;
         }
 
+        if (!string.IsNullOrWhiteSpace(upgrade.effectorId))
+            registry.AddItem(buyer, upgrade.effectorId, upgrade.effectorBucket);
+
         var player = PersistentPlayerData.GetPlayer(buyer);
         if (player != null)
         {

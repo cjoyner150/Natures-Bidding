@@ -658,6 +658,8 @@ public class PlayerShopPanel : MonoBehaviour
         ClearAllSelections();
         if (detailPanel) detailPanel.SetActive(false);
         if (buyButton)   buyButton.gameObject.SetActive(false);
+
+        RefreshStats();
     }
 
     #endregion

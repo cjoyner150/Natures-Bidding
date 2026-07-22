@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f67ded6ec6d69594f86cb4f731577c05, type: 3}
+  m_Name: The Sun Tarot
+  m_EditorClassIdentifier: Assembly-CSharp::CompositeStatusEffectorSO
+  _id: the_sun_tarot
+  Title: The Sun Tarot
+  Description: The light burns to touch
+  Duration: -1
+  Effects:
+  - {fileID: 11400000, guid: f3949c3323ac3834da7463ead08e948a, type: 2}
+  - {fileID: 11400000, guid: 3e5d49bb41ebfef4480a8744c104c6c1, type: 2}
+  - {fileID: 11400000, guid: 254bc2ed0e153204b9c18ad2121262d9, type: 2}

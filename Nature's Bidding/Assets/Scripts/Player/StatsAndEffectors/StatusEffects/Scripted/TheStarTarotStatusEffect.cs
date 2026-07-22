@@ -120,7 +120,7 @@ public class TheStarTarotStatusEffect : StatusEffect
 
             if (damage > 0f)
             {
-                damageable.TickHealth(damage);
+                damageable.TickHealth(damage, NetworkManager.Singleton.LocalClientId);
             }
         }
 

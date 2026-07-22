@@ -44,14 +44,21 @@ namespace HSM
             if (from == to || from == null || to == null) return;
 
             State lca = TransitionSequencer.LCA(from, to);
-
-            // Resolve the full enter target before touching any state
             State leaf = to.ResolveLeaf();
 
-            // Exit from → lca (exclusive)
-            for (State s = from; s != lca; s = s.Parent) s.Exit();
+            // 'from' may be an ancestor that requested the transition (e.g. Grounded → Airborne
+            // while the active leaf is Attack). Descend to the deepest active state first so
+            // every nested OnExit runs.
+            State exitLeaf = from;
+            while (exitLeaf.ActiveChild != null) exitLeaf = exitLeaf.ActiveChild;
 
-            // Enter lca → leaf (exclusive of lca)
+            // Exit leaf → lca (exclusive), leaf-first ordering, each state exactly once.
+            for (State s = exitLeaf; s != lca; s = s.Parent)
+            {
+                s.Exit();
+                if (s.Parent != null) s.Parent.ActiveChild = null;
+            }
+
             EnterChain(lca, leaf, parent: lca);
         }
 

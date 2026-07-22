@@ -34,9 +34,10 @@ public class GroundedStunned: State
 
     protected override void OnUpdate(float deltaTime)
     {
-        ctx.stunRecoveryTimer -= deltaTime;
+        if (ctx.stunRecoveryTimer > 0) ctx.stunRecoveryTimer -= deltaTime;
+        else if (ctx.additionalStunTime > 0) ctx.additionalStunTime -= deltaTime;
 
-        if (ctx.stunRecoveryTimer <= 0)
+        if (ctx.stunRecoveryTimer <= 0 && ctx.additionalStunTime <= 0)
         {
             exitStunned = true;
         }
@@ -46,19 +47,13 @@ public class GroundedStunned: State
 
     protected override void OnExit()
     {
-        if (exitStunned)
+        if (exitStunned || ctx.shouldTakeKnockback)
         {
             ctx.shouldStunSelf = false;
             ctx.isStunned = false;
             exitStunned = false;
             ctx.anim.SetBool("Stunned", false);
-        }
-        else if (ctx.shouldTakeKnockback)
-        {
-            ctx.shouldStunSelf = false;
-            ctx.isStunned = false;
-            exitStunned = false;
-            ctx.anim.SetBool("Stunned", false);
+            ctx.playerHealth.isStunned.Value = false;
         }
     }
 

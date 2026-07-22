@@ -19,8 +19,17 @@ MonoBehaviour:
   _effectTypeName: ManMaskStatusEffect
   _parameters:
   - ParamName: time
-    Value: 5
+    FloatValue: 30
+    BoolValue: 0
+    StringValue: 
+    ObjectListValue: []
   - ParamName: damage
-    Value: 70
+    FloatValue: 75
+    BoolValue: 0
+    StringValue: 
+    ObjectListValue: []
   - ParamName: radius
-    Value: 4
+    FloatValue: 3.5
+    BoolValue: 0
+    StringValue: 
+    ObjectListValue: []

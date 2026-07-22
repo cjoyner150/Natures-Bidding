@@ -19,11 +19,17 @@ MonoBehaviour:
   _effectTypeName: TheStarTarotStatusEffect
   _parameters:
   - ParamName: starRadius
-    Value: 3.5
+    FloatValue: 3.5
+    BoolValue: 0
     StringValue: 
+    ObjectListValue: []
   - ParamName: starDamage
-    Value: 3
+    FloatValue: 20
+    BoolValue: 0
     StringValue: 
+    ObjectListValue: []
   - ParamName: starSpeedThreshold
-    Value: 7
+    FloatValue: 7
+    BoolValue: 0
     StringValue: 
+    ObjectListValue: []

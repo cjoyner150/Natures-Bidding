@@ -132,11 +132,11 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
         }
     }
 
-    private TaskCompletionSource<List<PersistentPlayerState>> _playersRequestTcs;
+    private TaskCompletionSource<List<PlayerData>> _playersRequestTcs;
 
-    public async Task<List<PersistentPlayerState>> RequestPlayers()
+    public async Task<List<PlayerData>> RequestPlayers()
     {
-        _playersRequestTcs = new TaskCompletionSource<List<PersistentPlayerState>>();
+        _playersRequestTcs = new TaskCompletionSource<List<PlayerData>>();
         RequestPlayersRpc();
         return await _playersRequestTcs.Task;
     }
@@ -176,7 +176,7 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
         OnNewPlayerConnected(clientId, authId, playerName);
     }
 
-    protected virtual void OnPlayerReconnected(ulong clientId, PersistentPlayerState data) { }
+    protected virtual void OnPlayerReconnected(ulong clientId, PlayerData data) { }
 
     protected virtual void OnNewPlayerConnected(ulong clientId, string authId, string playerName) { }
 }

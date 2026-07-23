@@ -4,10 +4,10 @@ using Unity.Netcode;
 using UnityEngine;
 
 /// <summary>
-/// PersistentPlayerData — One NetworkObject per connected player.
+/// PlayerShoppingNetworkBehavior — One NetworkObject per connected player.
 /// This is the live networked player state used everywhere PlayerData used to be.
 /// </summary>
-public class PersistentPlayerData : NetworkBehaviour
+public class PlayerShoppingNetworkBehavior : NetworkBehaviour
 {
     #region Starting Values
 
@@ -18,14 +18,14 @@ public class PersistentPlayerData : NetworkBehaviour
 
     #region Static Registry
 
-    private static readonly Dictionary<ulong, PersistentPlayerData> _registry = new Dictionary<ulong, PersistentPlayerData>();
+    private static readonly Dictionary<ulong, PlayerShoppingNetworkBehavior> _registry = new Dictionary<ulong, PlayerShoppingNetworkBehavior>();
 
-    public static PersistentPlayerData GetPlayer(ulong clientId)
+    public static PlayerShoppingNetworkBehavior GetPlayer(ulong clientId)
     {
         if (_registry.TryGetValue(clientId, out var player) && player != null)
             return player;
 
-        foreach (var data in UnityEngine.Object.FindObjectsByType<PersistentPlayerData>(FindObjectsSortMode.None))
+        foreach (var data in UnityEngine.Object.FindObjectsByType<PlayerShoppingNetworkBehavior>(FindObjectsSortMode.None))
         {
             if (data.OwnerClientId == clientId)
             {
@@ -37,10 +37,10 @@ public class PersistentPlayerData : NetworkBehaviour
         return null;
     }
 
-    public static IEnumerable<PersistentPlayerData> GetAllPlayers()
+    public static IEnumerable<PlayerShoppingNetworkBehavior> GetAllPlayers()
     {
-        var found = new Dictionary<ulong, PersistentPlayerData>(_registry);
-        foreach (var data in UnityEngine.Object.FindObjectsByType<PersistentPlayerData>(FindObjectsSortMode.None))
+        var found = new Dictionary<ulong, PlayerShoppingNetworkBehavior>(_registry);
+        foreach (var data in UnityEngine.Object.FindObjectsByType<PlayerShoppingNetworkBehavior>(FindObjectsSortMode.None))
             if (!found.ContainsKey(data.OwnerClientId))
                 found[data.OwnerClientId] = data;
         return found.Values;
@@ -89,10 +89,10 @@ public class PersistentPlayerData : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         _registry[OwnerClientId] = this;
-        Debug.Log($"[PersistentPlayerData] Registered client {OwnerClientId} — total in registry: {_registry.Count}");
+        Debug.Log($"[PlayerShoppingNetworkBehavior] Registered client {OwnerClientId} — total in registry: {_registry.Count}");
 
         if (IsServer)
-            LoadRuntimeState();
+            LoadRuntimeData();
     }
 
     public override void OnNetworkDespawn()
@@ -169,7 +169,7 @@ public class PersistentPlayerData : NetworkBehaviour
 
     #region Persistence
 
-    private void LoadRuntimeState()
+    private void LoadRuntimeData()
     {
         var registryData = PersistentPlayerRegistry.Instance?.GetByClientId(OwnerClientId);
         if (registryData == null)
@@ -196,7 +196,7 @@ public class PersistentPlayerData : NetworkBehaviour
         UpgradeCounts.Clear();
     }
 
-    private void ApplyRegistryState(PersistentPlayerState registryState)
+    private void ApplyRegistryState(PlayerData registryState)
     {
         Coins.Value = Mathf.Max(0, registryState.gold);
         PlayerName.Value = new NetworkString(GetResolvedName(registryState.playerName, registryState.playerName));

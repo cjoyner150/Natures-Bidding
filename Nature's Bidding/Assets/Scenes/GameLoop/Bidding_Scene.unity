@@ -2040,6 +2040,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1929779636}
     m_Modifications:
+    - target: {fileID: -7511558181221131132, guid: 41481b32e070d19429f1ff0a0add4f89, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 22e47083ea818c349a1b1453467f5733, type: 2}
     - target: {fileID: -8679921383154817045, guid: 81ed970f2f948b446bd4b2c2d0e782e9, type: 3}
       propertyPath: m_LocalScale.x
       value: 50
@@ -2096,10 +2100,6 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: 41481b32e070d19429f1ff0a0add4f89, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 22e47083ea818c349a1b1453467f5733, type: 2}
     - target: {fileID: 919132149155446097, guid: 81ed970f2f948b446bd4b2c2d0e782e9, type: 3}
       propertyPath: m_Name
       value: stump
@@ -5085,7 +5085,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1434504654}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7430bcde37f691e4389d123ea81bc72e, type: 3}
   m_Name: 
@@ -5110,6 +5110,7 @@ MonoBehaviour:
   backToBiddingButton: {fileID: 0}
   phaseLabel: {fileID: 0}
   shopCanvasRoot: {fileID: 264980705}
+  playerCrosshairPrefab: {fileID: 6947474001905322135, guid: db42880c095dc494b982e3122ad8292a, type: 3}
 --- !u!4 &1434504657
 Transform:
   m_ObjectHideFlags: 0
@@ -6955,6 +6956,8 @@ MonoBehaviour:
   otherPlayersLayer:
     serializedVersion: 2
     m_Bits: 0
+  serializedBiddingCanvas: {fileID: 2009265870}
+  serializedShopCanvas: {fileID: 264980705}
   bidHUDPanel: {fileID: 2009265870}
   bidDisplayCard: {fileID: 224930757}
   bidAmountDisplay: {fileID: 1501853255}

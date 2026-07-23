@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/GameLoop/LobbyScene.unity
     guid: 5e981f954483cf14ab34838796931f47
   - enabled: 1
-    path: Assets/Imported_NaturesBidding_UI_Assests/Scenes/Bidding_Scene.unity
+    path: Assets/Scenes/GameLoop/Bidding_Scene.unity
     guid: 9532fe7bc952d4e4aae1ec1fa3fbb207
   - enabled: 1
     path: Assets/Scenes/GameLoop/CliffGameplay.unity

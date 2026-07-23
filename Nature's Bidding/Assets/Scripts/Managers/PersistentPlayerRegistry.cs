@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityUtils;
@@ -7,7 +8,9 @@ public enum ItemType { Mask, TarotCard, Artifact }
 
 public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 {
-    private Dictionary<string, PersistentPlayerState> _playerData = new();
+    [SerializeField] PlayerStartConfigSO playerStartConfig;
+
+    private Dictionary<string, PlayerData> _playerData = new();
     private bool[] _indexPool = new bool[4];
     private Dictionary<ulong, string> _clientToAuth = new();
 
@@ -21,7 +24,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 
     #region Registration
 
-    public PersistentPlayerState RegisterPlayer(ulong clientId, string authId, string playerName)
+    public PlayerData RegisterPlayer(ulong clientId, string authId, string playerName)
     {
         if (!IsServer) return null;
 
@@ -43,13 +46,13 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
             return null;
         }
 
-        var data = new PersistentPlayerState
+        var data = new PlayerData
         {
             clientId = clientId,
             authenticationId = authId,
             playerName = playerName,
             playerIndex = index,
-            gold = Random.Range(80, 120),
+            gold = playerStartConfig.gold,
             combatWins = 0,
             speedMultiplier = 1f,
             jumpMultiplier = 1f,
@@ -58,24 +61,33 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
             maxHealthBonus = 0f,
             items = new List<string>(),
             upgradeCounts = new Dictionary<string, int>(),
-            masks = { },
-            tarotCards = { "the_weapon_tarot" },
-            artifacts = { }
+            masks = playerStartConfig.tarots.Select(m => m.Id).ToList(),
+            tarotCards = playerStartConfig.tarots.Select(t => t.Id).ToList(),
+            artifacts = playerStartConfig.tarots.Select(a => a.Id).ToList()
         };
 
         _playerData[authId] = data;
         Debug.Log($"New player {playerName} registered with index {index}");
-
-        PlayerRegistryNetworkSync.Instance?.BroadcastPlayerData(clientId, authId, playerName, index, data.gold, 0);
-
-        foreach (var mask in data.masks)
-            PlayerRegistryNetworkSync.Instance?.BroadcastItem(clientId, mask, ItemType.Mask);
-        foreach (var artifact in data.artifacts)
-            PlayerRegistryNetworkSync.Instance?.BroadcastItem(clientId, artifact, ItemType.Artifact);
-        foreach (var tarot in data.tarotCards)
-            PlayerRegistryNetworkSync.Instance?.BroadcastItem(clientId, tarot, ItemType.TarotCard);
+        BroadcastAll(data);
 
         return data;
+    }
+
+    private void BroadcastAll(PlayerData data)
+    {
+        Debug.Log($"[PersistentPlayerRegistry] Broadcasting player data for client {data.clientId}, {data.playerName} at index {data.playerIndex}: \n" +
+            "Masks: " + string.Join(", ", data.masks) + "\n" +
+            "Tarots: " + string.Join(", ", data.tarotCards) + "\n" +
+            "Artifacts: " + string.Join(", ", data.artifacts));
+
+        PlayerRegistryNetworkSync.Instance?.BroadcastPlayerData(data.clientId, data.authenticationId, data.playerName, data.playerIndex, data.gold, 0);
+
+        foreach (var mask in data.masks)
+            PlayerRegistryNetworkSync.Instance?.BroadcastItem(data.clientId, mask, ItemType.Mask);
+        foreach (var artifact in data.artifacts)
+            PlayerRegistryNetworkSync.Instance?.BroadcastItem(data.clientId, artifact, ItemType.Artifact);
+        foreach (var tarot in data.tarotCards)
+            PlayerRegistryNetworkSync.Instance?.BroadcastItem(data.clientId, tarot, ItemType.TarotCard);
     }
 
     public void UnregisterLobbyPlayer(ulong clientId)
@@ -101,7 +113,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         Debug.Log($"Player {authId} disconnected during gameplay — data retained.");
     }
 
-    public bool TryReconnectPlayer(ulong newClientId, string authId, out PersistentPlayerState data)
+    public bool TryReconnectPlayer(ulong newClientId, string authId, out PlayerData data)
     {
         if (!IsServer) { data = null; return false; }
 
@@ -132,7 +144,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 
     #region Queries
 
-    public PersistentPlayerState GetByClientId(ulong clientId)
+    public PlayerData GetByClientId(ulong clientId)
     {
         if (_clientToAuth.TryGetValue(clientId, out var authId))
             if (_playerData.TryGetValue(authId, out var data))
@@ -140,7 +152,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         return null;
     }
 
-    public PersistentPlayerState GetByAuthId(string authId)
+    public PlayerData GetByAuthId(string authId)
     {
         _playerData.TryGetValue(authId, out var data);
         return data;
@@ -148,7 +160,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 
     public bool HasPlayer(ulong clientId) => _clientToAuth.ContainsKey(clientId);
 
-    public List<PersistentPlayerState> GetAllPlayers() => new(_playerData.Values);
+    public List<PlayerData> GetAllPlayers() => new(_playerData.Values);
 
     #endregion
 
@@ -213,6 +225,8 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 
         data.items = items != null ? new List<string>(items) : new List<string>();
         data.upgradeCounts = upgradeCounts != null ? new Dictionary<string, int>(upgradeCounts) : new Dictionary<string, int>();
+
+        BroadcastAll(data);
     }
 
     #endregion
@@ -226,7 +240,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 
         if (!_playerData.ContainsKey(authId))
         {
-            _playerData[authId] = new PersistentPlayerState
+            _playerData[authId] = new PlayerData
             {
                 clientId = clientId,
                 authenticationId = authId,
@@ -277,7 +291,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         _indexPool = new bool[4];
     }
 
-    private void ApplyItemLocal(PersistentPlayerState data, string itemId, ItemType type)
+    private void ApplyItemLocal(PlayerData data, string itemId, ItemType type)
     {
         switch (type)
         {
@@ -290,7 +304,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         }
     }
 
-    public IEnumerable<PersistentPlayerState> GetSnapshot() => _playerData.Values;
+    public IEnumerable<PlayerData> GetSnapshot() => _playerData.Values;
 
     #endregion
 

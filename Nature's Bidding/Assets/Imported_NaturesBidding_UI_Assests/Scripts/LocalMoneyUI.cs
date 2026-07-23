@@ -23,7 +23,7 @@ public class LocalMoneyUI : MonoBehaviour
     #region Private State
 
     private float               _refreshTimer;
-    private PersistentPlayerData _localPlayerData;
+    private PlayerShoppingNetworkBehavior _localPlayerData;
 
     #endregion
 
@@ -38,7 +38,7 @@ public class LocalMoneyUI : MonoBehaviour
         if (_localPlayerData == null)
         {
             _localPlayerData = NetworkManager.Singleton != null
-                ? PersistentPlayerData.GetPlayer(NetworkManager.Singleton.LocalClientId)
+                ? PlayerShoppingNetworkBehavior.GetPlayer(NetworkManager.Singleton.LocalClientId)
                 : null;
 
             if (_localPlayerData == null) { SetDisplays("—", "—", "—"); return; }

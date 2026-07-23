@@ -237,7 +237,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         gameOverUI?.SetActive(true);
     }
 
-    protected override void OnPlayerReconnected(ulong clientId, PersistentPlayerState data)
+    protected override void OnPlayerReconnected(ulong clientId, PlayerData data)
     {
         Debug.Log($"Player {data.playerName} rejoined mid-combat. Will respawn next scene.");
         PlayerRejoiningClientRpc(clientId);

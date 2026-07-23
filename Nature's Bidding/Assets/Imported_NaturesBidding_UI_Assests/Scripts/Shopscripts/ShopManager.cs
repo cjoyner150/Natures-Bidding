@@ -48,6 +48,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
 
     [Header("Shop Visuals")]
     public GameObject shopCanvasRoot;
+    public GameObject playerCrosshairPrefab;
 
     #endregion
 
@@ -82,9 +83,13 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
 
     public void OnShopPhaseStart()
     {
+        Debug.Log("[ShopManager] Shop phase is starting...");
+
         if (phaseLabel) phaseLabel.text = "Shop Phase";
         PotManager.Instance?.ResetForNewPhase();
         SetShopBackgroundVisible(true);
+
+        SpawnAllPlayerCrosshairs();
 
         if (IsServer)
             ServerRollAllOfferings();
@@ -96,6 +101,18 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
         if (!IsServer) return;
 
         PersistentGameStateManager.Instance?.BeginShopPhaseServer();
+    }
+
+    public void SpawnAllPlayerCrosshairs()
+    {
+        if (!IsServer) return;
+
+        foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            GameObject crosshairGO = Instantiate(playerCrosshairPrefab);
+            NetworkObject netObj = crosshairGO.GetComponent<NetworkObject>();
+            netObj.SpawnWithOwnership(clientId);
+        }
     }
 
     public void PopulateShopsServerSide() { }
@@ -308,7 +325,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
         if (!string.IsNullOrWhiteSpace(upgrade.effectorId))
             registry.AddItem(buyer, upgrade.effectorId, upgrade.effectorBucket);
 
-        var player = PersistentPlayerData.GetPlayer(buyer);
+        var player = PlayerShoppingNetworkBehavior.GetPlayer(buyer);
         if (player != null)
         {
             player.AddUpgradeServerSide(upgradeId, upgrade.effectValue, upgrade.upgradeType);

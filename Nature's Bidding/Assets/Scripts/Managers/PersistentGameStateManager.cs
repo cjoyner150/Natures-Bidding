@@ -210,6 +210,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         ShopManager newShopManager,
         ReadyManager newReadyManager)
     {
+        Debug.Log("[PersistentGameManager] Configuring game flow references...");
         biddingCanvas = newBiddingCanvas;
         shopCanvas = newShopCanvas;
         biddingManager = newBiddingManager;
@@ -234,6 +235,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     public void RequestStartShopPhase()
     {
+
         if (NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)
         {
             ShopManager.Instance?.StartShopPhaseRpc();
@@ -280,7 +282,6 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
         readyManager?.ResetForNewPhase();
         ApplyFlowPhase(GameFlowPhase.ShopReview);
-        shopManager?.OnShopPhaseStart();
     }
 
     public void BeginCombatPhaseServer()
@@ -461,45 +462,37 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private void ApplyFlowPhase(GameFlowPhase phase)
     {
+        if (biddingCanvas == null || shopCanvas == null)
+        {
+            Debug.LogWarning($"[PersistentGameStateManager] ApplyFlowPhase({phase}) called before canvases were configured. Deferring.");
+            WaitForCanvasesThenApply(phase).Forget();
+            return;
+        }
+
+        ApplyFlowPhaseInternal(phase);
+    }
+
+    private async UniTaskVoid WaitForCanvasesThenApply(GameFlowPhase phase)
+    {
+        await UniTask.WaitUntil(() => biddingCanvas != null && shopCanvas != null);
+        ApplyFlowPhaseInternal(phase);
+    }
+
+    private void ApplyFlowPhaseInternal(GameFlowPhase phase)
+    {
         switch (phase)
         {
-            case GameFlowPhase.Lobby:
-                State = GameState.Lobby;
-                break;
-            case GameFlowPhase.Bidding:
-                State = GameState.Bidding;
-                break;
-            case GameFlowPhase.ShopReview:
-                State = GameState.Shopping;
-                break;
-            case GameFlowPhase.Combat:
-                State = GameState.Combat;
-                break;
+            case GameFlowPhase.Lobby: State = GameState.Lobby; break;
+            case GameFlowPhase.Bidding: State = GameState.Bidding; break;
+            case GameFlowPhase.ShopReview: State = GameState.Shopping; break;
+            case GameFlowPhase.Combat: State = GameState.Combat; break;
         }
 
-        // These checks have to be explicit because an empty serialized reference can be null but not equal to null,
-        // which causes a NullReferenceException when trying to call SetActive on it.
-        if (biddingCanvas != null)
-        {
-            biddingCanvas?.SetActive(phase == GameFlowPhase.Bidding);
-        }
-        else return;
-
-        if (shopCanvas != null)
-        {
-            shopCanvas?.SetActive(phase == GameFlowPhase.ShopReview);
-        }
-        else return;
+        biddingCanvas.SetActive(phase == GameFlowPhase.Bidding);
+        shopCanvas.SetActive(phase == GameFlowPhase.ShopReview);
 
         if (phase == GameFlowPhase.ShopReview)
             PointerNPC.Instance?.HideSpeechBubble();
-
-        //if (CursorManager.Instance != null)
-        //{
-        //    CursorManager.Instance.cursorEnabled =
-        //        phase == GameFlowPhase.Bidding || phase == GameFlowPhase.ShopReview;
-        //    Cursor.visible = CursorManager.Instance.cursorEnabled;
-        //}
 
         switch (phase)
         {
@@ -510,8 +503,8 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
                 shopManager?.OnShopPhaseStart();
                 break;
             case GameFlowPhase.Combat:
-                biddingCanvas?.SetActive(false);
-                shopCanvas?.SetActive(false);
+                biddingCanvas.SetActive(false);
+                shopCanvas.SetActive(false);
                 break;
         }
     }
@@ -535,7 +528,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
         PersistentPlayerRegistry.Instance.AddCombatWin(winningPlayerId);
 
-        PersistentPlayerState winningPlayer = PersistentPlayerRegistry.Instance.GetByClientId(winningPlayerId);
+        PlayerData winningPlayer = PersistentPlayerRegistry.Instance.GetByClientId(winningPlayerId);
         if (winningPlayer != null && winningPlayer.combatWins >= combatWinsRequiredToEnd)
         {
             State = GameState.Menu;

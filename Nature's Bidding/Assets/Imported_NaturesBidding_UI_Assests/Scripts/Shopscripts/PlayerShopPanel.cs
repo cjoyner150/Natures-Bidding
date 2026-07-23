@@ -70,7 +70,7 @@ public class PlayerShopPanel : MonoBehaviour
 
     private ulong                   _clientId;
     private bool                    _isLocal;
-    private PersistentPlayerState   _playerState;
+    private PlayerData   _playerState;
 
     private List<UpgradeCardUI>     _upgradeCards   = new List<UpgradeCardUI>();
     private UpgradeCardUI           _smallPotCard;

@@ -26,11 +26,11 @@ public class Stats
 {
     readonly StatsMediator mediator;
     readonly BasePlayerStats baseStats;
-    public readonly PersistentPlayerState playerData;
+    public readonly PlayerData playerData;
 
     public StatsMediator Mediator => mediator;
 
-    public Stats(StatsMediator mediator, BasePlayerStats baseStats, PersistentPlayerState playerData)
+    public Stats(StatsMediator mediator, BasePlayerStats baseStats, PlayerData playerData)
     {
         this.playerData = playerData;
         this.mediator=mediator;

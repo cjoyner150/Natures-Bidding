@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 5498611325975013428}
   - component: {fileID: 2427196603344720073}
   - component: {fileID: 3073693938742891247}
-  - component: {fileID: 8313908985085100183}
   - component: {fileID: 1921618517127899024}
   m_Layer: 7
   m_Name: Player
@@ -473,38 +472,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponManager
   weaponHolderTransform: {fileID: 4987226103521437686}
---- !u!114 &8313908985085100183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2104365586213191800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8becc9bc7c7670e43b481ccab130fd96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerData
-  ShowTopMostFoldoutHeaderGroup: 1
-  startingCoins: 1000
-  Coins:
-    m_InternalValue: 0
-  PlayerName:
-    m_InternalValue:
-      Value: Player
-  SpeedMultiplier:
-    m_InternalValue: 1
-  JumpMultiplier:
-    m_InternalValue: 1
-  DamageMultiplier:
-    m_InternalValue: 1
-  DefenseMultiplier:
-    m_InternalValue: 1
-  MaxHealthBonus:
-    m_InternalValue: 0
-  enablePersistentSave: 1
-  standInRenderer: {fileID: 0}
-  standInLabel: {fileID: 0}
 --- !u!114 &1921618517127899024
 MonoBehaviour:
   m_ObjectHideFlags: 0

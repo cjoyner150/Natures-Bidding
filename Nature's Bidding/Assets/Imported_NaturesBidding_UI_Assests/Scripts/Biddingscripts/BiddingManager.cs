@@ -4,6 +4,7 @@ using Unity.Netcode;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using TMPro;
+using Cysharp.Threading.Tasks;
 
 /// <summary>
 /// BiddingManager — Simultaneous reverse auction.
@@ -23,6 +24,8 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     #region Inspector Fields
 
     [Header("2D HUD")]
+    [SerializeField] private GameObject serializedBiddingCanvas;
+    [SerializeField] private GameObject serializedShopCanvas;
     public GameObject     bidHUDPanel;
     public RectTransform   bidDisplayCard;     // Card/sprite root to flip when the bid changes
     public TMP_Text       bidAmountDisplay;   // Number shown on the card/sprite
@@ -108,8 +111,8 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         var flowManager = PersistentGameStateManager.Instance;
         if (flowManager != null)
         {
-            var biddingCanvas = GameObject.Find("BiddingCanvas");
-            var shopCanvas = GameObject.Find("ShopCanvas");
+            var biddingCanvas = serializedBiddingCanvas;
+            var shopCanvas = serializedShopCanvas;
             var shopManager = ShopManager.Instance != null ? ShopManager.Instance : FindAnyObjectByType<ShopManager>();
             var readyManager = ReadyManager.Instance != null ? ReadyManager.Instance : FindAnyObjectByType<ReadyManager>();
 
@@ -117,7 +120,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
             flowManager.OnBiddingSceneReady();
 
             if (IsServer)
-                flowManager.InitializeBiddingFlowIfServer();
+                flowManager.InitializeBiddingFlowIfServer().Forget();
         }
 
         TimeRemaining.OnValueChanged += (_, t) =>

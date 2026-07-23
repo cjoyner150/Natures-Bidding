@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class PersistentPlayerState
+public class PlayerData
 {
     public ulong clientId;
     public string authenticationId; // authenticationId is more stable identifier for reconnection
@@ -8,12 +8,13 @@ public class PersistentPlayerState
     public int playerIndex; // 0-3, controls color and UI position
     public int gold;
     public int combatWins;
+
+    // UI faux frontend info
     public float speedMultiplier = 1f;
     public float jumpMultiplier = 1f;
     public float damageMultiplier = 1f;
     public float defenseMultiplier = 1f;
     public float maxHealthBonus = 0f;
-
     public List<string> items = new();
     public Dictionary<string, int> upgradeCounts = new();
 

@@ -269,9 +269,6 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     {
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
-        if (GameFlowManager.Instance != null)
-            GameFlowManager.Instance.CurrentPhase.Value = GameFlowManager.GamePhase.Bidding;
-
         readyManager?.ResetForNewPhase();
         ApplyFlowPhase(GameFlowPhase.Bidding);
         biddingManager?.BeginBiddingPhase();
@@ -281,9 +278,6 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     {
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
-        if (GameFlowManager.Instance != null)
-            GameFlowManager.Instance.CurrentPhase.Value = GameFlowManager.GamePhase.ShopReview;
-
         readyManager?.ResetForNewPhase();
         ApplyFlowPhase(GameFlowPhase.ShopReview);
         shopManager?.OnShopPhaseStart();
@@ -292,9 +286,6 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     public void BeginCombatPhaseServer()
     {
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
-
-        if (GameFlowManager.Instance != null)
-            GameFlowManager.Instance.CurrentPhase.Value = GameFlowManager.GamePhase.Combat;
 
         ApplyFlowPhase(GameFlowPhase.Combat);
         LoadCombatLevel();
@@ -544,7 +535,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
         PersistentPlayerRegistry.Instance.AddCombatWin(winningPlayerId);
 
-        PersistentPlayerData winningPlayer = PersistentPlayerRegistry.Instance.GetByClientId(winningPlayerId);
+        PersistentPlayerState winningPlayer = PersistentPlayerRegistry.Instance.GetByClientId(winningPlayerId);
         if (winningPlayer != null && winningPlayer.combatWins >= combatWinsRequiredToEnd)
         {
             State = GameState.Menu;

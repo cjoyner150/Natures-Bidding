@@ -22,8 +22,8 @@ public class LocalMoneyUI : MonoBehaviour
 
     #region Private State
 
-    private float            _refreshTimer;
-    private PlayerInventory  _localInventory;
+    private float               _refreshTimer;
+    private PersistentPlayerData _localPlayerData;
 
     #endregion
 
@@ -35,10 +35,13 @@ public class LocalMoneyUI : MonoBehaviour
         if (_refreshTimer > 0f) return;
         _refreshTimer = refreshInterval;
 
-        if (_localInventory == null)
+        if (_localPlayerData == null)
         {
-            _localInventory = PlayerInventory.Local;
-            if (_localInventory == null) { SetDisplays("—", "—", "—"); return; }
+            _localPlayerData = NetworkManager.Singleton != null
+                ? PersistentPlayerData.GetPlayer(NetworkManager.Singleton.LocalClientId)
+                : null;
+
+            if (_localPlayerData == null) { SetDisplays("—", "—", "—"); return; }
         }
 
         RefreshDisplay();
@@ -50,10 +53,10 @@ public class LocalMoneyUI : MonoBehaviour
 
     void RefreshDisplay()
     {
-        if (_localInventory == null) return;
-        if (coinsText)      coinsText.text      = $"Coins: {_localInventory.Coins}";
-        if (itemCountText)  itemCountText.text   = $"Items: {_localInventory.Items.Count}";
-        if (playerNameText) playerNameText.text  = _localInventory.PlayerName;
+        if (_localPlayerData == null) return;
+        if (coinsText)      coinsText.text      = $"Coins: {_localPlayerData.Coins.Value}";
+        if (itemCountText)  itemCountText.text   = $"Items: {_localPlayerData.Items.Count}";
+        if (playerNameText) playerNameText.text  = _localPlayerData.PlayerName.Value.Value;
     }
 
     void SetDisplays(string coins, string items, string name)

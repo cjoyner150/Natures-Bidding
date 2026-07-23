@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityUtils;
@@ -8,9 +7,7 @@ public enum ItemType { Mask, TarotCard, Artifact }
 
 public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 {
-    [SerializeField] PlayerStartConfigSO playerStartConfig;
-
-    private Dictionary<string, PersistentPlayerData> _playerData = new();
+    private Dictionary<string, PersistentPlayerState> _playerData = new();
     private bool[] _indexPool = new bool[4];
     private Dictionary<ulong, string> _clientToAuth = new();
 
@@ -24,7 +21,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 
     #region Registration
 
-    public PersistentPlayerData RegisterPlayer(ulong clientId, string authId, string playerName)
+    public PersistentPlayerState RegisterPlayer(ulong clientId, string authId, string playerName)
     {
         if (!IsServer) return null;
 
@@ -46,17 +43,24 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
             return null;
         }
 
-        var data = new PersistentPlayerData
+        var data = new PersistentPlayerState
         {
             clientId = clientId,
             authenticationId = authId,
             playerName = playerName,
             playerIndex = index,
-            gold = playerStartConfig.gold,
+            gold = Random.Range(80, 120),
             combatWins = 0,
-            masks = playerStartConfig.masks.Select(m => m.Id).ToList(),
-            tarotCards = playerStartConfig.tarots.Select(t => t.Id).ToList(),
-            artifacts = playerStartConfig.artifacts.Select(a => a.Id).ToList(),
+            speedMultiplier = 1f,
+            jumpMultiplier = 1f,
+            damageMultiplier = 1f,
+            defenseMultiplier = 1f,
+            maxHealthBonus = 0f,
+            items = new List<string>(),
+            upgradeCounts = new Dictionary<string, int>(),
+            masks = { },
+            tarotCards = { "the_weapon_tarot" },
+            artifacts = { }
         };
 
         _playerData[authId] = data;
@@ -97,7 +101,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         Debug.Log($"Player {authId} disconnected during gameplay — data retained.");
     }
 
-    public bool TryReconnectPlayer(ulong newClientId, string authId, out PersistentPlayerData data)
+    public bool TryReconnectPlayer(ulong newClientId, string authId, out PersistentPlayerState data)
     {
         if (!IsServer) { data = null; return false; }
 
@@ -128,7 +132,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 
     #region Queries
 
-    public PersistentPlayerData GetByClientId(ulong clientId)
+    public PersistentPlayerState GetByClientId(ulong clientId)
     {
         if (_clientToAuth.TryGetValue(clientId, out var authId))
             if (_playerData.TryGetValue(authId, out var data))
@@ -136,7 +140,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         return null;
     }
 
-    public PersistentPlayerData GetByAuthId(string authId)
+    public PersistentPlayerState GetByAuthId(string authId)
     {
         _playerData.TryGetValue(authId, out var data);
         return data;
@@ -144,7 +148,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 
     public bool HasPlayer(ulong clientId) => _clientToAuth.ContainsKey(clientId);
 
-    public List<PersistentPlayerData> GetAllPlayers() => new(_playerData.Values);
+    public List<PersistentPlayerState> GetAllPlayers() => new(_playerData.Values);
 
     #endregion
 
@@ -187,6 +191,30 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         PlayerRegistryNetworkSync.Instance?.BroadcastItem(clientId, itemId, type);
     }
 
+    public void SyncLivePlayerState(ulong clientId, string playerName, int gold, float speedMultiplier,
+        float jumpMultiplier, float damageMultiplier, float defenseMultiplier, float maxHealthBonus,
+        List<string> items, Dictionary<string, int> upgradeCounts)
+    {
+        if (!IsServer) return;
+
+        var data = GetByClientId(clientId);
+        if (data == null) return;
+
+        data.clientId = clientId;
+        if (!string.IsNullOrWhiteSpace(playerName))
+            data.playerName = playerName;
+
+        data.gold = gold;
+        data.speedMultiplier = speedMultiplier;
+        data.jumpMultiplier = jumpMultiplier;
+        data.damageMultiplier = damageMultiplier;
+        data.defenseMultiplier = defenseMultiplier;
+        data.maxHealthBonus = maxHealthBonus;
+
+        data.items = items != null ? new List<string>(items) : new List<string>();
+        data.upgradeCounts = upgradeCounts != null ? new Dictionary<string, int>(upgradeCounts) : new Dictionary<string, int>();
+    }
+
     #endregion
 
     #region Apply (called by network sync on clients)
@@ -198,7 +226,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 
         if (!_playerData.ContainsKey(authId))
         {
-            _playerData[authId] = new PersistentPlayerData
+            _playerData[authId] = new PersistentPlayerState
             {
                 clientId = clientId,
                 authenticationId = authId,
@@ -249,7 +277,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         _indexPool = new bool[4];
     }
 
-    private void ApplyItemLocal(PersistentPlayerData data, string itemId, ItemType type)
+    private void ApplyItemLocal(PersistentPlayerState data, string itemId, ItemType type)
     {
         switch (type)
         {
@@ -262,7 +290,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         }
     }
 
-    public IEnumerable<PersistentPlayerData> GetSnapshot() => _playerData.Values;
+    public IEnumerable<PersistentPlayerState> GetSnapshot() => _playerData.Values;
 
     #endregion
 

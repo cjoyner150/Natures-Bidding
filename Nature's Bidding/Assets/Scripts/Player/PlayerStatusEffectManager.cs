@@ -32,7 +32,7 @@ public class PlayerStatusEffectManager : MonoBehaviour
 
     IEnumerable<StatusEffectorSO> GetStatusEffectors(ulong clientId)
     {
-        PersistentPlayerData data = PersistentPlayerRegistry.Instance.GetByClientId(clientId);
+        PersistentPlayerState data = PersistentPlayerRegistry.Instance.GetByClientId(clientId);
 
         var effectors = data.GetArtifactEffectors()
             .Concat(data.GetMaskEffectors())

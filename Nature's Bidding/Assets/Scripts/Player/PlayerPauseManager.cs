@@ -1,4 +1,5 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityUtils;
@@ -46,9 +47,6 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
     {
         Paused = true;
 
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true;
-
         pausePanel.SetActive(true);
 
         if (lobbyWaitingPanel != null) lobbyWaitingPanel.SetActive(false);
@@ -59,9 +57,6 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
     void UnpauseGame()
     {
         Paused = false;
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
 
         pausePanel.SetActive(false);
 

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f67ded6ec6d69594f86cb4f731577c05, type: 3}
+  m_Name: Sprinter
+  m_EditorClassIdentifier: Assembly-CSharp::CompositeStatusEffectorSO
+  _id: sprinter
+  Title: Sprinter
+  Description: Move light on your feet and dash like the wind
+  Duration: -1
+  Effects:
+  - {fileID: 11400000, guid: 60d9326deee9668488dc05bf1863f079, type: 2}
+  - {fileID: 11400000, guid: 3142b047fd24b9d4d828b7b675f3c329, type: 2}

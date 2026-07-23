@@ -127,8 +127,7 @@ public class LobbyManager : MonoBehaviour
             return;
         }
 
-        NetworkManager.Singleton.SceneManager.LoadScene("Bidding_Scene",
-            UnityEngine.SceneManagement.LoadSceneMode.Single);
+        PersistentGameStateManager.Instance?.LoadBiddingLevel();
     }
 
     #endregion

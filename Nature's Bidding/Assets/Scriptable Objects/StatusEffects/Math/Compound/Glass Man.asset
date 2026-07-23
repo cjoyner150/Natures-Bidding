@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f67ded6ec6d69594f86cb4f731577c05, type: 3}
+  m_Name: Glass Man
+  m_EditorClassIdentifier: Assembly-CSharp::CompositeStatusEffectorSO
+  _id: glass_man
+  Title: Glass Man
+  Description: A man made of glass throws heavy stones
+  Duration: -1
+  Effects:
+  - {fileID: 11400000, guid: e4d3047fee1a730479c2188c411fe58b, type: 2}
+  - {fileID: 11400000, guid: f2f5f9799867d264693573683cae36dd, type: 2}

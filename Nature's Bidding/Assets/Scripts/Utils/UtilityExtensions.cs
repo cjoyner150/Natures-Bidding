@@ -21,4 +21,27 @@ public static class UtilityExtensions
 
         return group.ToArray();
     }
+
+    public static T GetInParents<T>(GameObject go) where T : class
+    {
+        return go.GetComponentInParent<T>();
+    }
+
+    public static T GetInParents<T>(Collider collider) where T : class =>
+        GetInParents<T>(collider.gameObject);
+
+    public static T GetInParents<T>(Component component) where T : class =>
+        GetInParents<T>(component.gameObject);
+
+    public static bool TryGetInParents<T>(GameObject go, out T result) where T : class
+    {
+        result = GetInParents<T>(go);
+        return result != null;
+    }
+
+    public static bool TryGetInParents<T>(Collider collider, out T result) where T : class =>
+        TryGetInParents(collider.gameObject, out result);
+
+    public static bool TryGetInParents<T>(Component component, out T result) where T : class =>
+        TryGetInParents(component.gameObject, out result);
 }

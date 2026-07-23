@@ -8,6 +8,7 @@ using UnityEngine;
 public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : NetworkBehaviour
 {
     [SerializeField] protected float acceptableAttackRange;
+    [SerializeField] LayerMask otherPlayersLayer;
 
     protected virtual void RegisterCallbacks() { }
     protected virtual void UnregisterCallbacks() { }
@@ -25,7 +26,7 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void RequestHitPlayerServerRpc(ulong attackingPlayerId, ulong hitPlayerId, float damage)
+    public void RequestHitPlayerServerRpc(ulong attackingPlayerId, ulong hitPlayerId, float damage, bool critical)
     {
         if (!IsServer) return;
 
@@ -40,13 +41,62 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
 
         if (Vector3.Distance(hitNetObj.transform.position, attackingNetObj.transform.position) <= acceptableAttackRange)
         {
-            OnPlayerHit(hitNetObj, attackingNetObj, damage);
+            OnPlayerHit(hitNetObj, attackingNetObj, damage, critical);
         }
     }
 
-    protected virtual void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage)
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void RequestPlayerBoomServerRpc(ulong explodingPlayerId, float damage, float radius)
     {
-        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position);
+        if (!IsServer) return;
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(explodingPlayerId, out var playerClient)) return;
+
+        var playerObject = playerClient.PlayerObject;
+        var playerHealth = playerObject?.GetComponent<PlayerHealth>();
+
+        if (playerHealth == null) return;
+
+        Vector3 boomOrigin = playerObject.transform.position + (Vector3.up * .5f);
+
+        NetworkVisualEffectManager.SpawnExplosionAtPosition.Invoke(boomOrigin);
+        Collider[] hits = Physics.OverlapSphere(boomOrigin, radius, otherPlayersLayer);
+
+        print($"[BaseGameServerHandler] exploding in radius: {radius}");
+
+        HashSet<IDamageable> damagedObjectsOnThisAttack = new();
+
+        foreach ( Collider hit in hits )
+        {
+            GameObject go = hit.gameObject;
+            print($"[BaseGameServerHandler] hit {go.name}");
+            UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
+
+            if (damageable != null)
+            {
+                print($"[BaseGameServerHandler] found damageable on {go.name}");
+                if (damagedObjectsOnThisAttack.Contains(damageable)) continue;
+
+                damageable.Hit(damage, explodingPlayerId, out IDamageable.HitCallbackContext ctx);
+            }
+        }
+
+        playerHealth.health.Value = 0;
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void RequestHealServerRpc(ulong targetClientId, float amount)
+    {
+        if (!IsServer) return;
+
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(targetClientId, out var targetClient)) return;
+
+        var playerHealth = targetClient.PlayerObject.GetComponent<PlayerHealth>();
+        playerHealth.health.Value = Mathf.Clamp(playerHealth.health.Value + amount, 0, playerHealth.maxHealth.Value);
+    }
+
+    protected virtual void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage, bool critical)
+    {
+        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, attackingPlayer.OwnerClientId, critical);
     }
 
     private Dictionary<ulong, TaskCompletionSource<string>> playerNameRequests = new();
@@ -129,10 +179,4 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
     protected virtual void OnPlayerReconnected(ulong clientId, PersistentPlayerData data) { }
 
     protected virtual void OnNewPlayerConnected(ulong clientId, string authId, string playerName) { }
-}
-
-public interface IGameServerHandler
-{
-    void RequestHitPlayerServerRpc(ulong attackingPlayerId, ulong hitPlayerId, float damage);
-    void OnPlayerDeath(ulong clientId);
 }

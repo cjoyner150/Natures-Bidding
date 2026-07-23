@@ -74,10 +74,12 @@ public class PotManager : NetworkBehaviour
     private int                  _clicksRemaining;
     private bool                 _waitingForClicks;
     private bool                 _cardsDealt;
+    private bool                 _sequenceRunning;
 
     private List<TarotCardReward> _dealtRewards = new List<TarotCardReward>();
     private List<TarotCardUI>     _spawnedCards = new List<TarotCardUI>();
     private List<TarotCardUI>     _selectedCards = new List<TarotCardUI>();
+    private bool                  _autoResolvingSelection;
 
     private CardTooltip           _activeTooltip;
     private Canvas                _rootCanvas;
@@ -119,6 +121,9 @@ public class PotManager : NetworkBehaviour
     /// <summary>Called by ShopManager after coins deducted. isGrand = which pot type.</summary>
     public void OpenSequence(bool isGrand)
     {
+        if (_sequenceRunning)
+            return;
+
         _currentPotType = isGrand ? grandPot : smallPot;
         if (_currentPotType == null)
         {
@@ -129,6 +134,7 @@ public class PotManager : NetworkBehaviour
         if (isGrand) _potUsedGrand = true;
         else         _potUsedSmall = true;
 
+        _sequenceRunning = true;
         StartCoroutine(RunPotSequence());
     }
 
@@ -141,6 +147,7 @@ public class PotManager : NetworkBehaviour
         _cardsDealt   = false;
         _waitingForClicks = false;
         _selectedCards.Clear();
+        _autoResolvingSelection = false;
         ClearCards();
         DestroyTooltip();
 
@@ -150,6 +157,8 @@ public class PotManager : NetworkBehaviour
             if (c.isRootCanvas) { _rootCanvas = c; break; }
 
         // Show overlay
+        if (potOverlay == null)
+            Debug.LogWarning("[PotManager] potOverlay is not assigned, the pot UI will not be visible.");
         potOverlay?.SetActive(true);
         if (overlayCanvasGroup != null)
         {
@@ -187,6 +196,9 @@ public class PotManager : NetworkBehaviour
 
         _cardsDealt = true;
         UpdateSelectionHint();
+
+        confirmButton?.gameObject.SetActive(false);
+        closeButton?.gameObject.SetActive(false);
     }
 
     #endregion
@@ -287,22 +299,27 @@ public class PotManager : NetworkBehaviour
 
     void OnCardSelected(TarotCardUI card)
     {
+        if (_autoResolvingSelection)
+            return;
+
         if (_selectedCards.Contains(card)) return;
         _selectedCards.Add(card);
 
-        // Lock unselected cards if quota reached
-        if (_selectedCards.Count >= _currentPotType.cardsToKeep)
+        if (_selectedCards.Count < _currentPotType.cardsToKeep)
         {
-            foreach (var c in _spawnedCards)
-                if (!c.IsSelected) c.SetLocked(true);
+            UpdateSelectionHint();
+            return;
         }
 
-        UpdateSelectionHint();
-        RefreshConfirmButton();
+        _autoResolvingSelection = true;
+        StartCoroutine(AutoResolveSelectedCards());
     }
 
     void OnCardDeselected(TarotCardUI card)
     {
+        if (_autoResolvingSelection)
+            return;
+
         _selectedCards.Remove(card);
 
         // Unlock all unselected cards
@@ -313,23 +330,62 @@ public class PotManager : NetworkBehaviour
         RefreshConfirmButton();
     }
 
+    IEnumerator AutoResolveSelectedCards()
+    {
+        int picksToKeep = Mathf.Max(1, _currentPotType != null ? _currentPotType.cardsToKeep : 1);
+
+        foreach (var c in _spawnedCards)
+        {
+            if (c == null) continue;
+            bool keep = _selectedCards.Contains(c);
+            c.SetLocked(!keep);
+            c.SetInteractable(false);
+        }
+
+        UpdateSelectionHint();
+
+        float wait = 0.15f;
+        foreach (var c in _selectedCards)
+        {
+            if (c == null) continue;
+            wait = Mathf.Max(wait, Mathf.Max(0.05f, c.flipDuration + 0.05f));
+        }
+        yield return new WaitForSeconds(wait);
+
+        int applied = 0;
+        foreach (var c in _selectedCards)
+        {
+            if (c == null || c.Reward == null) continue;
+            ApplyTarotRewardRpc(c.Reward.name);
+            applied++;
+            if (applied >= picksToKeep)
+                break;
+        }
+
+        OnCloseOverlay();
+    }
+
     void UpdateSelectionHint()
     {
         if (selectionHintText == null || !_cardsDealt) return;
-        int need = _currentPotType.cardsToKeep - _selectedCards.Count;
-        selectionHintText.text = need <= 0
-            ? "All chosen! Click Confirm."
-            : $"Choose {need} more card{(need == 1 ? "" : "s")}";
+        int picksToKeep = Mathf.Max(1, _currentPotType != null ? _currentPotType.cardsToKeep : 1);
+        int remaining = Mathf.Max(0, picksToKeep - _selectedCards.Count);
+
+        if (_autoResolvingSelection)
+            selectionHintText.text = "Applying selected cards...";
+        else if (remaining > 0)
+            selectionHintText.text = $"Pick {remaining} more card{(remaining == 1 ? "" : "s")}";
+        else
+            selectionHintText.text = "Applying selected cards...";
     }
 
     void RefreshConfirmButton()
     {
-        if (confirmButton == null) return;
-        bool ready = _selectedCards.Count >= _currentPotType.cardsToKeep;
-        confirmButton.gameObject.SetActive(_cardsDealt);
-        confirmButton.interactable = ready;
-        if (confirmButtonText)
-            confirmButtonText.text = ready ? "Confirm" : $"Select {_currentPotType.cardsToKeep - _selectedCards.Count} more";
+        if (confirmButton != null)
+            confirmButton.gameObject.SetActive(false);
+
+        if (closeButton != null)
+            closeButton.gameObject.SetActive(false);
     }
 
     #endregion
@@ -338,21 +394,7 @@ public class PotManager : NetworkBehaviour
 
     public void OnConfirmClicked()
     {
-        if (_selectedCards.Count < _currentPotType.cardsToKeep) return;
-
-        // Apply rewards server-side
-        foreach (var card in _selectedCards)
-            if (card.Reward != null)
-                ApplyTarotRewardRpc(card.Reward.name);
-
-        // Reward panels removed — no visual reveal needed
-
-        // Lock everything
-        foreach (var card in _spawnedCards) card.SetInteractable(false);
-
-        confirmButton?.gameObject.SetActive(false);
-        closeButton?.gameObject.SetActive(true);
-        DestroyTooltip();
+        // Deprecated path: pot rewards now resolve instantly when a card is clicked.
     }
 
     [Rpc(SendTo.Server)]
@@ -541,6 +583,14 @@ public class PotManager : NetworkBehaviour
         ClearCards();
         DestroyTooltip();
         _selectedCards.Clear();
+        _autoResolvingSelection = false;
+        _sequenceRunning = false;
+    }
+
+    public override void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
     }
 
     #endregion

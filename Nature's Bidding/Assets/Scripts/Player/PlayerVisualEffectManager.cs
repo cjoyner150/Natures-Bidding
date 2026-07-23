@@ -1,55 +1,140 @@
 using Cysharp.Threading.Tasks;
 using System;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerVisualEffectManager : NetworkBehaviour
+public class PlayerVisualEffectManager : MonoBehaviour
 {
-    PlayerContext ctx;
+    [Header("Particle Prefabs")]
     [SerializeField] GameObject hitReactParticle;
+    [SerializeField] GameObject explosionParticle;
 
-    // Locally call event from anywhere in normal code with the clientId
-    public static Action<ulong> SpawnHitReactionEffectsOnPlayer;
+    [Header("References")]
+    [SerializeField] Transform weaponHolderTransform;
 
-    public override void OnNetworkSpawn()
+    GameObject batConfusionEffectCache;
+    GameObject starEffectCache;
+
+    public void SpawnSlashEffectParticles(int milliseconds)
     {
-        ctx = GetComponent<PlayerNetworkBehavior>().ctx;
+        //GameObject go = Instantiate(explosionParticle, weaponHolderTransform, false);
+        //go.transform.localPosition = Vector3.zero;
+        //go.transform.localRotation = Quaternion.identity;
 
-        SpawnHitReactionEffectsOnPlayer += OnSpawnHitReactionEffectsOnPlayer;
+        //SafeDispose(go, milliseconds).Forget();
     }
 
-    public override void OnNetworkDespawn()
+    public void SpawnParryEffectParticles(int milliseconds)
     {
-        SpawnHitReactionEffectsOnPlayer -= OnSpawnHitReactionEffectsOnPlayer;
+        //GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+        //go.transform.localPosition = Vector3.zero;
+        //SafeDispose(go, milliseconds).Forget();
     }
 
-    public void OnSpawnHitReactionEffectsOnPlayer(ulong clientId)
+    public void SpawnParrySuccessReactionParticles()
     {
-        if (OwnerClientId == clientId)
+        //GameObject go = Instantiate(hitReactParticle, weaponHolderTransform);
+        //SafeDispose(go, 1000).Forget();
+    }
+
+    public void SpawnHitReactParticles(bool critical)
+    {
+        //if (critical)
+        //{
+        //    GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+        //    go.transform.localPosition = Vector3.zero;
+        //    SafeDispose(go, 1000).Forget();
+        //}
+        //else
+        //{
+        //    GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
+        //    go.transform.localPosition = Vector3.zero;
+        //    SafeDispose(go, 1000).Forget();
+        //}
+    }
+
+    public void SpawnDashParticles()
+    {
+        //GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
+        //go.transform.localPosition = Vector3.zero;
+        //SafeDispose(go, 1000).Forget();
+    }
+
+    public void SpawnTeleportParticles()
+    {
+        //GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+        //go.transform.localPosition = Vector3.zero;
+        //go.transform.SetParent(null, true);
+        //SafeDispose(go, 1000).Forget();
+    }
+
+    public void ToggleStarParticles(bool enabled)
+    {
+        if (enabled)
         {
-            SpawnHitReactParticles();
+            GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+            go.transform.localPosition = Vector3.zero;
+            
+            if (starEffectCache != null)
+            {
+                SafeDispose(starEffectCache, 0).Forget();
+            }
+
+            starEffectCache = go;
         }
         else
         {
-            SpawnHitReactionEffectsClientRpc(clientId);
+            SafeDispose(starEffectCache, 0).Forget();
         }
     }
 
-    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
-    public void SpawnHitReactionEffectsClientRpc(ulong clientId)
+    public void SpawnJumpParticles()
     {
-        if (OwnerClientId == clientId)
-        {
-            SpawnHitReactParticles();
-        } 
+        //GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+        //go.transform.localPosition = Vector3.zero;
+        //go.transform.SetParent(null);
+        //SafeDispose(go, 1000).Forget();
     }
 
-    private async void SpawnHitReactParticles()
+    public void SpawnExplosionParticles(Vector3 spawnPos)
     {
-        hitReactParticle.SetActive(true);
+        //GameObject go = Instantiate(explosionParticle, spawnPos, Quaternion.identity);
+        //SafeDispose(go, 2000).Forget();
+    }
 
-        await UniTask.Delay(1000);
+    public void SpawnStunParticles(int milliseconds)
+    {
+        //GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
+        //go.transform.localPosition = Vector3.zero;
+        //SafeDispose(go, milliseconds).Forget();
+    }
 
-        hitReactParticle.SetActive(false);
+    public void SpawnConfettiParticles()
+    {
+        GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+        go.transform.localPosition = Vector3.zero;
+        SafeDispose(go, 5000).Forget();
+    }
+
+    public void SpawnBatConfusionParticles()
+    {
+        GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+        go.transform.localPosition = Vector3.zero;
+
+        batConfusionEffectCache = go;
+    }
+
+    public void RemoveBatConfusionParticles()
+    {
+        SafeDispose(batConfusionEffectCache, 0).Forget();
+    }
+
+    private static async UniTask SafeDispose(GameObject obj, int milliseconds)
+    {
+        await UniTask.Delay(milliseconds);
+
+        if (obj != null && !obj.IsDestroyed()) Destroy(obj);
     }
 }
+

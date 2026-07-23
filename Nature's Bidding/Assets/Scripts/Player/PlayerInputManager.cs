@@ -11,6 +11,7 @@ public class PlayerInputManager : MonoBehaviour
 
     [Header("Player Controls")]
     private PlayerControls controls;
+    private ReversedPlayerControls reversedControls;
     private InputAction move;
     private InputAction sprint;
     private InputAction dash;
@@ -37,13 +38,13 @@ public class PlayerInputManager : MonoBehaviour
         ctx = context;
 
         controls = new PlayerControls();
-        move = controls.PlayerGameplay.Move;
-        sprint = controls.PlayerGameplay.Sprint;
-        dash = controls.PlayerGameplay.Dash;
-        jump = controls.PlayerGameplay.Jump;
-        attack = controls.PlayerGameplay.Attack;
-        parry = controls.PlayerGameplay.Parry;
-        pause = controls.PlayerGameplay.Pause;
+        move ??= controls.PlayerGameplay.Move;
+        sprint ??= controls.PlayerGameplay.Sprint;
+        dash ??= controls.PlayerGameplay.Dash;
+        jump ??= controls.PlayerGameplay.Jump;
+        attack ??= controls.PlayerGameplay.Attack;
+        parry ??= controls.PlayerGameplay.Parry;
+        pause ??= controls.PlayerGameplay.Pause;
 
         ctx.orientation = Instantiate(new GameObject(), transform).transform;
         ctx.orientation.rotation = transform.rotation;
@@ -83,6 +84,9 @@ public class PlayerInputManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        reversedControls?.Dispose();
+        controls?.Dispose();
+
         controls?.Disable();
         move?.Disable();
         sprint?.Disable();
@@ -144,12 +148,20 @@ public class PlayerInputManager : MonoBehaviour
 
     static string ActivePathString(State s)
     {
-        return string.Join(" > ", s.GetActivePath().AsEnumerable().Reverse().Select(n => n.GetType().Name));
+        return string.Join(" > ", s.AncestorPath().Reverse().Select(n => n.GetType().Name));
     }
 
     void PlayerInput()
     {
-        if (!allowInputs || !ctx.allowInputs) return;
+        if (!allowInputs || !ctx.allowInputs) 
+        {
+            ctx.moveInput = Vector3.zero;
+            ctx.jumpPressed = false;
+            ctx.dashPressed = false;
+            ctx.attackPressed = false;
+            ctx.parryPressed = false;
+            return; 
+        }
 
         Vector2 moveInput = move.ReadValue<Vector2>();
         ctx.jumpPressed = allowJump && jump.IsPressed();
@@ -165,6 +177,80 @@ public class PlayerInputManager : MonoBehaviour
 
     }
 
+    public void ReverseControls()
+    {
+        controls?.Dispose();
+
+        reversedControls ??= new();
+        reversedControls.Enable();
+
+        move = reversedControls.PlayerGameplay.Move;
+        sprint = reversedControls.PlayerGameplay.Sprint;
+        dash = reversedControls.PlayerGameplay.Dash;
+        jump = reversedControls.PlayerGameplay.Jump;
+        attack = reversedControls.PlayerGameplay.Attack;
+        parry = reversedControls.PlayerGameplay.Parry;
+        pause = reversedControls.PlayerGameplay.Pause;
+
+        move.Enable();
+        sprint.Enable();
+        dash.Enable();
+        jump.Enable();
+        attack.Enable();
+        parry.Enable();
+        pause.Enable();
+    }
+
+    public void ResetControls()
+    {
+        reversedControls?.Dispose();
+
+        controls ??= new();
+        controls.Enable();
+
+        move = controls.PlayerGameplay.Move;
+        sprint = controls.PlayerGameplay.Sprint;
+        dash = controls.PlayerGameplay.Dash;
+        jump = controls.PlayerGameplay.Jump;
+        attack = controls.PlayerGameplay.Attack;
+        parry = controls.PlayerGameplay.Parry;
+        pause = controls.PlayerGameplay.Pause;
+
+        move.Enable();
+        sprint.Enable();
+        dash.Enable();
+        jump.Enable();
+        attack.Enable();
+        parry.Enable();
+        pause.Enable();
+    }
+
+    public void DisableInput()
+    {
+        reversedControls?.Disable();
+        controls?.Disable();
+        move?.Disable();
+        sprint?.Disable();
+        dash?.Disable();
+        jump?.Disable();
+        attack?.Disable();
+        parry?.Disable();
+        pause?.Disable();
+    }
+
+    public void EnableInput()
+    {
+        reversedControls?.Enable();
+        controls?.Enable();
+        move?.Enable();
+        sprint?.Enable();
+        dash?.Enable();
+        jump?.Enable();
+        attack?.Enable();
+        parry?.Enable();
+        pause?.Enable();
+    }
+
     void OnPausePressed(InputAction.CallbackContext callback)
     {
         if (allowPause)
@@ -176,11 +262,13 @@ public class PlayerInputManager : MonoBehaviour
     void OnPaused()
     {
         allowInputs = !PlayerPauseManager.Instance.Paused;
+        DisableInput();
     }
 
     void OnResumed()
     {
         allowInputs = !PlayerPauseManager.Instance.Paused;
+        EnableInput();
     }
 
 }

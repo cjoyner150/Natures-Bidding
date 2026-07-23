@@ -25,17 +25,10 @@ public class PlayerShopPanel : MonoBehaviour
     public TMP_Text playerNameText;
     public TMP_Text coinsText;
 
-    [Header("3 Combined Bars")]
+    [Header("Stat Display")]
     public TMP_Text mobilityText;
     public TMP_Text powerText;
     public TMP_Text defenseText;
-
-    public Slider mobilitySlider;
-    public Slider powerSlider;
-    public Slider defenseSlider;
-
-    [Header("Stat Slider Mapping")]
-    public float maxPercentRange = 60f;
 
     [Header("Slider Colors")]
     public Color positiveColor = Color.green;
@@ -51,6 +44,9 @@ public class PlayerShopPanel : MonoBehaviour
     [Header("Action Row")]
     public Button   rerollButton;
     public TMP_Text rerollButtonText;
+    public float    rerollPullDistance = 36f;
+    public float    rerollPullDownTime  = 0.12f;
+    public float    rerollPullUpTime    = 0.16f;
 
     [Header("Tooltip (hover)")]
     public GameObject tooltipPrefab;        // CardTooltip prefab — spawned at cursor on hover
@@ -88,8 +84,12 @@ public class PlayerShopPanel : MonoBehaviour
     private bool                    _grandPotUsed;
     private CardTooltip             _activeTooltip;
     private Canvas                  _canvas;
+    private RectTransform           _rerollButtonRect;
+    private Vector2                 _rerollButtonBasePosition;
+    private Coroutine               _rerollAnimationRoutine;
 
     private Dictionary<string, int> _purchaseCounts = new Dictionary<string, int>();
+    private bool                    _isPlaceholder;
 
     #endregion
 
@@ -110,6 +110,7 @@ public class PlayerShopPanel : MonoBehaviour
 
         _clientId  = clientId;
         _isLocal   = isLocal;
+        _isPlaceholder = false;
         _offerings = offerings;
         _smallPotUsed = false;
         _grandPotUsed = false;
@@ -122,8 +123,13 @@ public class PlayerShopPanel : MonoBehaviour
 
         if (rerollButton != null)
         {
+            _rerollButtonRect = rerollButton.GetComponent<RectTransform>();
+            if (_rerollButtonRect != null)
+                _rerollButtonBasePosition = _rerollButtonRect.anchoredPosition;
+
             rerollButton.onClick.RemoveAllListeners();
-            rerollButton.onClick.AddListener(() => { if (_isLocal) ShopManager.Instance?.LocalPlayerReroll(); });
+            rerollButton.onClick.AddListener(() => { if (_isLocal) StartRerollChainPull(); });
+            rerollButton.gameObject.SetActive(isLocal);
             rerollButton.interactable = isLocal;
         }
 
@@ -139,14 +145,6 @@ public class PlayerShopPanel : MonoBehaviour
 
         BuildCards();
 
-        SetSliderReadOnly(mobilitySlider);
-        SetSliderReadOnly(powerSlider);
-        SetSliderReadOnly(defenseSlider);
-
-        SetupBar(mobilitySlider);
-        SetupBar(powerSlider);
-        SetupBar(defenseSlider);
-
         // Try PlayerData immediately — if not found yet, retry via coroutine
         // gameObject is now active so StartCoroutine will work
         _playerData = PlayerData.GetPlayer(clientId);
@@ -156,27 +154,52 @@ public class PlayerShopPanel : MonoBehaviour
             StartCoroutine(RetryRefreshStats());
         
     }
-    private void SetupBar(Slider slider)
-    {
-        if (slider == null) return;
 
-        slider.minValue = 0f;
-        slider.maxValue = 100f;
-        slider.value = 0f;
-    }
-    private void UpdateBar(Slider slider, float value)
+    public void InitialisePlaceholder(string slotLabel, List<ShopUpgrade> offerings)
     {
-        if (slider == null) return;
+        gameObject.SetActive(true);
 
-        float percent = Mathf.Clamp(value * 100f, 0f, 100f);
-        slider.SetValueWithoutNotify(percent);
-    }
-    private void SetSliderReadOnly(Slider slider)
-    {
-        if (slider != null)
-            slider.interactable = false;
-    }
+        _canvas = GetComponentInParent<Canvas>();
+        while (_canvas != null && !_canvas.isRootCanvas)
+            _canvas = _canvas.transform.parent?.GetComponentInParent<Canvas>();
+        if (_canvas == null)
+            _canvas = FindFirstObjectByType<Canvas>();
 
+        _clientId = 0;
+        _isLocal = false;
+        _isPlaceholder = true;
+        _offerings = offerings ?? new List<ShopUpgrade>();
+        _smallPotUsed = false;
+        _grandPotUsed = false;
+
+        if (panelBackground) panelBackground.color = remoteColor;
+        if (localPlayerBorder) localPlayerBorder.gameObject.SetActive(false);
+
+        if (playerNameText) playerNameText.text = slotLabel;
+        if (coinsText) coinsText.text = "--";
+        if (mobilityText) mobilityText.text = "--";
+        if (powerText) powerText.text = "--";
+        if (defenseText) defenseText.text = "--";
+
+        if (detailPanel) detailPanel.SetActive(false);
+        if (buyButton) buyButton.gameObject.SetActive(false);
+
+        if (rerollButton != null)
+        {
+            rerollButton.onClick.RemoveAllListeners();
+            rerollButton.gameObject.SetActive(false);
+            rerollButton.interactable = false;
+        }
+
+        if (readyButton != null)
+        {
+            readyButton.onClick.RemoveAllListeners();
+            readyButton.gameObject.SetActive(false);
+            readyButton.interactable = false;
+        }
+
+        BuildCards();
+    }
     void SubscribeAndRefresh()
     {
         if (_playerData == null) return;
@@ -214,6 +237,9 @@ public class PlayerShopPanel : MonoBehaviour
 
     IEnumerator RetryRefreshStats()
     {
+        if (_isPlaceholder)
+            yield break;
+
         for (int i = 0; i < 20; i++)
         {
             yield return new WaitForSeconds(0.25f);
@@ -229,6 +255,67 @@ public class PlayerShopPanel : MonoBehaviour
 
     #endregion
 
+    #region Reroll Animation
+
+    void StartRerollChainPull()
+    {
+        if (!_isLocal)
+            return;
+
+        if (_rerollAnimationRoutine != null)
+            StopCoroutine(_rerollAnimationRoutine);
+
+        _rerollAnimationRoutine = StartCoroutine(RerollChainPullRoutine());
+    }
+
+    IEnumerator RerollChainPullRoutine()
+    {
+        if (rerollButton != null)
+            rerollButton.interactable = false;
+
+        if (_rerollButtonRect == null)
+        {
+            ShopManager.Instance?.LocalPlayerReroll();
+            _rerollAnimationRoutine = null;
+            yield break;
+        }
+
+        Vector2 startPosition = _rerollButtonBasePosition;
+        Vector2 downPosition   = startPosition + Vector2.down * Mathf.Abs(rerollPullDistance);
+
+        yield return MoveRerollButton(startPosition, downPosition, rerollPullDownTime);
+        yield return MoveRerollButton(downPosition, startPosition, rerollPullUpTime);
+
+        ShopManager.Instance?.LocalPlayerReroll();
+
+        if (rerollButton != null)
+            rerollButton.interactable = _isLocal;
+
+        _rerollAnimationRoutine = null;
+    }
+
+    IEnumerator MoveRerollButton(Vector2 from, Vector2 to, float duration)
+    {
+        if (_rerollButtonRect == null)
+            yield break;
+
+        float elapsed = 0f;
+        duration = Mathf.Max(0.01f, duration);
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            float easedT = 1f - Mathf.Pow(1f - t, 3f);
+            _rerollButtonRect.anchoredPosition = Vector2.LerpUnclamped(from, to, easedT);
+            yield return null;
+        }
+
+        _rerollButtonRect.anchoredPosition = to;
+    }
+
+    #endregion
+
     #region Build Cards
 
     void BuildCards()
@@ -238,6 +325,9 @@ public class PlayerShopPanel : MonoBehaviour
         _upgradeCards.Clear();
         if (_smallPotCard != null) { Destroy(_smallPotCard.gameObject); _smallPotCard = null; }
         if (_grandPotCard != null) { Destroy(_grandPotCard.gameObject); _grandPotCard = null; }
+
+        if (_isPlaceholder)
+            return;
 
         if (upgradeCardPrefab == null)
         {
@@ -415,36 +505,24 @@ public class PlayerShopPanel : MonoBehaviour
         if (owned >= upgrade.maxPurchases)
             return;
 
-        int coins = GetCoins();
-        if (coins < upgrade.cost)
-            return;
-
-        // Immediately purchase
+        // Immediately purchase on click instead of waiting for the Buy button.
         ShopManager.Instance?.LocalPlayerBuyUpgrade(upgrade, this);
     }
 
     void OnSmallPotClicked()
     {
         if (!_isLocal || _smallPotUsed) return;
-        _smallPotSelected = !_smallPotSelected;
-        _grandPotSelected = false;
-        _smallPotCard?.SetSelected(_smallPotSelected);
-        _grandPotCard?.SetSelected(false);
-        if (_smallPotSelected) _selectedUpgrades.Clear();
-        foreach (var c in _upgradeCards) c?.SetSelected(false);
-        RefreshBuyButton();
+
+        Debug.Log("[PlayerShopPanel] Small Pot clicked, requesting purchase/open.");
+        ShopManager.Instance?.LocalPlayerBuyPot(this, false);
     }
 
     void OnGrandPotClicked()
     {
         if (!_isLocal || _grandPotUsed) return;
-        _grandPotSelected = !_grandPotSelected;
-        _smallPotSelected = false;
-        _grandPotCard?.SetSelected(_grandPotSelected);
-        _smallPotCard?.SetSelected(false);
-        if (_grandPotSelected) _selectedUpgrades.Clear();
-        foreach (var c in _upgradeCards) c?.SetSelected(false);
-        RefreshBuyButton();
+
+        Debug.Log("[PlayerShopPanel] Grand Pot clicked, requesting purchase/open.");
+        ShopManager.Instance?.LocalPlayerBuyPot(this, true);
     }
 
     void ClearAllSelections()
@@ -463,6 +541,7 @@ public class PlayerShopPanel : MonoBehaviour
     /// <summary>Updates the buy button based on what is currently selected.</summary>
     void RefreshBuyButton()
     {
+        if (_isPlaceholder) return;
         if (buyButton == null) return;
 
         if (_smallPotSelected)
@@ -552,18 +631,20 @@ public class PlayerShopPanel : MonoBehaviour
 
     #region Server-side State Updates
 
-    public void OnUpgradePurchased(string upgradeName)
+    public void OnUpgradePurchased(string upgradeId)
     {
-        if (!_purchaseCounts.ContainsKey(upgradeName))
-            _purchaseCounts[upgradeName] = 0;
-        _purchaseCounts[upgradeName]++;
+        DestroyTooltip();
 
-        // Find and destroy the purchased card
+        if (!_purchaseCounts.ContainsKey(upgradeId))
+            _purchaseCounts[upgradeId] = 0;
+        _purchaseCounts[upgradeId]++;
+
+        // Find the purchased card and keep it in the layout while disabling interaction
         UpgradeCardUI purchasedCard = null;
         ShopUpgrade   purchasedUpgrade = null;
         foreach (var card in _upgradeCards)
         {
-            if (card != null && card.Upgrade != null && card.Upgrade.name == upgradeName)
+            if (card != null && card.Upgrade != null && card.Upgrade.Id == upgradeId)
             {
                 purchasedCard    = card;
                 purchasedUpgrade = card.Upgrade;
@@ -573,36 +654,41 @@ public class PlayerShopPanel : MonoBehaviour
 
         if (purchasedCard != null)
         {
-            _upgradeCards.Remove(purchasedCard);
-            Destroy(purchasedCard.gameObject);
+            purchasedCard.SetLockedOut("Bought");
         }
 
         if (purchasedUpgrade != null)
             _selectedUpgrades.Remove(purchasedUpgrade);
 
+        ClearAllSelections();
         RefreshBuyButton();
         RefreshStats();
     }
 
     public void OnPotUsed(bool isGrand)
     {
+        DestroyTooltip();
+
         if (isGrand)
         {
             _grandPotUsed = true;
-            _grandPotCard?.SetPotCard(
-                PotManager.Instance?.grandPot?.potName ?? "Grand Pot",
-                "Already used", $"{ShopManager.GrandPotCost} coins", true,
-                _isLocal ? () => OnGrandPotClicked() : (System.Action)null);
+            if (_grandPotCard != null)
+            {
+                Destroy(_grandPotCard.gameObject);
+                _grandPotCard = null;
+            }
         }
         else
         {
             _smallPotUsed = true;
-            _smallPotCard?.SetPotCard(
-                PotManager.Instance?.smallPot?.potName ?? "Small Pot",
-                "Already used", $"{ShopManager.SmallPotCost} coins", true,
-                _isLocal ? () => OnSmallPotClicked() : (System.Action)null);
+            if (_smallPotCard != null)
+            {
+                Destroy(_smallPotCard.gameObject);
+                _smallPotCard = null;
+            }
         }
 
+        ClearAllSelections();
         if (detailPanel) detailPanel.SetActive(false);
         if (buyButton)   buyButton.gameObject.SetActive(false);
     }
@@ -613,6 +699,8 @@ public class PlayerShopPanel : MonoBehaviour
 
     public void RefreshStats()
     {
+        if (_isPlaceholder) return;
+
         _playerData = PlayerData.GetPlayer(_clientId);
         if (_playerData == null) return;
 
@@ -632,24 +720,27 @@ public class PlayerShopPanel : MonoBehaviour
 
         // ---- TEXT ----
         if (mobilityText)
-            mobilityText.text = $"Mobility {Mathf.RoundToInt(mobility * 100)}%";
+            mobilityText.text = $"{FormatPlusStat(mobility)}";
 
         if (powerText)
-            powerText.text = $"Power {Mathf.RoundToInt(power * 100)}%";
+            powerText.text = $"{FormatPlusStat(power)}";
 
         if (defenseText)
-            defenseText.text = $"Defense {Mathf.RoundToInt(defense * 100)}%";
-
-        // ---- BARS (0–100 only) ----
-        UpdateBar(mobilitySlider, mobility - 1f);
-        UpdateBar(powerSlider, power - 1f);
-        UpdateBar(defenseSlider, defense - 1f);
+            defenseText.text = $"{FormatPlusStat(defense)}";
     }
 
-    string Stat(string label, float multiplier)
+    string FormatPlusStat(float multiplier)
     {
-        int pct = Mathf.RoundToInt((multiplier - 1f) * 100f);
-        return pct > 0 ? $"{label} <color=#4caf7d>+{pct}%</color>" : $"{label} Base";
+        int bonusPoints = Mathf.Max(0, Mathf.RoundToInt((multiplier - 1f) * 100f));
+        int plusCount   = bonusPoints / 10;
+
+        if (plusCount <= 0)
+            return "Base";
+
+        if (plusCount <= 3)
+            return new string('+', plusCount);
+
+        return $"+{plusCount}";
     }
 
     #endregion
@@ -665,12 +756,13 @@ public class PlayerShopPanel : MonoBehaviour
     int GetOwned(ShopUpgrade upgrade)
     {
         if (upgrade == null) return 0;
-        _purchaseCounts.TryGetValue(upgrade.name, out int c);
+        _purchaseCounts.TryGetValue(upgrade.Id, out int c);
         return c;
     }
 
     int GetCoins()
     {
+        if (_isPlaceholder) return 0;
         var inv = PlayerInventory.Local;
         return inv != null ? inv.Coins : 0;
     }

@@ -22,10 +22,8 @@ using TMPro;
 ///   Click Buy  → upgrade: deduct coins, apply stat.
 ///              → pot: deduct coins, open full-screen PotManager sequence.
 /// </summary>
-public class ShopManager : NetworkBehaviour
+public class ShopManager : BaseGameServerHandler<ShopManager>
 {
-    public static ShopManager Instance { get; private set; }
-
     public static int SmallPotCost => Instance?.smallPotCost ?? 20;
     public static int GrandPotCost => Instance?.grandPotCost ?? 50;
     public static int PotCost      => SmallPotCost; // legacy fallback
@@ -61,19 +59,19 @@ public class ShopManager : NetworkBehaviour
     // clientId → free rerolls granted (e.g. from tarot)
     private Dictionary<ulong, int> _freeRerolls               = new Dictionary<ulong, int>();
 
+    private Dictionary<string, ShopUpgrade> _upgradeLookup    = new Dictionary<string, ShopUpgrade>();
+
     #endregion
 
     #region Lifecycle
 
-    void Awake()
-    {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
-        Instance = this;
-    }
+    void Awake() { }
 
     public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
         backToBiddingButton?.gameObject.SetActive(IsHost);
+        BuildUpgradeLookup();
     }
 
     public void OnShopPhaseStart()
@@ -83,6 +81,14 @@ public class ShopManager : NetworkBehaviour
 
         if (IsServer)
             ServerRollAllOfferings();
+    }
+
+    [Rpc(SendTo.Server)]
+    public void StartShopPhaseRpc()
+    {
+        if (!IsServer) return;
+
+        PersistentGameStateManager.Instance?.BeginShopPhaseServer();
     }
 
     public void PopulateShopsServerSide() { }
@@ -97,6 +103,7 @@ public class ShopManager : NetworkBehaviour
     /// </summary>
     void ServerRollAllOfferings()
     {
+        BuildUpgradeLookup();
         _offerings.Clear();
         _freeRerolls.Clear();
 
@@ -144,19 +151,37 @@ public class ShopManager : NetworkBehaviour
     {
         var names = new List<string>();
         foreach (var u in offerings)
-            names.Add(u != null ? u.name : "null");
+            names.Add(u != null ? u.Id : "null");
         return string.Join("|", names);
     }
 
     List<ShopUpgrade> UnpackOfferings(string packed)
     {
         var result = new List<ShopUpgrade>();
-        foreach (var name in packed.Split('|'))
+        foreach (var id in packed.Split('|'))
         {
-            var upgrade = upgradePool.Find(u => u != null && u.name == name);
-            if (upgrade != null) result.Add(upgrade);
+            if (_upgradeLookup.TryGetValue(id, out var upgrade))
+                result.Add(upgrade);
         }
         return result;
+    }
+
+    void BuildUpgradeLookup()
+    {
+        _upgradeLookup.Clear();
+        foreach (var upgrade in upgradePool)
+        {
+            if (upgrade == null || string.IsNullOrWhiteSpace(upgrade.Id))
+                continue;
+
+            if (_upgradeLookup.ContainsKey(upgrade.Id))
+            {
+                Debug.LogWarning($"[ShopManager] Duplicate upgrade ID '{upgrade.Id}' on '{upgrade.name}'.");
+                continue;
+            }
+
+            _upgradeLookup[upgrade.Id] = upgrade;
+        }
     }
 
     #endregion
@@ -170,8 +195,8 @@ public class ShopManager : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void SyncAllOfferingsRpc(string packedAll)
     {
-        foreach (var panel in _panels.Values)
-            if (panel) Destroy(panel.gameObject);
+        foreach (Transform child in shopPanelsContainer)
+            if (child != null) Destroy(child.gameObject);
         _panels.Clear();
 
         if (playerShopPanelPrefab == null)
@@ -186,6 +211,7 @@ public class ShopManager : NetworkBehaviour
         }
 
         var playerEntries = packedAll.Split(';');
+        int createdPanels = 0;
         foreach (var entry in playerEntries)
         {
             if (string.IsNullOrEmpty(entry)) continue;
@@ -210,6 +236,22 @@ public class ShopManager : NetworkBehaviour
             Debug.Log($"[ShopManager] Building panel for client {clientId} isLocal:{isLocal} offerings:{offerings.Count}");
             panel.Initialise(clientId, offerings, isLocal);
             _panels[clientId] = panel;
+            createdPanels++;
+        }
+
+        const int targetPanelCount = 4;
+        while (createdPanels < targetPanelCount)
+        {
+            var go = Instantiate(playerShopPanelPrefab, shopPanelsContainer);
+            var panel = go.GetComponent<PlayerShopPanel>();
+            if (panel == null)
+            {
+                Destroy(go);
+                break;
+            }
+
+            panel.InitialisePlaceholder($"Open Slot {createdPanels + 1}", new List<ShopUpgrade>());
+            createdPanels++;
         }
     }
 
@@ -220,18 +262,19 @@ public class ShopManager : NetworkBehaviour
     /// <summary>Called by the local player's panel when Buy is clicked on an upgrade.</summary>
     public void LocalPlayerBuyUpgrade(ShopUpgrade upgrade, PlayerShopPanel sourcePanel)
     {
-        BuyUpgradeRpc(upgrade.name);
+        Debug.Log($"[ShopManager] LocalPlayerBuyUpgrade requested. id:{upgrade?.Id} localClient:{NetworkManager.Singleton?.LocalClientId}");
+        BuyUpgradeRpc(upgrade.Id);
     }
 
     [Rpc(SendTo.Server)]
-    void BuyUpgradeRpc(string upgradeName, RpcParams rpcParams = default)
+    void BuyUpgradeRpc(string upgradeId, RpcParams rpcParams = default)
     {
         ulong buyer  = rpcParams.Receive.SenderClientId;
         var player   = PlayerData.GetPlayer(buyer);
         if (player == null) return;
 
-        var upgrade = upgradePool.Find(u => u != null && u.name == upgradeName);
-        if (upgrade == null) return;
+        if (!_upgradeLookup.TryGetValue(upgradeId, out var upgrade))
+            return;
 
         if (player.Coins.Value < upgrade.cost)
         {
@@ -240,18 +283,18 @@ public class ShopManager : NetworkBehaviour
         }
 
         player.SpendCoins(upgrade.cost);
-        player.AddUpgradeServerSide(upgradeName, upgrade.effectValue, upgrade.upgradeType);
+        player.AddUpgradeServerSide(upgradeId, upgrade.effectValue, upgrade.upgradeType);
 
         // Tell all clients so every panel can refresh that player's stats
-        UpgradePurchasedRpc(buyer, upgradeName);
+        UpgradePurchasedRpc(buyer, upgradeId);
     }
 
     /// <summary>Broadcast to everyone so all panels showing this player refresh.</summary>
     [Rpc(SendTo.Everyone)]
-    void UpgradePurchasedRpc(ulong buyer, string upgradeName)
+    void UpgradePurchasedRpc(ulong buyer, string upgradeId)
     {
         if (_panels.TryGetValue(buyer, out var panel))
-            panel.OnUpgradePurchased(upgradeName);
+            panel.OnUpgradePurchased(upgradeId);
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
@@ -273,6 +316,7 @@ public class ShopManager : NetworkBehaviour
     /// <summary>Called by the local player's panel when Buy is clicked on the pot card.</summary>
     public void LocalPlayerBuyPot(PlayerShopPanel sourcePanel, bool isGrand)
     {
+        Debug.Log($"[ShopManager] LocalPlayerBuyPot requested. isGrand:{isGrand} localClient:{NetworkManager.Singleton?.LocalClientId}");
         BuyPotRpc(isGrand);
     }
 
@@ -281,10 +325,20 @@ public class ShopManager : NetworkBehaviour
     {
         ulong buyer  = rpcParams.Receive.SenderClientId;
         var player   = PlayerData.GetPlayer(buyer);
-        if (player == null) return;
+        if (player == null)
+        {
+            Debug.LogWarning($"[ShopManager] BuyPotRpc rejected for client {buyer}: PlayerData not found.");
+            return;
+        }
 
         int cost = isGrand ? grandPotCost : smallPotCost;
-        if (player.Coins.Value < cost) return;
+        if (player.Coins.Value < cost)
+        {
+            Debug.LogWarning($"[ShopManager] BuyPotRpc rejected for client {buyer}: not enough coins ({player.Coins.Value}/{cost}).");
+            return;
+        }
+
+        Debug.Log($"[ShopManager] BuyPotRpc accepted for client {buyer}. Deducting {cost} and opening {(isGrand ? "Grand" : "Small")} pot.");
 
         player.SpendCoins(cost);
         PotUsedRpc(buyer, isGrand);
@@ -302,7 +356,18 @@ public class ShopManager : NetworkBehaviour
     [Rpc(SendTo.SpecifiedInParams)]
     void OpenPotSequenceRpc(bool isGrand, RpcParams rpcParams = default)
     {
-        PotManager.Instance?.OpenSequence(isGrand);
+        var potManager = PotManager.Instance;
+        if (potManager == null)
+            potManager = FindFirstObjectByType<PotManager>();
+
+        if (potManager == null)
+        {
+            Debug.LogError("[ShopManager] Could not find PotManager to open the pot UI.");
+            return;
+        }
+
+        Debug.Log($"[ShopManager] Opening pot UI sequence on client. isGrand:{isGrand}");
+        potManager.OpenSequence(isGrand);
     }
 
     #endregion
@@ -358,7 +423,9 @@ public class ShopManager : NetworkBehaviour
 
     #region Navigation
 
-    public void OnBackToBidding() => GameFlowManager.Instance?.StartBiddingPhaseRpc();
+    public void OnBackToBidding() => BiddingManager.Instance?.StartBiddingPhaseRpc();
+
+    public void OnPlayerDeath(ulong clientId) { }
 
     #endregion
 }

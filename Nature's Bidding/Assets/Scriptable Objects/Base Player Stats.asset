@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: Base Player Stats
   m_EditorClassIdentifier: Assembly-CSharp::BasePlayerStats
   MaxHealth: 100
-  Damage: 10
+  Damage: 5
   AttackSpeed: 1
   MoveSpeed: 1
-  ParryDuration: 1
+  Jumps: 1
+  Size: 1
+  KnockbackResistance: 1
+  ParryDuration: 3
   ParryCooldown: 4
   DashDistance: 1
   DashCooldown: 3.65
-  CritChance: 10
+  CritChance: 30
   CritDamageMultiplier: 1.5
   Momentum: 0
-  ComboMultiplier: 1
+  ComboDamage: 0
   Stealing: 0
+  Lifesteal: 0

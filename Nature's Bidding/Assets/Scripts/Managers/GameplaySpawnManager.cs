@@ -5,21 +5,55 @@ using Unity.Netcode;
 using UnityEngine.Events;
 using UnityUtils;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
 {
-
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private List<Transform> spawnPoints;
+    [SerializeField] private LayerMask playerLayerMask;
     private int nextSpawnIndex = 0;
 
     [SerializeField] private GameObject playerHealthBarPrefab;
     [SerializeField] private Transform playerHealthBarParent;
 
+    protected override void Awake()
+    {
+        if (HasInstance)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        base.Awake();
+
+        ResolvePlayerPrefabFromNetworkManager();
+    }
+
     public NetworkObject SpawnPlayer(ulong clientId)
     {
-        Transform spawnPoint = spawnPoints[nextSpawnIndex];
-        nextSpawnIndex = (nextSpawnIndex + 1) % spawnPoints.Count;
+        RefreshSpawnPointsIfNeeded();
+        ResolvePlayerPrefabFromNetworkManager();
+
+        if (playerPrefab == null)
+        {
+            Debug.LogError("[GameplaySpawnManager] playerPrefab is not assigned.");
+            return null;
+        }
+
+        if (spawnPoints == null || spawnPoints.Count == 0)
+        {
+            Debug.LogError("[GameplaySpawnManager] No spawn points available in the active scene.");
+            return null;
+        }
+
+        var spawnPoint = GetNextAvailableSpawnPoint();
+
+        if (spawnPoint == null)
+        {
+            Debug.LogError("[GameplaySpawnManager] Spawn point reference is missing.");
+            return null;
+        }
 
         GameObject player = Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
         NetworkObject netObj = player.GetComponent<NetworkObject>();
@@ -30,12 +64,87 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
 
     public PlayerGameplayUI SpawnPlayerHealthBar()
     {
+        if (playerHealthBarPrefab == null)
+        {
+            Debug.LogError("[GameplaySpawnManager] playerHealthBarPrefab is not assigned.");
+            return null;
+        }
+
         GameObject healthGO = Instantiate(playerHealthBarPrefab, playerHealthBarParent);
         
         PlayerGameplayUI gameplayUI = healthGO.GetComponent<PlayerGameplayUI>();
         
         return gameplayUI;
     }
-    
+
+    public bool HasConfiguredPlayerPrefab()
+    {
+        ResolvePlayerPrefabFromNetworkManager();
+        return playerPrefab != null;
+    }
+
+    public void ResolvePlayerPrefabFromNetworkManager()
+    {
+        if (playerPrefab != null) return;
+        if (NetworkManager.Singleton == null) return;
+
+        playerPrefab = NetworkManager.Singleton.NetworkConfig.PlayerPrefab;
+        if (playerPrefab != null)
+            Debug.Log("[GameplaySpawnManager] Using player prefab from NetworkManager configuration.");
+    }
+
+    private void RefreshSpawnPointsIfNeeded()
+    {
+        if (spawnPoints != null && spawnPoints.Count > 0)
+        {
+            bool hasLiveSpawnPoint = false;
+            foreach (Transform spawnPoint in spawnPoints)
+            {
+                if (spawnPoint != null)
+                {
+                    hasLiveSpawnPoint = true;
+                    break;
+                }
+            }
+
+            if (hasLiveSpawnPoint) return;
+        }
+
+        GameObject spawnParent = GameObject.Find("SpawnPoints");
+        if (spawnParent == null)
+            return;
+
+        spawnPoints = new List<Transform>();
+        foreach (Transform child in spawnParent.transform)
+            spawnPoints.Add(child);
+
+        nextSpawnIndex = 0;
+    }
+
+    // Used for resetting player to a spawn point after lobby death
+    public Transform GetNextAvailableSpawnPoint()
+    {
+        int attempts = 0;
+        while (attempts < spawnPoints.Count)
+        {
+            if (nextSpawnIndex >= spawnPoints.Count)
+                nextSpawnIndex = 0;
+
+            Transform candidate = spawnPoints[nextSpawnIndex];
+            nextSpawnIndex = (nextSpawnIndex + 1) % spawnPoints.Count;
+            attempts++;
+
+            // Check if the spot is clear of other players before using it
+            Collider[] overlaps = Physics.OverlapSphere(candidate.position, 1f, playerLayerMask);
+            if (overlaps.Length == 0)
+                return candidate;
+        }
+
+        // Fallback — all spawn points occupied, just return the next one anyway
+        Transform fallback = spawnPoints[nextSpawnIndex];
+        nextSpawnIndex = (nextSpawnIndex + 1) % spawnPoints.Count;
+        return fallback;
+    }
+
 }
 

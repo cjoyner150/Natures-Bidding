@@ -20,6 +20,7 @@ public class Parry : State
         ctx.forceToAdd = Vector3.zero;
 
         ctx.anim.SetTrigger("Parry");
+        NetworkVisualEffectManager.SpawnParryEffectsOnPlayer?.Invoke(ctx.playerHealth.OwnerClientId, (int)(ctx.playerStats.ParryDuration * 1000));
 
         SetParryActive(ctx.parryWarmUpDelay);
 
@@ -38,12 +39,17 @@ public class Parry : State
     {
         if (ctx.parryResponse)
         {
+            ctx.anim.SetTrigger("ParryEnd");
             exitParry = true;
             return;
         }
 
         parryTimer -= deltaTime;
-        if (parryTimer <= 0) exitParry = true;
+        if (parryTimer <= 0) 
+        {
+            ctx.shouldStunSelf = true;
+            exitParry = true; 
+        }
     }
 
     protected override void OnExit()
@@ -58,7 +64,7 @@ public class Parry : State
 
     protected override State GetTransition() 
     {
-        if (exitParry) return GetParentOfType<Grounded>().groundedLocomotion;
+        if (exitParry) return GetParentOfType<Grounded>().groundedLocomotion.idle; 
         else return null;
     }
 

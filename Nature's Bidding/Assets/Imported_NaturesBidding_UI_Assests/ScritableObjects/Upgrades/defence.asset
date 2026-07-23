@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c64c524e213d78a469ace7eb02e09a47, type: 3}
   m_Name: defence
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
+  _id: defence
   upgradeName: Defence Boost
   description: Increases defence by 5%.
   icon: {fileID: 21300000, guid: e0f5968f05e78e6408e6956dc5f2f26e, type: 3}
+  effectors:
+  - {fileID: 11400000, guid: fbcee61319dff9241a68a62d8f1030d1, type: 2}
   upgradeType: 3
   effectValue: 0.05
   cost: 50

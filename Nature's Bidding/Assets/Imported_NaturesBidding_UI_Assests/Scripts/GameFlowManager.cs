@@ -1,28 +1,26 @@
+using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// GameFlowManager — Server-authoritative phase state machine.
-/// Phases: Lobby → Bidding → Shop → Inventory → Bidding → ...
+/// Phases: Lobby → Bidding → Shop → Combat → Bidding → ...
 /// </summary>
 public class GameFlowManager : NetworkBehaviour
 {
     public static GameFlowManager Instance { get; private set; }
 
-    public enum GamePhase { Lobby, Bidding, ShopReview, Inventory }
+    public enum GamePhase { Lobby, Bidding, ShopReview, Combat }
 
     #region Inspector Fields
 
     [Header("Phase Canvases")]
     public GameObject biddingCanvas;
     public GameObject shopCanvas;
-    public GameObject inventoryCanvas;
 
     [Header("Managers")]
     public BiddingManager        biddingManager;
     public ShopManager           shopManager;
-    public InventoryScreenManager inventoryScreenManager;
     public ReadyManager          readyManager;
 
     #endregion
@@ -42,26 +40,28 @@ public class GameFlowManager : NetworkBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+
+        PersistentGameStateManager.Instance?.ConfigureGameFlowReferences(
+            biddingCanvas,
+            shopCanvas,
+            biddingManager,
+            shopManager,
+            readyManager);
     }
 
     public override void OnNetworkSpawn()
     {
+        PersistentGameStateManager.Instance?.OnBiddingSceneReady();
         CurrentPhase.OnValueChanged += OnPhaseChanged;
-        ApplyPhase(CurrentPhase.Value);
+        PersistentGameStateManager.Instance?.SyncFlowPhase(ToPersistentPhase(CurrentPhase.Value));
 
         if (IsServer)
-            StartCoroutine(BeginAfterSpawn());
+            PersistentGameStateManager.Instance?.InitializeBiddingFlowIfServer().Forget();
     }
 
     public override void OnNetworkDespawn()
     {
         CurrentPhase.OnValueChanged -= OnPhaseChanged;
-    }
-
-    IEnumerator BeginAfterSpawn()
-    {
-        yield return null;
-        BeginBiddingPhase();
     }
 
     #endregion
@@ -71,24 +71,22 @@ public class GameFlowManager : NetworkBehaviour
     void BeginBiddingPhase()
     {
         if (!IsServer) return;
-        readyManager?.ResetForNewPhase();
         CurrentPhase.Value = GamePhase.Bidding;
-        biddingManager?.BeginBiddingPhase();
+        PersistentGameStateManager.Instance?.BeginBiddingPhaseServer();
     }
 
     void BeginShopPhase()
     {
         if (!IsServer) return;
-        readyManager?.ResetForNewPhase();
         CurrentPhase.Value = GamePhase.ShopReview;
-        shopManager?.OnShopPhaseStart();
+        PersistentGameStateManager.Instance?.BeginShopPhaseServer();
     }
 
-    void BeginInventoryPhase()
+    void BeginCombatPhase()
     {
         if (!IsServer) return;
-        CurrentPhase.Value = GamePhase.Inventory;
-        inventoryScreenManager?.OnInventoryPhaseStart();
+        CurrentPhase.Value = GamePhase.Combat;
+        PersistentGameStateManager.Instance?.BeginCombatPhaseServer();
     }
 
     #endregion
@@ -108,34 +106,34 @@ public class GameFlowManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    public void StartInventoryPhaseRpc()
+    public void StartCombatPhaseRpc()
     {
-        BeginInventoryPhase();
+        BeginCombatPhase();
     }
 
     #endregion
 
     #region Phase Transitions
 
-    void OnPhaseChanged(GamePhase oldPhase, GamePhase newPhase) => ApplyPhase(newPhase);
-
-    void ApplyPhase(GamePhase phase)
+    void OnPhaseChanged(GamePhase oldPhase, GamePhase newPhase)
     {
-        if (biddingCanvas)   biddingCanvas.SetActive(phase == GamePhase.Bidding);
-        if (shopCanvas)      shopCanvas.SetActive(phase == GamePhase.ShopReview);
-        if (inventoryCanvas) inventoryCanvas.SetActive(phase == GamePhase.Inventory);
+        PersistentGameStateManager.Instance?.SyncFlowPhase(ToPersistentPhase(newPhase));
+    }
 
+    private static PersistentGameStateManager.GameFlowPhase ToPersistentPhase(GamePhase phase)
+    {
         switch (phase)
         {
+            case GamePhase.Lobby:
+                return PersistentGameStateManager.GameFlowPhase.Lobby;
             case GamePhase.Bidding:
-                biddingManager?.OnBiddingPhaseStart();
-                break;
+                return PersistentGameStateManager.GameFlowPhase.Bidding;
             case GamePhase.ShopReview:
-                shopManager?.OnShopPhaseStart();
-                break;
-            case GamePhase.Inventory:
-                inventoryScreenManager?.OnInventoryPhaseStart();
-                break;
+                return PersistentGameStateManager.GameFlowPhase.ShopReview;
+            case GamePhase.Combat:
+                return PersistentGameStateManager.GameFlowPhase.Combat;
+            default:
+                return PersistentGameStateManager.GameFlowPhase.Lobby;
         }
     }
 

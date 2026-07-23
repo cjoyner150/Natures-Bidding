@@ -56,6 +56,12 @@ public class PlayerRoot : State
         {
             ctx.parryCDTimer -= deltaTime;
         }
+        if (ctx.comboCDTimer > 0)
+        {
+            ctx.comboCDTimer -= deltaTime;
+
+            if (ctx.comboCDTimer <= 0) ctx.combo = 0;
+        }
     }
 
     protected override State GetInitialState() => ctx.isGrounded ? grounded : airborne;

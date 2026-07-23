@@ -9,7 +9,17 @@ public class PersistentPlayerData
     public int gold;
     public int combatWins;
 
+    // stringIds for items are internal names that are mapped to scriptable objs
     public List<string> masks = new();
     public List<string> tarotCards = new();
     public List<string> artifacts = new();
+
+    public List<StatusEffectorSO> GetMaskEffectors() =>
+        GameDataManager.Instance.GetEffectors(masks);
+
+    public List<StatusEffectorSO> GetTarotEffectors() =>
+        GameDataManager.Instance.GetEffectors(tarotCards);
+
+    public List<StatusEffectorSO> GetArtifactEffectors() =>
+        GameDataManager.Instance.GetEffectors(artifacts);
 }

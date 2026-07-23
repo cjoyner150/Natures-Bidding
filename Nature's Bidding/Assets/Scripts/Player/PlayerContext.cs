@@ -8,7 +8,6 @@ public class PlayerContext
 
     [Header("Stats")]
     public BasePlayerStats BaseStats;
-    public List<StatusEffectorSO> statusEffectsOnStart;
     public Stats playerStats;
 
     [Header("World Context")]
@@ -47,7 +46,9 @@ public class PlayerContext
     public ForceMode forceMode;
 
     [Header("Jump Values")]
-    public float jumpImpulse;
+    public float maxJumps;
+    public float currentJumps;
+    public float jumpHeight;
     public float jumpHeldForce;
     public float jumpHeldAllowedTime;
     public float extraGravityMultiplier;
@@ -62,6 +63,9 @@ public class PlayerContext
     public float attackResponseForce;
     public bool hitResponse;
     public int attackActiveDelay;
+    public float comboCD;
+    public float comboCDTimer;
+    public int combo;
 
     [Header("Parry")]
     public bool parryResponse;
@@ -74,13 +78,17 @@ public class PlayerContext
     public bool isStunned;
     public float stunTime;
     public float stunRecoveryTimer;
+    public float additionalStunTime = 0;
 
     [Header("Dash")]
     public float dashTime;
     public float dashCDTimer;
     public bool dashOnCooldown => dashCDTimer > 0;
     public float dashRotateMultiplier;
-
+    public bool teleportOnDash;
+    public float teleportDistance;
+    public LayerMask teleportBlockingLayer;
+    public bool debugTeleport;
 
     [Header("Knockback")]
     public float knockbackTime;
@@ -94,4 +102,7 @@ public class PlayerContext
     public bool jumpPressed;
     public bool attackPressed;
     public bool parryPressed;
+
+    [Header("ReferenceData")]
+    public LayerMask playerLayerMask;
 }

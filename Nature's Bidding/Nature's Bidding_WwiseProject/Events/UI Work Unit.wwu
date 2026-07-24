@@ -21,6 +21,17 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_UI_Bid_Submit" ID="{3987688E-AC48-4183-A467-5C674A86EECC}">
+					<ChildrenList>
+						<Action Name="" ID="{D23E7AA6-8F5A-42B8-8EA0-30E689AD61C9}" ShortID="32880389">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="submit" ID="{7D6E3FC4-FD41-4D73-90D7-7593D7A8D7BE}" WorkUnitID="{1225B259-A259-44FE-8970-96AB4F733DF4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

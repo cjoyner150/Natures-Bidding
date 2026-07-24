@@ -458,6 +458,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         if (_localBidAmount < minBid) return;
 
         _localBidSubmitted = true;
+        audioFeedback?.PlayBidSubmit();
         RefreshSubmitButton();
         SetBidDisplayVisible(false);
         if (statusText) statusText.text = $"Bid of {_localBidAmount} submitted! Waiting for others...";

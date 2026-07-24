@@ -7,6 +7,7 @@ public sealed class BiddingAudioFeedback : MonoBehaviour
     [SerializeField] private AK.Wwise.Event bidAdjustEvent;
     [SerializeField] private AK.Wwise.Switch bidUpSwitch;
     [SerializeField] private AK.Wwise.Switch bidDownSwitch;
+    [SerializeField] private AK.Wwise.Event bidSubmitEvent;
 
     public void PlayBidUp()
     {
@@ -17,6 +18,17 @@ public sealed class BiddingAudioFeedback : MonoBehaviour
     {
         PlayAdjustment(bidDownSwitch);
     }
+
+    public void PlayBidSubmit()
+{
+    if (bidSubmitEvent == null || !bidSubmitEvent.IsValid())
+    {
+        Debug.LogWarning("[BiddingAudioFeedback] Bid submit Event is not assigned.", this);
+        return;
+    }
+
+    bidSubmitEvent.Post(gameObject);
+}
 
     private void PlayAdjustment(AK.Wwise.Switch directionSwitch)
     {

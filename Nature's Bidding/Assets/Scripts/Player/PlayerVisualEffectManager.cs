@@ -8,7 +8,19 @@ public class PlayerVisualEffectManager : MonoBehaviour
 {
     [Header("Particle Prefabs")]
     [SerializeField] GameObject hitReactParticle;
+    [SerializeField] GameObject slashParticle;
+    [SerializeField] GameObject starParticle;
+    [SerializeField] GameObject confettiParticle;
+    [SerializeField] GameObject confusionParticle;
+    [SerializeField] GameObject parryParticle;
+    [SerializeField] GameObject parrySuccessParticle;
+    [SerializeField] GameObject magicPoofParticle;
+    [SerializeField] GameObject stunParticle;
+    [SerializeField] GameObject lavaSplashParticle;
     [SerializeField] GameObject explosionParticle;
+    [SerializeField] GameObject jumpParticle;
+    [SerializeField] GameObject dashParticle;
+
 
     [Header("References")]
     [SerializeField] Transform weaponHolderTransform;
@@ -18,24 +30,25 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnSlashEffectParticles(int milliseconds)
     {
-        //GameObject go = Instantiate(explosionParticle, weaponHolderTransform, false);
-        //go.transform.localPosition = Vector3.zero;
-        //go.transform.localRotation = Quaternion.identity;
+        GameObject go = Instantiate(slashParticle, weaponHolderTransform, false);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localRotation = Quaternion.identity;
 
-        //SafeDispose(go, milliseconds).Forget();
+        SafeDispose(go, milliseconds).Forget();
     }
 
     public void SpawnParryEffectParticles(int milliseconds)
     {
-        //GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
-        //go.transform.localPosition = Vector3.zero;
-        //SafeDispose(go, milliseconds).Forget();
+        Debug.Log(milliseconds);
+        GameObject go = Instantiate(parryParticle, gameObject.transform, false);
+        go.transform.localPosition = Vector3.zero;
+        SafeDispose(go, milliseconds).Forget();
     }
 
     public void SpawnParrySuccessReactionParticles()
     {
-        //GameObject go = Instantiate(hitReactParticle, weaponHolderTransform);
-        //SafeDispose(go, 1000).Forget();
+        GameObject go = Instantiate(parrySuccessParticle, weaponHolderTransform);
+        SafeDispose(go, 1000).Forget();
     }
 
     public void SpawnHitReactParticles(bool critical)
@@ -56,9 +69,9 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnDashParticles()
     {
-        //GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
-        //go.transform.localPosition = Vector3.zero;
-        //SafeDispose(go, 1000).Forget();
+        GameObject go = Instantiate(dashParticle, gameObject.transform, false);
+        go.transform.localPosition = Vector3.zero;
+        SafeDispose(go, 1000).Forget();
     }
 
     public void SpawnTeleportParticles()
@@ -73,7 +86,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
     {
         if (enabled)
         {
-            GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+            GameObject go = Instantiate(starParticle, gameObject.transform, false);
             go.transform.localPosition = Vector3.zero;
             
             if (starEffectCache != null)
@@ -91,35 +104,35 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnJumpParticles()
     {
-        //GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
-        //go.transform.localPosition = Vector3.zero;
-        //go.transform.SetParent(null);
-        //SafeDispose(go, 1000).Forget();
+        GameObject go = Instantiate(jumpParticle, gameObject.transform, false);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.SetParent(null);
+        SafeDispose(go, 1000).Forget();
     }
 
     public void SpawnExplosionParticles(Vector3 spawnPos)
     {
-        //GameObject go = Instantiate(explosionParticle, spawnPos, Quaternion.identity);
-        //SafeDispose(go, 2000).Forget();
+        GameObject go = Instantiate(explosionParticle, spawnPos, Quaternion.identity);
+        SafeDispose(go, 2000).Forget();
     }
 
     public void SpawnStunParticles(int milliseconds)
     {
-        //GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
-        //go.transform.localPosition = Vector3.zero;
-        //SafeDispose(go, milliseconds).Forget();
+        GameObject go = Instantiate(stunParticle, gameObject.transform, false);
+        go.transform.localPosition = Vector3.zero;
+        SafeDispose(go, milliseconds).Forget();
     }
 
     public void SpawnConfettiParticles()
     {
-        GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+        GameObject go = Instantiate(confettiParticle, gameObject.transform, false);
         go.transform.localPosition = Vector3.zero;
         SafeDispose(go, 5000).Forget();
     }
 
     public void SpawnBatConfusionParticles()
     {
-        GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+        GameObject go = Instantiate(confusionParticle, gameObject.transform, false);
         go.transform.localPosition = Vector3.zero;
 
         batConfusionEffectCache = go;

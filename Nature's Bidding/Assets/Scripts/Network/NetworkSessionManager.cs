@@ -106,16 +106,23 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
     private void OnNetworkSceneEvent(SceneEvent sceneEvent)
     {
         if (NetworkManager.Singleton.IsServer) return;
-        if (sceneEvent.ClientId != NetworkManager.Singleton.LocalClientId) return;
 
         switch (sceneEvent.SceneEventType)
         {
             case SceneEventType.Synchronize:
-                PersistentGameStateManager.Instance.LoadingPanel.SetActive(true);
+                PersistentGameStateManager.Instance.SetLoadingState("Loading scene...", true);
                 break;
             case SceneEventType.Load:
+                if (sceneEvent.ClientId != NetworkManager.Singleton.LocalClientId)
+                    return;
                 if (sceneEvent.AsyncOperation != null)
                     TrackClientLoadProgress(sceneEvent.AsyncOperation).Forget();
+                break;
+            case SceneEventType.LoadComplete:
+            case SceneEventType.SynchronizeComplete:
+                if (sceneEvent.ClientId != NetworkManager.Singleton.LocalClientId)
+                    return;
+                PersistentGameStateManager.Instance.ClearLoadingState();
                 break;
         }
     }

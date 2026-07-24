@@ -3,7 +3,7 @@
   "Project": {
    "Name": "Nature's Bidding_WwiseProject",
    "GUID": "{B3A44E35-0D35-4DC6-823F-82358EA4ACDC}",
-   "Generator": "2025.1.5.9095"
+   "Generator": "2025.1.9.9197"
   },
   "CacheRoot": "../.cache",
   "Platforms": [
@@ -38,6 +38,6 @@
     "UseAsStandIn": "true"
    }
   ],
-  "FileHash": "{CE352600-569F-4B49-8B41-7659F11B5E84}"
+  "FileHash": "{0D44F604-E9D1-5B09-64D5-A5EC09EBBEF5}"
  }
 }

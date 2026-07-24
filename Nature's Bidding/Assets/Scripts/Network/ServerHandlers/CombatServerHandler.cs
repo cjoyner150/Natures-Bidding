@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Unity.Netcode;
@@ -49,6 +50,27 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
             {
                 Debug.Log($"Player {data.playerName} in registry but not connected — skipping spawn, they may rejoin.");
             }
+        }
+
+        foreach (var data in PersistentPlayerRegistry.Instance.GetAllPlayers())
+        {
+            string maskIds = data.masks.Count > 0 ? string.Join(", ", data.masks) : "none";
+            string tarotIds = data.tarotCards.Count > 0 ? string.Join(", ", data.tarotCards) : "none";
+            string artifactIds = data.artifacts.Count > 0 ? string.Join(", ", data.artifacts) : "none";
+
+            var maskEffectors = data.GetMaskEffectors();
+            var tarotEffectors = data.GetTarotEffectors();
+            var artifactEffectors = data.GetArtifactEffectors();
+
+            string effectors = string.Join(", ",
+                maskEffectors.ConvertAll(e => e != null ? e.Id : "null")
+                    .Concat(tarotEffectors.ConvertAll(e => e != null ? e.Id : "null"))
+                    .Concat(artifactEffectors.ConvertAll(e => e != null ? e.Id : "null")));
+
+            if (string.IsNullOrWhiteSpace(effectors))
+                effectors = "none";
+
+            Debug.Log($"[CombatServerHandler] Player {data.clientId} ({data.playerName}) state after combat scene load | gold:{data.gold} wins:{data.combatWins} | masks:[{maskIds}] | tarot:[{tarotIds}] | artifacts:[{artifactIds}] | effectors:[{effectors}]");
         }
 
         CombatBeginClientRpc();
@@ -215,7 +237,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         gameOverUI?.SetActive(true);
     }
 
-    protected override void OnPlayerReconnected(ulong clientId, PersistentPlayerData data)
+    protected override void OnPlayerReconnected(ulong clientId, PlayerData data)
     {
         Debug.Log($"Player {data.playerName} rejoined mid-combat. Will respawn next scene.");
         PlayerRejoiningClientRpc(clientId);

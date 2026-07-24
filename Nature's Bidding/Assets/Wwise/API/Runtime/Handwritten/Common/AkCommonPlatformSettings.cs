@@ -61,6 +61,7 @@ public class AkBasePlatformSettings : UnityEngine.ScriptableObject
 	public virtual bool SuspendAudioDuringFocusLoss
 	{
 		get { return true; }
+		set { }
 	}
 
 	public virtual bool RenderDuringFocusLoss
@@ -741,6 +742,7 @@ public abstract class AkCommonPlatformSettings : AkBasePlatformSettings
 	public override bool SuspendAudioDuringFocusLoss
 	{
 		get { return GetAdvancedSettings().m_SuspendAudioDuringFocusLoss; }
+		set { GetAdvancedSettings().m_SuspendAudioDuringFocusLoss = value; }
 	}
 
 	public override bool RenderDuringFocusLoss

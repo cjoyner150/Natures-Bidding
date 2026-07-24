@@ -16,11 +16,11 @@ MonoBehaviour:
   upgradeName: Health Boost
   description: Increases health by 5%.
   icon: {fileID: 21300000, guid: 028c3b2e471bf294fbe5bf4722ae705d, type: 3}
-  effectors:
-  - {fileID: 11400000, guid: 12e8befdca7c4fc41a9307c2a35a2839, type: 2}
+  effectorId: test_id
   upgradeType: 5
   effectValue: 0.05
   cost: 50
   maxPurchases: 3
   isConsumable: 0
   cardColor: {r: 0.068470195, g: 0.31446534, b: 0.046477556, a: 1}
+  shadowSprite: {fileID: 0}

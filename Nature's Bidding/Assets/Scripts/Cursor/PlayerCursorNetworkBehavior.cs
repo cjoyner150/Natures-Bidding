@@ -28,7 +28,7 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        Debug.Log($"[PlayerCursorNetworkBehavior] OnNetworkSpawn for client {OwnerClientId}, IsLocal={IsLocalPlayer}");
+        Debug.Log($"[PlayerCursorNetworkBehavior] OnNetworkSpawn for client {OwnerClientId}, IsLocal={IsOwner}");
 
         if (IsServer)
         {
@@ -38,7 +38,7 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
                 NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
 
-        if (syncCursorPosition && !IsLocalPlayer)
+        if (syncCursorPosition && !IsOwner)
         {
             _normalizedCursorPos.OnValueChanged += (oldPos, newPos) =>
             {
@@ -53,7 +53,7 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
             PlayerPauseManager.Instance.OnResumed += DisableCursor;
         }
 
-        if (syncCursorPosition || IsLocalPlayer) CreateCursor();
+        if (syncCursorPosition || IsOwner) CreateCursor();
     }
 
     private void OnClientConnected(ulong newClientId)
@@ -103,12 +103,13 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
 
     private async void CreateCursor()
     {
-        if (!IsLocalPlayer && !syncCursorPosition) return; 
+        if (!IsOwner && !syncCursorPosition) return; 
+        Debug.Log($"[PlayerCursorNetworkBehavior] CreateCursor START. OwnerClientId={OwnerClientId}, LocalClientId={NetworkManager.Singleton.LocalClientId}, IsOwner={IsOwner}");
         await UniTask.WaitUntil(() => CursorUIManager.Instance != null);
 
         if (!CursorUIManager.Instance.CheckCursorReady()) { enabled = false; return; }
 
-        if (IsLocalPlayer) Cursor.visible = false;
+        if (IsOwner) Cursor.visible = false;
 
         cursorTransform = CursorUIManager.Instance.SpawnCursor(syncCursorPosition, out cursorImage);
         if (cursorImage == null) { enabled = false; return; }
@@ -126,21 +127,35 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
         cursorInput = cursorTransform.GetComponent<CursorInputHandler>();
         virtualMouseInput = cursorTransform.GetComponent<VirtualMouseInput>();
 
-        if (!IsLocalPlayer)
+        if (!IsOwner)
         {
             virtualMouseInput.enabled = false;
             cursorInput.enabled = false;
         }
 
-        if (IsLocalPlayer && syncCursorPosition)
+        if (IsOwner && syncCursorPosition)
         {
             cursorInput.InitializeNetworkSync(this, syncCursorPosition);
         }
 
-        if (IsLocalPlayer)
+        if (IsOwner)
         {
             GivePrivateActionCopies();
-            DisableCursor();
+
+            var state = PersistentGameStateManager.Instance.State;
+            Debug.Log($"[PlayerCursorNetworkBehavior] CreateCursor: IsOwner=true, GameState={state}");
+
+            if (state == PersistentGameStateManager.GameState.Combat ||
+                state == PersistentGameStateManager.GameState.Lobby)
+            {
+                Debug.Log("[PlayerCursorNetworkBehavior] Calling DisableCursor (state is Combat/Lobby)");
+                DisableCursor();
+            }
+            else
+            {
+                Debug.Log("[PlayerCursorNetworkBehavior] Calling EnableCursor (state is not Combat/Lobby)");
+                EnableCursor();
+            }
         }
     }
 
@@ -187,15 +202,16 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
 
     private void Update()
     {
-        if (!IsLocalPlayer && syncCursorPosition)
+        if (!IsOwner && syncCursorPosition)
         {
+            if (cursorImage.IsDestroyed() || cursorImage == null) return;
             cursorImage.rectTransform.anchoredPosition = Vector2.Lerp(cursorImage.rectTransform.anchoredPosition, interpTarget, Time.deltaTime * 10f);
         }
     }
 
     public void DisableCursor()
     {
-        if (!IsLocalPlayer) return;
+        if (!IsOwner) return;
 
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -215,7 +231,7 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
 
     public void EnableCursor()
     {
-        if (!IsLocalPlayer) return;
+        if (!IsOwner) return;
 
         Cursor.lockState = CursorLockMode.Confined;
 
@@ -255,7 +271,7 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
         _normalizedCursorPos.OnValueChanged = null;
 
         if (cursorImage != null) Destroy(cursorImage.gameObject);
-        if (IsLocalPlayer && CursorUIManager.Instance != null && CursorUIManager.Instance.cursorEnabled)
+        if (IsOwner && CursorUIManager.Instance != null && CursorUIManager.Instance.cursorEnabled)
             Cursor.visible = true;
     }
 }

@@ -40,7 +40,6 @@ public class CursorUIManager : Singleton<CursorUIManager>
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.sortingOrder = 30000;
             canvasGO.AddComponent<CanvasScaler>();
-            DontDestroyOnLoad(canvasGO);
         }
         _cursorCanvas = canvasGO.GetComponent<Canvas>();
     }
@@ -92,7 +91,7 @@ public class CursorUIManager : Singleton<CursorUIManager>
     {
         GameObject prefab = playerCursorPrefab;
 
-        GameObject go = Instantiate(prefab, _cursorCanvas.transform);
+        GameObject go = Instantiate(prefab, GetCursorCanvas().transform);
         _cursorImage = go.GetComponentInChildren<Image>();
         if (_cursorImage == null) 
         { 
@@ -102,4 +101,5 @@ public class CursorUIManager : Singleton<CursorUIManager>
         }
         return go.GetComponent<RectTransform>();
     }
+
 }

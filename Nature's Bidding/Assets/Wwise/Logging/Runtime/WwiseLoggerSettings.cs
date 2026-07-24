@@ -69,7 +69,6 @@ namespace AK.Wwise.Unity.Logging
                             AssetDatabase.CreateFolder(System.IO.Path.Combine("Assets", "Wwise"), "Resources");
                         }
 
-                        string assetName = "WwiseLoggerSettings";
                         string assetPath = path;
                         AssetDatabase.CreateAsset(_instance, assetPath);
                         AssetDatabase.SaveAssets();

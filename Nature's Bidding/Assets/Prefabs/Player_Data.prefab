@@ -67,9 +67,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6186769254747508159}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8becc9bc7c7670e43b481ccab130fd96, type: 3}
+  m_Script: {fileID: 11500000, guid: cec0e5f88361aa444b448e10e4554fec, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerData
+  m_EditorClassIdentifier: Assembly-CSharp::PersistentPlayerData
   ShowTopMostFoldoutHeaderGroup: 1
   startingCoins: 1000
   Coins:

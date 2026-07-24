@@ -258,13 +258,13 @@ public static class AddressableInstaller
         {
             int dialogChoiceIndex = EditorUtility.DisplayDialogComplex(
                 "Wwise Unity Addressables Uninstallation",
-                "Do you want to toggle off the Load Bank Asynchronous setting during uninstallation? The setting was modified during the installation of the Wwise Unity Addressables integration package. It is toggled off for most projects that do not use addressables. In the Wwise Settings, you can set a default value for this prompt or prevent it from appearing.",
-                "Yes, change the setting.",
-                "No, don't change it.",
-                "Cancel"
+                "Set the Load Bank Asynchronous settings to false during uninstallation? The original value was modified during the installation of the Wwise Unity Addressables integration package. In most projects, it is disabled when not working with Addressables. You can set a default value for this prompt or disable it in the Wwise Settings.",
+                "Yes",
+                "Cancel",
+                "No"
             );
 
-            if (dialogChoiceIndex == 2)
+            if (dialogChoiceIndex == 1)
             {
                 return false;
             }

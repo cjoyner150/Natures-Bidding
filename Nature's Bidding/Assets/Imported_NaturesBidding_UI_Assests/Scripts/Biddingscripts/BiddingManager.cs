@@ -4,6 +4,7 @@ using Unity.Netcode;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using TMPro;
+using Cysharp.Threading.Tasks;
 
 /// <summary>
 /// BiddingManager — Simultaneous reverse auction.
@@ -23,6 +24,8 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     #region Inspector Fields
 
     [Header("2D HUD")]
+    [SerializeField] private GameObject serializedBiddingCanvas;
+    [SerializeField] private GameObject serializedShopCanvas;
     public GameObject     bidHUDPanel;
     public RectTransform   bidDisplayCard;     // Card/sprite root to flip when the bid changes
     public TMP_Text       bidAmountDisplay;   // Number shown on the card/sprite
@@ -44,6 +47,9 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     public int   bidStep            = 5;     // How much each key press changes the bid
     public int   minBid             = 1;
     public int   startingBid        = 10;
+
+    [Header("Audio")]
+    [SerializeField] private BiddingAudioFeedback audioFeedback;
 
     #endregion
 
@@ -83,7 +89,11 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
 
     #region Lifecycle
 
-    void Awake() { }
+    void Awake()
+    {
+        if (audioFeedback == null)
+            audioFeedback = GetComponent<BiddingAudioFeedback>();
+    }
 
     void Update()
     {
@@ -104,6 +114,21 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
+        var flowManager = PersistentGameStateManager.Instance;
+        if (flowManager != null)
+        {
+            var biddingCanvas = serializedBiddingCanvas;
+            var shopCanvas = serializedShopCanvas;
+            var shopManager = ShopManager.Instance != null ? ShopManager.Instance : FindAnyObjectByType<ShopManager>();
+            var readyManager = ReadyManager.Instance != null ? ReadyManager.Instance : FindAnyObjectByType<ReadyManager>();
+
+            flowManager.ConfigureGameFlowReferences(biddingCanvas, shopCanvas, this, shopManager, readyManager);
+            flowManager.OnBiddingSceneReady();
+
+            if (IsServer)
+                flowManager.InitializeBiddingFlowIfServer().Forget();
+        }
 
         TimeRemaining.OnValueChanged += (_, t) =>
         {
@@ -138,23 +163,10 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     {
         if (!IsServer) return;
 
-        // Build the permanent player list from whoever is connected
+        // Build the permanent player list from whoever is connected.
         _allPlayers.Clear();
         foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
             _allPlayers.Add(kvp.Key);
-
-        // Respawn player objects for this scene so bid submission can resolve PlayerData again.
-        foreach (var playerData in PersistentPlayerRegistry.Instance.GetAllPlayers())
-        {
-            if (NetworkManager.Singleton.ConnectedClients.ContainsKey(playerData.clientId))
-                GameplaySpawnManager.Instance.SpawnPlayer(playerData.clientId);
-        }
-
-        if (GameplaySpawnManager.Instance == null || !GameplaySpawnManager.Instance.HasConfiguredPlayerPrefab())
-        {
-            Debug.LogError("[BiddingManager] Cannot start bidding: GameplaySpawnManager has no player prefab configured.");
-            return;
-        }
 
         int playerCount      = _allPlayers.Count;
         TotalPlayers.Value   = playerCount;
@@ -217,10 +229,12 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
 
         // Determine winner
         ulong winnerId = DetermineWinner();
-        string itemName = BiddingArenaManager.Instance?.GetCurrentItem()?.itemName ?? "Item";
+        var currentItem = BiddingArenaManager.Instance?.GetCurrentItem();
+        string itemId = currentItem?.itemId ?? "item";
+        string itemName = currentItem?.itemName ?? "Item";
 
         if (winnerId != ulong.MaxValue)
-            PlayerData.GetPlayer(winnerId)?.AddItemServerSide(itemName);
+            PersistentPlayerRegistry.Instance?.AddItem(winnerId, itemId, ItemType.Mask);
 
         // Pack and send results
         var sb    = new System.Text.StringBuilder();
@@ -246,18 +260,29 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
 
     IEnumerator BeginRoundsWhenPlayersReady()
     {
-        const int maxWaitFrames = 120;
         int waitedFrames = 0;
 
-        while (waitedFrames < maxWaitFrames)
+        while (true)
         {
             bool allReady = true;
-            foreach (ulong clientId in _allPlayers)
+            var registry = PersistentPlayerRegistry.Instance;
+            if (registry == null)
             {
-                if (PlayerData.GetPlayer(clientId) == null)
+                allReady = false;
+            }
+            else if (registry.GetAllPlayers().Count < _allPlayers.Count)
+            {
+                allReady = false;
+            }
+            else
+            {
+                foreach (ulong clientId in _allPlayers)
                 {
-                    allReady = false;
-                    break;
+                    if (registry.GetByClientId(clientId) == null)
+                    {
+                        allReady = false;
+                        break;
+                    }
                 }
             }
 
@@ -265,6 +290,9 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
                 break;
 
             waitedFrames++;
+            if (waitedFrames % 300 == 0)
+                Debug.LogWarning($"[BiddingManager] Waiting for persistent player registry... frame {waitedFrames}");
+
             yield return null;
         }
 
@@ -397,16 +425,30 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     public void OnBidUp()
     {
         if (_localBidSubmitted) return;
+
+        int previousBid = _localBidAmount;
         _localBidAmount += bidStep;
+
+        if (_localBidAmount == previousBid)
+            return;
+
         RefreshBidDisplay(true);
+        audioFeedback?.PlayBidUp();
     }
 
     /// <summary>Decrease bid by one step. Call from - button or left trigger.</summary>
     public void OnBidDown()
     {
         if (_localBidSubmitted) return;
+
+        int previousBid = _localBidAmount;
         _localBidAmount = Mathf.Max(minBid, _localBidAmount - bidStep);
+
+        if (_localBidAmount == previousBid)
+            return;
+
         RefreshBidDisplay(true);
+        audioFeedback?.PlayBidDown();
     }
 
     /// <summary>Submit the current bid. Call from Submit button or confirm button.</summary>
@@ -433,22 +475,27 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         if (amount < minBid)           return;
 
         // Validate the player has enough coins
-        var player = PlayerData.GetPlayer(sender);
+        var registry = PersistentPlayerRegistry.Instance;
+        var player = registry?.GetByClientId(sender);
         if (player == null)
         {
-            Debug.LogWarning($"[BiddingManager] Bid rejected for client {sender}: PlayerData not ready.");
-            BidRejectedRpc("Player data not ready yet.", RpcTarget.Single(sender, RpcTargetUse.Temp));
+            Debug.LogWarning($"[BiddingManager] Bid rejected for client {sender}: persistent registry data not ready.");
+            BidRejectedRpc("Persistent player data not ready yet.", RpcTarget.Single(sender, RpcTargetUse.Temp));
             return;
         }
 
-        if (player.Coins.Value < amount)
+        if (player.gold < amount)
         {
             BidRejectedRpc("Not enough coins!", RpcTarget.Single(sender, RpcTargetUse.Temp));
             return;
         }
 
         // Deduct coins immediately on bid submission
-        player.SpendCoins(amount);
+        if (!registry.TrySpendGold(sender, amount))
+        {
+            BidRejectedRpc("Not enough coins!", RpcTarget.Single(sender, RpcTargetUse.Temp));
+            return;
+        }
 
         _bids[sender]      = amount;
         BidsReceived.Value = _bids.Count;
@@ -560,8 +607,8 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
 
     string GetPlayerName(ulong clientId)
     {
-        var p = PlayerData.GetPlayer(clientId);
-        return p != null ? p.PlayerName.Value.Value : $"Player {clientId}";
+        var p = PersistentPlayerRegistry.Instance?.GetByClientId(clientId);
+        return p != null ? p.playerName : $"Player {clientId}";
     }
 
     #endregion

@@ -87,12 +87,21 @@ public class WwiseEventReference : WwiseObjectReference
 		}
 	}
 #else
-	public async Task CompleteLoadBank()
+
+	private async Task CompleteLoadBankInternal()
 	{
 		while (AutoBank != null && !IsAutoBankLoaded && AutoBank.LoadState != BankLoadState.Unloaded)
 		{
 			await Task.Yield();
 		}
+	}
+
+	//Wait for the Bank to be loaded or a given timeout (in ms)
+	public async Task CompleteLoadBank(int timeoutms = 5000)
+	{
+		var timeoutTask = Task.Delay(timeoutms);
+		Task completedTask = await Task.WhenAny(CompleteLoadBankInternal(), timeoutTask);
+		await completedTask;
 	}
 #endif
 	
@@ -143,6 +152,7 @@ public class WwiseEventReference : WwiseObjectReference
 		if (AutoBank != null)
 		{
 			AutoBank.IsAutoBank = !IsInUserDefinedSoundBank;
+			AutoBank.BankType = (uint)AkBankTypeEnum.AkBankType_Event;
 			AkAddressableBankManager.Instance.LoadBank(AutoBank, false, false, loadAsync:true);
 			WwiseEventReferencesManager.Instance.AddReference(this);
 		}
@@ -327,8 +337,8 @@ public class WwiseEventReference : WwiseObjectReference
 			AkBankManager.UnloadBank(DisplayName);
 #endif
 			m_BankID = AkUnitySoundEngine.AK_INVALID_UNIQUE_ID;
+			WwiseEventReferencesManager.Instance.RemoveReference(this);
 		}
-		WwiseEventReferencesManager.Instance.RemoveReference(this);
 		IsAutoBankLoaded = false;
 		yield return null;
 	}

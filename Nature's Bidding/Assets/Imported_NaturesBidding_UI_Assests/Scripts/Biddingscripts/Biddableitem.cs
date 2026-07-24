@@ -8,6 +8,7 @@ using UnityEngine;
 public class BiddableItem : ScriptableObject
 {
     [Header("Identity")]
+    public string itemId         = "mystery_mask";
     public string itemName        = "Mystery Mask";
     [TextArea(2, 5)]
     public string description     = "A strange artifact of unknown origin.";

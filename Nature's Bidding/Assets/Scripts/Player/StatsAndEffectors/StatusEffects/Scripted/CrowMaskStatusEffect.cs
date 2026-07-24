@@ -14,7 +14,7 @@ public class CrowMaskStatusEffect : StatusEffect
         if (player == null) return;
 
         NetworkObject playerNetworkObj = player.GetComponent<NetworkObject>();
-        PersistentPlayerData playerData = PersistentPlayerRegistry.Instance.GetByClientId(playerNetworkObj.OwnerClientId);
+        PlayerData playerData = PersistentPlayerRegistry.Instance.GetByClientId(playerNetworkObj.OwnerClientId);
 
         int randIdx = Random.Range(0, playerData.tarotCards.Count);
 

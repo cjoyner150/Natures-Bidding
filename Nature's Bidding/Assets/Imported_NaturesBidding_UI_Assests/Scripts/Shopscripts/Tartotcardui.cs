@@ -27,6 +27,8 @@ public class TarotCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private Sprite                       _backSprite;
     private bool                         _selected;
     private bool                         _locked;
+    private bool                         _isFaceUp;
+    private bool                         _isHovered;
     private Action<TarotCardUI>          _onSelected;
     private Action<TarotCardUI>          _onDeselected;
     private Action<TarotCardReward,bool> _onHover;
@@ -62,6 +64,8 @@ public class TarotCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         _onHover      = onHover;
         _selected     = false;
         _locked       = false;
+        _isFaceUp     = false;
+        _isHovered    = false;
 
         if (cardImage && backSprite) cardImage.sprite = backSprite;
         glowOutline?.gameObject.SetActive(false);
@@ -114,7 +118,8 @@ public class TarotCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             yield return null;
         }
         cardTransform.localScale = originalScale;
-        if (_selected) glowOutline?.gameObject.SetActive(true);
+        _isFaceUp = toFront;
+        glowOutline?.gameObject.SetActive(false);
 
         _flipRoutine = null;
     }
@@ -129,15 +134,17 @@ public class TarotCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         if (_selected)
         {
-            if (_flipRoutine == null)
-                _flipRoutine = StartCoroutine(FlipToSide(false));
             _selected = false;
             glowOutline?.gameObject.SetActive(false);
+
+            if (!_isHovered && _flipRoutine == null && _isFaceUp)
+                _flipRoutine = StartCoroutine(FlipToSide(false));
+
             _onDeselected?.Invoke(this);
         }
         else
         {
-            if (_flipRoutine == null)
+            if (_flipRoutine == null && !_isFaceUp)
                 _flipRoutine = StartCoroutine(FlipToSide(true));
             _selected = true;
             _onSelected?.Invoke(this);
@@ -165,11 +172,19 @@ public class TarotCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData e)
     {
+        _isHovered = true;
+        if (!_selected && !_locked && !_isFaceUp && _flipRoutine == null)
+            _flipRoutine = StartCoroutine(FlipToSide(true));
+
         if (_reward != null) _onHover?.Invoke(_reward, true);
     }
 
     public void OnPointerExit(PointerEventData e)
     {
+        _isHovered = false;
+        if (!_selected && _isFaceUp && _flipRoutine == null)
+            _flipRoutine = StartCoroutine(FlipToSide(false));
+
         if (_reward != null) _onHover?.Invoke(_reward, false);
     }
 

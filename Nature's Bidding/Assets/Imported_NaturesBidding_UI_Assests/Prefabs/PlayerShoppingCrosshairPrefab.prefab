@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6186769254747508159
+--- !u!1 &6947474001905322135
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,44 +8,44 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4905192225763462645}
-  - component: {fileID: -5268695873169829150}
-  - component: {fileID: 2341260835799978134}
+  - component: {fileID: 6314936571901957399}
+  - component: {fileID: -3129956715000901735}
+  - component: {fileID: 8838955723325719933}
   m_Layer: 0
-  m_Name: Player_Data
+  m_Name: PlayerShoppingCrosshairPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4905192225763462645
+--- !u!4 &6314936571901957399
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6186769254747508159}
+  m_GameObject: {fileID: 6947474001905322135}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 989.86426, y: 515.2384, z: 0}
+  m_LocalPosition: {x: 704.19086, y: 688.0166, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-5268695873169829150
+--- !u!114 &-3129956715000901735
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6186769254747508159}
-  m_Enabled: 0
+  m_GameObject: {fileID: 6947474001905322135}
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 879641973
+  GlobalObjectIdHash: 594145354
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -58,35 +58,17 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &2341260835799978134
+--- !u!114 &8838955723325719933
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6186769254747508159}
+  m_GameObject: {fileID: 6947474001905322135}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cec0e5f88361aa444b448e10e4554fec, type: 3}
+  m_Script: {fileID: 11500000, guid: b55fbf9bca502744288464d25b610da2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PersistentPlayerData
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCrosshair
   ShowTopMostFoldoutHeaderGroup: 1
-  startingCoins: 1000
-  Coins:
-    m_InternalValue: 0
-  PlayerName:
-    m_InternalValue:
-      Value: Player
-  SpeedMultiplier:
-    m_InternalValue: 1
-  JumpMultiplier:
-    m_InternalValue: 1
-  DamageMultiplier:
-    m_InternalValue: 1
-  DefenseMultiplier:
-    m_InternalValue: 1
-  MaxHealthBonus:
-    m_InternalValue: 0
-  enablePersistentSave: 1
-  standInRenderer: {fileID: 0}
-  standInLabel: {fileID: 0}
+  syncCursorPosition: 1

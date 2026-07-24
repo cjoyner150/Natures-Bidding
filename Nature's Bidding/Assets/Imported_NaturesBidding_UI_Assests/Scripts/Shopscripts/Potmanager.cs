@@ -356,7 +356,10 @@ public class PotManager : NetworkBehaviour
         foreach (var c in _selectedCards)
         {
             if (c == null || c.Reward == null) continue;
-            ApplyTarotRewardRpc(c.Reward.name);
+            string rewardId = !string.IsNullOrWhiteSpace(c.Reward.cardId)
+                ? c.Reward.cardId
+                : c.Reward.name;
+            ApplyTarotRewardRpc(rewardId);
             applied++;
             if (applied >= picksToKeep)
                 break;
@@ -398,143 +401,30 @@ public class PotManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    void ApplyTarotRewardRpc(string rewardName, RpcParams rpcParams = default)
+    void ApplyTarotRewardRpc(string rewardId, RpcParams rpcParams = default)
     {
         ulong buyer  = rpcParams.Receive.SenderClientId;
-        var player   = PlayerData.GetPlayer(buyer);
-        var fx       = PlayerEffects.GetEffects(buyer);
-        if (player == null) return;
+        var registry = PersistentPlayerRegistry.Instance;
+        if (registry == null) return;
 
-        var reward = cardPool.Find(c => c != null && c.name == rewardName);
+        var reward = cardPool.Find(c => c != null && (c.cardId == rewardId || c.name == rewardId));
         if (reward == null) return;
 
-        ApplyTarotEffect(reward, buyer, player, fx);
-    }
+        string resolvedCardId = !string.IsNullOrWhiteSpace(reward.cardId)
+            ? reward.cardId
+            : rewardId;
 
-    void ApplyTarotEffect(TarotCardReward reward, ulong buyer, PlayerData player, PlayerEffects fx)
-    {
-        float v = reward.effectValue > 0 ? reward.effectValue : 0.1f; // default 10%
+        if (!string.IsNullOrWhiteSpace(resolvedCardId))
+            registry.AddItem(buyer, resolvedCardId, ItemType.TarotCard);
 
-        switch (reward.rewardType)
+        // Keep shop-relevant outcomes immediate without requiring live player prefabs in bidding/shop scenes.
+        if (reward.rewardType == TarotRewardType.Coins)
         {
-            // ── Simple stat boosts ────────────────────────────────────────────
-            case TarotRewardType.Chariot:
-                player.SpeedMultiplier.Value += v;
-                break;
-
-            case TarotRewardType.Magician:
-                player.JumpMultiplier.Value += v;
-                break;
-
-            case TarotRewardType.Empress:
-                if (fx != null) fx.AttackSpeedMultiplier.Value += v;
-                break;
-
-            case TarotRewardType.HighPriestess:
-                player.MaxHealthBonus.Value += v;
-                break;
-
-            case TarotRewardType.Star:
-                // All stats up
-                player.SpeedMultiplier.Value   += v;
-                player.JumpMultiplier.Value    += v;
-                player.DamageMultiplier.Value  += v;
-                player.DefenseMultiplier.Value += v;
-                player.MaxHealthBonus.Value    += v;
-                break;
-
-            case TarotRewardType.Tower:
-                // Major health, decreased damage
-                player.MaxHealthBonus.Value   += v * 2f;
-                player.DamageMultiplier.Value -= v;
-                break;
-
-            case TarotRewardType.Hermit:
-                // Major damage, decreased health
-                player.DamageMultiplier.Value += v * 2f;
-                player.MaxHealthBonus.Value   -= v;
-                break;
-
-            // ── Conditional damage ────────────────────────────────────────────
-            case TarotRewardType.Emperor:
-                // Activate Emperor flag — server re-evaluates coin standings
-                if (fx != null)
-                {
-                    fx.EmperorActive.Value = true;
-                    PlayerEffects.ServerUpdateEmperorStatus();
-                }
-                break;
-
-            case TarotRewardType.World:
-                // More damage at lower health
-                if (fx != null) fx.WorldDamageBonus.Value += v;
-                break;
-
-            case TarotRewardType.Fool:
-                // Super fast, attack cooldown 10s
-                if (fx != null)
-                {
-                    fx.FoolActive.Value    = true;
-                    fx.FoolSpeedMult.Value = 2.5f + v;
-                }
-                break;
-
-            // ── Opponent-targeting ────────────────────────────────────────────
-            case TarotRewardType.Hanged:
-                if (fx != null)
-                {
-                    fx.HangedActive.Value = true;
-                    fx.ServerApplyHangedMan(buyer);
-                }
-                break;
-
-            case TarotRewardType.Lovers:
-                // Pick two random opponents and link them
-                ServerApplyLovers(buyer);
-                break;
-
-            // ── Aura / on-hit ─────────────────────────────────────────────────
-            case TarotRewardType.Justice:
-                if (fx != null) fx.ThornsDamagePercent.Value += v;
-                break;
-
-            case TarotRewardType.Sun:
-                if (fx != null)
-                {
-                    fx.SunActive.Value    = true;
-                    fx.SunAoeDamage.Value += v;
-                }
-                break;
-
-            case TarotRewardType.Moon:
-                if (fx != null) fx.MoonActive.Value = true;
-                break;
-
-            case TarotRewardType.Devil:
-                if (fx != null) fx.LifestealPercent.Value += v;
-                break;
-
-            // ── Meta ──────────────────────────────────────────────────────────
-            case TarotRewardType.WheelOfFortune:
-                // Apply two random effects from the pool (excluding WheelOfFortune itself)
-                var others = cardPool.FindAll(c =>
-                    c != null && c.rewardType != TarotRewardType.WheelOfFortune);
-                for (int i = others.Count - 1; i > 0; i--)
-                {
-                    int j = Random.Range(0, i + 1);
-                    (others[i], others[j]) = (others[j], others[i]);
-                }
-                for (int i = 0; i < Mathf.Min(2, others.Count); i++)
-                    ApplyTarotEffect(others[i], buyer, player, fx);
-                break;
-
-            case TarotRewardType.Coins:
-                player.AddCoins((int)reward.effectValue);
-                break;
-
-            case TarotRewardType.Reroll:
-                GrantFreeRerollRpc(RpcTarget.Single(buyer, RpcTargetUse.Temp));
-                break;
+            registry.AddGold(buyer, (int)reward.effectValue);
+        }
+        else if (reward.rewardType == TarotRewardType.Reroll)
+        {
+            GrantFreeRerollRpc(RpcTarget.Single(buyer, RpcTargetUse.Temp));
         }
     }
 

@@ -90,14 +90,7 @@ public class ReadyManager : BaseGameServerHandler<ReadyManager>
 
         int totalPlayers = NetworkManager.Singleton.ConnectedClients.Count;
         if (_readyPlayers.Count >= totalPlayers)
-            AllReadyRpc();
-    }
-
-    [Rpc(SendTo.Everyone)]
-    void AllReadyRpc()
-    {
-        if (IsServer)
-            PersistentGameStateManager.Instance?.BeginCombatPhaseServer();
+            PersistentGameStateManager.Instance?.RequestStartCombatPhase();
     }
 
     [Rpc(SendTo.Server)]
@@ -105,7 +98,7 @@ public class ReadyManager : BaseGameServerHandler<ReadyManager>
     {
         if (!IsServer) return;
 
-        PersistentGameStateManager.Instance?.BeginCombatPhaseServer();
+        PersistentGameStateManager.Instance?.RequestStartCombatPhase();
     }
 
     public void OnPlayerDeath(ulong clientId) { }

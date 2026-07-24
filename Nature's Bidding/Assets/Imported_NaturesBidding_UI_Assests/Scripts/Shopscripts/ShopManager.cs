@@ -226,7 +226,9 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
     void SyncAllOfferingsRpc(string packedAll)
     {
         if (phaseLabel) phaseLabel.text = "Shop Phase";
+
         SetShopBackgroundVisible(true);
+        PointerNPC.Instance?.HideSpeechBubble();
 
         foreach (Transform child in shopPanelsContainer)
             if (child != null) Destroy(child.gameObject);

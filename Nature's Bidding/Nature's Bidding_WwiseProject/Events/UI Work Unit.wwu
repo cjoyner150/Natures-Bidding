@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{033FAE99-176E-4433-B8D1-2230EC824361}" SchemaVersion="133">
+	<Events>
+		<WorkUnit Name="UI Work Unit" ID="{033FAE99-176E-4433-B8D1-2230EC824361}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="Play_UI_Bid" ID="{C2E4B442-82BC-43CC-AF73-90A9B75CF663}">
+					<ChildrenList>
+						<Action Name="" ID="{4D074430-34D6-4494-BCB1-432DACAB843C}" ShortID="659729449">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="flick" ID="{5B7F5791-541C-4613-A203-7E399BB858DA}" WorkUnitID="{1225B259-A259-44FE-8970-96AB4F733DF4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{21B8D700-D015-4F73-9093-CCB186740655}" ShortID="328502614">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="click" ID="{E105CD71-ADB5-4E9A-91A3-E16C1D2F3D0E}" WorkUnitID="{1225B259-A259-44FE-8970-96AB4F733DF4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

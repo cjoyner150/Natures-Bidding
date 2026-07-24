@@ -38,7 +38,7 @@ public class WwiseSetupWizard
 	};
 	
 	//Change this when an API change is introduced that would break older version of the addrerssables package
-	private static string WwiseAddressableAPIDefine = "ADDRESSABLES_API_BROWSER_TREE_VIEW";
+	private static string WwiseAddressableAPIDefine = "ADDRESSABLES_API_BREAK_AK_UTILITIES_WWISE_LOGGER";
 
 	public static void RunModify()
 	{
@@ -805,7 +805,7 @@ public class WwiseSetupWizard
 
 		if (logWarning)
 		{
-			UnityEngine.Debug.LogWarning("Automatically added AkAudioListener to Main Camera. Go to \"Edit > Wwise Settings...\" to disable this functionality.");
+			UnityEngine.Debug.Log("Automatically added AkAudioListener to Main Camera. Go to \"Edit > Wwise Settings...\" to disable this functionality.");
 		}
 	}
 	

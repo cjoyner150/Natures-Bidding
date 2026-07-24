@@ -40,6 +40,10 @@ public class AkWwiseTreeMergedDataSource : AkWwiseTreeDataSource
 		AkWwiseJSONBuilder.Populate();
 		SoundBanksDataSource = AkWwiseProjectInfo.ProjectPickerData;
 		WaapiDataSource = AkWwiseProjectInfo.WaapiBrowserData;
+		if (!SoundBanksDataSource.ProjectRoot.hasChildren)
+		{
+			FetchData();
+		}
 		WaapiDataSource.ObjectInfoLoaded+=OnWaapiDataLoaded;
 		SoundBanksDataSource.modelChanged+=MergeDataSources;
 		WaapiDataSource.modelChanged+=MergeDataSources;

@@ -59,7 +59,7 @@ public class AkImageSourceSettings : global::System.IDisposable {
   public AkImageSourceSettings(AkVector64 in_sourcePosition, float in_fDistanceScalingFactor, float in_fLevel) : this(AkUnitySoundEnginePINVOKE.CSharp_new_AkImageSourceSettings__SWIG_1(in_sourcePosition, in_fDistanceScalingFactor, in_fLevel), true) {
   }
 
-  ///  Helper function to set a single acoustic texture.
+  ///  Helper function to set a single Acoustic Texture.
   public void SetOneTexture(uint in_texture) { AkUnitySoundEnginePINVOKE.CSharp_AkImageSourceSettings_SetOneTexture(swigCPtr, in_texture); }
 
   ///  Image source parameters.

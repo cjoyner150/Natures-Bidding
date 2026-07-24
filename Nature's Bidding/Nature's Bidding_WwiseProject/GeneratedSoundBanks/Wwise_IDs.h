@@ -11,11 +11,6 @@
 
 namespace AK
 {
-    namespace EVENTS
-    {
-        static const AkUniqueID PLAY_MX_MENU = 1022453873U;
-    } // namespace EVENTS
-
     namespace BUSSES
     {
         static const AkUniqueID MAIN_AUDIO_BUS = 2246998526U;

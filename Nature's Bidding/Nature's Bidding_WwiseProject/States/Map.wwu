@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{2C7AEDE6-C414-4C66-A5FB-6F2A0D7AE3F5}" SchemaVersion="133">
+	<States>
+		<WorkUnit Name="Map" ID="{2C7AEDE6-C414-4C66-A5FB-6F2A0D7AE3F5}" PersistMode="Standalone">
+			<ChildrenList>
+				<StateGroup Name="Lava" ID="{55EE34AD-763B-48AA-94BC-1E198F03960E}">
+					<ChildrenList>
+						<State Name="None" ID="{EB47404F-D8B2-4791-B55B-8775EA416CF2}"/>
+					</ChildrenList>
+				</StateGroup>
+				<StateGroup Name="Cliff" ID="{60310F0A-391F-40A1-A1D1-2BF81F52D8BF}">
+					<ChildrenList>
+						<State Name="None" ID="{CFF49799-6821-4D94-8E25-6CC5D9CBFD08}"/>
+					</ChildrenList>
+				</StateGroup>
+			</ChildrenList>
+		</WorkUnit>
+	</States>
+</WwiseDocument>

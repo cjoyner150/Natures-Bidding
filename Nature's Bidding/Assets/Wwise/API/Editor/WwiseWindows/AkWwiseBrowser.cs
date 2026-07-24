@@ -48,32 +48,29 @@ public class AkWwiseBrowser : UnityEditor.EditorWindow
 	[UnityEditor.MenuItem("Window/Wwise Browser", false, (int)AkWwiseWindowOrder.WwisePicker)]
 	public static void InitBrowserWindow()
 	{
-		AkWwiseBrowser window = (AkWwiseBrowser)EditorWindow.GetWindow(typeof(AkWwiseBrowser));
-
-		if (window == null)
+		if (!EditorWindow.HasOpenInstances<AkWwiseBrowser>())
 		{
-			window = GetWindow<AkWwiseBrowser>("Wwise Browser", true,typeof(EditorWindow).Assembly.GetType("UnityEditor.ConsoleWindow"));
+			AkWwiseBrowser window = (AkWwiseBrowser)EditorWindow.GetWindow(typeof(AkWwiseBrowser));
+			
+			if (window != null)
+			{
+				LoadWindowTexture(window);
+				window.Show();
+			}
 		}
+	}
 
+	private static void LoadWindowTexture(AkWwiseBrowser window)
+	{
 		Texture2D originalIcon = EditorGUIUtility.Load("Assets/Wwise/API/Editor/WwiseWindows/BrowserIcon.png") as Texture2D;
 
 		if (originalIcon != null)
 		{
-			int newWidth = 32;
-			int newHeight = 32;
-        
-			Texture2D scaledIcon = ScaleTexture(originalIcon, newWidth, newHeight); 
-
-			window.titleContent = new GUIContent("Wwise Browser", scaledIcon);
+			window.titleContent = new GUIContent("Wwise Browser", originalIcon);
 		}
-		else
-		{
-			window.titleContent = new GUIContent("Wwise Browser");
-		}
-    
-		window.Show();
 	}
-	
+
+
 	private static Texture2D ScaleTexture(Texture2D source, int targetWidth, int targetHeight)
 	{
 		RenderTexture rt = RenderTexture.GetTemporary(targetWidth, targetHeight);
@@ -92,6 +89,15 @@ public class AkWwiseBrowser : UnityEditor.EditorWindow
 		if (m_treeViewState == null)
 		{
 			m_treeViewState = new WwiseTreeViewState();
+		}
+		
+		if (EditorWindow.HasOpenInstances<AkWwiseBrowser>())
+		{
+			AkWwiseBrowser window = (AkWwiseBrowser)EditorWindow.GetWindow(typeof(AkWwiseBrowser), false, null, false);
+			if (window != null)
+			{
+				LoadWindowTexture(window);
+			}
 		}
 
 		var multiColumnHeaderState = AkWwiseTreeView.CreateDefaultMultiColumnHeaderState();

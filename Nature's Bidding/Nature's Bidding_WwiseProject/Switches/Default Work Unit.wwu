@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{B09645AD-CE3F-4FC9-8E12-21BDC4E18C64}" SchemaVersion="133">
 	<Switches>
-		<WorkUnit Name="Default Work Unit" ID="{B09645AD-CE3F-4FC9-8E12-21BDC4E18C64}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{B09645AD-CE3F-4FC9-8E12-21BDC4E18C64}" PersistMode="Standalone">
+			<ChildrenList>
+				<SwitchGroup Name="Surface" ID="{4FE79508-617A-400F-A34B-FC69B5D6A8CD}"/>
+				<SwitchGroup Name="Weapon_Type" ID="{FEFEA370-03C2-450F-BE1B-219032BFEB86}"/>
+				<SwitchGroup Name="Mask_Type" ID="{28A79DA8-AF82-4D6B-8E02-3461CE3597C5}"/>
+				<SwitchGroup Name="Impact_Type" ID="{545C5835-1A65-4586-BF6B-7B227F9220F9}"/>
+				<SwitchGroup Name="Bid_Direction" ID="{796B2E9E-6B23-44A6-94CF-AAFA97E4DB38}">
+					<ChildrenList>
+						<Switch Name="Up" ID="{4A570298-AF13-4468-8D95-002DCFC71E96}"/>
+						<Switch Name="Down" ID="{6D589AD8-8279-45C6-8882-D8D66C367B8A}"/>
+					</ChildrenList>
+				</SwitchGroup>
+			</ChildrenList>
+		</WorkUnit>
 	</Switches>
 </WwiseDocument>

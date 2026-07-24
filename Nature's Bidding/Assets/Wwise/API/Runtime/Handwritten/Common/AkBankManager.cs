@@ -27,6 +27,11 @@ public static class AkBankManager
 	private static readonly System.Collections.Generic.List<BankHandle> BanksToUnload =
 		new System.Collections.Generic.List<BankHandle>();
 
+	private static string GetBankHandleName(string bankName, AkBankTypeEnum bankType)
+	{
+		return bankName + bankType.ToString();
+	}
+
 	public static void DoUnloadBanks()
 	{
 		var count = BanksToUnload.Count;
@@ -101,7 +106,7 @@ public static class AkBankManager
 		BankHandle handle = null;
 		lock (m_BankHandles)
 		{
-			if (m_BankHandles.TryGetValue(name, out handle))
+			if (m_BankHandles.TryGetValue(GetBankHandleName(name, bankType), out handle))
 			{
 				// Bank already loaded, increment its ref count.
 				handle.IncRef();
@@ -117,7 +122,7 @@ public static class AkBankManager
 			handle = decodeBank && AkUnitySoundEngine.PlatformSupportsDecodeBank() ? 
 				new DecodableBankHandle(name, saveDecodedBank) : new BankHandle(name, bankType);
 
-			m_BankHandles.Add(name, handle);
+			m_BankHandles.Add(GetBankHandleName(name, bankType), handle);
 		}
 		return handle.LoadBank();
 	}
@@ -128,7 +133,7 @@ public static class AkBankManager
 		BankHandle handle = null;
 		lock (m_BankHandles)
 		{
-			if (m_BankHandles.TryGetValue(name, out handle))
+			if (m_BankHandles.TryGetValue(GetBankHandleName(name, bankType), out handle))
 			{
 				// Bank already loaded, increment its ref count.
 				handle.IncRef();
@@ -142,12 +147,12 @@ public static class AkBankManager
 	}
 
 	/// Unloads a SoundBank. See AK::SoundEngine::UnloadBank for more information.
-	public static void UnloadBank(string name)
+	public static void UnloadBank(string name, AkBankTypeEnum bankType = AkBankTypeEnum.AkBankType_User)
 	{
 		lock (m_BankHandles)
 		{
 			BankHandle handle = null;
-			if (m_BankHandles.TryGetValue(name, out handle))
+			if (m_BankHandles.TryGetValue(GetBankHandleName(name, bankType), out handle))
 				handle.DecRef();
 		}
 	}

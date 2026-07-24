@@ -6907,6 +6907,7 @@ GameObject:
   - component: {fileID: 2025650894}
   - component: {fileID: 2025650892}
   - component: {fileID: 2025650893}
+  - component: {fileID: 2025650895}
   m_Layer: 0
   m_Name: BiddingManager
   m_TagString: Untagged
@@ -6975,6 +6976,7 @@ MonoBehaviour:
   bidStep: 10
   minBid: 10
   startingBid: 10
+  audioFeedback: {fileID: 2025650895}
   TimeRemaining:
     m_InternalValue: 0
   BidsReceived:
@@ -6985,6 +6987,34 @@ MonoBehaviour:
     m_InternalValue: 0
   TotalRounds:
     m_InternalValue: 0
+--- !u!114 &2025650895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2025650891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f12fe6723235e46e28ee98de519777c6, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::BiddingAudioFeedback
+  bidAdjustEvent:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 3d59f2d0c96c44a184f2d493195c21f5, type: 2}
+  bidUpSwitch:
+    idInternal: 0
+    valueGuidInternal:
+    groupIdInternal: 0
+    groupGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: f33fa0d548e6451c832f5bd76b07d348, type: 2}
+  bidDownSwitch:
+    idInternal: 0
+    valueGuidInternal:
+    groupIdInternal: 0
+    groupGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 4694347e18bb41caab095cb12ed63a50, type: 2}
 --- !u!4 &2025650894
 Transform:
   m_ObjectHideFlags: 0

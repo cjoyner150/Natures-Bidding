@@ -4775,7 +4775,7 @@ public partial class AkUnitySoundEngine {
   public static AKRESULT StopProfilerCapture() { return (AKRESULT)AkUnitySoundEnginePINVOKE.CSharp_StopProfilerCapture(); }
 
   ///  Sets the offline rendering frame time in seconds.
-  ///  When offline rendering is enabled, every call to \ref RenderAudio() will generate sample data as if this much time has elapsed. If the frame time argument is less than or equal to zero, every call to RenderAudio() will generate one audio buffer.
+  ///  When offline rendering is enabled, every call to \ref AK::SoundEngine::RenderAudio() will generate sample data as if this much time has elapsed. If the frame time argument is less than or equal to zero, every call to RenderAudio() will generate one audio buffer.
   ///
   /// <seealso cref="\ref goingfurther_offlinerendering"/>
   /// <returns>Always returns AK_Success</returns> 
@@ -4926,7 +4926,7 @@ public partial class AkUnitySoundEngine {
 
   ///  This function should be called to put the sound engine in background mode, where audio isn't processed anymore. This needs to be called if the console has a background mode or some suspended state.
   ///  Call ``WakeupFromSuspend`` when your application receives the message from the OS that the process is back in foreground.
-  ///  When suspended, the sound engine will process API messages (like PostEvent and SetSwitch) only when \ref RenderAudio() is called.
+  ///  When suspended, the sound engine will process API messages (like PostEvent and SetSwitch) only when \ref AK::SoundEngine::RenderAudio is called.
   ///  It is recommended to match the **in_bRenderAnyway** parameter with the behavior of the rest of your game:
   ///  if your game still runs in background and you must keep some kind of coherent state between the audio engine and game, then allow rendering.
   ///  If you want to minimize CPU when in background, then don't allow rendering and never call RenderAudio from the game.
@@ -4939,7 +4939,7 @@ public partial class AkUnitySoundEngine {
 
   ///  This function should be called to put the sound engine in background mode, where audio isn't processed anymore. This needs to be called if the console has a background mode or some suspended state.
   ///  Call ``WakeupFromSuspend`` when your application receives the message from the OS that the process is back in foreground.
-  ///  When suspended, the sound engine will process API messages (like PostEvent and SetSwitch) only when \ref RenderAudio() is called.
+  ///  When suspended, the sound engine will process API messages (like PostEvent and SetSwitch) only when \ref AK::SoundEngine::RenderAudio is called.
   ///  It is recommended to match the **in_bRenderAnyway** parameter with the behavior of the rest of your game:
   ///  if your game still runs in background and you must keep some kind of coherent state between the audio engine and game, then allow rendering.
   ///  If you want to minimize CPU when in background, then don't allow rendering and never call RenderAudio from the game.
@@ -4951,7 +4951,7 @@ public partial class AkUnitySoundEngine {
 
   ///  This function should be called to put the sound engine in background mode, where audio isn't processed anymore. This needs to be called if the console has a background mode or some suspended state.
   ///  Call ``WakeupFromSuspend`` when your application receives the message from the OS that the process is back in foreground.
-  ///  When suspended, the sound engine will process API messages (like PostEvent and SetSwitch) only when \ref RenderAudio() is called.
+  ///  When suspended, the sound engine will process API messages (like PostEvent and SetSwitch) only when \ref AK::SoundEngine::RenderAudio is called.
   ///  It is recommended to match the **in_bRenderAnyway** parameter with the behavior of the rest of your game:
   ///  if your game still runs in background and you must keep some kind of coherent state between the audio engine and game, then allow rendering.
   ///  If you want to minimize CPU when in background, then don't allow rendering and never call RenderAudio from the game.
@@ -5642,14 +5642,14 @@ public partial class AkUnitySoundEngine {
   ///  is useful in situations where two or more acoustic environments are not easily modeled as closed rooms connected by portals.
   ///  Possible uses for Reverb Zones include: a covered area with no walls, a forested area within an outdoor space, or any situation
   ///  where multiple reverb effects are desired within a common space. Reverb Zones have many advantages compared to standard Game-Defined
-  ///  Auxiliary Sends. They are part of the wet path, and form reverb chains with other Rooms; they are spatialized according to their 3D extent;
+  ///  Auxiliary Sends. They are part of the Diffuse Propagation Path, and form reverb chains with other Rooms; they are spatialized according to their 3D extent;
   ///  they are also subject to other acoustic phenomena simulated in Wwise Spatial Audio, such as diffraction and transmission.
   ///  A parent Room may have multiple Reverb Zones, but a Reverb Zone can only have a single Parent. If a Room is already assigned
   ///  to a parent Room, it will first be removed from the old parent (exactly as if AK::SpatialAudio::RemoveReverbZone were called)
   ///  before then being assigned to the new parent Room. A Room can not be its own parent.
   ///  The Reverb Zone and its parent are both Rooms, and as such, must be specified using AK::SpatialAudio::SetRoom.
   ///  If AK::SpatialAudio::SetReverbZone is called before AK::SpatialAudio::SetRoom, and either of the two rooms do not yet exist,
-  ///  placeholder Rooms with default parameters are created. They should be subsequently parameteized with AK::SpatialAudio::SetRoom.
+  ///  placeholder Rooms with default parameters are created. They should be subsequently parameterized with AK::SpatialAudio::SetRoom.
   ///  To set which Reverb Zone a Game Object is in, use the AK::SpatialAudio::SetGameObjectInRoom API, and pass the Reverb Zone's Room ID.
   ///  In Wwise Spatial Audio, a Game Object can only ever be inside a single room, and Reverb Zones are no different in this regard.
   ///

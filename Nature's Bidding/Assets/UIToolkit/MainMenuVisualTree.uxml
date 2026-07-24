@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UIToolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=40de9425504d92347b5a656c912db763&amp;type=3#MainMenuStyle"/>
+    <ui:VisualElement name="Container" style="flex-grow: 1;">
+        <ui:Label text="Nature&apos;s Bidding" class="header" style="font-size: 90px; width: 650px; height: 90px; white-space: pre-wrap; -unity-text-align: upper-center; align-self: center; -unity-font-style: bold; top: 56px;"/>
+        <ui:Button text="Start" name="StartGameButton" class="button" style="align-self: flex-end; align-content: flex-start; align-items: flex-end; margin-bottom: 7px; bottom: -654px; top: auto; -unity-text-align: middle-center; white-space: nowrap; width: 650px; height: 90px; font-size: 40px; -unity-font-style: bold;"/>
+        <ui:Button text="Settings" name="SettingsButton" class="button" style="height: 70px; width: 400px; align-self: flex-end; align-content: flex-end; bottom: -671px; font-size: 25px; -unity-font-style: bold;"/>
+        <ui:Button text="Quit Game" name="QuitGameButton" class="button" style="margin-top: 1px; width: 400px; height: 70px; align-self: flex-end; bottom: -692px; -unity-font-style: bold; font-size: 25px; transition-property: all; transition-duration: 0.35s; transition-timing-function: ease; transition-delay: 0s;"/>
+    </ui:VisualElement>
+</ui:UXML>

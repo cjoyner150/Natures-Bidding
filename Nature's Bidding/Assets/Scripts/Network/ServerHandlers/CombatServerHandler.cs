@@ -28,7 +28,12 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         base.OnNetworkSpawn();
 
         gameOverUI?.SetActive(false);
+        WaitUntilPlayersReady();
+    }
 
+    private async void WaitUntilPlayersReady()
+    {
+        await UniTask.WaitUntil(() => NetworkManager.ConnectedClientsList.All(c => c.PlayerObject != null));
         PersistentGameStateManager.Instance.OnCombatSceneReady();
     }
 

@@ -1,0 +1,30 @@
+State Group	ID	Name			Wwise Object Path	Notes
+	1048449605	Map			\Default Work Unit\Map	
+	3211383847	Game_Phase			\Default Work Unit\Game_Phase	
+	3737198187	Combat_Result			\Default Work Unit\Combat_Result	
+
+State	ID	Name	State Group			Notes
+	540301611	Lava	Map			
+	748895195	None	Map			
+	1668395945	Cliff	Map			
+	290285391	Lobby	Game_Phase			
+	500842706	Bidding	Game_Phase			
+	748895195	None	Game_Phase			
+	908101565	Shopping	Game_Phase			
+	2607556080	Menu	Game_Phase			
+	2764240573	Combat	Game_Phase			
+	748895195	None	Combat_Result			
+	1593864692	Defeat	Combat_Result			
+	2716678721	Victory	Combat_Result			
+
+Audio Bus	ID	Name			Wwise Object Path	Notes
+	85412153	Ambience			\Default Work Unit\Main Audio Bus\Ambience	
+	393239870	SFX			\Default Work Unit\Main Audio Bus\SFX	
+	1551306167	UI			\Default Work Unit\Main Audio Bus\UI	
+	2246998526	Main Audio Bus			\Default Work Unit\Main Audio Bus	
+	3991942870	Music			\Default Work Unit\Main Audio Bus\Music	
+
+Audio Devices	ID	Name	Type				Notes
+	2317455096	No_Output	No Output			
+	3859886410	System	System			
+

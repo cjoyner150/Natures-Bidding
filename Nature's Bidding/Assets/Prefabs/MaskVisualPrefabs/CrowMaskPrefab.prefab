@@ -92,6 +92,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6c48a934a24208542af108e4dca06095, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 60c4591160c5e5b45841075707b64eaf, type: 2}
     - target: {fileID: 919132149155446097, guid: 6c48a934a24208542af108e4dca06095, type: 3}
       propertyPath: m_Name
       value: GGJ26_CrowMask (1)

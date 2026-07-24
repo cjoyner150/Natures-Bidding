@@ -48,6 +48,9 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     public int   minBid             = 1;
     public int   startingBid        = 10;
 
+    [Header("Audio")]
+    [SerializeField] private BiddingAudioFeedback audioFeedback;
+
     #endregion
 
     #region Network Variables
@@ -86,7 +89,11 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
 
     #region Lifecycle
 
-    void Awake() { }
+    void Awake()
+    {
+        if (audioFeedback == null)
+            audioFeedback = GetComponent<BiddingAudioFeedback>();
+    }
 
     void Update()
     {
@@ -418,16 +425,30 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     public void OnBidUp()
     {
         if (_localBidSubmitted) return;
+
+        int previousBid = _localBidAmount;
         _localBidAmount += bidStep;
+
+        if (_localBidAmount == previousBid)
+            return;
+
         RefreshBidDisplay(true);
+        audioFeedback?.PlayBidUp();
     }
 
     /// <summary>Decrease bid by one step. Call from - button or left trigger.</summary>
     public void OnBidDown()
     {
         if (_localBidSubmitted) return;
+
+        int previousBid = _localBidAmount;
         _localBidAmount = Mathf.Max(minBid, _localBidAmount - bidStep);
+
+        if (_localBidAmount == previousBid)
+            return;
+
         RefreshBidDisplay(true);
+        audioFeedback?.PlayBidDown();
     }
 
     /// <summary>Submit the current bid. Call from Submit button or confirm button.</summary>

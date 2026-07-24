@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WwiseDocument Type="Project" SchemaVersion="133" WwiseVersion="v2025.1.5" WwiseBuild="9095">
+<WwiseDocument Type="Project" SchemaVersion="133" WwiseVersion="v2025.1.9" WwiseBuild="9197">
 	<ProjectInfo>
 		<Project Name="Nature's Bidding_WwiseProject" ID="{B3A44E35-0D35-4DC6-823F-82358EA4ACDC}">
 			<Platforms>
@@ -30,7 +30,7 @@
 					</ValueList>
 				</Property>
 				<Property Name="SoundBankGenerateHeaderFile" Type="bool" Value="True" />
-				<Property Name="SoundBankGenerateEstimatedDuration" Type="bool" Value="True" /><Property Name="SoundBankHeaderFilePath" Type="string" Value="../../Nature's Bidding/Nature's Bidding_WwiseProject/GeneratedSoundBanks/" />
+				<Property Name="SoundBankGenerateEstimatedDuration" Type="bool" Value="True" /><Property Name="GenerateSoundBankXML" Type="bool" Value="False" /><Property Name="SoundBankGenerateMaxAttenuationInfo" Type="bool" Value="True" /><Property Name="GenerateSoundBankJSON" Type="bool" Value="True" /><Property Name="SoundBankGeneratePrintGUID" Type="bool" Value="True" /><Property Name="SoundBankGeneratePrintPath" Type="bool" Value="True" /><Property Name="SoundBankHeaderFilePath" Type="string" Value="Z:/Users/thomasvu/Documents/GitHub/Natures-Bidding/Nature's Bidding/Nature's Bidding_WwiseProject/GeneratedSoundBanks/" />
 				<Property Name="SoundBankPaths" Type="string">
 					<ValueList>
 						<Value Platform="Mac">GeneratedSoundBanks\Mac\</Value>
@@ -10455,9 +10455,6 @@
 				</PhysicalFolder>
 				<PhysicalFolder Path="Containers">
 					<WorkUnit Name="Containers" ID="{5EA7BBF8-64C0-4A50-8821-A07E8BE21D68}" PersistMode="Standalone" />
-				</PhysicalFolder>
-				<PhysicalFolder Path="Containers\Ambience Work Unit">
-					<WorkUnit Name="Ambience Work Unit" ID="{72C9D43D-D5B5-4701-A580-087F174A2B6A}" PersistMode="Standalone" />
 				</PhysicalFolder>
 				<PhysicalFolder Path="Control Surface Sessions">
 					<WorkUnit Name="Control Surface Sessions" ID="{1751E4CD-8018-4E2C-9A8A-C77764D1D653}" PersistMode="Standalone" />

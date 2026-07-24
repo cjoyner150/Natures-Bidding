@@ -3,7 +3,7 @@
 	<Events>
 		<WorkUnit Name="UI Work Unit" ID="{033FAE99-176E-4433-B8D1-2230EC824361}" PersistMode="Standalone">
 			<ChildrenList>
-				<Event Name="Play_UI_Bid" ID="{C2E4B442-82BC-43CC-AF73-90A9B75CF663}">
+				<Event Name="Play_UI_Bid_Adjust" ID="{C2E4B442-82BC-43CC-AF73-90A9B75CF663}">
 					<ChildrenList>
 						<Action Name="" ID="{4D074430-34D6-4494-BCB1-432DACAB843C}" ShortID="659729449">
 							<ReferenceList>

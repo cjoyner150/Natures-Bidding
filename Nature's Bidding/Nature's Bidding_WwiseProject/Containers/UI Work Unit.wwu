@@ -2,19 +2,35 @@
 <WwiseDocument Type="WorkUnit" ID="{1225B259-A259-44FE-8970-96AB4F733DF4}" SchemaVersion="133">
 	<Containers>
 		<WorkUnit Name="UI Work Unit" ID="{1225B259-A259-44FE-8970-96AB4F733DF4}" PersistMode="Standalone">
+			<PropertyList>
+				<Property Name="Color" Type="int16" Value="2"/>
+				<Property Name="OverrideColor" Type="bool" Value="True"/>
+			</PropertyList>
 			<ChildrenList>
-				<Folder Name="bid" ID="{076A6B80-B090-401B-A093-836729618B55}" ShortID="19523283">
+				<Folder Name="Bidding" ID="{076A6B80-B090-401B-A093-836729618B55}" ShortID="19523283">
 					<ChildrenList>
 						<SwitchContainer Name="click" ID="{E105CD71-ADB5-4E9A-91A3-E16C1D2F3D0E}" ShortID="204311014">
+							<PropertyList>
+								<Property Name="MaxSoundPerInstance" Type="int16">
+									<ValueList>
+										<Value>3</Value>
+									</ValueList>
+								</Property>
+								<Property Name="UseMaxSoundPerInstance" Type="bool">
+									<ValueList>
+										<Value>True</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
 								</Reference>
 								<Reference Name="OutputBus">
-									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+									<ObjectRef Name="UI" ID="{ADF1903D-2C27-4D5C-8A60-52061641C33E}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
 								</Reference>
 								<Reference Name="SwitchGroupOrStateGroup">
-									<ObjectRef Name="Bid_Type" ID="{796B2E9E-6B23-44A6-94CF-AAFA97E4DB38}" WorkUnitID="{B09645AD-CE3F-4FC9-8E12-21BDC4E18C64}"/>
+									<ObjectRef Name="Bid_Direction" ID="{796B2E9E-6B23-44A6-94CF-AAFA97E4DB38}" WorkUnitID="{B09645AD-CE3F-4FC9-8E12-21BDC4E18C64}"/>
 								</Reference>
 							</ReferenceList>
 							<ChildrenList>
@@ -276,6 +292,11 @@
 						</SwitchContainer>
 						<RandomSequenceContainer Name="flick" ID="{5B7F5791-541C-4613-A203-7E399BB858DA}" ShortID="606359727">
 							<PropertyList>
+								<Property Name="MaxSoundPerInstance" Type="int16">
+									<ValueList>
+										<Value>3</Value>
+									</ValueList>
+								</Property>
 								<Property Name="Pitch" Type="int32">
 									<ModifierList>
 										<ModifierInfo>
@@ -289,13 +310,18 @@
 										</ModifierInfo>
 									</ModifierList>
 								</Property>
+								<Property Name="UseMaxSoundPerInstance" Type="bool">
+									<ValueList>
+										<Value>True</Value>
+									</ValueList>
+								</Property>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
 								</Reference>
 								<Reference Name="OutputBus">
-									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+									<ObjectRef Name="UI" ID="{ADF1903D-2C27-4D5C-8A60-52061641C33E}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
 								</Reference>
 							</ReferenceList>
 							<ChildrenList>

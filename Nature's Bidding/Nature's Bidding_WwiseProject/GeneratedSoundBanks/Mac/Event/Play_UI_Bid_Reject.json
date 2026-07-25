@@ -1,0 +1,72 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Mac",
+  "BasePlatform": "Mac",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "1191336738",
+    "Type": "Event",
+    "GUID": "{E0384640-9D76-42B9-82F2-B4AB94528BAB}",
+    "Language": "SFX",
+    "Hash": "{A87D453B-7A4D-E787-1357-89D3E3B6A023}",
+    "ObjectPath": "Play_UI_Bid_Reject",
+    "ShortName": "Play_UI_Bid_Reject",
+    "Path": "Event/Play_UI_Bid_Reject.bnk",
+    "Media": [
+     {
+      "Id": "360888761",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "reject\\ui_bid_reject_02.wav",
+      "Path": "Media/360888761.wem",
+      "CachePath": "18/{188FFD63-AAB8-FE1A-83E9-A53F0222DCCF}.wem"
+     },
+     {
+      "Id": "1013227618",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "reject\\ui_bid_reject_03.wav",
+      "Path": "Media/1013227618.wem",
+      "CachePath": "F5/{F52D9831-9044-F735-0685-624D31CE3C60}.wem"
+     },
+     {
+      "Id": "1056073181",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "reject\\ui_bid_reject_01.wav",
+      "Path": "Media/1056073181.wem",
+      "CachePath": "6F/{6F7BAFBB-B309-AE06-9291-7A6E980D7406}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "1191336738",
+      "Name": "Play_UI_Bid_Reject",
+      "ObjectPath": "\\Events\\UI Work Unit\\Play_UI_Bid_Reject",
+      "GUID": "{E0384640-9D76-42B9-82F2-B4AB94528BAB}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.510495",
+      "DurationMax": "0.52958333",
+      "MediaRefs": [
+       {
+        "Id": "360888761"
+       },
+       {
+        "Id": "1013227618"
+       },
+       {
+        "Id": "1056073181"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{3665530A-E2DD-9F66-5399-D57597048304}"
+ }
+}

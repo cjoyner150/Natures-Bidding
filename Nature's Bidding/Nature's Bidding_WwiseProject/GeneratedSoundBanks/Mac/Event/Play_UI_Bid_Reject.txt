@@ -1,0 +1,3 @@
+Event	ID	Name			Wwise Object Path	Notes
+	1191336738	Play_UI_Bid_Reject			\UI Work Unit\Play_UI_Bid_Reject	
+

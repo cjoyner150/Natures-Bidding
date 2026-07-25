@@ -426,12 +426,17 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     {
         if (_localBidSubmitted) return;
 
-        int previousBid = _localBidAmount;
-        _localBidAmount += bidStep;
-
-        if (_localBidAmount == previousBid)
+        int nextBid = _localBidAmount + bidStep;
+        if (nextBid == _localBidAmount)
             return;
 
+        if (TryGetLocalPlayerGold(out int availableGold) && nextBid > availableGold)
+        {
+            audioFeedback?.PlayBidReject();
+            return;
+        }
+
+        _localBidAmount = nextBid;
         RefreshBidDisplay(true);
         audioFeedback?.PlayBidUp();
     }
@@ -441,12 +446,17 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     {
         if (_localBidSubmitted) return;
 
-        int previousBid = _localBidAmount;
-        _localBidAmount = Mathf.Max(minBid, _localBidAmount - bidStep);
-
-        if (_localBidAmount == previousBid)
+        int nextBid = _localBidAmount - bidStep;
+        if (nextBid == _localBidAmount)
             return;
 
+        if (nextBid < minBid)
+        {
+            audioFeedback?.PlayBidReject();
+            return;
+        }
+
+        _localBidAmount = nextBid;
         RefreshBidDisplay(true);
         audioFeedback?.PlayBidDown();
     }
@@ -455,7 +465,13 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     public void OnSubmitBid()
     {
         if (_localBidSubmitted) return;
-        if (_localBidAmount < minBid) return;
+
+        if (_localBidAmount < minBid ||
+            (TryGetLocalPlayerGold(out int availableGold) && _localBidAmount > availableGold))
+        {
+            audioFeedback?.PlayBidReject();
+            return;
+        }
 
         _localBidSubmitted = true;
         audioFeedback?.PlayBidSubmit();
@@ -511,6 +527,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     {
         // Reset so the player can adjust and try again
         _localBidSubmitted = false;
+        audioFeedback?.PlayBidReject();
         RefreshSubmitButton();
         if (statusText)     statusText.text = $"Bid rejected: {reason}";
         if (bidHUDPanel != null) bidHUDPanel.SetActive(true);
@@ -610,6 +627,21 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     {
         var p = PersistentPlayerRegistry.Instance?.GetByClientId(clientId);
         return p != null ? p.playerName : $"Player {clientId}";
+    }
+
+    bool TryGetLocalPlayerGold(out int gold)
+    {
+        gold = 0;
+
+        if (NetworkManager.Singleton == null || PersistentPlayerRegistry.Instance == null)
+            return false;
+
+        var player = PersistentPlayerRegistry.Instance.GetByClientId(NetworkManager.Singleton.LocalClientId);
+        if (player == null)
+            return false;
+
+        gold = player.gold;
+        return true;
     }
 
     #endregion

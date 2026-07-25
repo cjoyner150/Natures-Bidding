@@ -515,6 +515,89 @@
 								</Sound>
 							</ChildrenList>
 						</RandomSequenceContainer>
+						<RandomSequenceContainer Name="reject" ID="{EA016248-3CCE-4495-954B-20A1F7E22F2C}" ShortID="849692951">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="ui_bid_reject_01" ID="{61A66C5D-52FF-445D-B1C9-F09F757CB996}" ShortID="402248606">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="ui_bid_reject_01" ID="{2D335C31-85E0-4B0C-8DB4-69E588D340F4}">
+											<Language>SFX</Language>
+											<AudioFile>reject\ui_bid_reject_01.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="1056073181"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="ui_bid_reject_01" ID="{2D335C31-85E0-4B0C-8DB4-69E588D340F4}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="ui_bid_reject_02" ID="{93AB7EBF-F230-43F8-8B97-2F860B73E433}" ShortID="312774927">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="ui_bid_reject_02" ID="{2CFE03F3-204D-40A8-A13D-27BF240A0EC3}">
+											<Language>SFX</Language>
+											<AudioFile>reject\ui_bid_reject_02.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="360888761"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="ui_bid_reject_02" ID="{2CFE03F3-204D-40A8-A13D-27BF240A0EC3}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="ui_bid_reject_03" ID="{E157908B-5DF1-46A7-A923-F331CE18925E}" ShortID="1035729524">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="ui_bid_reject_03" ID="{C988CB2C-7BE5-4D8E-85A7-45D75AF682F9}">
+											<PropertyList>
+												<Property Name="FadeInDuration" Type="Real64" Value="0.01564"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.02013"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>reject\ui_bid_reject_03.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="1013227618"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="ui_bid_reject_03" ID="{C988CB2C-7BE5-4D8E-85A7-45D75AF682F9}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+						</RandomSequenceContainer>
 					</ChildrenList>
 				</Folder>
 			</ChildrenList>

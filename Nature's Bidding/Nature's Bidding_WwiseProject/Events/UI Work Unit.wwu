@@ -32,6 +32,7 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_UI_Bid_Reject" ID="{E0384640-9D76-42B9-82F2-B4AB94528BAB}"/>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{8CBC2CD0-42C0-9F20-AFE8-5201E29BE1BB}",
+    "Hash": "{A61C1700-DD87-AFE4-1A68-D695FA3FAED5}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -36,14 +36,186 @@
     },
     "Busses": [
      {
+      "Id": "85412153",
+      "Name": "Ambience",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\Ambience",
+      "GUID": "{E3FF9C71-34A7-47B6-A750-804FE4397322}"
+     },
+     {
+      "Id": "393239870",
+      "Name": "SFX",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\SFX",
+      "GUID": "{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}"
+     },
+     {
+      "Id": "1551306167",
+      "Name": "UI",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\UI",
+      "GUID": "{ADF1903D-2C27-4D5C-8A60-52061641C33E}"
+     },
+     {
       "Id": "2246998526",
       "Name": "Main Audio Bus",
       "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus",
       "GUID": "{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}"
+     },
+     {
+      "Id": "3991942870",
+      "Name": "Music",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\Music",
+      "GUID": "{899FB7A5-9F49-4C90-AB8B-67097E3D5629}"
+     }
+    ],
+    "StateGroups": [
+     {
+      "Id": "1048449605",
+      "Name": "Map",
+      "ObjectPath": "\\States\\Default Work Unit\\Map",
+      "GUID": "{34ADBFF0-DAEF-4ED8-BA8A-3FA9901AB826}",
+      "States": [
+       {
+        "Id": "540301611",
+        "Name": "Lava",
+        "ObjectPath": "\\States\\Default Work Unit\\Map\\Lava",
+        "GUID": "{D5BA4557-9946-47D0-B9A0-7045CF947424}"
+       },
+       {
+        "Id": "748895195",
+        "Name": "None",
+        "ObjectPath": "\\States\\Default Work Unit\\Map\\None",
+        "GUID": "{B582B5AA-26BC-420A-A1B4-62606537B8F3}"
+       },
+       {
+        "Id": "1668395945",
+        "Name": "Cliff",
+        "ObjectPath": "\\States\\Default Work Unit\\Map\\Cliff",
+        "GUID": "{93B52BF6-F969-483A-A7EA-3C9E82A44F89}"
+       }
+      ]
+     },
+     {
+      "Id": "3211383847",
+      "Name": "Game_Phase",
+      "ObjectPath": "\\States\\Default Work Unit\\Game_Phase",
+      "GUID": "{75357766-F5A1-4703-BC5A-F7BC4CF3FCB7}",
+      "States": [
+       {
+        "Id": "290285391",
+        "Name": "Lobby",
+        "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Lobby",
+        "GUID": "{D7C918A9-A591-46E8-9FD8-6093433816E7}"
+       },
+       {
+        "Id": "500842706",
+        "Name": "Bidding",
+        "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Bidding",
+        "GUID": "{2F9BA0E6-E155-4A4D-869A-FD6D6D6BF5A3}"
+       },
+       {
+        "Id": "748895195",
+        "Name": "None",
+        "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\None",
+        "GUID": "{F19062E5-3F11-47B2-A1A0-85036279551B}"
+       },
+       {
+        "Id": "908101565",
+        "Name": "Shopping",
+        "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Shopping",
+        "GUID": "{05104055-75E4-45F5-B33D-321ED64E1E8A}"
+       },
+       {
+        "Id": "2607556080",
+        "Name": "Menu",
+        "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Menu",
+        "GUID": "{F1E0877A-485F-4551-99E4-762926D35072}"
+       },
+       {
+        "Id": "2764240573",
+        "Name": "Combat",
+        "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Combat",
+        "GUID": "{AF2EE265-C86B-40BD-97FE-DE5FEE14D9AC}"
+       }
+      ]
+     },
+     {
+      "Id": "3737198187",
+      "Name": "Combat_Result",
+      "ObjectPath": "\\States\\Default Work Unit\\Combat_Result",
+      "GUID": "{1139FE66-A674-4BC0-8D57-C8980C748FE5}",
+      "States": [
+       {
+        "Id": "748895195",
+        "Name": "None",
+        "ObjectPath": "\\States\\Default Work Unit\\Combat_Result\\None",
+        "GUID": "{CF322A44-4FBD-48A0-8702-65FDD9525566}"
+       },
+       {
+        "Id": "1593864692",
+        "Name": "Defeat",
+        "ObjectPath": "\\States\\Default Work Unit\\Combat_Result\\Defeat",
+        "GUID": "{713197F5-AA40-4CBC-9276-FAFC95329ED6}"
+       },
+       {
+        "Id": "2716678721",
+        "Name": "Victory",
+        "ObjectPath": "\\States\\Default Work Unit\\Combat_Result\\Victory",
+        "GUID": "{8FB979FF-C118-4F55-BB2A-4374ADF88A28}"
+       }
+      ]
+     }
+    ],
+    "SwitchGroups": [
+     {
+      "Id": "1834394558",
+      "Name": "Surface",
+      "ObjectPath": "\\Switches\\Default Work Unit\\Surface",
+      "GUID": "{4FE79508-617A-400F-A34B-FC69B5D6A8CD}",
+      "Switches": []
+     },
+     {
+      "Id": "2161705626",
+      "Name": "Impact_Type",
+      "ObjectPath": "\\Switches\\Default Work Unit\\Impact_Type",
+      "GUID": "{545C5835-1A65-4586-BF6B-7B227F9220F9}",
+      "Switches": []
+     },
+     {
+      "Id": "2391623980",
+      "Name": "Mask_Type",
+      "ObjectPath": "\\Switches\\Default Work Unit\\Mask_Type",
+      "GUID": "{28A79DA8-AF82-4D6B-8E02-3461CE3597C5}",
+      "Switches": []
+     },
+     {
+      "Id": "3942364280",
+      "Name": "Weapon_Type",
+      "ObjectPath": "\\Switches\\Default Work Unit\\Weapon_Type",
+      "GUID": "{FEFEA370-03C2-450F-BE1B-219032BFEB86}",
+      "Switches": []
+     },
+     {
+      "Id": "4110079352",
+      "Name": "Bid_Direction",
+      "ObjectPath": "\\Switches\\Default Work Unit\\Bid_Direction",
+      "GUID": "{796B2E9E-6B23-44A6-94CF-AAFA97E4DB38}",
+      "Switches": [
+       {
+        "Id": "1551306158",
+        "Name": "Up",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Bid_Direction\\Up",
+        "GUID": "{4A570298-AF13-4468-8D95-002DCFC71E96}"
+       },
+       {
+        "Id": "2280510569",
+        "Name": "Down",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Bid_Direction\\Down",
+        "GUID": "{6D589AD8-8279-45C6-8882-D8D66C367B8A}"
+       }
+      ]
      }
     ]
    }
   ],
-  "FileHash": "{CF1A5D5D-FB6A-47E5-EC2F-252F4CC922EE}"
+  "FileHash": "{C458E313-AD31-89C8-2E2C-ED4D0407DD1C}"
  }
 }

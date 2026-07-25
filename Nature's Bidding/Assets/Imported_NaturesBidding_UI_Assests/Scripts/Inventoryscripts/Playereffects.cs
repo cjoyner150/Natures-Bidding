@@ -168,7 +168,7 @@ public class PlayerEffects : NetworkBehaviour
         int   maxCoins  = -1;
         bool  tie       = false;
 
-        foreach (var pd in PlayerData.GetAllPlayers())
+        foreach (var pd in PlayerShoppingNetworkBehavior.GetAllPlayers())
         {
             if (pd.Coins.Value > maxCoins)
             {
@@ -200,7 +200,7 @@ public class PlayerEffects : NetworkBehaviour
         ulong fastestId      = ulong.MaxValue;
         float fastestSpeed   = -1f;
 
-        foreach (var pd in PlayerData.GetAllPlayers())
+        foreach (var pd in PlayerShoppingNetworkBehavior.GetAllPlayers())
         {
             if (pd.OwnerClientId == ownerClientId) continue;
             if (pd.SpeedMultiplier.Value > fastestSpeed)
@@ -212,7 +212,7 @@ public class PlayerEffects : NetworkBehaviour
 
         if (fastestId == ulong.MaxValue) return;
 
-        var targetPd = PlayerData.GetPlayer(fastestId);
+        var targetPd = PlayerShoppingNetworkBehavior.GetPlayer(fastestId);
         if (targetPd != null)
             targetPd.SpeedMultiplier.Value -= HangedSpeedPenalty.Value;
     }

@@ -112,7 +112,11 @@ public class AkWwiseComponentPicker : UnityEditor.EditorWindow
 	{
 		if (in_element == null || m_type != in_element.objectType) return;
 
-		m_serializedObject.Update();
+		if (m_serializedObject != null)
+		{
+			m_serializedObject.Update();
+		}
+
 		var reference = WwiseObjectReference.FindOrCreateWwiseObject(m_type, in_element.name, in_element.objectGuid);
 		var groupReference = reference as WwiseGroupValueObjectReference;
 		if (groupReference)
@@ -128,12 +132,13 @@ public class AkWwiseComponentPicker : UnityEditor.EditorWindow
 		}
 		else
 		{
-			m_serializedObject.Update();
+			if (m_serializedObject != null)
+			{
+				m_serializedObject.Update();
+			}
 			m_WwiseObjectReference.objectReferenceValue = reference;
 			m_serializedObject.ApplyModifiedProperties();
 		}
-		
-		AkWwiseBrowser.SelectInWwiseBrowser(in_element.objectGuid);
 
 		m_close = true;
 	}

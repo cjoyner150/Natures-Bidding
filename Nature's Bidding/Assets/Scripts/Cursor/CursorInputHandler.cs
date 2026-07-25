@@ -1,18 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 public class CursorInputHandler : MonoBehaviour
 {
-    public InputType CurrentInputType = InputType.StandardMouse;
-    public enum InputType
-    {
-        StandardMouse,
-        NonStandardCursor
-    }
-
     bool _cursorPaused = false;
     bool networkedCursor = false;
 
@@ -22,8 +13,6 @@ public class CursorInputHandler : MonoBehaviour
     void Awake()
     {
         cursorImage = GetComponentInChildren<Image>();
-
-        InputSystem.onEvent += OnAnyInputEvent;
     }
 
     public void InitializeNetworkSync(PlayerCursorNetworkBehavior networkSync, bool isNetworked)
@@ -32,34 +21,8 @@ public class CursorInputHandler : MonoBehaviour
         networkedCursor = isNetworked;
     }
 
-    public void OnDestroy()
-    {
-        InputSystem.onEvent -= OnAnyInputEvent;
-    }
-
-    private void OnAnyInputEvent(InputEventPtr eventPtr, InputDevice device)
-    {
-        // We don't care about input events that are not state events
-        if (!eventPtr.IsA<StateEvent>() && !eventPtr.IsA<DeltaStateEvent>()) return;
-
-        InputType newType = device switch
-        {
-            Gamepad => InputType.NonStandardCursor,
-            Mouse => InputType.StandardMouse,
-            Keyboard => InputType.StandardMouse,
-            _ => CurrentInputType // unknown device type, don't change anything
-        };
-
-        if (newType != CurrentInputType)
-        {
-            CurrentInputType = newType;
-            Debug.Log($"[PlayerCursorNetworkBehavior] Switched to {CurrentInputType} (triggered by {device.displayName}).");
-        }
-    }
-
     private void Update()
     {
-
         if (Cursor.visible) Cursor.visible = false;
 
         if (Keyboard.current != null && Keyboard.current.pKey.wasPressedThisFrame)
@@ -75,7 +38,7 @@ public class CursorInputHandler : MonoBehaviour
         }
 
         Vector2 normPos;
-        if (CurrentInputType == InputType.StandardMouse)
+        if (InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.MouseAndKeyboard)
         {
             Vector2 mousePos = Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
             if (!_cursorPaused)
@@ -88,11 +51,10 @@ public class CursorInputHandler : MonoBehaviour
                     cursorNetworkSync.SyncCursorPosition(normPos);
             }
         }
-        else if (CurrentInputType == InputType.NonStandardCursor && networkedCursor && cursorNetworkSync != null)
+        else if (InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.Gamepad && networkedCursor && cursorNetworkSync != null)
         {
             normPos = new Vector2(cursorImage.rectTransform.anchoredPosition.x / Screen.width, cursorImage.rectTransform.anchoredPosition.y / Screen.height);
             cursorNetworkSync.SyncCursorPosition(normPos);
         }
-
     }
 }

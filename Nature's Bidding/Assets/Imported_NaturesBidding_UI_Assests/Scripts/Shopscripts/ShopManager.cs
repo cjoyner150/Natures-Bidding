@@ -46,6 +46,10 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
     public Button   backToBiddingButton;        // Host only
     public TMP_Text phaseLabel;
 
+    [Header("Shop Visuals")]
+    public GameObject shopCanvasRoot;
+    public GameObject playerCrosshairPrefab;
+
     #endregion
 
     #region Private State
@@ -72,12 +76,20 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
         base.OnNetworkSpawn();
         backToBiddingButton?.gameObject.SetActive(IsHost);
         BuildUpgradeLookup();
+        SetShopBackgroundVisible(false);
+
+        PersistentGameStateManager.Instance?.OnBiddingSceneReady();
     }
 
     public void OnShopPhaseStart()
     {
-        if (phaseLabel) phaseLabel.text = "Shop";
+        Debug.Log("[ShopManager] Shop phase is starting...");
+
+        if (phaseLabel) phaseLabel.text = "Shop Phase";
         PotManager.Instance?.ResetForNewPhase();
+        SetShopBackgroundVisible(true);
+
+        SpawnAllPlayerCrosshairs();
 
         if (IsServer)
             ServerRollAllOfferings();
@@ -91,7 +103,25 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
         PersistentGameStateManager.Instance?.BeginShopPhaseServer();
     }
 
+    public void SpawnAllPlayerCrosshairs()
+    {
+        if (!IsServer) return;
+
+        foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            GameObject crosshairGO = Instantiate(playerCrosshairPrefab);
+            NetworkObject netObj = crosshairGO.GetComponent<NetworkObject>();
+            netObj.SpawnWithOwnership(clientId);
+        }
+    }
+
     public void PopulateShopsServerSide() { }
+
+    void SetShopBackgroundVisible(bool visible)
+    {
+        if (shopCanvasRoot != null && shopCanvasRoot.activeSelf != visible)
+            shopCanvasRoot.SetActive(visible);
+    }
 
     #endregion
 
@@ -195,6 +225,11 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
     [Rpc(SendTo.Everyone)]
     void SyncAllOfferingsRpc(string packedAll)
     {
+        if (phaseLabel) phaseLabel.text = "Shop Phase";
+
+        SetShopBackgroundVisible(true);
+        PointerNPC.Instance?.HideSpeechBubble();
+
         foreach (Transform child in shopPanelsContainer)
             if (child != null) Destroy(child.gameObject);
         _panels.Clear();
@@ -270,20 +305,33 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
     void BuyUpgradeRpc(string upgradeId, RpcParams rpcParams = default)
     {
         ulong buyer  = rpcParams.Receive.SenderClientId;
-        var player   = PlayerData.GetPlayer(buyer);
-        if (player == null) return;
+        var registry = PersistentPlayerRegistry.Instance;
+        var playerState = registry?.GetByClientId(buyer);
+        if (registry == null || playerState == null) return;
 
         if (!_upgradeLookup.TryGetValue(upgradeId, out var upgrade))
             return;
 
-        if (player.Coins.Value < upgrade.cost)
+        if (playerState.gold < upgrade.cost)
         {
             PurchaseFailedRpc("Not enough coins!", RpcTarget.Single(buyer, RpcTargetUse.Temp));
             return;
         }
 
-        player.SpendCoins(upgrade.cost);
-        player.AddUpgradeServerSide(upgradeId, upgrade.effectValue, upgrade.upgradeType);
+        if (!registry.TrySpendGold(buyer, upgrade.cost))
+        {
+            PurchaseFailedRpc("Not enough coins!", RpcTarget.Single(buyer, RpcTargetUse.Temp));
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(upgrade.effectorId))
+            registry.AddItem(buyer, upgrade.effectorId, upgrade.effectorBucket);
+
+        var player = PlayerShoppingNetworkBehavior.GetPlayer(buyer);
+        if (player != null)
+        {
+            player.AddUpgradeServerSide(upgradeId, upgrade.effectValue, upgrade.upgradeType);
+        }
 
         // Tell all clients so every panel can refresh that player's stats
         UpgradePurchasedRpc(buyer, upgradeId);
@@ -324,23 +372,26 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
     void BuyPotRpc(bool isGrand, RpcParams rpcParams = default)
     {
         ulong buyer  = rpcParams.Receive.SenderClientId;
-        var player   = PlayerData.GetPlayer(buyer);
-        if (player == null)
+        var registry = PersistentPlayerRegistry.Instance;
+        var playerState = registry?.GetByClientId(buyer);
+        if (registry == null || playerState == null)
         {
-            Debug.LogWarning($"[ShopManager] BuyPotRpc rejected for client {buyer}: PlayerData not found.");
+            Debug.LogWarning($"[ShopManager] BuyPotRpc rejected for client {buyer}: persistent registry data not found.");
             return;
         }
 
         int cost = isGrand ? grandPotCost : smallPotCost;
-        if (player.Coins.Value < cost)
+        if (playerState.gold < cost)
         {
-            Debug.LogWarning($"[ShopManager] BuyPotRpc rejected for client {buyer}: not enough coins ({player.Coins.Value}/{cost}).");
+            Debug.LogWarning($"[ShopManager] BuyPotRpc rejected for client {buyer}: not enough coins ({playerState.gold}/{cost}).");
             return;
         }
 
         Debug.Log($"[ShopManager] BuyPotRpc accepted for client {buyer}. Deducting {cost} and opening {(isGrand ? "Grand" : "Small")} pot.");
 
-        player.SpendCoins(cost);
+        if (!registry.TrySpendGold(buyer, cost))
+            return;
+
         PotUsedRpc(buyer, isGrand);
         OpenPotSequenceRpc(isGrand, RpcTarget.Single(buyer, RpcTargetUse.Temp));
     }
@@ -392,9 +443,10 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
         }
         else
         {
-            var player = PlayerData.GetPlayer(buyer);
-            if (player == null || player.Coins.Value < rerollCost) return;
-            player.SpendCoins(rerollCost);
+            var registry = PersistentPlayerRegistry.Instance;
+            var playerState = registry?.GetByClientId(buyer);
+            if (registry == null || playerState == null || playerState.gold < rerollCost) return;
+            if (!registry.TrySpendGold(buyer, rerollCost)) return;
         }
 
         var newOfferings  = RollThree();

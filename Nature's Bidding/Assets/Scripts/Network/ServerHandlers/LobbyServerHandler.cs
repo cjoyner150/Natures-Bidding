@@ -115,7 +115,7 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
         OnAllPlayersReadied?.Invoke();
     }
 
-    protected override void OnPlayerReconnected(ulong clientId, PersistentPlayerData data)
+    protected override void OnPlayerReconnected(ulong clientId, PlayerData data)
     {
         Debug.LogWarning($"Unexpected reconnect: {data.playerName} tried to reconnect in lobby. Ignoring.");
         PersistentPlayerRegistry.Instance.UnregisterLobbyPlayer(clientId);

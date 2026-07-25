@@ -451,7 +451,7 @@ MonoBehaviour:
   confusionParticle: {fileID: 8375094254695761975, guid: 120d5c2083da75a4bb471879628f33b5, type: 3}
   parryParticle: {fileID: 2394006008497064591, guid: 40c46fda860a5064cbf8ab73bcbb7c31, type: 3}
   parrySuccessParticle: {fileID: 4595470619510423577, guid: fd3b76cd1c207284e833827d7d37d957, type: 3}
-  magicPoofParticle: {fileID: 0}
+  magicPoofParticle: {fileID: 7981934318694625484, guid: 7eb09148b5a5f2f4686ec0e43bbf878c, type: 3}
   stunParticle: {fileID: 0}
   lavaSplashParticle: {fileID: 489954815737543743, guid: da44f8b94fa88da469e29fe424ddee4b, type: 3}
   explosionParticle: {fileID: 5760442672778993801, guid: edec52a2346ad3a47956d7ed7d96d4a5, type: 3}

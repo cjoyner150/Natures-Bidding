@@ -83,6 +83,7 @@
   <Project Path="Unity.Rider.Editor.csproj" />
   <Project Path="Unity.VisualScripting.State.csproj" />
   <Project Path="Unity.AI.Navigation.Updater.csproj" />
+  <Project Path="AK.Wwise.Unity.OpenXR.csproj" />
   <Project Path="AK.Wwise.Unity.Logging.csproj" />
   <Project Path="Unity.Multiplayer.Tools.NetVis.Editor.UI.csproj" />
   <Project Path="UnityEditor.UI.csproj" />

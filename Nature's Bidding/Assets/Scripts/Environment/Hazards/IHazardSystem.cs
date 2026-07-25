@@ -3,7 +3,7 @@ using UnityEngine;
 public interface IHazardSystem
 {
     virtual void StartHazard() { }
-    void StopHazard();
+    virtual void StopHazard() { }
     void TickHazard(float delta);
     void TriggerHazard();
 }

@@ -225,7 +225,6 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         healthProgressBarVisual.SetBar01(Mathf.Clamp01(to / maxHealth.Value));
     }
 
-
     private UniTaskCompletionSource _deathAckTcs;
     private UniTaskCompletionSource _killAckTcs;
 

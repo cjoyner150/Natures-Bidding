@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Unity.Netcode;
+using Unity.Services.Multiplayer;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -19,9 +20,13 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
     [SerializeField] private CinemachineVirtualCamera winCamera;
     [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private GameObject[] hazardSystemGameObjects;
+    private IHazardSystem[] hazardSystems;
 
     [Range(1000, 20000)]
     [SerializeField] private int victoryLapDelay;
+
+    bool initializationComplete = false;
 
     public override void OnNetworkSpawn()
     {
@@ -35,6 +40,18 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
     {
         await UniTask.WaitUntil(() => NetworkManager.ConnectedClientsList.All(c => c.PlayerObject != null));
         PersistentGameStateManager.Instance.OnCombatSceneReady();
+
+        hazardSystems = hazardSystemGameObjects.Select(h => h.GetComponent<IHazardSystem>()).Where(h => h != null).ToArray();
+
+        if (IsServer)
+        {
+            foreach (var hazard in hazardSystems)
+            {
+                hazard.StartHazard();
+            }
+        }
+
+        initializationComplete = true;
     }
 
     private void OnSceneLoadCompleted(string sceneName, LoadSceneMode loadSceneMode,
@@ -91,6 +108,17 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
     {
         NetworkManager.SceneManager.OnLoadEventCompleted -= OnSceneLoadCompleted;
         NetworkManager.OnClientDisconnectCallback -= OnClientDisconnected;
+    }
+
+    void Update()
+    {
+        if (initializationComplete)
+        {
+            foreach (var hazard in hazardSystems)
+            {
+                hazard.TickHazard(Time.deltaTime);
+            }
+        }
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -218,7 +246,13 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         if (this == null) return;
 
         if (IsServer)
+        {
+            foreach (var hazard in hazardSystems)
+            {
+                hazard.StopHazard();
+            }
             PersistentGameStateManager.Instance.HandleCombatRoundEnded(winningPlayer).Forget();
+        }
     }
 
     private async UniTask WinSequence(ulong winningPlayer)
@@ -264,9 +298,20 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
     public void HandleInstantKill(PlayerHealth playerHealth)
     {
         if (!IsServer) return;
+        if (playerHealth == null) return;
 
-        if (playerHealth != null)
-            playerHealth.health.Value = 0;
+        playerHealth.health.Value = 0;
+
+        OnPlayerDeath(playerHealth.OwnerClientId);
+        EnvironmentalDeathSequence(playerHealth).Forget();
+    }
+
+    private async UniTaskVoid EnvironmentalDeathSequence(PlayerHealth deadPlayer)
+    {
+        await deadPlayer.NotifyDeathAndAwaitAck(deadPlayer.OwnerClientId);
+
+        if (deadPlayer != null && deadPlayer.NetworkObject != null && deadPlayer.NetworkObject.IsSpawned)
+            deadPlayer.NetworkObject.Despawn();
     }
 }
     

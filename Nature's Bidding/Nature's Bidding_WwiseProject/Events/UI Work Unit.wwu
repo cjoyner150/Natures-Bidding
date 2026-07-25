@@ -2,6 +2,10 @@
 <WwiseDocument Type="WorkUnit" ID="{033FAE99-176E-4433-B8D1-2230EC824361}" SchemaVersion="133">
 	<Events>
 		<WorkUnit Name="UI Work Unit" ID="{033FAE99-176E-4433-B8D1-2230EC824361}" PersistMode="Standalone">
+			<PropertyList>
+				<Property Name="Color" Type="int16" Value="2"/>
+				<Property Name="OverrideColor" Type="bool" Value="True"/>
+			</PropertyList>
 			<ChildrenList>
 				<Event Name="Play_UI_Bid_Adjust" ID="{C2E4B442-82BC-43CC-AF73-90A9B75CF663}">
 					<ChildrenList>
@@ -32,7 +36,39 @@
 						</Action>
 					</ChildrenList>
 				</Event>
-				<Event Name="Play_UI_Bid_Reject" ID="{E0384640-9D76-42B9-82F2-B4AB94528BAB}"/>
+				<Event Name="Play_UI_Bid_Reject" ID="{E0384640-9D76-42B9-82F2-B4AB94528BAB}">
+					<ChildrenList>
+						<Action Name="" ID="{4327D870-7F20-457C-B0BE-157FC18C8807}" ShortID="528490681">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="reject" ID="{EA016248-3CCE-4495-954B-20A1F7E22F2C}" WorkUnitID="{1225B259-A259-44FE-8970-96AB4F733DF4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_UI_Click" ID="{B52EB247-10B4-403C-B632-ADA5CDC1DA18}">
+					<ChildrenList>
+						<Action Name="" ID="{FF6C0547-37A5-4A3F-B254-FF2BBCB32E25}" ShortID="1001929663">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="click" ID="{E09119FB-4AB1-4904-8A89-E0C6392C31CF}" WorkUnitID="{1225B259-A259-44FE-8970-96AB4F733DF4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_UI_Hover" ID="{C34D6013-9F45-4AD3-A4F0-A2476FEBB889}">
+					<ChildrenList>
+						<Action Name="" ID="{AED44574-9ADC-44B6-9DBD-1A2650171E00}" ShortID="1031854617">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="hover" ID="{50E3C4D1-27C1-4D53-9347-B120858181BF}" WorkUnitID="{1225B259-A259-44FE-8970-96AB4F733DF4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

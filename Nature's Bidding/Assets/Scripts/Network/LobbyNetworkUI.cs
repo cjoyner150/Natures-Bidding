@@ -80,7 +80,6 @@ public class LobbyNetworkUI : MonoBehaviour
 
         LobbyServerHandler.OnEnoughPlayersRegistered.AddListener(OnPlayerRequirementMet);
         LobbyServerHandler.OnNoLongerEnoughPlayersRegistered.AddListener(OnPlayerRequirementDropped);
-        CombatServerHandler.OnCombatBegin.AddListener(OnCombatBegin);
     }
 
     private void OnDisable()
@@ -92,7 +91,6 @@ public class LobbyNetworkUI : MonoBehaviour
 
         LobbyServerHandler.OnEnoughPlayersRegistered.RemoveListener(OnPlayerRequirementMet);
         LobbyServerHandler.OnNoLongerEnoughPlayersRegistered.RemoveListener(OnPlayerRequirementDropped);
-        CombatServerHandler.OnCombatBegin.RemoveListener(OnCombatBegin);
     }
 
     void OnPlayerReady(InputAction.CallbackContext ctx)
@@ -127,11 +125,6 @@ public class LobbyNetworkUI : MonoBehaviour
             playerMnkReadyVisual.enabled = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.MouseAndKeyboard;
             playerControllerReadyVisual.enabled = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.Gamepad;
         }
-    }
-
-    void OnCombatBegin()
-    {
-        
     }
 
     public void LeaveSessionByButton()

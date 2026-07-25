@@ -67,8 +67,8 @@ public class PlayerInputManager : MonoBehaviour
         pause.Enable();
 
         pause.performed += OnPausePressed;
-        PlayerPauseManager.Instance.OnPaused += OnPaused;
-        PlayerPauseManager.Instance.OnResumed += OnResumed;
+        PlayerPauseManager.OnPaused += OnPaused;
+        PlayerPauseManager.OnResumed += OnResumed;
 
         allowInputs = true;
         
@@ -101,8 +101,8 @@ public class PlayerInputManager : MonoBehaviour
 
         if (PlayerPauseManager.HasInstance)
         {
-            PlayerPauseManager.Instance.OnPaused -= OnPaused;
-            PlayerPauseManager.Instance.OnResumed -= OnResumed;
+            PlayerPauseManager.OnPaused -= OnPaused;
+            PlayerPauseManager.OnResumed -= OnResumed;
         }
     }
 
@@ -255,7 +255,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (allowPause)
         {
-            PlayerPauseManager.Instance.OnPausePressed?.Invoke();
+            PlayerPauseManager.OnPausePressed?.Invoke();
         }
     }
 

@@ -1,6 +1,7 @@
 using System;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.AdaptivePerformance;
 using UnityEngine.InputSystem;
 using UnityUtils;
 
@@ -8,10 +9,11 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
 {
     [SerializeField] GameObject pausePanel;
     [SerializeField] GameObject lobbyWaitingPanel;
+    [SerializeField] GameObject hostPanel;
 
-    public Action OnPausePressed;
-    public Action OnResumed;
-    public Action OnPaused;
+    public static Action OnPausePressed;
+    public static Action OnResumed;
+    public static Action OnPaused;
     [HideInInspector] public bool Paused { get; private set; }
 
     protected override void Awake()
@@ -20,6 +22,7 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
 
         Paused = false;
         pausePanel.SetActive(false);
+        hostPanel.SetActive(false);
     }
 
     private void OnEnable()
@@ -48,6 +51,10 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
         Paused = true;
 
         pausePanel.SetActive(true);
+        if (NetworkManager.Singleton.IsHost)
+        {
+            hostPanel.SetActive(true);
+        }
 
         if (lobbyWaitingPanel != null) lobbyWaitingPanel.SetActive(false);
 
@@ -59,7 +66,8 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
         Paused = false;
 
         pausePanel.SetActive(false);
-
+        hostPanel.SetActive(false);
+        
         if (lobbyWaitingPanel != null) lobbyWaitingPanel.SetActive(true);
 
         OnResumed?.Invoke();

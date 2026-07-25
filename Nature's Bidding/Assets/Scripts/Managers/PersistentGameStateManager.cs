@@ -289,13 +289,15 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
         ApplyFlowPhase(GameFlowPhase.Combat);
+        readyManager?.SyncCombatStateRpc();
         LoadCombatLevel();
     }
 
 
+
     public async UniTask ReturnToMenu()
     {
-        Debug.Log($"[ReturnToMenu] CALLED. Stack trace:\n{System.Environment.StackTrace}");
+        //Debug.Log($"[ReturnToMenu] CALLED. Stack trace:\n{System.Environment.StackTrace}");
         if (IsReturningToMenu) return;
         IsReturningToMenu = true;
 

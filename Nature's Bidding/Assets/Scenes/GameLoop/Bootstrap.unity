@@ -1016,7 +1016,7 @@ MonoBehaviour:
   loadingStatus: {fileID: 416426921}
   loadingProgress: {fileID: 15051646}
   combatWinsRequiredToEnd: 3
-  skipToCombat: 0
+  skipToCombat: 1
   biddingCanvas: {fileID: 0}
   shopCanvas: {fileID: 0}
   biddingManager: {fileID: 0}

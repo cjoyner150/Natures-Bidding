@@ -101,6 +101,12 @@ public class ReadyManager : BaseGameServerHandler<ReadyManager>
         PersistentGameStateManager.Instance?.RequestStartCombatPhase();
     }
 
+    [Rpc(SendTo.NotServer)]
+    public void SyncCombatStateRpc()
+    {
+        PersistentGameStateManager.Instance.State = PersistentGameStateManager.GameState.Combat;
+    }
+
     public void OnPlayerDeath(ulong clientId) { }
 
     #endregion

@@ -82,6 +82,15 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         {
             base.Awake();
             DontDestroyOnLoad(gameObject);
+            InputDeviceTracker.Initialize();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            InputDeviceTracker.Shutdown();
         }
     }
 

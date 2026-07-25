@@ -1,8 +1,6 @@
 using System;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.AdaptivePerformance;
-using UnityEngine.InputSystem;
 using UnityUtils;
 
 public class PlayerPauseManager : Singleton<PlayerPauseManager>

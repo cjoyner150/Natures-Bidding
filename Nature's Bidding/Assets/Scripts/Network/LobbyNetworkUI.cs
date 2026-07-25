@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using MoreMountains.Feedbacks;
 using Unity.VisualScripting;
+using System;
 
 public class LobbyNetworkUI : MonoBehaviour
 {
@@ -17,7 +18,9 @@ public class LobbyNetworkUI : MonoBehaviour
     [SerializeField] Image playerControllerReadyVisual;
     [SerializeField] Image playerConfirmedReadyVisual;
     [SerializeField] TextMeshProUGUI readyTMP;
-    [SerializeField] InputAction playerReadyAction;
+
+    public static Action OnPlayerReadyEvent;
+
     bool readied = false;
     bool canReady = false;
 
@@ -73,8 +76,8 @@ public class LobbyNetworkUI : MonoBehaviour
 
     private void OnEnable()
     {
-        playerReadyAction.Enable();
-        playerReadyAction.performed += OnPlayerReady;
+
+        OnPlayerReadyEvent += OnPlayerReady;
 
         InputDeviceTracker.OnInputTypeChanged += OnInputTypeChanged;
 
@@ -84,8 +87,8 @@ public class LobbyNetworkUI : MonoBehaviour
 
     private void OnDisable()
     {
-        playerReadyAction.Disable();
-        playerReadyAction.performed -= OnPlayerReady;
+
+        OnPlayerReadyEvent -= OnPlayerReady;
 
         InputDeviceTracker.OnInputTypeChanged -= OnInputTypeChanged;
 
@@ -93,7 +96,7 @@ public class LobbyNetworkUI : MonoBehaviour
         LobbyServerHandler.OnNoLongerEnoughPlayersRegistered.RemoveListener(OnPlayerRequirementDropped);
     }
 
-    void OnPlayerReady(InputAction.CallbackContext ctx)
+    void OnPlayerReady()
     {
         if (readied || !canReady) return;
 

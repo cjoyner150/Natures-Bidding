@@ -20,12 +20,12 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+
+
         base.OnNetworkSpawn();
 
         cameraTargetGroup = FindAnyObjectByType<CinemachineTargetGroup>();
         cameraTargetGroup?.AddMember(transform, 1, 4);
-
-        Debug.Log("[PlayerNetworkBehavior] Player is spawning on network...");
 
         if (PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Combat)
         {
@@ -45,20 +45,12 @@ public class PlayerNetworkBehavior : NetworkBehaviour
             if (PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Combat)
             {
                 playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
-
                 playerWeaponManager = GetComponent<PlayerWeaponManager>();
-                if (playerWeaponManager == null)
-                {
-                    Debug.LogError("[PlayerNetworkBehavior] Player Weapon Manager is null.");
-                }
-
                 playerWeaponManager.Initialize(playerStatusEffectManager);
                 playerStatusEffectManager.Initialize(ctx.playerStats, OwnerClientId);
             }
-            
-            playerInput.InitializePlayer(ctx);
 
-            
+            playerInput.InitializePlayer(ctx);
             ctx.maxJumps = ctx.playerStats.Jumps;
             transform.localScale *= ctx.playerStats.Size;
 

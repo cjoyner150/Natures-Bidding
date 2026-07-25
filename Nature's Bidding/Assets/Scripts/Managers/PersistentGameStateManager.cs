@@ -289,8 +289,10 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
         ApplyFlowPhase(GameFlowPhase.Combat);
+        readyManager?.SyncCombatStateRpc();
         LoadCombatLevel();
     }
+
 
 
     public async UniTask ReturnToMenu()

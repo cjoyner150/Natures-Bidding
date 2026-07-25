@@ -61,9 +61,9 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
             maxHealthBonus = 0f,
             items = new List<string>(),
             upgradeCounts = new Dictionary<string, int>(),
-            masks = playerStartConfig.tarots.Select(m => m.Id).ToList(),
+            masks = playerStartConfig.masks.Select(m => m.Id).ToList(),
             tarotCards = playerStartConfig.tarots.Select(t => t.Id).ToList(),
-            artifacts = playerStartConfig.tarots.Select(a => a.Id).ToList()
+            artifacts = playerStartConfig.artifacts.Select(a => a.Id).ToList()
         };
 
         _playerData[authId] = data;

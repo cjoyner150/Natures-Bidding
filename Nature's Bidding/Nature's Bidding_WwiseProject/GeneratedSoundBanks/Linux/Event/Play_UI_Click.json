@@ -1,0 +1,60 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "1749424733",
+    "Type": "Event",
+    "GUID": "{B52EB247-10B4-403C-B632-ADA5CDC1DA18}",
+    "Language": "SFX",
+    "Hash": "{1DAD808E-1479-40BF-BE6A-D054E05D4C3C}",
+    "ObjectPath": "Play_UI_Click",
+    "ShortName": "Play_UI_Click",
+    "Path": "Event/Play_UI_Click.bnk",
+    "Media": [
+     {
+      "Id": "384994988",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "generic\\click\\ui_generic_click_02.wav",
+      "Path": "Media/384994988.wem",
+      "CachePath": "0E/{0EB807AF-5C7D-819D-C778-A70CFA3B9197}.wem"
+     },
+     {
+      "Id": "433221746",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "generic\\click\\ui_generic_click_01.wav",
+      "Path": "Media/433221746.wem",
+      "CachePath": "1A/{1AB5340A-9929-6E1C-FF50-83E272BC4652}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "1749424733",
+      "Name": "Play_UI_Click",
+      "ObjectPath": "\\Events\\UI Work Unit\\Play_UI_Click",
+      "GUID": "{B52EB247-10B4-403C-B632-ADA5CDC1DA18}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.2533125",
+      "DurationMax": "0.259375",
+      "MediaRefs": [
+       {
+        "Id": "384994988"
+       },
+       {
+        "Id": "433221746"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{7F1CEA4D-A520-81CE-AA59-8B11E74CEFE5}"
+ }
+}

@@ -16,6 +16,7 @@ namespace AK
         static const AkUniqueID PLAY_UI_BID_ADJUST = 3980822666U;
         static const AkUniqueID PLAY_UI_BID_REJECT = 1191336738U;
         static const AkUniqueID PLAY_UI_BID_SUBMIT = 2289452967U;
+        static const AkUniqueID PLAY_UI_CLICK = 1749424733U;
     } // namespace EVENTS
 
     namespace STATES

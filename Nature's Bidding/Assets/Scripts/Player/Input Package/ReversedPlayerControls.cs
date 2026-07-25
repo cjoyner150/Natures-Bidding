@@ -154,6 +154,15 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ready"",
+                    ""type"": ""Button"",
+                    ""id"": ""f4bce615-b1c9-4b72-b566-f8718f94d6e1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -220,6 +229,28 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
                     ""processors"": ""StickDeadzone"",
                     ""groups"": """",
                     ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""43bf415b-e4c7-4712-9f05-c5a04fda10fc"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ready"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""35c9e949-b145-482e-bba0-422d89e6d1fd"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ready"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -391,6 +422,7 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
         m_PlayerGameplay_Parry = m_PlayerGameplay.FindAction("Parry", throwIfNotFound: true);
         m_PlayerGameplay_Attack = m_PlayerGameplay.FindAction("Attack", throwIfNotFound: true);
         m_PlayerGameplay_Pause = m_PlayerGameplay.FindAction("Pause", throwIfNotFound: true);
+        m_PlayerGameplay_Ready = m_PlayerGameplay.FindAction("Ready", throwIfNotFound: true);
     }
 
     ~@ReversedPlayerControls()
@@ -478,6 +510,7 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
     private readonly InputAction m_PlayerGameplay_Parry;
     private readonly InputAction m_PlayerGameplay_Attack;
     private readonly InputAction m_PlayerGameplay_Pause;
+    private readonly InputAction m_PlayerGameplay_Ready;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerGameplay".
     /// </summary>
@@ -517,6 +550,10 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
         /// Provides access to the underlying input action "PlayerGameplay/Pause".
         /// </summary>
         public InputAction @Pause => m_Wrapper.m_PlayerGameplay_Pause;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerGameplay/Ready".
+        /// </summary>
+        public InputAction @Ready => m_Wrapper.m_PlayerGameplay_Ready;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -564,6 +601,9 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @Ready.started += instance.OnReady;
+            @Ready.performed += instance.OnReady;
+            @Ready.canceled += instance.OnReady;
         }
 
         /// <summary>
@@ -596,6 +636,9 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @Ready.started -= instance.OnReady;
+            @Ready.performed -= instance.OnReady;
+            @Ready.canceled -= instance.OnReady;
         }
 
         /// <summary>
@@ -685,5 +728,12 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPause(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Ready" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnReady(InputAction.CallbackContext context);
     }
 }

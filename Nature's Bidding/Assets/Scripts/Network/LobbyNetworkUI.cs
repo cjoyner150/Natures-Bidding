@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using MoreMountains.Feedbacks;
 using Unity.VisualScripting;
+using System;
 
 public class LobbyNetworkUI : MonoBehaviour
 {
@@ -17,7 +18,9 @@ public class LobbyNetworkUI : MonoBehaviour
     [SerializeField] Image playerControllerReadyVisual;
     [SerializeField] Image playerConfirmedReadyVisual;
     [SerializeField] TextMeshProUGUI readyTMP;
-    [SerializeField] InputAction playerReadyAction;
+
+    public static Action OnPlayerReadyEvent;
+
     bool readied = false;
     bool canReady = false;
 
@@ -73,29 +76,27 @@ public class LobbyNetworkUI : MonoBehaviour
 
     private void OnEnable()
     {
-        playerReadyAction.Enable();
-        playerReadyAction.performed += OnPlayerReady;
+
+        OnPlayerReadyEvent += OnPlayerReady;
 
         InputDeviceTracker.OnInputTypeChanged += OnInputTypeChanged;
 
         LobbyServerHandler.OnEnoughPlayersRegistered.AddListener(OnPlayerRequirementMet);
         LobbyServerHandler.OnNoLongerEnoughPlayersRegistered.AddListener(OnPlayerRequirementDropped);
-        CombatServerHandler.OnCombatBegin.AddListener(OnCombatBegin);
     }
 
     private void OnDisable()
     {
-        playerReadyAction.Disable();
-        playerReadyAction.performed -= OnPlayerReady;
+
+        OnPlayerReadyEvent -= OnPlayerReady;
 
         InputDeviceTracker.OnInputTypeChanged -= OnInputTypeChanged;
 
         LobbyServerHandler.OnEnoughPlayersRegistered.RemoveListener(OnPlayerRequirementMet);
         LobbyServerHandler.OnNoLongerEnoughPlayersRegistered.RemoveListener(OnPlayerRequirementDropped);
-        CombatServerHandler.OnCombatBegin.RemoveListener(OnCombatBegin);
     }
 
-    void OnPlayerReady(InputAction.CallbackContext ctx)
+    void OnPlayerReady()
     {
         if (readied || !canReady) return;
 
@@ -127,11 +128,6 @@ public class LobbyNetworkUI : MonoBehaviour
             playerMnkReadyVisual.enabled = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.MouseAndKeyboard;
             playerControllerReadyVisual.enabled = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.Gamepad;
         }
-    }
-
-    void OnCombatBegin()
-    {
-        
     }
 
     public void LeaveSessionByButton()

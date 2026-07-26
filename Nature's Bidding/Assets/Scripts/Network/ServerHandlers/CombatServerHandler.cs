@@ -233,6 +233,16 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
             var winningHealth = winningClient.PlayerObject.GetComponent<PlayerHealth>();
             if (winningHealth != null)
                 winningHealth.isRoundWinner.Value = true;
+
+            PersistentPlayerRegistry.Instance.AddCombatWin(winningPlayer);
+            PersistentPlayerRegistry.Instance.AddGold(winningPlayer, 75);
+
+            foreach (var clientId in NetworkManager.ConnectedClientsIds)
+            {
+                if (clientId == winningPlayer) continue;
+
+                PersistentPlayerRegistry.Instance.AddGold(clientId, 150);
+            }
         }
 
         RoundEndSequence(winningPlayer);

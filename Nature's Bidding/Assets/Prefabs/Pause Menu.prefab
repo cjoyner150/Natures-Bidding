@@ -1072,8 +1072,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameplayNetworkUI, Assembly-CSharp
+      - m_Target: {fileID: 1418051184319121932}
+        m_TargetAssemblyTypeName: PlayerPauseManager, Assembly-CSharp
         m_MethodName: LeaveSessionByButton
         m_Mode: 1
         m_Arguments:
@@ -2020,8 +2020,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameplayNetworkUI, Assembly-CSharp
+      - m_Target: {fileID: 1418051184319121932}
+        m_TargetAssemblyTypeName: PlayerPauseManager, Assembly-CSharp
         m_MethodName: QuitGameByButton
         m_Mode: 1
         m_Arguments:

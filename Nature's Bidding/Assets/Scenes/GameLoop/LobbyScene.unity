@@ -3940,14 +3940,6 @@ PrefabInstance:
       propertyPath: lobbyWaitingPanel
       value: 
       objectReference: {fileID: 1984511773}
-    - target: {fileID: 5347699191812738265, guid: 52d083785ff752644921f473380db4c1, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 572573390}
-    - target: {fileID: 5848491001682457705, guid: 52d083785ff752644921f473380db4c1, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 572573390}
     - target: {fileID: 7985206603454548872, guid: 52d083785ff752644921f473380db4c1, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

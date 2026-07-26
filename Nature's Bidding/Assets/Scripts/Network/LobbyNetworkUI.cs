@@ -129,31 +129,4 @@ public class LobbyNetworkUI : MonoBehaviour
             playerControllerReadyVisual.enabled = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.Gamepad;
         }
     }
-
-    public void LeaveSessionByButton()
-    {
-        LeaveSession();
-    }
-
-    public async void QuitGameByButton()
-    {
-        await sessionManager.LeaveSession();
-
-        if (SteamClient.IsValid)
-        {
-            await PersistentSteamManager.Instance.ShutdownSteam();
-        }
-
-        Application.Quit();
-    }
-
-    public void LeaveSession()
-    {
-        PlayerPauseManager.Instance.ForceResume();
-
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true;
-
-        PersistentGameStateManager.Instance.ReturnToMenu().Forget();
-    }
 }

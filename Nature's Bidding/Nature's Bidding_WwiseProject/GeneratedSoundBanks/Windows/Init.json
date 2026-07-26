@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{ED5E467E-4337-3AA1-BC85-1B2129AF4EC3}",
+    "Hash": "{A558CD97-411F-4DE5-BFE3-5DA782040C37}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -94,6 +94,38 @@
       ]
      },
      {
+      "Id": "2188949101",
+      "Name": "Players",
+      "ObjectPath": "\\States\\Default Work Unit\\Players",
+      "GUID": "{63D51DCF-9267-496B-ACC4-74FEF4F018B8}",
+      "States": [
+       {
+        "Id": "678209053",
+        "Name": "Two",
+        "ObjectPath": "\\States\\Default Work Unit\\Players\\Two",
+        "GUID": "{CED468E2-4C46-43A6-B63C-D30CE5A84F69}"
+       },
+       {
+        "Id": "748895195",
+        "Name": "None",
+        "ObjectPath": "\\States\\Default Work Unit\\Players\\None",
+        "GUID": "{56E396D1-2538-40B6-AD3B-B3986F903F3C}"
+       },
+       {
+        "Id": "912956111",
+        "Name": "Three",
+        "ObjectPath": "\\States\\Default Work Unit\\Players\\Three",
+        "GUID": "{0FE37B61-91DD-4580-86F5-795762D5C8CC}"
+       },
+       {
+        "Id": "2863728729",
+        "Name": "Four",
+        "ObjectPath": "\\States\\Default Work Unit\\Players\\Four",
+        "GUID": "{F74A0D10-4777-446F-9FFA-B2E7BF50B9FD}"
+       }
+      ]
+     },
+     {
       "Id": "3211383847",
       "Name": "Game_Phase",
       "ObjectPath": "\\States\\Default Work Unit\\Game_Phase",
@@ -116,12 +148,6 @@
         "Name": "None",
         "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\None",
         "GUID": "{F19062E5-3F11-47B2-A1A0-85036279551B}"
-       },
-       {
-        "Id": "908101565",
-        "Name": "Shopping",
-        "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Shopping",
-        "GUID": "{05104055-75E4-45F5-B33D-321ED64E1E8A}"
        },
        {
         "Id": "2607556080",
@@ -216,6 +242,6 @@
     ]
    }
   ],
-  "FileHash": "{CACE507B-125B-1735-83CD-189FFB08466A}"
+  "FileHash": "{1B097BCC-D3D2-7278-A943-CD1194F22749}"
  }
 }

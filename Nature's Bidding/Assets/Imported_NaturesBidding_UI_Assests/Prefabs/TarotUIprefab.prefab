@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 5927515982429646519}
   - component: {fileID: 2457172883342708408}
   - component: {fileID: 776776527821996791}
+  - component: {fileID: 1947860653596017570}
   m_Layer: 0
   m_Name: TarotUIprefab
   m_TagString: Untagged
@@ -266,20 +267,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeCardUI
   cardBackground: {fileID: 0}
   iconImage: {fileID: 4328764594983979670}
+  costIconImage: {fileID: 0}
   nameText: {fileID: 0}
   effectText: {fileID: 0}
   costText: {fileID: 4058290452410999725}
   ownedText: {fileID: 0}
   cardButton: {fileID: 776776527821996791}
-  shadowImage: {fileID: 0}
+  outlineImage: {fileID: 0}
   selectedImage: {fileID: 0}
   normalColor: {r: 0.15, g: 0.15, b: 0.2, a: 1}
   selectedColor: {r: 0.2, g: 0.4, b: 0.7, a: 1}
   maxedColor: {r: 0.25, g: 0.25, b: 0.25, a: 1}
-  shadowScale: 1.05
-  shadowColor: {r: 0, g: 0, b: 0, a: 0.5}
+  outlineScale: 1.08
+  outlineColor: {r: 1, g: 0.8, b: 0, a: 1}
   selectedScale: 1.15
   selectedOutlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  soldIconSprite: {fileID: 0}
+  soldCostIconSprite: {fileID: 0}
+  soldLabelText: SOLD
+  soldLiftAmount: 16
+  soldLiftDuration: 0.18
+  soldDisableDelay: 0.08
 --- !u!114 &776776527821996791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,6 +332,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1947860653596017570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6809773045088817838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1
+  playHoverOnNavigation: 1
 --- !u!1 &8672741931965837598
 GameObject:
   m_ObjectHideFlags: 0

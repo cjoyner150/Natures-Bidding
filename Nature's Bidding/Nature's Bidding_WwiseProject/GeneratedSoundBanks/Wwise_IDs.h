@@ -13,10 +13,13 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID PLAY_MX_SYSTEM = 3580595815U;
         static const AkUniqueID PLAY_UI_BID_ADJUST = 3980822666U;
         static const AkUniqueID PLAY_UI_BID_REJECT = 1191336738U;
         static const AkUniqueID PLAY_UI_BID_SUBMIT = 2289452967U;
         static const AkUniqueID PLAY_UI_CLICK = 1749424733U;
+        static const AkUniqueID PLAY_UI_HOVER = 1339559671U;
+        static const AkUniqueID STOP_MX_SYSTEM = 3534127541U;
     } // namespace EVENTS
 
     namespace STATES
@@ -44,7 +47,6 @@ namespace AK
                 static const AkUniqueID LOBBY = 290285391U;
                 static const AkUniqueID MENU = 2607556080U;
                 static const AkUniqueID NONE = 748895195U;
-                static const AkUniqueID SHOPPING = 908101565U;
             } // namespace STATE
         } // namespace GAME_PHASE
 
@@ -59,6 +61,19 @@ namespace AK
                 static const AkUniqueID NONE = 748895195U;
             } // namespace STATE
         } // namespace MAP
+
+        namespace PLAYERS
+        {
+            static const AkUniqueID GROUP = 2188949101U;
+
+            namespace STATE
+            {
+                static const AkUniqueID FOUR = 2863728729U;
+                static const AkUniqueID NONE = 748895195U;
+                static const AkUniqueID THREE = 912956111U;
+                static const AkUniqueID TWO = 678209053U;
+            } // namespace STATE
+        } // namespace PLAYERS
 
     } // namespace STATES
 

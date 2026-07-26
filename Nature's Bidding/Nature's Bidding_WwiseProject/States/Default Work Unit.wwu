@@ -9,7 +9,6 @@
 						<State Name="Menu" ID="{F1E0877A-485F-4551-99E4-762926D35072}"/>
 						<State Name="Lobby" ID="{D7C918A9-A591-46E8-9FD8-6093433816E7}"/>
 						<State Name="Bidding" ID="{2F9BA0E6-E155-4A4D-869A-FD6D6D6BF5A3}"/>
-						<State Name="Shopping" ID="{05104055-75E4-45F5-B33D-321ED64E1E8A}"/>
 						<State Name="Combat" ID="{AF2EE265-C86B-40BD-97FE-DE5FEE14D9AC}"/>
 					</ChildrenList>
 				</StateGroup>
@@ -25,6 +24,14 @@
 						<State Name="None" ID="{B582B5AA-26BC-420A-A1B4-62606537B8F3}"/>
 						<State Name="Lava" ID="{D5BA4557-9946-47D0-B9A0-7045CF947424}"/>
 						<State Name="Cliff" ID="{93B52BF6-F969-483A-A7EA-3C9E82A44F89}"/>
+					</ChildrenList>
+				</StateGroup>
+				<StateGroup Name="Players" ID="{63D51DCF-9267-496B-ACC4-74FEF4F018B8}">
+					<ChildrenList>
+						<State Name="None" ID="{56E396D1-2538-40B6-AD3B-B3986F903F3C}"/>
+						<State Name="Two" ID="{CED468E2-4C46-43A6-B63C-D30CE5A84F69}"/>
+						<State Name="Three" ID="{0FE37B61-91DD-4580-86F5-795762D5C8CC}"/>
+						<State Name="Four" ID="{F74A0D10-4777-446F-9FFA-B2E7BF50B9FD}"/>
 					</ChildrenList>
 				</StateGroup>
 			</ChildrenList>

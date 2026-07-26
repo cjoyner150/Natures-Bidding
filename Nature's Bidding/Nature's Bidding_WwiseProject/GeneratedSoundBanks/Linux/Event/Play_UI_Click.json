@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{B52EB247-10B4-403C-B632-ADA5CDC1DA18}",
     "Language": "SFX",
-    "Hash": "{1DAD808E-1479-40BF-BE6A-D054E05D4C3C}",
+    "Hash": "{3860805F-A79C-862D-2BC2-BFDF940536B0}",
     "ObjectPath": "Play_UI_Click",
     "ShortName": "Play_UI_Click",
     "Path": "Event/Play_UI_Click.bnk",
@@ -40,6 +40,7 @@
       "Name": "Play_UI_Click",
       "ObjectPath": "\\Events\\UI Work Unit\\Play_UI_Click",
       "GUID": "{B52EB247-10B4-403C-B632-ADA5CDC1DA18}",
+      "Color": "2",
       "DurationType": "OneShot",
       "DurationMin": "0.2533125",
       "DurationMax": "0.259375",
@@ -55,6 +56,6 @@
     ]
    }
   ],
-  "FileHash": "{7F1CEA4D-A520-81CE-AA59-8B11E74CEFE5}"
+  "FileHash": "{320CCF31-C904-5BFF-5E5B-8639F687101D}"
  }
 }

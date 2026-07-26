@@ -279,9 +279,9 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
     public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition, ulong fromAttackerId, float damage, bool critical = false)
     {
-        NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId, critical, fromPosition, damage);
-        
         if (!IsOwner) return;
+        Debug.Log($"[PlayerHealth] calling spawn hit effects event on player {OwnerClientId}");
+        NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId, critical, fromPosition, damage);
         ctx.lastHitFromPosition = fromPosition;
         ctx.shouldTakeKnockback = true;
         PlayerCombatHooks.TriggerOnHit(fromAttackerId);

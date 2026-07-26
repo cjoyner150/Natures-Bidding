@@ -72,7 +72,8 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     }
     public void OnSpawnHitReactionEffectsOnPlayer(ulong clientId, bool critical, Vector3 fromPos, float damage)
     {
-        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        Debug.Log($"[NetworkVisualEffectManager] OnSpawnHitReaction received for client {clientId}");
+        var localVFXManager = GetPlayerEffectManagerById(clientId);
         if (localVFXManager != null) localVFXManager.SpawnHitReactParticles(critical, fromPos, damage);
 
         SpawnHitReactionEffectsClientRpc(clientId, critical, fromPos, damage);
@@ -80,7 +81,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     public void OnSpawnSlashEffectOnPlayer(ulong clientId, int milliseconds)
     {
-        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        var localVFXManager = GetPlayerEffectManagerById(clientId);
         if (localVFXManager != null) localVFXManager.SpawnSlashEffectParticles(milliseconds);
 
         SpawnSlashEffectClientRpc(clientId, milliseconds);
@@ -88,7 +89,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     public void OnSpawnParryEffectOnPlayer(ulong clientId, int milliseconds)
     {
-        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        var localVFXManager = GetPlayerEffectManagerById(clientId);
         if (localVFXManager != null) localVFXManager.SpawnParryEffectParticles(milliseconds);
 
         SpawnParryEffectClientRpc(clientId, milliseconds);
@@ -96,7 +97,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     public void OnSpawnParrySuccessReactEffectsOnPlayer(ulong clientId)
     {
-        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        var localVFXManager = GetPlayerEffectManagerById(clientId);
         if (localVFXManager != null) localVFXManager.SpawnParrySuccessReactionParticles();
 
         SpawnParrySuccessReactEffectsClientRpc(clientId);
@@ -104,7 +105,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     public void OnSpawnDashEffectsOnPlayer(ulong clientId)
     {
-        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        var localVFXManager = GetPlayerEffectManagerById(clientId);
         if (localVFXManager != null) localVFXManager.SpawnDashParticles();
 
         SpawnDashEffectsClientRpc(clientId);
@@ -112,7 +113,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     public void OnSpawnTeleportEffectsOnPlayer(ulong clientId)
     {
-        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        var localVFXManager = GetPlayerEffectManagerById(clientId);
         if (localVFXManager != null) localVFXManager.SpawnTeleportParticles();
 
         SpawnTeleportEffectsClientRpc(clientId);
@@ -120,7 +121,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     public void OnToggleStarEffectsOnPlayer(ulong clientId, bool enabled)
     {
-        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        var localVFXManager = GetPlayerEffectManagerById(clientId);
         if (localVFXManager != null) localVFXManager.ToggleStarParticles(enabled);
 
         ToggleStarEffectsClientRpc(clientId, enabled);
@@ -128,7 +129,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     public void OnSpawnJumpEffectsOnPlayer(ulong clientId)
     {
-        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        var localVFXManager = GetPlayerEffectManagerById(clientId);
         if (localVFXManager != null) localVFXManager.SpawnJumpParticles();
 
         SpawnJumpEffectsClientRpc(clientId);
@@ -136,7 +137,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     public void OnSpawnStunEffectsOnPlayer(ulong clientId, int milliseconds)
     {
-        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        var localVFXManager = GetPlayerEffectManagerById(clientId);
         if (localVFXManager != null) localVFXManager.SpawnStunParticles(milliseconds);
 
         SpawnStunEffectsClientRpc(clientId, milliseconds);
@@ -144,7 +145,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     public void OnSpawnConfettiEffectsOnPlayer(ulong clientId)
     {
-        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        var localVFXManager = GetPlayerEffectManagerById(clientId);
         //if (localVFXManager != null) localVFXManager.SpawnConfettiParticles();
 
         SpawnConfettiEffectsClientRpc(clientId);
@@ -152,7 +153,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     public void OnSpawnBatConfusionEffectsOnPlayer(ulong clientId)
     {
-        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        var localVFXManager = GetPlayerEffectManagerById(clientId);
         if (localVFXManager != null) localVFXManager.SpawnBatConfusionParticles();
 
         SpawnBatConfusionEffectsClientRpc(clientId);
@@ -160,7 +161,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     public void OnRemoveBatConfusionEffectsOnPlayer(ulong clientId)
     {
-        var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
+        var localVFXManager = GetPlayerEffectManagerById(clientId);
         if (localVFXManager != null) localVFXManager.RemoveBatConfusionParticles();
 
         RemoveBatConfusionEffectsClientRpc(clientId);

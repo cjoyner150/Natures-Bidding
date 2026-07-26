@@ -99,7 +99,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         );
 
         var players = PersistentPlayerRegistry.Instance.GetAllPlayers().Where(p => p.clientId != OwnerClientId);
-
         foreach ( var player in players )
         {
             var playerNetworkBehavior = NetworkManager.Singleton.ConnectedClients[player.clientId].PlayerObject.GetComponent<PlayerNetworkBehavior>();
@@ -135,4 +134,10 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(transform.position + (transform.up * .125f), .2f);
     }
+
+    public Color GetPlayerColor()
+    {
+        var data = PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId);
+        return colors[data.playerIndex];
+    } 
 }

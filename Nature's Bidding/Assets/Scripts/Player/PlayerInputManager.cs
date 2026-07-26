@@ -125,7 +125,7 @@ public class PlayerInputManager : MonoBehaviour
 
         sm.Tick(Time.deltaTime);
 
-        //DebugCurrentState();
+        DebugCurrentState();
     }
 
     private void FixedUpdate()

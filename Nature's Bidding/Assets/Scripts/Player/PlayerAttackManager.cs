@@ -61,7 +61,10 @@ public class PlayerAttackManager : NetworkBehaviour
 
         if (isAttacking)
         {
-            RaycastHit[] hits = Physics.SphereCastAll(attackTransform.position, attackRadius, transform.forward, attackLength, attackableLayers);
+            RaycastHit[] hits = Physics.SphereCastAll(attackTransform.position, attackRadius, ctx.modelHolder.forward, attackLength, attackableLayers);
+
+            if (debugAttackCast)
+                DrawSphereCastDebug(attackTransform.position, attackRadius, ctx.modelHolder.forward, attackLength, hits);
 
             foreach (RaycastHit hit in hits)
             {
@@ -71,12 +74,72 @@ public class PlayerAttackManager : NetworkBehaviour
                 if (damageable != null)
                 {
                     if (damagedObjectsOnThisAttack.Contains(damageable)) continue;
-                    
+
                     HandleHitDamageableTarget(damageable, go);
                 }
             }
         }
     }
+
+    #region Debug Gizmo
+    [Header("Debug")]
+    [SerializeField] private bool debugAttackCast = false;
+
+    private void DrawSphereCastDebug(Vector3 origin, float radius, Vector3 direction, float distance, RaycastHit[] hits)
+    {
+        bool didHit = hits.Length > 0;
+        Color color = didHit ? Color.red : Color.green;
+        float duration = 0.15f;
+
+        Vector3 endPos = origin + direction.normalized * distance;
+
+        // Start and end spheres
+        DrawWireSphere(origin, radius, color, duration);
+        DrawWireSphere(endPos, radius, color, duration);
+
+        // Connecting lines along the cast path (top, bottom, and side rails to show the capsule shape)
+        Vector3 up = Vector3.up * radius;
+        Vector3 right = Vector3.Cross(direction.normalized, Vector3.up).normalized * radius;
+
+        Debug.DrawLine(origin + up, endPos + up, color, duration);
+        Debug.DrawLine(origin - up, endPos - up, color, duration);
+        Debug.DrawLine(origin + right, endPos + right, color, duration);
+        Debug.DrawLine(origin - right, endPos - right, color, duration);
+
+        // Mark each actual hit point distinctly
+        foreach (var hit in hits)
+        {
+            Debug.DrawLine(hit.point, hit.point + Vector3.up * 0.3f, Color.yellow, duration);
+            Debug.DrawLine(hit.point + Vector3.left * 0.15f, hit.point + Vector3.right * 0.15f, Color.yellow, duration);
+        }
+    }
+
+    private void DrawWireSphere(Vector3 center, float radius, Color color, float duration, int segments = 16)
+    {
+        DrawCircle(center, radius, Vector3.up, color, duration, segments);
+        DrawCircle(center, radius, Vector3.right, color, duration, segments);
+        DrawCircle(center, radius, Vector3.forward, color, duration, segments);
+    }
+
+    private void DrawCircle(Vector3 center, float radius, Vector3 normal, Color color, float duration, int segments)
+    {
+        Vector3 axisA = Vector3.Cross(normal, Vector3.up);
+        if (axisA.sqrMagnitude < 0.001f) axisA = Vector3.Cross(normal, Vector3.right);
+        axisA.Normalize();
+        Vector3 axisB = Vector3.Cross(normal, axisA).normalized;
+
+        Vector3 prevPoint = center + (axisA * radius);
+        float angleStep = 360f / segments;
+
+        for (int i = 1; i <= segments; i++)
+        {
+            float angle = Mathf.Deg2Rad * (i * angleStep);
+            Vector3 nextPoint = center + (axisA * Mathf.Cos(angle) + axisB * Mathf.Sin(angle)) * radius;
+            Debug.DrawLine(prevPoint, nextPoint, color, duration);
+            prevPoint = nextPoint;
+        }
+    }
+    #endregion
 
     private void HandleHitDamageableTarget(IDamageable damageable, GameObject damagedObject)
     {

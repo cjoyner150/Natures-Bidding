@@ -59,6 +59,13 @@
 					</ChildrenList>
 				</Event>
 				<Event Name="Play_UI_Hover" ID="{C34D6013-9F45-4AD3-A4F0-A2476FEBB889}">
+					<PropertyList>
+						<Property Name="CooldownTime" Type="Real32">
+							<ValueList>
+								<Value>0.1</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
 					<ChildrenList>
 						<Action Name="" ID="{AED44574-9ADC-44B6-9DBD-1A2650171E00}" ShortID="1031854617">
 							<ReferenceList>

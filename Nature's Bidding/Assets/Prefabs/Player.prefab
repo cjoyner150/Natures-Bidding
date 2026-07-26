@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1770671079
+  GlobalObjectIdHash: 2036068895
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -443,16 +443,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09cca13542e5f5d41a44cf03763e8667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVisualEffectManager
-  hitReactParticle: {fileID: 4595470619510423577, guid: fd3b76cd1c207284e833827d7d37d957, type: 3}
+  hitReactParticle: {fileID: 8529731307266586866, guid: 3dd9a40c3d3bf764c85935ba44893335, type: 3}
   slashParticle: {fileID: 5760442672778993801, guid: edec52a2346ad3a47956d7ed7d96d4a5, type: 3}
   starParticle: {fileID: 1762213694932265751, guid: a022e865046c45c4ebcea3b120bc3f3b, type: 3}
-  confettiParticle: {fileID: 5433245363039469661, guid: ce6653d205eb8634791b3a3ed31c9094, type: 3}
   confusionParticle: {fileID: 8375094254695761975, guid: 120d5c2083da75a4bb471879628f33b5, type: 3}
   parryParticle: {fileID: 2394006008497064591, guid: 40c46fda860a5064cbf8ab73bcbb7c31, type: 3}
   parrySuccessParticle: {fileID: 4595470619510423577, guid: fd3b76cd1c207284e833827d7d37d957, type: 3}
   magicPoofParticle: {fileID: 7981934318694625484, guid: 7eb09148b5a5f2f4686ec0e43bbf878c, type: 3}
   stunParticle: {fileID: 0}
-  lavaSplashParticle: {fileID: 489954815737543743, guid: da44f8b94fa88da469e29fe424ddee4b, type: 3}
   explosionParticle: {fileID: 5760442672778993801, guid: edec52a2346ad3a47956d7ed7d96d4a5, type: 3}
   jumpParticle: {fileID: 6704440195855292504, guid: 4474d5daa2d1f3743a297f59dd0aab7e, type: 3}
   dashParticle: {fileID: 371010074459113082, guid: 44f822ef532e8bd438508c29a45b93a0, type: 3}

@@ -33,7 +33,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void Awake()
     {
-        playerColor = GetComponent<PlayerNetworkBehavior>().GetColor();
+        playerColor = GetComponent<PlayerNetworkBehavior>().GetPlayerColor();
     }
 
     public void SpawnSlashEffectParticles(int milliseconds)
@@ -59,18 +59,23 @@ public class PlayerVisualEffectManager : MonoBehaviour
         SafeDispose(go, 1000).Forget();
     }
 
-    public void SpawnHitReactParticles(bool critical, Vector3 dmgDirection)
+    public void SpawnHitReactParticles(bool critical, Vector3 fromPos, float dmg)
     {
         if (critical)
         {
-            GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+            GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
             go.transform.localPosition = Vector3.zero;
             SafeDispose(go, 1000).Forget();
             hitReactFeedback.PlayFeedbacks();
         }
         else
         {
-            GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
+            Transform pTrans = gameObject.transform;
+            Vector3 direction = fromPos - gameObject.transform.position;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            pTrans.rotation = rotation;
+
+            GameObject go = Instantiate(hitReactParticle, pTrans, false);
             go.transform.localPosition = Vector3.zero;
             SafeDispose(go, 1000).Forget();
             hitReactFeedback.PlayFeedbacks();

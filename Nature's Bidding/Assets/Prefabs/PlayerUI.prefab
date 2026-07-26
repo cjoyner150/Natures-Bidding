@@ -484,6 +484,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGameplayUI
   playerNameText: {fileID: 5204252804378027116}
   playerImg: {fileID: 819452130366556563}
+  backgroundImage: {fileID: 2160944551324861192}
+  coloredSprites:
+  - {fileID: 21300000, guid: 87abe0c31b5da274bbe376e723a08580, type: 3}
+  - {fileID: 21300000, guid: 473dd2a6ee768434584a07b21016fc13, type: 3}
+  - {fileID: 21300000, guid: 90871d48ca9d93d4f986107617b3c9b8, type: 3}
+  - {fileID: 21300000, guid: 22a0eeff6f2c3a743b4e419257d9e6a7, type: 3}
 --- !u!1 &3687545862345505586
 GameObject:
   m_ObjectHideFlags: 0
@@ -624,7 +630,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Player1
+  m_text: EditorPlayer
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
@@ -651,10 +657,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 32.95
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
@@ -668,9 +674,9 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -1240,7 +1246,7 @@ GameObject:
   - component: {fileID: 2223887560539810441}
   - component: {fileID: 2160944551324861192}
   m_Layer: 5
-  m_Name: Player UI Panel
+  m_Name: Player UI Panel Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

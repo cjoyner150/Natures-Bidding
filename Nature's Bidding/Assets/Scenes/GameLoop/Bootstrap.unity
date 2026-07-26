@@ -1017,7 +1017,7 @@ MonoBehaviour:
   loadingSlider: {fileID: 1759741159}
   loadingStatus: {fileID: 416426921}
   loadingProgress: {fileID: 15051646}
-  combatWinsRequiredToEnd: 3
+  combatWinsRequiredToEnd: 1
   skipToCombat: 1
   biddingCanvas: {fileID: 0}
   shopCanvas: {fileID: 0}
@@ -1050,75 +1050,75 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 930c098b318a2441d92d4ef516349d8a, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameAudioController
   playMusicSystem:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 7c4aaf3a7a046415b95cc8e681dd0dd9, type: 2}
   stopMusicSystem:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 8301cdc8bde2f4653a89edb7fa6473c1, type: 2}
   phaseMenu:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     groupIdInternal: 0
-    groupGuidInternal:
+    groupGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 4eac9342efb2447e699c8577e1b0ef6a, type: 2}
   phaseLobby:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     groupIdInternal: 0
-    groupGuidInternal:
+    groupGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 053dad004cb594ea0be5915fdfe791ac, type: 2}
   phaseBidding:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     groupIdInternal: 0
-    groupGuidInternal:
+    groupGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 6b3a7981aabba4cec8601b7111f8e1e3, type: 2}
   phaseCombat:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     groupIdInternal: 0
-    groupGuidInternal:
+    groupGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 17791b9737acb466d9ad6b75bf9191e6, type: 2}
   mapNone:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     groupIdInternal: 0
-    groupGuidInternal:
+    groupGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: f170fec085fcf4f288615257417947a2, type: 2}
   mapCliff:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     groupIdInternal: 0
-    groupGuidInternal:
+    groupGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 2056f86c06ad4438f8a4d00f9e04b9f5, type: 2}
   mapLava:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     groupIdInternal: 0
-    groupGuidInternal:
+    groupGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 5c65358edf7574a06ab1b0a12a063af8, type: 2}
   playersTwo:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     groupIdInternal: 0
-    groupGuidInternal:
+    groupGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 7fc2c6689c8344089d9aca7342bb08a8, type: 2}
   playersThree:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     groupIdInternal: 0
-    groupGuidInternal:
+    groupGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: dc767c28f65a44ee92dbaef47cba001a, type: 2}
   playersFour:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     groupIdInternal: 0
-    groupGuidInternal:
+    groupGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 30cc5f9de6ea4e44be04ae98371b9df1, type: 2}
 --- !u!114 &1521590911
 MonoBehaviour:
@@ -1130,7 +1130,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2797c86f42eac848b3195a1b43335a3, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: AK.Wwise.Unity.MonoBehaviour::AkGameObj
   m_listeners:
     initialListenerList: []

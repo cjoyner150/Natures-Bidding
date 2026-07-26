@@ -277,9 +277,9 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     }
 
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
-    public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition, ulong fromAttackerId, bool critical = false)
+    public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition, ulong fromAttackerId, float damage, bool critical = false)
     {
-        NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId, critical);
+        NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId, critical, fromPosition, damage);
         
         if (!IsOwner) return;
         ctx.lastHitFromPosition = fromPosition;

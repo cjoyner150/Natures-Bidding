@@ -22,7 +22,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     public static Action<ulong, int> SpawnStunEffectsOnPlayer;
 
     public static Action<ulong, bool> ToggleStarEffectsOnPlayer;
-    public static Action<ulong, bool> SpawnHitReactionEffectsOnPlayer;
+    public static Action<ulong, bool, Vector3, float> SpawnHitReactionEffectsOnPlayer;
     public static Action<Vector3> SpawnExplosionAtPosition;
 
 
@@ -70,12 +70,12 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
         SpawnExplosionAtPositionClientRpc(spawnPos);
     }
-    public void OnSpawnHitReactionEffectsOnPlayer(ulong clientId, bool critical)
+    public void OnSpawnHitReactionEffectsOnPlayer(ulong clientId, bool critical, Vector3 fromPos, float damage)
     {
         var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
-        if (localVFXManager != null) localVFXManager.SpawnHitReactParticles(critical);
+        if (localVFXManager != null) localVFXManager.SpawnHitReactParticles(critical, fromPos, damage);
 
-        SpawnHitReactionEffectsClientRpc(clientId, critical);
+        SpawnHitReactionEffectsClientRpc(clientId, critical, fromPos, damage);
     }
 
     public void OnSpawnSlashEffectOnPlayer(ulong clientId, int milliseconds)
@@ -145,7 +145,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     public void OnSpawnConfettiEffectsOnPlayer(ulong clientId)
     {
         var localVFXManager = GetPlayerEffectManagerById(NetworkManager.Singleton.LocalClientId);
-        if (localVFXManager != null) localVFXManager.SpawnConfettiParticles();
+        //if (localVFXManager != null) localVFXManager.SpawnConfettiParticles();
 
         SpawnConfettiEffectsClientRpc(clientId);
     }
@@ -182,13 +182,13 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     }
 
     [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
-    public void SpawnHitReactionEffectsClientRpc(ulong clientId, bool critical)
+    public void SpawnHitReactionEffectsClientRpc(ulong clientId, bool critical, Vector3 fromPos, float damage)
     {
         var playerEffectManager = GetPlayerEffectManagerById(clientId);
 
         if (playerEffectManager != null)
         {
-            playerEffectManager.SpawnHitReactParticles(critical);
+            playerEffectManager.SpawnHitReactParticles(critical, fromPos, damage);
         }
         else
         {
@@ -323,7 +323,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
         if (playerEffectManager != null)
         {
-            playerEffectManager.SpawnConfettiParticles();
+            //playerEffectManager.SpawnConfettiParticles();
         }
         else
         {

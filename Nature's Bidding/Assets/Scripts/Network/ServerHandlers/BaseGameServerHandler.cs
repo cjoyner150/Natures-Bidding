@@ -96,7 +96,7 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
 
     protected virtual void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage, bool critical)
     {
-        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, attackingPlayer.OwnerClientId, critical);
+        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, attackingPlayer.OwnerClientId, damage, critical);
     }
 
     private Dictionary<ulong, TaskCompletionSource<string>> playerNameRequests = new();

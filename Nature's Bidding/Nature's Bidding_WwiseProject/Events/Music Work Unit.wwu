@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WwiseDocument Type="WorkUnit" ID="{D7A54580-5643-4753-B8AE-9C8206331B6E}" SchemaVersion="133" RootDocumentID="{8BD0119F-3380-4754-BD73-C1A95C863AD6}" ParentDocumentID="{8BD0119F-3380-4754-BD73-C1A95C863AD6}">
+<WwiseDocument Type="WorkUnit" ID="{D7A54580-5643-4753-B8AE-9C8206331B6E}" SchemaVersion="133">
 	<Events>
-		<WorkUnit Name="Music Work Unit" ID="{D7A54580-5643-4753-B8AE-9C8206331B6E}" OwnerID="{8BD0119F-3380-4754-BD73-C1A95C863AD6}" PersistMode="Nested"/>
+		<WorkUnit Name="Music Work Unit" ID="{D7A54580-5643-4753-B8AE-9C8206331B6E}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="Play_MX_System" ID="{3E7521AF-2CB6-4065-BE54-9B9CCD3A9716}">
+					<PropertyList>
+						<Property Name="InstanceLimit" Type="int16">
+							<ValueList>
+								<Value>1</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
+					<ChildrenList>
+						<Action Name="" ID="{812080D7-C5A0-4269-A5B4-9B0A809EBE11}" ShortID="245192031">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="MX_System" ID="{D53AD1A6-6513-4D06-A1E6-96970ED2F4D4}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_MX_System" ID="{0B983AC7-6D7B-4C1C-AA1E-05447D4235F3}">
+					<ChildrenList>
+						<Action Name="" ID="{EC7A9032-EE31-41C1-AD54-396DAA9DAA9C}" ShortID="937577728">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="MX_System" ID="{D53AD1A6-6513-4D06-A1E6-96970ED2F4D4}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
 	</Events>
 </WwiseDocument>

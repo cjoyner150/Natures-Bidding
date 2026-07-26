@@ -6,7 +6,7 @@
 				<MusicSwitchContainer Name="MX_System" ID="{D53AD1A6-6513-4D06-A1E6-96970ED2F4D4}" ShortID="815405">
 					<ReferenceList>
 						<Reference Name="Conversion">
-							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+							<ObjectRef Name="Music" ID="{EB2C0550-85AF-4354-88A0-DA70E47776EA}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
 						</Reference>
 						<Reference Name="OutputBus">
 							<ObjectRef Name="Music" ID="{899FB7A5-9F49-4C90-AB8B-67097E3D5629}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
@@ -19,7 +19,28 @@
 									</PropertyList>
 									<ChildrenList>
 										<MusicTransition Name="Transition" ID="{1E41513B-3330-4C75-8019-992FC82C1479}">
-											<TransitionInfo/>
+											<PropertyList>
+												<Property Name="EnableDestinationFadeIn" Type="bool" Value="True"/>
+												<Property Name="EnableSourceFadeOut" Type="bool" Value="True"/>
+												<Property Name="ExitSourceAt" Type="int16" Value="0"/>
+											</PropertyList>
+											<TransitionInfo>
+												<SourceFadeOut>
+													<MusicFade Name="Source Fade-out" ID="{A970FA8E-7EBB-42D2-91D2-24DF109052E9}">
+														<PropertyList>
+															<Property Name="FadeTime" Type="Real64" Value="1"/>
+															<Property Name="FadeType" Type="int16" Value="1"/>
+														</PropertyList>
+													</MusicFade>
+												</SourceFadeOut>
+												<DestinationFadeIn>
+													<MusicFade Name="Destination Fade-in" ID="{E74A6A45-C24E-43DA-98CC-37FE3BFBFED5}">
+														<PropertyList>
+															<Property Name="FadeTime" Type="Real64" Value="1"/>
+														</PropertyList>
+													</MusicFade>
+												</DestinationFadeIn>
+											</TransitionInfo>
 										</MusicTransition>
 									</ChildrenList>
 									<TransitionInfo/>
@@ -91,6 +112,16 @@
 									<ChildrenList>
 										<MusicTrack Name="Lobby Switch" ID="{3404A6F0-9EEC-4C46-BF85-C4ECD55C6701}" ShortID="164575720">
 											<PropertyList>
+												<Property Name="IsStreamingEnabled" Type="bool">
+													<ValueList>
+														<Value>True</Value>
+													</ValueList>
+												</Property>
+												<Property Name="IsZeroLatency" Type="bool">
+													<ValueList>
+														<Value>True</Value>
+													</ValueList>
+												</Property>
 												<Property Name="MusicTrackType" Type="int16" Value="3"/>
 											</PropertyList>
 											<ReferenceList>
@@ -518,6 +549,16 @@
 											<ChildrenList>
 												<MusicTrack Name="Nature's Bidding - Volcanic Brawl v2" ID="{43D34155-46AE-4643-ADB9-729DAD3F2979}" ShortID="1004305399">
 													<PropertyList>
+														<Property Name="IsStreamingEnabled" Type="bool">
+															<ValueList>
+																<Value>True</Value>
+															</ValueList>
+														</Property>
+														<Property Name="IsZeroLatency" Type="bool">
+															<ValueList>
+																<Value>True</Value>
+															</ValueList>
+														</Property>
 														<Property Name="Volume" Type="Real64">
 															<ValueList>
 																<Value>-8</Value>
@@ -674,6 +715,18 @@
 											</ReferenceList>
 											<ChildrenList>
 												<MusicTrack Name="GGJ2026 - Woodland Brawl_v1" ID="{2B26B8AA-79F5-4482-A0DA-511D062E4BA5}" ShortID="755416448">
+													<PropertyList>
+														<Property Name="IsStreamingEnabled" Type="bool">
+															<ValueList>
+																<Value>True</Value>
+															</ValueList>
+														</Property>
+														<Property Name="IsZeroLatency" Type="bool">
+															<ValueList>
+																<Value>True</Value>
+															</ValueList>
+														</Property>
+													</PropertyList>
 													<ReferenceList>
 														<Reference Name="OutputBus">
 															<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
@@ -777,6 +830,18 @@
 													</ObjectLists>
 												</MusicTrack>
 												<MusicTrack Name="GGJ2026 - Woodland Brawl_v1_01" ID="{8E35E985-4574-4964-B394-3A697F64EAB5}" ShortID="142166877">
+													<PropertyList>
+														<Property Name="IsStreamingEnabled" Type="bool">
+															<ValueList>
+																<Value>True</Value>
+															</ValueList>
+														</Property>
+														<Property Name="IsZeroLatency" Type="bool">
+															<ValueList>
+																<Value>True</Value>
+															</ValueList>
+														</Property>
+													</PropertyList>
 													<ReferenceList>
 														<Reference Name="OutputBus">
 															<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
@@ -1041,6 +1106,18 @@
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="GGJ2026 - Main Menu_v1" ID="{37C40B33-B883-4F88-8F8F-F0C73686EA9A}" ShortID="55483979">
+											<PropertyList>
+												<Property Name="IsStreamingEnabled" Type="bool">
+													<ValueList>
+														<Value>True</Value>
+													</ValueList>
+												</Property>
+												<Property Name="IsZeroLatency" Type="bool">
+													<ValueList>
+														<Value>True</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
 											<ReferenceList>
 												<Reference Name="OutputBus">
 													<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
@@ -1098,6 +1175,136 @@
 								</MusicSegment>
 							</ChildrenList>
 						</MusicPlaylistContainer>
+						<MusicPlaylistContainer Name="MX_Bidding" ID="{D805F52C-289C-4A6E-BFB7-7583764B2CF2}" ShortID="955006991">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+								</Reference>
+								<Reference Name="PlaylistRoot">
+									<Custom>
+										<MusicPlaylistItem Name="" ID="{9E9BA0E9-B25A-4958-8628-B7593A2D0616}" ShortID="335053995">
+											<PropertyList>
+												<Property Name="LoopCount" Type="int16" Value="0"/>
+											</PropertyList>
+											<ChildrenList>
+												<MusicPlaylistItem Name="" ID="{9F4E21FB-E9B9-4482-8FA2-4FA11A6E7A58}" ShortID="179890844">
+													<PropertyList>
+														<Property Name="PlaylistItemType" Type="int16" Value="1"/>
+													</PropertyList>
+													<ReferenceList>
+														<Reference Name="Segment">
+															<ObjectRef Name="AuctionTime_Master" ID="{5C29893A-3688-47C6-99D6-6026E5E5AB61}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
+														</Reference>
+													</ReferenceList>
+												</MusicPlaylistItem>
+											</ChildrenList>
+										</MusicPlaylistItem>
+									</Custom>
+								</Reference>
+								<Reference Name="TransitionRoot">
+									<Custom>
+										<MusicTransition Name="Root" ID="{E71971CB-C6E8-4E8A-A4AE-B1FAB9A2B19F}">
+											<PropertyList>
+												<Property Name="IsFolder" Type="bool" Value="True"/>
+											</PropertyList>
+											<ChildrenList>
+												<MusicTransition Name="Transition" ID="{F4AC7C61-0CA8-4B8F-8283-E4193596C544}">
+													<TransitionInfo/>
+												</MusicTransition>
+											</ChildrenList>
+											<TransitionInfo/>
+										</MusicTransition>
+									</Custom>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<MusicSegment Name="AuctionTime_Master" ID="{5C29893A-3688-47C6-99D6-6026E5E5AB61}" ShortID="994758111">
+									<PropertyList>
+										<Property Name="EndPosition" Type="Real64" Value="84480"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<MusicTrack Name="AuctionTime_Master" ID="{7C980C02-3FAC-4B4C-B6FD-674B8FCF990E}" ShortID="494185582">
+											<PropertyList>
+												<Property Name="IsStreamingEnabled" Type="bool">
+													<ValueList>
+														<Value>True</Value>
+													</ValueList>
+												</Property>
+												<Property Name="IsZeroLatency" Type="bool">
+													<ValueList>
+														<Value>True</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+												</Reference>
+												<Reference Name="TransitionRoot">
+													<Custom>
+														<MusicTransition Name="Root" ID="{179A6FF9-CFCE-4420-8587-EDFF2287CA95}">
+															<PropertyList>
+																<Property Name="IsFolder" Type="bool" Value="True"/>
+															</PropertyList>
+															<TransitionInfo/>
+														</MusicTransition>
+													</Custom>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="AuctionTime_Master" ID="{9C042CE5-D99C-4E1B-B894-225C682BBE2C}">
+													<Language>SFX</Language>
+													<AudioFile>AuctionTime_Master.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="310336769"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ObjectLists>
+												<ObjectList Name="Sequences">
+													<MusicTrackSequence Name="" ID="{4D6F7951-C0D0-4BEE-BAC9-F9641B53360B}">
+														<ObjectLists>
+															<ObjectList Name="Clips">
+																<MusicClip Name="AuctionTime_Master" ID="{81BC93BB-0EBF-4994-9581-0B323BAB26A4}">
+																	<PropertyList>
+																		<Property Name="EndTrimOffset" Type="Real64" Value="84480"/>
+																		<Property Name="FadeInMode" Type="int16" Value="0"/>
+																		<Property Name="FadeOutMode" Type="int16" Value="0"/>
+																	</PropertyList>
+																	<AudioSourceRef Name="AuctionTime_Master" ID="{9C042CE5-D99C-4E1B-B894-225C682BBE2C}"/>
+																</MusicClip>
+															</ObjectList>
+														</ObjectLists>
+													</MusicTrackSequence>
+												</ObjectList>
+											</ObjectLists>
+										</MusicTrack>
+									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="Cues">
+											<MusicCue Name="Entry Cue" ID="{07150707-9C6F-45A8-8DB2-8CF9712AD72D}"/>
+											<MusicCue Name="Exit Cue" ID="{5B05FA4D-1FA7-4121-964E-BB1AEDAA5285}">
+												<PropertyList>
+													<Property Name="CueType" Type="int16" Value="1"/>
+													<Property Name="TimeMs" Type="Real64" Value="84480"/>
+												</PropertyList>
+											</MusicCue>
+										</ObjectList>
+									</ObjectLists>
+								</MusicSegment>
+							</ChildrenList>
+						</MusicPlaylistContainer>
 					</ChildrenList>
 					<ObjectLists>
 						<ObjectList Name="Arguments">
@@ -1140,6 +1347,42 @@
 											<ReferenceList>
 												<Reference Name="EntryPathObject">
 													<ObjectRef Name="Combat" ID="{AF2EE265-C86B-40BD-97FE-DE5FEE14D9AC}" WorkUnitID="{6949BC57-2612-4D09-ABA1-5198942D42F4}"/>
+												</Reference>
+											</ReferenceList>
+										</PluginInnerObject>
+									</ObjectList>
+								</ObjectLists>
+							</MultiSwitchEntry>
+							<MultiSwitchEntry Name="" ID="{569D75AD-280E-4BD9-9E7D-BB056342B8B4}">
+								<ReferenceList>
+									<Reference Name="AudioNode">
+										<ObjectRef Name="MX_Menu" ID="{5F50A952-703D-4E94-BAF6-B888F8D7508C}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
+									</Reference>
+								</ReferenceList>
+								<ObjectLists>
+									<ObjectList Name="EntryPath">
+										<PluginInnerObject Name="" ID="{C5801C07-B8C5-416C-A1FB-4A2CBDE7E00F}" PluginName="EntryPathSlot" CompanyID="0" PluginID="88">
+											<ReferenceList>
+												<Reference Name="EntryPathObject">
+													<ObjectRef Name="Menu" ID="{F1E0877A-485F-4551-99E4-762926D35072}" WorkUnitID="{6949BC57-2612-4D09-ABA1-5198942D42F4}"/>
+												</Reference>
+											</ReferenceList>
+										</PluginInnerObject>
+									</ObjectList>
+								</ObjectLists>
+							</MultiSwitchEntry>
+							<MultiSwitchEntry Name="" ID="{8423F497-F791-4A76-9D3F-A5B91215B8B7}">
+								<ReferenceList>
+									<Reference Name="AudioNode">
+										<ObjectRef Name="MX_Bidding" ID="{D805F52C-289C-4A6E-BFB7-7583764B2CF2}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
+									</Reference>
+								</ReferenceList>
+								<ObjectLists>
+									<ObjectList Name="EntryPath">
+										<PluginInnerObject Name="" ID="{1857A36D-1ED0-4B6B-8C87-28A019F0C742}" PluginName="EntryPathSlot" CompanyID="0" PluginID="88">
+											<ReferenceList>
+												<Reference Name="EntryPathObject">
+													<ObjectRef Name="Bidding" ID="{2F9BA0E6-E155-4A4D-869A-FD6D6D6BF5A3}" WorkUnitID="{6949BC57-2612-4D09-ABA1-5198942D42F4}"/>
 												</Reference>
 											</ReferenceList>
 										</PluginInnerObject>

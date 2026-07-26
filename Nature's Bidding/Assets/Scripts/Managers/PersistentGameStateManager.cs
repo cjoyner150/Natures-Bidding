@@ -38,6 +38,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     [SerializeField] private ShopManager shopManager;
     [SerializeField] private ReadyManager readyManager;
 
+    private GameAudioController gameAudioController;
 
     private bool _isReturningToMenu = false;
     public bool IsReturningToMenu {
@@ -94,6 +95,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
             base.Awake();
             DontDestroyOnLoad(gameObject);
             InputDeviceTracker.Initialize();
+            gameAudioController = GetComponent<GameAudioController>();
         }
     }
 
@@ -119,6 +121,9 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private async void OnGameStateChanged(GameState newState)
     {
+        gameAudioController ??= GetComponent<GameAudioController>();
+        gameAudioController?.SetGameState(newState);
+
         switch (newState)
         {
             case GameState.Menu:

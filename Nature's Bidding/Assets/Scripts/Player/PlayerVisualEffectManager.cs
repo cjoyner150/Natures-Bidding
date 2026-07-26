@@ -38,7 +38,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
         //SafeDispose(go, 1000).Forget();
     }
 
-    public void SpawnHitReactParticles(bool critical)
+    public void SpawnHitReactParticles(bool critical, Vector3 fromPos, float damage)
     {
         //if (critical)
         //{

@@ -159,7 +159,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         if (targetHealth == null) return;
 
         targetHealth.health.Value -= damage;
-        targetHealth.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, attackingPlayer.OwnerClientId, critical);
+        targetHealth.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, attackingPlayer.OwnerClientId, damage, critical);
 
         if (targetHealth.health.Value <= 0)
         {

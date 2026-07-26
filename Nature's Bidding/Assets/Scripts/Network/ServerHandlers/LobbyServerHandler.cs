@@ -42,7 +42,7 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
 
     protected override void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage, bool critical = false)
     {
-        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, attackingPlayer.OwnerClientId, critical);
+        hitPlayer.GetComponent<PlayerHealth>()?.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, attackingPlayer.OwnerClientId, damage, critical);
     }
 
     private void OnClientConnected(ulong clientId)

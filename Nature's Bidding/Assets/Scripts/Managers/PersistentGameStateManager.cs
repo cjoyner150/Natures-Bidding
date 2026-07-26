@@ -7,13 +7,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityUtils;
+using Random = UnityEngine.Random;
 
 public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 {
     public enum GameFlowPhase { Lobby, Bidding, ShopReview, Combat }
 
     private const string BiddingSceneName = "Bidding_Scene";
-    private const string CombatSceneName = "LavaGameplay";
+    private const string VolcanoCombatSceneName = "LavaGameplay";
+    private const string CliffsCombatSceneName = "CliffGameplay";
 
     [SerializeField] private GameObject[] spawnableNetworkSingletons; 
     [SerializeField] private GameObject loadingPanel;
@@ -74,6 +76,15 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
             }
         }
     }
+
+    public enum CombatLevelSelectType
+    {
+        Cliffs,
+        Volcano,
+        Random
+    }
+
+    private CombatLevelSelectType levelSelectionType = CombatLevelSelectType.Random;
 
     protected override void Awake()
     {
@@ -523,7 +534,34 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     public async void LoadCombatLevel()
     {
         SetLoadingState("Loading combat...", true);
-        await LoadNetworkedSceneAsync(CombatSceneName);
+        string sceneName;
+
+        switch (levelSelectionType)
+        {
+            case CombatLevelSelectType.Cliffs:
+                sceneName = CliffsCombatSceneName;
+                break;
+            case CombatLevelSelectType.Volcano:
+                sceneName = VolcanoCombatSceneName;
+                break;
+            case CombatLevelSelectType.Random:
+                int rand = Random.Range(0, 2);
+                var level = (CombatLevelSelectType)rand;
+                if (level == CombatLevelSelectType.Cliffs) sceneName = CliffsCombatSceneName;
+                else if (level == CombatLevelSelectType.Volcano) sceneName = VolcanoCombatSceneName;
+                else
+                {
+                    Debug.LogError("[PersistentGameManager] Random level type generated unimplemented level. Defaulting to cliffs level.");
+                    sceneName = CliffsCombatSceneName;
+                }
+                break;
+            default:
+                Debug.LogError("[PersistentGameManager] levelSelectionType is set to an unimplemented level. Defaulting to cliffs level.");
+                sceneName = CliffsCombatSceneName;
+                break;
+        }
+
+        await LoadNetworkedSceneAsync(sceneName);
     }
 
     public void OnCombatSceneReady()
@@ -550,4 +588,8 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         State = GameState.Bidding;
         LoadBiddingLevel();
     }
+
+    public void SetLevelSelectionType(CombatLevelSelectType level) { levelSelectionType = level; }
+
+    public CombatLevelSelectType GetCurrentLevelSelectionType() { return levelSelectionType; }
 }

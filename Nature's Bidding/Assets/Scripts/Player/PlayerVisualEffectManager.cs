@@ -2,7 +2,9 @@ using Cysharp.Threading.Tasks;
 using System;
 using Unity.Netcode;
 using Unity.VisualScripting;
+using MoreMountains.Feedbacks;
 using UnityEngine;
+
 
 public class PlayerVisualEffectManager : MonoBehaviour
 {
@@ -10,23 +12,29 @@ public class PlayerVisualEffectManager : MonoBehaviour
     [SerializeField] GameObject hitReactParticle;
     [SerializeField] GameObject slashParticle;
     [SerializeField] GameObject starParticle;
-    [SerializeField] GameObject confettiParticle;
     [SerializeField] GameObject confusionParticle;
     [SerializeField] GameObject parryParticle;
     [SerializeField] GameObject parrySuccessParticle;
     [SerializeField] GameObject magicPoofParticle;
     [SerializeField] GameObject stunParticle;
-    [SerializeField] GameObject lavaSplashParticle;
     [SerializeField] GameObject explosionParticle;
     [SerializeField] GameObject jumpParticle;
     [SerializeField] GameObject dashParticle;
+    [SerializeField] GameObject teleportParticle;
 
 
     [Header("References")]
     [SerializeField] Transform weaponHolderTransform;
+    [SerializeField] MMF_Player hitReactFeedback;
 
     GameObject batConfusionEffectCache;
     GameObject starEffectCache;
+    Color playerColor;
+
+    public void Awake()
+    {
+        playerColor = GetComponent<PlayerNetworkBehavior>().GetColor();
+    }
 
     public void SpawnSlashEffectParticles(int milliseconds)
     {
@@ -51,20 +59,22 @@ public class PlayerVisualEffectManager : MonoBehaviour
         SafeDispose(go, 1000).Forget();
     }
 
-    public void SpawnHitReactParticles(bool critical)
+    public void SpawnHitReactParticles(bool critical, Vector3 dmgDirection)
     {
-        //if (critical)
-        //{
-        //    GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
-        //    go.transform.localPosition = Vector3.zero;
-        //    SafeDispose(go, 1000).Forget();
-        //}
-        //else
-        //{
-        //    GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
-        //    go.transform.localPosition = Vector3.zero;
-        //    SafeDispose(go, 1000).Forget();
-        //}
+        if (critical)
+        {
+            GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
+            go.transform.localPosition = Vector3.zero;
+            SafeDispose(go, 1000).Forget();
+            hitReactFeedback.PlayFeedbacks();
+        }
+        else
+        {
+            GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
+            go.transform.localPosition = Vector3.zero;
+            SafeDispose(go, 1000).Forget();
+            hitReactFeedback.PlayFeedbacks();
+        }
     }
 
     public void SpawnDashParticles()
@@ -76,10 +86,10 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnTeleportParticles()
     {
-        //GameObject go = Instantiate(explosionParticle, gameObject.transform, false);
-        //go.transform.localPosition = Vector3.zero;
-        //go.transform.SetParent(null, true);
-        //SafeDispose(go, 1000).Forget();
+        GameObject go = Instantiate(teleportParticle, gameObject.transform, false);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.SetParent(null, true);
+        SafeDispose(go, 1000).Forget();
     }
 
     public void ToggleStarParticles(bool enabled)
@@ -123,12 +133,6 @@ public class PlayerVisualEffectManager : MonoBehaviour
         SafeDispose(go, milliseconds).Forget();
     }
 
-    public void SpawnConfettiParticles()
-    {
-        GameObject go = Instantiate(confettiParticle, gameObject.transform, false);
-        go.transform.localPosition = Vector3.zero;
-        SafeDispose(go, 5000).Forget();
-    }
 
     public void SpawnBatConfusionParticles()
     {

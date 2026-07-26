@@ -456,7 +456,9 @@ MonoBehaviour:
   explosionParticle: {fileID: 5760442672778993801, guid: edec52a2346ad3a47956d7ed7d96d4a5, type: 3}
   jumpParticle: {fileID: 6704440195855292504, guid: 4474d5daa2d1f3743a297f59dd0aab7e, type: 3}
   dashParticle: {fileID: 371010074459113082, guid: 44f822ef532e8bd438508c29a45b93a0, type: 3}
+  teleportParticle: {fileID: 7981934318694625484, guid: 7eb09148b5a5f2f4686ec0e43bbf878c, type: 3}
   weaponHolderTransform: {fileID: 4987226103521437686}
+  hitReactFeedback: {fileID: 473235510453661419}
 --- !u!114 &2427196603344720073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,17 +694,17 @@ MonoBehaviour:
         ResetShakerValuesAfterShake: 1
         ResetTargetValuesAfterShake: 1
         ShakeSpeed: 40
-        ShakeRange: 0.2
-        ShakeMainDirection: {x: 0, y: 1, z: 0}
-        RandomizeDirection: 0
-        ShakeAltDirection: {x: 0, y: 1, z: 0}
+        ShakeRange: 0.4
+        ShakeMainDirection: {x: 1, y: 1, z: 1}
+        RandomizeDirection: 1
+        ShakeAltDirection: {x: -1, y: -1, z: -1}
         RandomizeDirectionOnPlay: 0
         RandomizeDirectionX: 1
         RandomizeDirectionY: 1
         RandomizeDirectionZ: 1
         AddDirectionalNoise: 1
-        DirectionalNoiseStrengthMin: {x: 1, y: 1, z: 1}
-        DirectionalNoiseStrengthMax: {x: -1, y: -1, z: -1}
+        DirectionalNoiseStrengthMin: {x: 15, y: 15, z: 15}
+        DirectionalNoiseStrengthMax: {x: -15, y: -15, z: -15}
         RandomnessSeed: {x: 0, y: 0, z: 0}
         RandomizeSeedOnShake: 1
         UseAttenuation: 1

@@ -49,8 +49,8 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
         if (PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Combat || 
             PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Lobby)
         {
-            PlayerPauseManager.Instance.OnPaused += EnableCursor;
-            PlayerPauseManager.Instance.OnResumed += DisableCursor;
+            PlayerPauseManager.OnPaused += EnableCursor;
+            PlayerPauseManager.OnResumed += DisableCursor;
         }
 
         if (syncCursorPosition || IsOwner) CreateCursor();
@@ -265,8 +265,8 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
 
     public override void OnDestroy()
     { 
-        PlayerPauseManager.Instance.OnPaused -= EnableCursor;
-        PlayerPauseManager.Instance.OnResumed -= DisableCursor;
+        PlayerPauseManager.OnPaused -= EnableCursor;
+        PlayerPauseManager.OnResumed -= DisableCursor;
 
         _normalizedCursorPos.OnValueChanged = null;
 

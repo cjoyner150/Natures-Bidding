@@ -19,6 +19,7 @@ public class PlayerInputManager : MonoBehaviour
     private InputAction parry;
     private InputAction attack;
     private InputAction pause;
+    private InputAction ready;
 
     private bool allowInputs = false;
     public bool allowSprint = true;
@@ -45,6 +46,7 @@ public class PlayerInputManager : MonoBehaviour
         attack ??= controls.PlayerGameplay.Attack;
         parry ??= controls.PlayerGameplay.Parry;
         pause ??= controls.PlayerGameplay.Pause;
+        ready ??= controls.PlayerGameplay.Ready;
 
         ctx.orientation = Instantiate(new GameObject(), transform).transform;
         ctx.orientation.rotation = transform.rotation;
@@ -65,10 +67,12 @@ public class PlayerInputManager : MonoBehaviour
         attack.Enable();
         parry.Enable();
         pause.Enable();
+        ready.Enable();
 
+        ready.performed += OnReadyPressed;
         pause.performed += OnPausePressed;
-        PlayerPauseManager.Instance.OnPaused += OnPaused;
-        PlayerPauseManager.Instance.OnResumed += OnResumed;
+        PlayerPauseManager.OnPaused += OnPaused;
+        PlayerPauseManager.OnResumed += OnResumed;
 
         allowInputs = true;
         
@@ -95,14 +99,19 @@ public class PlayerInputManager : MonoBehaviour
         attack?.Disable();
         parry?.Disable();
         pause?.Disable();
+        ready?.Disable();
 
         if (pause != null)
             pause.performed -= OnPausePressed;
 
+        if (ready != null)
+            ready.performed -= OnReadyPressed;
+        
+
         if (PlayerPauseManager.HasInstance)
         {
-            PlayerPauseManager.Instance.OnPaused -= OnPaused;
-            PlayerPauseManager.Instance.OnResumed -= OnResumed;
+            PlayerPauseManager.OnPaused -= OnPaused;
+            PlayerPauseManager.OnResumed -= OnResumed;
         }
     }
 
@@ -177,6 +186,11 @@ public class PlayerInputManager : MonoBehaviour
 
     }
 
+    public void OnReadyPressed(InputAction.CallbackContext callbackContext)
+    {
+        LobbyNetworkUI.OnPlayerReadyEvent?.Invoke();
+    }
+
     public void ReverseControls()
     {
         controls?.Dispose();
@@ -191,6 +205,7 @@ public class PlayerInputManager : MonoBehaviour
         attack = reversedControls.PlayerGameplay.Attack;
         parry = reversedControls.PlayerGameplay.Parry;
         pause = reversedControls.PlayerGameplay.Pause;
+        ready = reversedControls.PlayerGameplay.Ready;
 
         move.Enable();
         sprint.Enable();
@@ -199,6 +214,7 @@ public class PlayerInputManager : MonoBehaviour
         attack.Enable();
         parry.Enable();
         pause.Enable();
+        ready.Enable();
     }
 
     public void ResetControls()
@@ -215,6 +231,7 @@ public class PlayerInputManager : MonoBehaviour
         attack = controls.PlayerGameplay.Attack;
         parry = controls.PlayerGameplay.Parry;
         pause = controls.PlayerGameplay.Pause;
+        ready = controls.PlayerGameplay.Ready;
 
         move.Enable();
         sprint.Enable();
@@ -223,6 +240,7 @@ public class PlayerInputManager : MonoBehaviour
         attack.Enable();
         parry.Enable();
         pause.Enable();
+        ready.Enable();
     }
 
     public void DisableInput()
@@ -236,6 +254,7 @@ public class PlayerInputManager : MonoBehaviour
         attack?.Disable();
         parry?.Disable();
         pause?.Disable();
+        ready?.Disable();
     }
 
     public void EnableInput()
@@ -249,13 +268,14 @@ public class PlayerInputManager : MonoBehaviour
         attack?.Enable();
         parry?.Enable();
         pause?.Enable();
+        ready?.Enable();
     }
 
     void OnPausePressed(InputAction.CallbackContext callback)
     {
         if (allowPause)
         {
-            PlayerPauseManager.Instance.OnPausePressed?.Invoke();
+            PlayerPauseManager.OnPausePressed?.Invoke();
         }
     }
 

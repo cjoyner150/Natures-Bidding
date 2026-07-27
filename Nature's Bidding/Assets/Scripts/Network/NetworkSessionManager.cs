@@ -21,7 +21,7 @@ using Debug = UnityEngine.Debug;
 
 public class NetworkSessionManager : Singleton<NetworkSessionManager>
 {
-    private const bool EnableSessionDebugLogging = false;
+    private const bool EnableSessionDebugLogging = true;
 
     ISession activeSession;
 

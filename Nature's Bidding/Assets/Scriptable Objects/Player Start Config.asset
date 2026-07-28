@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Player Start Config
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStartConfigSO
   gold: 100
-  masks: []
-  tarots: []
+  masks:
+  - {fileID: 11400000, guid: c7ec78f04cc6a894fae19b099c4ff6e8, type: 2}
+  tarots:
+  - {fileID: 11400000, guid: 1c174d1831b4bc044b48dd1cde7a6d4d, type: 2}
   artifacts: []

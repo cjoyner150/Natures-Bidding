@@ -26,6 +26,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
     [Header("References")]
     [SerializeField] Transform weaponHolderTransform;
     [SerializeField] MMF_Player hitReactFeedback;
+    
 
     GameObject batConfusionEffectCache;
     GameObject starEffectCache;

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce4ee29c916845b4fb8bc73834bef549, type: 3}
-  m_Name: Health +50
+  m_Name: Extra Jump
   m_EditorClassIdentifier: Assembly-CSharp::BasicNumericalStatusEffectorSO
-  _id: health_+50
-  Title: Health +50
+  _id: extra_jump
+  Title: Extra Jump
   Description: 
   Duration: -1
-  Stat: 0
-  Value: 50
+  Stat: 4
+  Value: 1
   OperationType: 0

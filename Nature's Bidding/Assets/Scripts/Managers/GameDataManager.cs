@@ -18,6 +18,8 @@ public class GameDataManager : Singleton<GameDataManager>
         }
     }
 
+    public StatusEffectorSO GetRandomEffector() => itemDatabase.GetRandomStatusEffector();
+
     public StatusEffectorSO GetEffector(string id) => itemDatabase.Get<StatusEffectorSO>(id);
 
     public List<StatusEffectorSO> GetEffectors(IEnumerable<string> ids) =>

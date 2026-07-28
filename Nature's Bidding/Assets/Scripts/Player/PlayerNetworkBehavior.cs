@@ -54,7 +54,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
             playerInput.InitializePlayer(ctx);
             ctx.maxJumps = ctx.playerStats.Jumps;
-            transform.localScale *= ctx.playerStats.Size;
 
             if (LobbyServerHandler.Instance != null)
                 LobbyServerHandler.OnPlayerRegistered.AddListener(OnPlayerRegistered);

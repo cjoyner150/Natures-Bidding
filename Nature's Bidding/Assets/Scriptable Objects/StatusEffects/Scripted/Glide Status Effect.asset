@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce4ee29c916845b4fb8bc73834bef549, type: 3}
-  m_Name: Health x0.7
-  m_EditorClassIdentifier: Assembly-CSharp::BasicNumericalStatusEffectorSO
-  _id: health_x0.7
-  Title: Health x0.7
+  m_Script: {fileID: 11500000, guid: 18b1c5f0415653a47b2c5522a5496489, type: 3}
+  m_Name: Glide Status Effect
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptedStatusEffectorSO
+  _id: glide_status_effect
+  Title: Glide Status Effect
   Description: 
   Duration: -1
-  Stat: 0
-  Value: 0.7
-  OperationType: 1
+  _effectTypeName: GlideStatusEffect
+  _parameters: []

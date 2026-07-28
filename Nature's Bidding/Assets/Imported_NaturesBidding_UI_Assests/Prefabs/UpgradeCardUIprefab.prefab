@@ -375,6 +375,7 @@ GameObject:
   - component: {fileID: 5927515982429646519}
   - component: {fileID: 2457172883342708408}
   - component: {fileID: 4522932594160991211}
+  - component: {fileID: 2642853818527875508}
   m_Layer: 0
   m_Name: UpgradeCardUIprefab
   m_TagString: Untagged
@@ -498,6 +499,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2642853818527875508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6809773045088817838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1
+  playHoverOnNavigation: 1
 --- !u!1 &8021745439400905810
 GameObject:
   m_ObjectHideFlags: 0

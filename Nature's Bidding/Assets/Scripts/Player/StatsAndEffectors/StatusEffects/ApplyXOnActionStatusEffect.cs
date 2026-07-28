@@ -10,14 +10,19 @@ public class ApplyXOnActionStatusEffect : StatusEffect
 {
     protected ulong selfClientId;
     protected bool applyToSelf;
+    protected bool applyOnce;
     protected List<StatusEffectorSO> effects;
     protected ApplyEffectOnActionType actionType;
+
+    private bool applied;
+
     public override StatsModifier GetStatsModifier() => null;
 
-    public ApplyXOnActionStatusEffect(ApplyEffectOnActionType actionType, List<StatusEffectorSO> effectsToApply, bool applyToSelf = true)
+    public ApplyXOnActionStatusEffect(ApplyEffectOnActionType actionType, List<StatusEffectorSO> effectsToApply, bool applyOnce = false, bool applyToSelf = true)
     {
         this.actionType = actionType;
         this.applyToSelf = applyToSelf;
+        this.applyOnce = applyOnce;
         effects = effectsToApply;
     }
 
@@ -33,11 +38,14 @@ public class ApplyXOnActionStatusEffect : StatusEffect
 
         InitHooks();
         Debug.Log($"[ApplyXOnActionStatusEffect] Hooks initialized. Instance hash: {GetHashCode()}");
+
+        applied = false;
     }
 
     public override void OnEnd()
     {
         RemoveHooks();
+        applied = false;
     }
 
     protected virtual void OnApplyEffectTo(ulong targetId) { }
@@ -88,6 +96,9 @@ public class ApplyXOnActionStatusEffect : StatusEffect
 
     protected void ApplyEffectsToPlayer(ulong targetClientId)
     {
+        if (applied && applyOnce) return;
+        applied = true;
+
         ulong applyToPlayerId = applyToSelf ? selfClientId : targetClientId;
 
         string[] effectIds = effects.Select(x => x.Id).ToArray();

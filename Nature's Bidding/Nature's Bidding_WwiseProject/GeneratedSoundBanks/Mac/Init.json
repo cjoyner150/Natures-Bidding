@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{A61C1700-DD87-AFE4-1A68-D695FA3FAED5}",
+    "Hash": "{05C83BAC-5CAF-80D1-CF7E-731940184317}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -94,6 +94,38 @@
       ]
      },
      {
+      "Id": "2188949101",
+      "Name": "Players",
+      "ObjectPath": "\\States\\Default Work Unit\\Players",
+      "GUID": "{63D51DCF-9267-496B-ACC4-74FEF4F018B8}",
+      "States": [
+       {
+        "Id": "678209053",
+        "Name": "Two",
+        "ObjectPath": "\\States\\Default Work Unit\\Players\\Two",
+        "GUID": "{CED468E2-4C46-43A6-B63C-D30CE5A84F69}"
+       },
+       {
+        "Id": "748895195",
+        "Name": "None",
+        "ObjectPath": "\\States\\Default Work Unit\\Players\\None",
+        "GUID": "{56E396D1-2538-40B6-AD3B-B3986F903F3C}"
+       },
+       {
+        "Id": "912956111",
+        "Name": "Three",
+        "ObjectPath": "\\States\\Default Work Unit\\Players\\Three",
+        "GUID": "{0FE37B61-91DD-4580-86F5-795762D5C8CC}"
+       },
+       {
+        "Id": "2863728729",
+        "Name": "Four",
+        "ObjectPath": "\\States\\Default Work Unit\\Players\\Four",
+        "GUID": "{F74A0D10-4777-446F-9FFA-B2E7BF50B9FD}"
+       }
+      ]
+     },
+     {
       "Id": "3211383847",
       "Name": "Game_Phase",
       "ObjectPath": "\\States\\Default Work Unit\\Game_Phase",
@@ -116,12 +148,6 @@
         "Name": "None",
         "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\None",
         "GUID": "{F19062E5-3F11-47B2-A1A0-85036279551B}"
-       },
-       {
-        "Id": "908101565",
-        "Name": "Shopping",
-        "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Shopping",
-        "GUID": "{05104055-75E4-45F5-B33D-321ED64E1E8A}"
        },
        {
         "Id": "2607556080",
@@ -216,6 +242,6 @@
     ]
    }
   ],
-  "FileHash": "{C458E313-AD31-89C8-2E2C-ED4D0407DD1C}"
+  "FileHash": "{33F6434E-C049-FDE6-BA78-B061153484F7}"
  }
 }

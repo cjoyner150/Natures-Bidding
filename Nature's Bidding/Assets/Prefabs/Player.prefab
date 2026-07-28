@@ -406,6 +406,7 @@ MonoBehaviour:
     m_Bits: 128
   attackRadius: 0.4
   attackLength: 2
+  debugAttackCast: 1
 --- !u!114 &2143706486958459292
 MonoBehaviour:
   m_ObjectHideFlags: 0

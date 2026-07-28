@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerHealth : NetworkBehaviour, IDamageable
@@ -288,9 +289,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         Debug.Log($"I've been hit! New health is {health.Value}");
     }
 
+    // This gets called before the final winner is calculated so the scene can transition immediately if this player has enough wins to become the final winner
+    // That can result in this method being called with null references as the objects are destroyed and the scene transitions
     public async void OnWinRound(int victoryLapDelay)
     {
-        Destroy(playerGameplayUI.gameObject);
+
+        if (playerGameplayUI != null)
+            Destroy(playerGameplayUI.gameObject);
 
         if (!IsOwner) return;
 
@@ -298,7 +303,8 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
         await UniTask.Delay(victoryLapDelay);
 
-        ctx.allowInputs = false;
+        if (ctx != null)
+            ctx.allowInputs = false;
     }
 
     public PlayerContext GetPlayerContext() => ctx;

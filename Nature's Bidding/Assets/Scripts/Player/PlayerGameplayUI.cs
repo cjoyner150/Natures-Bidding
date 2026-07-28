@@ -9,6 +9,8 @@ public class PlayerGameplayUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI playerNameText;
     [SerializeField] private RawImage playerImg;
+    [SerializeField] private Image backgroundImage;
+    [SerializeField] private Sprite[] coloredSprites;
     private RenderTexture renderTexture;
     Camera renderCam;
     private ulong clientId;
@@ -27,6 +29,14 @@ public class PlayerGameplayUI : MonoBehaviour
         renderCam.targetTexture = renderTexture;
         renderCam.enabled = true;
         playerImg.texture = renderTexture;
+
+        var playerData = PersistentPlayerRegistry.Instance.GetByClientId(clientId);
+        int idx = 0;
+
+        if (playerData != null) idx = PersistentPlayerRegistry.Instance.GetByClientId(clientId).playerIndex;
+        else Debug.LogError($"[PlayerGameplayUI] No player data found for player: {playerData}");
+
+        backgroundImage.sprite = coloredSprites[idx];
 
         Debug.Log($"[PlayerGameplayUI] rendercam is named: {renderCam.name} and is enabled: {renderCam.enabled} on init");
     }

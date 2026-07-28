@@ -130,6 +130,7 @@
       "Name": "Play_UI_Bid_Adjust",
       "ObjectPath": "\\Events\\UI Work Unit\\Play_UI_Bid_Adjust",
       "GUID": "{C2E4B442-82BC-43CC-AF73-90A9B75CF663}",
+      "Color": "2",
       "DurationType": "OneShot",
       "DurationMin": "0.2436781",
       "DurationMax": "0.2716671",
@@ -219,6 +220,6 @@
     ]
    }
   ],
-  "FileHash": "{9B1A847C-6107-893F-3944-4A3A91FFCA8C}"
+  "FileHash": "{CC6E4F60-7121-DC5D-CD94-0EB36772CBC0}"
  }
 }

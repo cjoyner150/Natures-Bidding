@@ -1,5 +1,6 @@
 State Group	ID	Name			Wwise Object Path	Notes
 	1048449605	Map			\Default Work Unit\Map	
+	2188949101	Players			\Default Work Unit\Players	
 	3211383847	Game_Phase			\Default Work Unit\Game_Phase	
 	3737198187	Combat_Result			\Default Work Unit\Combat_Result	
 
@@ -7,10 +8,13 @@ State	ID	Name	State Group			Notes
 	540301611	Lava	Map			
 	748895195	None	Map			
 	1668395945	Cliff	Map			
+	678209053	Two	Players			
+	748895195	None	Players			
+	912956111	Three	Players			
+	2863728729	Four	Players			
 	290285391	Lobby	Game_Phase			
 	500842706	Bidding	Game_Phase			
 	748895195	None	Game_Phase			
-	908101565	Shopping	Game_Phase			
 	2607556080	Menu	Game_Phase			
 	2764240573	Combat	Game_Phase			
 	748895195	None	Combat_Result			

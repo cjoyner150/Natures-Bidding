@@ -27,7 +27,9 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         cameraTargetGroup = FindAnyObjectByType<CinemachineTargetGroup>();
         cameraTargetGroup?.AddMember(transform, 1, 4);
 
-        if (PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Combat)
+        bool isCombatScene = CombatServerHandler.Instance != null;
+
+        if (isCombatScene)
         {
             playerMaskVisualManager = GetComponent<PlayerMaskVisualManager>();
             playerMaskVisualManager.Initialize(OwnerClientId);
@@ -42,7 +44,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
             playerInput = gameObject.AddComponent<PlayerInputManager>();
 
-            if (PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Combat)
+            if (isCombatScene)
             {
                 playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
                 playerWeaponManager = GetComponent<PlayerWeaponManager>();
@@ -52,7 +54,6 @@ public class PlayerNetworkBehavior : NetworkBehaviour
 
             playerInput.InitializePlayer(ctx);
             ctx.maxJumps = ctx.playerStats.Jumps;
-            transform.localScale *= ctx.playerStats.Size;
 
             if (LobbyServerHandler.Instance != null)
                 LobbyServerHandler.OnPlayerRegistered.AddListener(OnPlayerRegistered);

@@ -38,6 +38,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     [SerializeField] private ShopManager shopManager;
     [SerializeField] private ReadyManager readyManager;
 
+    private GameAudioController gameAudioController;
 
     private bool _isReturningToMenu = false;
     public bool IsReturningToMenu {
@@ -94,6 +95,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
             base.Awake();
             DontDestroyOnLoad(gameObject);
             InputDeviceTracker.Initialize();
+            gameAudioController = GetComponent<GameAudioController>();
         }
     }
 
@@ -119,6 +121,9 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private async void OnGameStateChanged(GameState newState)
     {
+        gameAudioController ??= GetComponent<GameAudioController>();
+        gameAudioController?.SetGameState(newState);
+
         switch (newState)
         {
             case GameState.Menu:
@@ -337,6 +342,8 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
             !NetworkManager.Singleton.IsListening
         );
 
+        Cursor.lockState = CursorLockMode.Confined;
+
         SetLoadingState("Returning to Menu...", true);
 
         await LoadSceneAsync(1);
@@ -472,6 +479,11 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private void OnAllPlayersReadied()
     {
+        StartNewRound();
+    }
+
+    private void StartNewRound()
+    {
         if (skipToCombat)
         {
             BeginCombatPhaseServer();
@@ -576,6 +588,14 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
             return;
 
         PersistentPlayerRegistry.Instance.AddCombatWin(winningPlayerId);
+        PersistentPlayerRegistry.Instance.AddGold(winningPlayerId, 75);
+
+        foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            if (clientId == winningPlayerId) continue;
+
+            PersistentPlayerRegistry.Instance.AddGold(clientId, 150);
+        }
 
         PlayerData winningPlayer = PersistentPlayerRegistry.Instance.GetByClientId(winningPlayerId);
         if (winningPlayer != null && winningPlayer.combatWins >= combatWinsRequiredToEnd)
@@ -585,8 +605,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
             return;
         }
 
-        State = GameState.Bidding;
-        LoadBiddingLevel();
+        StartNewRound();
     }
 
     public void SetLevelSelectionType(CombatLevelSelectType level) { levelSelectionType = level; }

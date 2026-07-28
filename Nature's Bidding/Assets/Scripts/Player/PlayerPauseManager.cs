@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+using Steamworks;
 using System;
 using Unity.Netcode;
 using UnityEngine;
@@ -82,6 +84,33 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
     public void OnResumeButton()
     {
         UnpauseGame();
+    }
+
+    public void LeaveSessionByButton()
+    {
+        LeaveSession();
+    }
+
+    public async void QuitGameByButton()
+    {
+        await NetworkSessionManager.Instance.LeaveSession();
+
+        if (SteamClient.IsValid)
+        {
+            await PersistentSteamManager.Instance.ShutdownSteam();
+        }
+
+        Application.Quit();
+    }
+
+    public void LeaveSession()
+    {
+        ForceResume();
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+
+        PersistentGameStateManager.Instance.ReturnToMenu().Forget();
     }
 
 }

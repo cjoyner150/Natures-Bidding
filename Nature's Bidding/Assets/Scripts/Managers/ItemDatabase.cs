@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ItemDatabase", menuName = "Game/Item Database")]
@@ -61,6 +62,13 @@ public class ItemDatabase : ScriptableObject
             }
             maskVisualLookup[mask.Id] = mask;
         }
+    }
+
+    public StatusEffectorSO GetRandomStatusEffector()
+    {
+        int rand = Random.Range(0, statusLookup.Count);
+        string randKey = statusLookup.Keys.ToList()[rand];
+        return statusLookup[randKey];
     }
 
     public T Get<T>(string id)

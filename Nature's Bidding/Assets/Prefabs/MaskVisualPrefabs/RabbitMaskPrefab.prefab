@@ -92,6 +92,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d171bd5b7df85ba488424fb76b90f816, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 84f73f3f7448aaf4dabae96ae6e84020, type: 2}
     - target: {fileID: 919132149155446097, guid: d171bd5b7df85ba488424fb76b90f816, type: 3}
       propertyPath: m_Name
       value: GGJ26_RabbitMask (1)

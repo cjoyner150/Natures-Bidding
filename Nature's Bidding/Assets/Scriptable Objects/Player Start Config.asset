@@ -15,5 +15,5 @@ MonoBehaviour:
   gold: 100
   masks: []
   tarots:
-  - {fileID: 11400000, guid: 5ad7ff2604796f045b52b42ae4fa7184, type: 2}
+  - {fileID: 11400000, guid: e7c4812691173964abf2c1521f3e7d3d, type: 2}
   artifacts: []

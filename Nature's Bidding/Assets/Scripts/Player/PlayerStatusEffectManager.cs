@@ -17,6 +17,8 @@ public class PlayerStatusEffectManager : MonoBehaviour
     private PlayerHealth playerHealth;
     private StatsMediator statsMediator;
     private Stats playerStats;
+
+    Vector3 initialLocalScale;
     
     public void Initialize(Stats stats, ulong clientId)
     {
@@ -25,9 +27,11 @@ public class PlayerStatusEffectManager : MonoBehaviour
 
         statsMediator = stats.Mediator;
         playerStats = stats;
+        initialLocalScale = transform.localScale;
 
         AddModifiers(StatusEffectors);
         OnInitializeCompleted?.Invoke();
+
     }
 
     IEnumerable<StatusEffectorSO> GetStatusEffectors(ulong clientId)
@@ -53,6 +57,7 @@ public class PlayerStatusEffectManager : MonoBehaviour
         }
 
         playerHealth.SendMaxHealthToServerRpc(playerStats.MaxHealth, playerHealth.OwnerClientId);
+        UpdateScale();
     }
 
     public void AddModifiers(StatusEffectorSO addedEffect)
@@ -64,6 +69,7 @@ public class PlayerStatusEffectManager : MonoBehaviour
         activeEffectors.Add(effectData);
 
         playerHealth.SendMaxHealthToServerRpc(playerStats.MaxHealth, playerHealth.OwnerClientId);
+        UpdateScale();
     }
 
     public void RemoveModifiers(IEnumerable<string> ids)
@@ -84,6 +90,9 @@ public class PlayerStatusEffectManager : MonoBehaviour
                 _debugShowCurrentStatusEffectors.Remove(debugEffect);
             }
         }
+
+        playerHealth.SendMaxHealthToServerRpc(playerStats.MaxHealth, playerHealth.OwnerClientId);
+        UpdateScale();
     }
 
     public void RemoveModifiers(string id)
@@ -101,7 +110,13 @@ public class PlayerStatusEffectManager : MonoBehaviour
             {
                 _debugShowCurrentStatusEffectors.Remove(debugEffect);
             }
+
+        playerHealth.SendMaxHealthToServerRpc(playerStats.MaxHealth, playerHealth.OwnerClientId);
+        UpdateScale();
     }
+
+    private void UpdateScale() => transform.localScale = initialLocalScale * playerStats.Size;
+    
 
     [ContextMenu("Add Debug Modifiers")]
     public void DebugAddModifiers()

@@ -1,9 +1,6 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:Nature's Bidding/Assets/Models/Max's Models/Mounds/Mound2.obj.meta
-guid: 50d7ca3157c047041b4b77ad7e83c4d2
-=======
 guid: 87d44ac9ce0c13046baa855e81be0020
->>>>>>> main:Nature's Bidding/Assets/Models/Props/Max's Models/Max's Textures/Mounds/Mound2.obj.meta
+Textures/Mounds/Mound2.obj.meta
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []

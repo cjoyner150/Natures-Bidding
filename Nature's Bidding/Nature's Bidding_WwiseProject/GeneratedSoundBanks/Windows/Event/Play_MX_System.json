@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{3E7521AF-2CB6-4065-BE54-9B9CCD3A9716}",
     "Language": "SFX",
-    "Hash": "{67347FFD-030C-6E85-688E-DC08C1AD6BE4}",
+    "Hash": "{3C5AF882-DEDE-4543-A54C-60A99F74EEC5}",
     "ObjectPath": "Play_MX_System",
     "ShortName": "Play_MX_System",
     "Path": "Event/Play_MX_System.bnk",
@@ -27,6 +27,17 @@
       "ContainsPrefetch": "true"
      },
      {
+      "Id": "115717617",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Loose",
+      "ShortName": "Nature's Bidding - AUCTION TIME!!!(1).wav",
+      "Path": "Media/115717617.wem",
+      "CachePath": "E2/{E2AFBA56-7751-95B3-D1DB-1CE6B51E5161}.wem",
+      "PrefetchSize": "3251",
+      "ContainsPrefetch": "true"
+     },
+     {
       "Id": "210727261",
       "Language": "SFX",
       "Streaming": "true",
@@ -38,25 +49,25 @@
       "ContainsPrefetch": "true"
      },
      {
-      "Id": "278045096",
+      "Id": "476834380",
       "Language": "SFX",
       "Streaming": "true",
       "Location": "Loose",
-      "ShortName": "GGJ2026 - Main Menu_v1.wav",
-      "Path": "Media/278045096.wem",
-      "CachePath": "85/{8525DC32-1DAF-ED71-6FBF-E159A3A866E2}.wem",
-      "PrefetchSize": "2840",
+      "ShortName": "Nature's Bidding_MainMenu_v2.wav",
+      "Path": "Media/476834380.wem",
+      "CachePath": "C0/{C0ACD28D-6486-B9E1-D21D-2019B2EDC67A}.wem",
+      "PrefetchSize": "3166",
       "ContainsPrefetch": "true"
      },
      {
-      "Id": "310336769",
+      "Id": "713782309",
       "Language": "SFX",
       "Streaming": "true",
       "Location": "Loose",
-      "ShortName": "AuctionTime_Master.wav",
-      "Path": "Media/310336769.wem",
-      "CachePath": "B3/{B38500E6-3170-DCD8-5A77-438DFA4DB6FA}.wem",
-      "PrefetchSize": "3450",
+      "ShortName": "GGJ2026 - Wilderness Waiting v2.wav",
+      "Path": "Media/713782309.wem",
+      "CachePath": "07/{07A25ACB-4D7D-212A-10D3-278392198DC5}.wem",
+      "PrefetchSize": "3730",
       "ContainsPrefetch": "true"
      },
      {
@@ -89,6 +100,9 @@
         "MediaRefs": [
          {
           "Id": "42008625"
+         },
+         {
+          "Id": "713782309"
          }
         ]
        },
@@ -137,7 +151,7 @@
         },
         "MediaRefs": [
          {
-          "Id": "278045096"
+          "Id": "476834380"
          }
         ]
        },
@@ -150,7 +164,7 @@
         },
         "MediaRefs": [
          {
-          "Id": "310336769"
+          "Id": "115717617"
          }
         ]
        }
@@ -257,6 +271,6 @@
     ]
    }
   ],
-  "FileHash": "{99CAE249-004C-6AEC-DF1B-C6615E64BC11}"
+  "FileHash": "{052CD11A-5384-EF97-0E1E-64B24259F049}"
  }
 }

@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 97ab8516c7ac3b64cbf8d316ef48807a, type: 3}
-  m_Name: chariot
+  m_Name: Magician
   m_EditorClassIdentifier: Assembly-CSharp::TarotCardReward
-  cardName: The Chariot
-  flavorText: Increase speed
-  cardFaceSprite: {fileID: 21300000, guid: 913d562a3fa9fd541880e91dcf1f2142, type: 3}
+  cardId: the_magician_tarot
+  cardName: The Magician
+  flavorText: Gives an additional jump.
+  cardFaceSprite: {fileID: 21300000, guid: 115f1b76e39c65c44810e46d2cfb2587, type: 3}
   cardBackSprite: {fileID: 21300000, guid: fabc87e1b5e54924d959550cd1f7823b, type: 3}
-  rewardType: 0
-  effectValue: 0.15
-  rewardSummary: +15% Speed
+  rewardType: 1
+  effectValue: 0.2
+  rewardSummary: +20% Jump
   rarity: 1

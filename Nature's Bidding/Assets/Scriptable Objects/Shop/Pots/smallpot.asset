@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PotType
   potName: Small Pot
   description: Draw 3 tarot cards, choose 1 reward.
-  cost: 50
+  cost: 100
   clicksToOpen: 3
   cardsToDraw: 3
   cardsToKeep: 1

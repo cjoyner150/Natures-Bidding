@@ -5116,6 +5116,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 38ca2721ee63f1b42821d0eadd517165, type: 2}
   - {fileID: 11400000, guid: f85ea190fe4daf145a278a39318d213f, type: 2}
   - {fileID: 11400000, guid: d2c975c17955b824e8853e87a938a4b6, type: 2}
+  - {fileID: 11400000, guid: 99f506a93a88c3e4782dca9a520d8441, type: 2}
+  - {fileID: 11400000, guid: 1de00d3bd67b8cf478931b1be7adaa60, type: 2}
   shopPanelsContainer: {fileID: 1172933857}
   playerShopPanelPrefab: {fileID: 7786274424010861874, guid: 1fdebb8aba146d143b750da5f9ee1511, type: 3}
   smallPotCost: 20

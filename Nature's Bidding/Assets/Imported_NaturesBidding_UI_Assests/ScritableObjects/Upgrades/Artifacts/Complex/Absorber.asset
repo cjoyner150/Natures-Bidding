@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c64c524e213d78a469ace7eb02e09a47, type: 3}
-  m_Name: damage 13
+  m_Name: Absorber
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
-  _id: damage
-  upgradeName: Damage Up
-  description: Increases damage by +5%.
-  icon: {fileID: 21300000, guid: 028c3b2e471bf294fbe5bf4722ae705d, type: 3}
-  effectorId: Damage Up
+  _id: absorber
+  upgradeName: Absorber
+  description: Absorb your opponents health. More effective with higher max health.
+  icon: {fileID: 21300000, guid: 9c4ab20f1e081f24187cb72a37dc9c71, type: 3}
+  effectorId: absorber
   effectorBucket: 2
   upgradeType: 2
-  effectValue: 0.05
-  cost: 50
+  effectValue: 0.5
+  cost: 75
   maxPurchases: 3
   isConsumable: 0
-  cardColor: {r: 0.8805031, g: 0.25736043, b: 0.17997698, a: 1}
+  cardColor: {r: 0.88235295, g: 0.25882354, b: 0.18039216, a: 1}
   shadowSprite: {fileID: 0}

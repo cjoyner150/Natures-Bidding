@@ -170,7 +170,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 0
-      minScalar: 150
+      minScalar: 40
       maxCurve:
         serializedVersion: 2
         m_Curve:

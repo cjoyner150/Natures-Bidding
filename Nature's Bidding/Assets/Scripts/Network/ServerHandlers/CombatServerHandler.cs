@@ -216,6 +216,60 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         }
     }
 
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void RequestPlayerBoomServerRpc(ulong explodingPlayerId, float damage, float radius)
+    {
+        if (!IsServer) return;
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(explodingPlayerId, out var playerClient)) return;
+
+        var playerObject = playerClient.PlayerObject;
+        var playerHealth = playerObject?.GetComponent<PlayerHealth>();
+
+        if (playerHealth == null) return;
+
+        Vector3 boomOrigin = playerObject.transform.position + (Vector3.up * .5f);
+
+        NetworkVisualEffectManager.SpawnExplosionAtPosition.Invoke(boomOrigin);
+        Collider[] hits = Physics.OverlapSphere(boomOrigin, radius, playersLayer);
+        Debug.Log($"[CombatServerHandler] OverlapSphere found {hits.Length} colliders at {boomOrigin}, radius={radius}, layerMask={playersLayer.value}");
+
+        HashSet<IDamageable> damagedObjectsOnThisAttack = new();
+
+        foreach (Collider hit in hits)
+        {
+            GameObject go = hit.gameObject;
+            var hitNetObj = go.GetComponentInParent<NetworkObject>();
+            bool isSelf = hitNetObj != null && hitNetObj.OwnerClientId == explodingPlayerId;
+
+            if (isSelf) continue;
+
+            Debug.Log($"[CombatServerHandler] Overlap collider: {go.name}, owner={hitNetObj?.OwnerClientId}, isSelf={isSelf}");
+            UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
+
+            if (damageable != null)
+            {
+                if (damagedObjectsOnThisAttack.Contains(damageable)) continue;
+                damagedObjectsOnThisAttack.Add(damageable);
+
+                if (damageable is PlayerHealth targetHealth)
+                {
+                    Debug.Log($"[CombatServerHandler] PlayerHealth found. Damaging...");
+                    targetHealth.health.Value -= damage;
+                    targetHealth.PlayerDamagedFeedbackClientRpc(boomOrigin, explodingPlayerId, damage, false);
+
+                    if (targetHealth.health.Value <= 0)
+                    {
+                        OnPlayerDeath(targetHealth.OwnerClientId);
+                        var explodingPlayerHealth = NetworkManager.Singleton.ConnectedClients[explodingPlayerId].PlayerObject.GetComponent<PlayerHealth>();
+                        NotifyPlayersOfDeath(targetHealth, explodingPlayerHealth);
+                    }
+                }
+            }
+        }
+
+        HandleInstantKill(playerHealth);
+    }
+
     public void OnPlayerDeath(ulong clientId)
     {
         if (!IsServer) return;

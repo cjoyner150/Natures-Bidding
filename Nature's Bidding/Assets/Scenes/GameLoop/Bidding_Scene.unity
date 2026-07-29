@@ -1949,10 +1949,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1929779636}
     m_Modifications:
-    - target: {fileID: -7511558181221131132, guid: 41481b32e070d19429f1ff0a0add4f89, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 22e47083ea818c349a1b1453467f5733, type: 2}
     - target: {fileID: -8679921383154817045, guid: 81ed970f2f948b446bd4b2c2d0e782e9, type: 3}
       propertyPath: m_LocalScale.x
       value: 50
@@ -2013,6 +2009,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stump
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 41481b32e070d19429f1ff0a0add4f89, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 22e47083ea818c349a1b1453467f5733, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4915,6 +4915,7 @@ MonoBehaviour:
   itemPool:
   - {fileID: 11400000, guid: 6eb683a2304a89c41ae1f2870363f84f, type: 2}
   - {fileID: 11400000, guid: 86fb1c0fc39af314e97cd90bce3d41af, type: 2}
+  - {fileID: 11400000, guid: fa54b29a9e9d806469d58ddf3bf3ff85, type: 2}
   itemNameText: {fileID: 832492167}
   itemDescText: {fileID: 1608198873}
   itemIconImage: {fileID: 0}

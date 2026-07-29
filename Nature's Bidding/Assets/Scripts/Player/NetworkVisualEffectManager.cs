@@ -65,6 +65,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     public void OnSpawnExplosionAtPosition(Vector3 spawnPos) 
     {
+        Debug.Log("Server says boom!");
         var localVFXManager = GetFirstValidEffectManager();
         if (localVFXManager != null) localVFXManager.SpawnExplosionParticles(spawnPos);
 

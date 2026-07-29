@@ -3099,9 +3099,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CombatServerHandler
   ShowTopMostFoldoutHeaderGroup: 1
   acceptableAttackRange: 100
-  otherPlayersLayer:
+  playersLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 384
   winCamera: {fileID: 67567528}
   gameOverUI: {fileID: 125549843}
   hazardSystemGameObjects: []

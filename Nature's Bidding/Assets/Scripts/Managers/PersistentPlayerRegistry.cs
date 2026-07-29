@@ -42,7 +42,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         int index = AssignIndex();
         if (index == -1)
         {
-            Debug.LogError($"[PersistentPlayerRegistry] No available player indices for {playerName} (authId: {authId}). Current pool state: {string.Join(",", _indexPool)}");
+            Debug.LogError($"[PersistentPlayerRegistry] No available player indices for {playerName} (authId: {authId}). Current pool state: {string.Join(",", _indexPool)} ");
             return null;
         }
 

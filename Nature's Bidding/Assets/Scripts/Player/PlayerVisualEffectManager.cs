@@ -143,6 +143,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnStunParticles(int milliseconds)
     {
+        if (stunParticle == null) return;
         GameObject go = Instantiate(stunParticle, gameObject.transform, false);
         go.transform.localPosition = Vector3.zero;
         SafeDispose(go, milliseconds).Forget();

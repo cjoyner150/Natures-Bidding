@@ -10,14 +10,14 @@ public class BiddingVFXManager : MonoBehaviour
     [Header("Particle Prefabs")]
     [SerializeField] GameObject coinTransfer;
 
-    public void SpawnCoinTransfer(int coinCount, GameObject target, GameObject source) //pass number of coins, and gameobject to target.
-    {
-        GameObject go = Instantiate(coinTransfer, source.Transform, false);
-        go.transform.localPosition = Vector3.zero;
-        go.transform.localRotation = Quaternion.identity;
+    //public void SpawnCoinTransfer(int coinCount, GameObject target, GameObject source) //pass number of coins, and gameobject to target.
+    //{
+    //    GameObject go = Instantiate(coinTransfer, source.Transform, false);
+    //    go.transform.localPosition = Vector3.zero;
+    //    go.transform.localRotation = Quaternion.identity;
 
-        SafeDispose(go, coinCoint/30).Forget();
-    }
+    //    SafeDispose(go, coinCoint/30).Forget();
+    //}
 
 
 

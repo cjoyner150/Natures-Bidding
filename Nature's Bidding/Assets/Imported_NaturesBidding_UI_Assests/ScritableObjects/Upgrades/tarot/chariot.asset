@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97ab8516c7ac3b64cbf8d316ef48807a, type: 3}
   m_Name: chariot
   m_EditorClassIdentifier: Assembly-CSharp::TarotCardReward
+  cardId: the_moon
   cardName: The Chariot
   flavorText: Increase speed
   cardFaceSprite: {fileID: 21300000, guid: 913d562a3fa9fd541880e91dcf1f2142, type: 3}

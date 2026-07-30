@@ -1,5 +1,7 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -52,6 +54,7 @@ public class PlayerShopPanel : MonoBehaviour
 
     [Header("Tooltip (hover)")]
     public GameObject tooltipPrefab;        // CardTooltip prefab — spawned at cursor on hover
+    [SerializeField] private float artifactTooltipExtraOffsetX = 60f;
 
     [Header("Detail Panel")]
     public GameObject detailPanel;
@@ -298,7 +301,7 @@ public class PlayerShopPanel : MonoBehaviour
     }
 
     #endregion
-
+    
     #region Build Cards
 
     void BuildCards()
@@ -326,19 +329,29 @@ public class PlayerShopPanel : MonoBehaviour
         foreach (var upgrade in _offerings)
         {
             if (upgrade == null) continue;
-            var go   = Instantiate(upgradeCardPrefab, cardsRow);
+            var go = Instantiate(upgradeCardPrefab, cardsRow);
             var card = go.GetComponent<UpgradeCardUI>();
             if (card == null) continue;
 
-            var cap  = upgrade;
+            var basketItem = go.GetComponent<ArtifactBasketItem>();
+
+            var cap = upgrade;
             var capC = card;
 
             card.Populate(
                 upgrade,
                 GetOwned(upgrade),
-                onClick:     () => OnUpgradeCardClicked(cap, capC),
-                onHover:     () => OnUpgradeCardHovered(cap, capC),
-                onHoverExit: () => OnCardHoverExit());
+                onClick: () => OnUpgradeCardClicked(cap, capC),
+                onHover: () =>
+                {
+                    OnUpgradeCardHovered(cap, capC);
+                    basketItem?.PlayHoverOut();   
+                },
+                onHoverExit: () =>
+                {
+                    OnCardHoverExit();
+                    basketItem?.PlayReturnToBasket(); 
+                });
             _upgradeCards.Add(card);
         }
 
@@ -389,45 +402,93 @@ public class PlayerShopPanel : MonoBehaviour
 
     // ── Tooltip on hover ─────────────────────────────────────────────────────
 
+    private CancellationTokenSource _hideTooltipCts;
+    private object _activeHoverTarget; // tracks which upgrade/pot is currently shown, to skip redundant re-shows
+
     void OnUpgradeCardHovered(ShopUpgrade upgrade, UpgradeCardUI card)
     {
         if (!_isLocal) return;
+
+        // Cancel any pending hide — we're hovering again (possibly edge jitter on the same card)
+        _hideTooltipCts?.Cancel();
+        _hideTooltipCts?.Dispose();
+        _hideTooltipCts = null;
+
+        if (_activeTooltip != null && _activeHoverTarget == (object)upgrade)
+            return; // already showing this exact card's tooltip, don't reposition/repopulate
+
         EnsureTooltip();
         _activeTooltip?.Populate(upgrade, GetOwned(upgrade));
-        _activeTooltip?.gameObject.SetActive(true);
-        StartCoroutine(PositionTooltipNextFrame(card.GetComponent<RectTransform>()));
+        _activeHoverTarget = upgrade;
+
+        var basketItem = card.GetComponent<ArtifactBasketItem>();
+        float extraOffset = basketItem != null ? artifactTooltipExtraOffsetX : 0f;
+
+        ShowTooltipNextFrameAsync(card.GetComponent<RectTransform>(), extraOffset).Forget();
     }
 
     void OnSmallPotHovered()
     {
         if (!_isLocal) return;
+
+        _hideTooltipCts?.Cancel();
+        _hideTooltipCts?.Dispose();
+        _hideTooltipCts = null;
+
+        if (_activeTooltip != null && _activeHoverTarget as string == "SmallPot")
+            return;
+
         EnsureTooltip();
         _activeTooltip?.PopulatePot(ShopManager.SmallPotCost, _smallPotUsed);
-        _activeTooltip?.gameObject.SetActive(true);
-        StartCoroutine(PositionTooltipNextFrame(_smallPotCard?.GetComponent<RectTransform>()));
+        _activeHoverTarget = "SmallPot";
+        ShowTooltipNextFrameAsync(_smallPotCard?.GetComponent<RectTransform>()).Forget();
     }
 
     void OnGrandPotHovered()
     {
         if (!_isLocal) return;
+
+        _hideTooltipCts?.Cancel();
+        _hideTooltipCts?.Dispose();
+        _hideTooltipCts = null;
+
+        if (_activeTooltip != null && _activeHoverTarget as string == "GrandPot")
+            return;
+
         EnsureTooltip();
         _activeTooltip?.PopulatePot(ShopManager.GrandPotCost, _grandPotUsed);
-        _activeTooltip?.gameObject.SetActive(true);
-        StartCoroutine(PositionTooltipNextFrame(_grandPotCard?.GetComponent<RectTransform>()));
+        _activeHoverTarget = "GrandPot";
+        ShowTooltipNextFrameAsync(_grandPotCard?.GetComponent<RectTransform>()).Forget();
     }
 
-    IEnumerator PositionTooltipNextFrame(RectTransform cardRect)
+    private async UniTaskVoid ShowTooltipNextFrameAsync(RectTransform cardRect, float extraOffsetX = 20f)
     {
-        // Wait one frame so the layout system has built the tooltip's RectTransform
-        // before we try to read its sizeDelta for edge detection
-        yield return null;
-        _activeTooltip?.PositionBesideCard(cardRect);
+        await UniTask.Yield();
+        if (this == null || _activeTooltip == null || cardRect == null) return;
+
+        _activeTooltip.PositionBesideCard(cardRect, extraOffsetX);
+        _activeTooltip.gameObject.SetActive(true);
     }
 
     void OnCardHoverExit()
     {
-        if (_activeTooltip != null)
-            _activeTooltip.gameObject.SetActive(false);
+        if (_activeTooltip == null) return;
+
+        _hideTooltipCts?.Cancel();
+        _hideTooltipCts?.Dispose();
+        _hideTooltipCts = new CancellationTokenSource();
+        HideTooltipAfterDelay(_hideTooltipCts.Token).Forget();
+    }
+
+    private async UniTaskVoid HideTooltipAfterDelay(CancellationToken token)
+    {
+        bool cancelled = await UniTask.Delay(50, cancellationToken: token).SuppressCancellationThrow();
+        if (cancelled) return; // a new hover-enter cancelled this before it fired
+
+        if (this == null || _activeTooltip == null) return;
+
+        _activeTooltip.gameObject.SetActive(false);
+        _activeHoverTarget = null;
     }
 
     /// <summary>Creates the tooltip once and reuses it — avoids flash from destroy/recreate.</summary>
@@ -470,6 +531,11 @@ public class PlayerShopPanel : MonoBehaviour
 
     void DestroyTooltip()
     {
+        _hideTooltipCts?.Cancel();
+        _hideTooltipCts?.Dispose();
+        _hideTooltipCts = null;
+        _activeHoverTarget = null;
+
         if (_activeTooltip != null)
         {
             Destroy(_activeTooltip.gameObject);

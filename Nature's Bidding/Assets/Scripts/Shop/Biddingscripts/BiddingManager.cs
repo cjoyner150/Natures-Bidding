@@ -31,6 +31,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     public TMP_Text       bidAmountDisplay;   // Number shown on the card/sprite
     public TMP_Text       statusText;
     public TMP_Text       timerText;
+    public TMP_Text       goldText;
     public TMP_Text       roundCounterText;   // "Round 2 / 4"
     public TMP_Text       waitingCountText;   // "2 / 4 bids submitted"
 
@@ -157,10 +158,20 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         if (resultsPanel != null) resultsPanel.SetActive(false);
     }
 
-    public void OnBiddingPhaseStart()
+    public async void OnBiddingPhaseStart()
     {
         PointerNPC.Instance?.CelebrateOne();
         PointerNPC.Instance?.SayOpeningInstructions();
+
+        var localPlayer = PersistentPlayerRegistry.Instance.GetByClientId(NetworkManager.LocalClientId);
+
+        if (localPlayer == null)
+        {
+            await UniTask.WaitUntil(() => PersistentPlayerRegistry.Instance.GetByClientId(NetworkManager.LocalClientId) != null);
+            localPlayer = PersistentPlayerRegistry.Instance.GetByClientId(NetworkManager.LocalClientId);
+        }
+
+        goldText.text = localPlayer.gold.ToString();
     }
 
     #endregion
@@ -483,6 +494,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
             return;
         }
 
+        goldText.text = (availableGold - _localBidAmount).ToString();
         _localBidSubmitted = true;
         audioFeedback?.PlayBidSubmit();
         RefreshSubmitButton();

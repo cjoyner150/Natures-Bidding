@@ -127,7 +127,7 @@ public class BiddingArenaManager : NetworkBehaviour
             _spawnedItemDisplay.transform.localScale = Vector3.one * item.displayScale;
         }
 
-        if (itemNameText)  { itemNameText.text  = item.itemName; itemNameText.color = item.RarityColor(); }
+        if (itemNameText)  { itemNameText.text  = item.itemName; }
         if (itemDescText)    itemDescText.text   = item.description;
         if (itemIconImage)   itemIconImage.sprite = item.icon;
         if (itemRarityText)

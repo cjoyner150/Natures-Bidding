@@ -1,0 +1,276 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "3580595815",
+    "Type": "Event",
+    "GUID": "{3E7521AF-2CB6-4065-BE54-9B9CCD3A9716}",
+    "Language": "SFX",
+    "Hash": "{15448621-27CC-527F-185A-7F337687A2D4}",
+    "ObjectPath": "Play_MX_System",
+    "ShortName": "Play_MX_System",
+    "Path": "Event/Play_MX_System.bnk",
+    "Media": [
+     {
+      "Id": "42008625",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Loose",
+      "ShortName": "Nature's Bidding - Waterfall Brawl.wav",
+      "Path": "Media/42008625.wem",
+      "CachePath": "FA/{FAD858A9-0837-AE9D-8AC7-451853CFCAB9}.wem",
+      "PrefetchSize": "2648",
+      "ContainsPrefetch": "true"
+     },
+     {
+      "Id": "115717617",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Loose",
+      "ShortName": "Nature's Bidding - AUCTION TIME!!!(1).wav",
+      "Path": "Media/115717617.wem",
+      "CachePath": "56/{562BCBE9-CCB7-160A-8D12-4ED6B09FFAE0}.wem",
+      "PrefetchSize": "2767",
+      "ContainsPrefetch": "true"
+     },
+     {
+      "Id": "210727261",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Loose",
+      "ShortName": "GGJ2026 - Woodland Brawl_v1.wav",
+      "Path": "Media/210727261.wem",
+      "CachePath": "7F/{7F8F856C-1E13-F472-F0DF-DC7B92EF03A7}.wem",
+      "PrefetchSize": "2747",
+      "ContainsPrefetch": "true"
+     },
+     {
+      "Id": "476834380",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Loose",
+      "ShortName": "Nature's Bidding_MainMenu_v2.wav",
+      "Path": "Media/476834380.wem",
+      "CachePath": "93/{930C504D-3D9C-EDE3-769B-C05F9CC32966}.wem",
+      "PrefetchSize": "2622",
+      "ContainsPrefetch": "true"
+     },
+     {
+      "Id": "713782309",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Loose",
+      "ShortName": "GGJ2026 - Wilderness Waiting v2.wav",
+      "Path": "Media/713782309.wem",
+      "CachePath": "DE/{DEDD541C-C75B-5E2F-7E90-FD29EB94C8BE}.wem",
+      "PrefetchSize": "3094",
+      "ContainsPrefetch": "true"
+     },
+     {
+      "Id": "810338921",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Loose",
+      "ShortName": "Nature's Bidding - Volcanic Brawl v2.wav",
+      "Path": "Media/810338921.wem",
+      "CachePath": "CA/{CA201E34-1BF5-3864-21AB-7D50B58C5EDE}.wem",
+      "PrefetchSize": "3001",
+      "ContainsPrefetch": "true"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "3580595815",
+      "Name": "Play_MX_System",
+      "ObjectPath": "\\Events\\Music Work Unit\\Play_MX_System",
+      "GUID": "{3E7521AF-2CB6-4065-BE54-9B9CCD3A9716}",
+      "DurationType": "Infinite",
+      "SwitchContainers": [
+       {
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "3211383847",
+         "Id": "290285391",
+         "GUID": "{D7C918A9-A591-46E8-9FD8-6093433816E7}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "42008625"
+         },
+         {
+          "Id": "713782309"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "3211383847",
+         "Id": "2764240573",
+         "GUID": "{AF2EE265-C86B-40BD-97FE-DE5FEE14D9AC}"
+        },
+        "Children": [
+         {
+          "SwitchValue": {
+           "GroupType": "State",
+           "GroupId": "1048449605",
+           "Id": "540301611",
+           "GUID": "{D5BA4557-9946-47D0-B9A0-7045CF947424}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "810338921"
+           }
+          ]
+         },
+         {
+          "SwitchValue": {
+           "GroupType": "State",
+           "GroupId": "1048449605",
+           "Id": "1668395945",
+           "GUID": "{93B52BF6-F969-483A-A7EA-3C9E82A44F89}"
+          },
+          "MediaRefs": [
+           {
+            "Id": "210727261"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "3211383847",
+         "Id": "2607556080",
+         "GUID": "{F1E0877A-485F-4551-99E4-762926D35072}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "476834380"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "3211383847",
+         "Id": "500842706",
+         "GUID": "{2F9BA0E6-E155-4A4D-869A-FD6D6D6BF5A3}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "115717617"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "StateGroups": [
+     {
+      "Id": "1048449605",
+      "Name": "Map",
+      "ObjectPath": "\\States\\Default Work Unit\\Map",
+      "GUID": "{34ADBFF0-DAEF-4ED8-BA8A-3FA9901AB826}",
+      "States": [
+       {
+        "Id": "540301611",
+        "Name": "Lava",
+        "ObjectPath": "\\States\\Default Work Unit\\Map\\Lava",
+        "GUID": "{D5BA4557-9946-47D0-B9A0-7045CF947424}"
+       },
+       {
+        "Id": "748895195",
+        "Name": "None",
+        "ObjectPath": "\\States\\Default Work Unit\\Map\\None",
+        "GUID": "{B582B5AA-26BC-420A-A1B4-62606537B8F3}"
+       },
+       {
+        "Id": "1668395945",
+        "Name": "Cliff",
+        "ObjectPath": "\\States\\Default Work Unit\\Map\\Cliff",
+        "GUID": "{93B52BF6-F969-483A-A7EA-3C9E82A44F89}"
+       }
+      ]
+     },
+     {
+      "Id": "2188949101",
+      "Name": "Players",
+      "ObjectPath": "\\States\\Default Work Unit\\Players",
+      "GUID": "{63D51DCF-9267-496B-ACC4-74FEF4F018B8}",
+      "States": [
+       {
+        "Id": "678209053",
+        "Name": "Two",
+        "ObjectPath": "\\States\\Default Work Unit\\Players\\Two",
+        "GUID": "{CED468E2-4C46-43A6-B63C-D30CE5A84F69}"
+       },
+       {
+        "Id": "748895195",
+        "Name": "None",
+        "ObjectPath": "\\States\\Default Work Unit\\Players\\None",
+        "GUID": "{56E396D1-2538-40B6-AD3B-B3986F903F3C}"
+       },
+       {
+        "Id": "912956111",
+        "Name": "Three",
+        "ObjectPath": "\\States\\Default Work Unit\\Players\\Three",
+        "GUID": "{0FE37B61-91DD-4580-86F5-795762D5C8CC}"
+       },
+       {
+        "Id": "2863728729",
+        "Name": "Four",
+        "ObjectPath": "\\States\\Default Work Unit\\Players\\Four",
+        "GUID": "{F74A0D10-4777-446F-9FFA-B2E7BF50B9FD}"
+       }
+      ]
+     },
+     {
+      "Id": "3211383847",
+      "Name": "Game_Phase",
+      "ObjectPath": "\\States\\Default Work Unit\\Game_Phase",
+      "GUID": "{75357766-F5A1-4703-BC5A-F7BC4CF3FCB7}",
+      "States": [
+       {
+        "Id": "290285391",
+        "Name": "Lobby",
+        "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Lobby",
+        "GUID": "{D7C918A9-A591-46E8-9FD8-6093433816E7}"
+       },
+       {
+        "Id": "500842706",
+        "Name": "Bidding",
+        "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Bidding",
+        "GUID": "{2F9BA0E6-E155-4A4D-869A-FD6D6D6BF5A3}"
+       },
+       {
+        "Id": "748895195",
+        "Name": "None",
+        "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\None",
+        "GUID": "{F19062E5-3F11-47B2-A1A0-85036279551B}"
+       },
+       {
+        "Id": "2607556080",
+        "Name": "Menu",
+        "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Menu",
+        "GUID": "{F1E0877A-485F-4551-99E4-762926D35072}"
+       },
+       {
+        "Id": "2764240573",
+        "Name": "Combat",
+        "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Combat",
+        "GUID": "{AF2EE265-C86B-40BD-97FE-DE5FEE14D9AC}"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{C8554ACA-959F-C8B2-07AF-F74E35CE48EF}"
+ }
+}

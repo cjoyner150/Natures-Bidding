@@ -12,8 +12,10 @@ public class ScriptedStatusEffectorSO : StatusEffectorSO
     public class EffectParameter
     {
         public string ParamName;
-        public float Value;
+        public float FloatValue;
+        public bool BoolValue;
         public string StringValue;
+        public List<StatusEffectorSO> ObjectListValue = new();
     }
 
     [HideInInspector][SerializeField] private List<EffectParameter> _parameters = new();
@@ -56,16 +58,17 @@ public class ScriptedStatusEffectorSO : StatusEffectorSO
 
             for (int i = 0; i < paramInfos.Length; i++)
             {
+                var paramType = paramInfos[i].ParameterType;
                 var match = _parameters.FirstOrDefault(p => p.ParamName == paramInfos[i].Name);
+
                 if (match == null)
                 {
                     Debug.LogError($"[{name}] Missing parameter '{paramInfos[i].Name}' for {type.Name}.");
-                    args[i] = GetDefault(paramInfos[i].ParameterType);
+                    args[i] = GetDefault(paramType);
                     continue;
                 }
-                args[i] = paramInfos[i].ParameterType == typeof(string)
-                    ? (object)match.StringValue
-                    : Convert.ChangeType(match.Value, paramInfos[i].ParameterType);
+
+                args[i] = ResolveArgument(paramType, match, paramInfos[i].Name);
             }
 
             effect = (StatusEffect)Activator.CreateInstance(type, args);
@@ -74,5 +77,37 @@ public class ScriptedStatusEffectorSO : StatusEffectorSO
         return new List<StatusEffect> { effect };
     }
 
+    private object ResolveArgument(Type paramType, EffectParameter match, string paramName)
+    {
+        if (paramType.IsEnum)
+        {
+            if (string.IsNullOrEmpty(match.StringValue))
+                return GetDefault(paramType);
+            return Enum.Parse(paramType, match.StringValue);
+        }
+
+        if (paramType == typeof(bool))
+            return match.BoolValue;
+
+        if (paramType == typeof(string))
+            return match.StringValue;
+
+        if (paramType == typeof(int))
+            return (int)match.FloatValue;
+
+        if (paramType == typeof(float))
+            return match.FloatValue;
+
+        if (typeof(IEnumerable<StatusEffectorSO>).IsAssignableFrom(paramType) ||
+            paramType == typeof(List<StatusEffectorSO>))
+        {
+            return match.ObjectListValue ?? new List<StatusEffectorSO>();
+        }
+
+        Debug.LogError($"[{name}] Unsupported parameter type '{paramType.Name}' for '{paramName}'. Add support in ScriptedStatusEffectorSO.");
+        return GetDefault(paramType);
+    }
+
     private object GetDefault(Type t) => t.IsValueType ? Activator.CreateInstance(t) : null;
+
 }

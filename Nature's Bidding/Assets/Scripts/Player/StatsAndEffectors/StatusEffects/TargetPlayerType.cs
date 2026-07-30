@@ -1,1 +1,8 @@
-﻿public enum TargetPlayerType { Everyone, Self, NotSelf, Random, RandomExclusive }
+﻿public enum TargetPlayerType 
+{ 
+    Everyone, 
+    Self, 
+    NotSelf, 
+    Random, 
+    RandomExclusive 
+}

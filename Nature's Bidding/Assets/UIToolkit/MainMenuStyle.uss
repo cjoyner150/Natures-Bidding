@@ -1,0 +1,33 @@
+:root {
+}
+
+.header {
+    font-size: 100px;
+    -unity-text-align: upper-left;
+}
+
+.button {
+    font-size: 20px;
+    width: auto;
+    height: auto;
+    align-self: auto;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: rgb(176, 176, 176);
+    align-content: auto;
+    transition-duration: 0.35s;
+}
+
+.button:hover {
+    scale: 1.1 1.1;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgb(94, 115, 63);
+}
+
+.button:active {
+    background-color: rgb(70, 84, 49);
+    transition-timing-function: ease;
+    transition-duration: 0.1s;
+}

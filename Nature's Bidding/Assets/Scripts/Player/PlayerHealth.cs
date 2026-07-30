@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerHealth : NetworkBehaviour, IDamageable
@@ -13,6 +14,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     public NetworkVariable<bool> isInvulnerable = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isParrying = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isRoundWinner = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    public NetworkVariable<bool> isStunned = new(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     PlayerContext ctx;
     NetworkObject selfNetworkObject;
@@ -128,7 +130,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         {
             Debug.Log("[PlayerHealth] Hit Parried");
 
-            // TODO -> Tell parrying player of success
+            NotifyParrySuccessClientRpc(fromPlayerId);
 
             context = IDamageable.HitCallbackContext.parried;
         }
@@ -136,6 +138,61 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         {
             context = IDamageable.HitCallbackContext.failed;
         }
+    }
+
+    public void TickHealth(float damage, ulong damageCreditId)
+    {
+        if (!isInvulnerable.Value)
+        {
+            var combatHandler = _serverHandler as CombatServerHandler;
+            if (combatHandler == null)
+            {
+                Debug.LogError("[PlayerHealth] TickHealth: _serverHandler is not a CombatServerHandler!");
+                return;
+            }
+
+            combatHandler.RequestTickPlayerHealthServerRpc(selfNetworkObject.OwnerClientId, damageCreditId, damage);
+        }
+    }
+
+    [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Everyone)]
+    public void NotifyParrySuccessClientRpc(ulong attackerId)
+    {
+
+        PlayerCombatHooks.TriggerOnParry(attackerId);
+        ctx.parryResponse = true;
+    }
+
+    public void StunPlayer(float additionalStunTime)
+    {
+        if (!IsOwner)
+        {
+            RequestStunPlayerServerRpc(additionalStunTime, OwnerClientId);
+        }
+        else
+        {
+            if (!isStunned.Value)
+                NetworkVisualEffectManager.SpawnParrySuccessReactEffectsOnPlayer?.Invoke(OwnerClientId);
+
+            ctx.additionalStunTime += additionalStunTime;
+
+            ctx.combo = 0;
+            ctx.shouldStunSelf = true;
+            isStunned.Value = true;
+        }
+        
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void RequestStunPlayerServerRpc(float additionalStunTime, ulong targetClientId)
+    {
+        NotifyStunPlayerClientRpc(additionalStunTime, RpcTarget.Single(targetClientId, RpcTargetUse.Temp));
+    }
+
+    [Rpc(SendTo.SpecifiedInParams, InvokePermission = RpcInvokePermission.Server)]
+    public void NotifyStunPlayerClientRpc(float additionalStunTime, RpcParams _params)
+    {
+        StunPlayer(additionalStunTime);
     }
 
     public void Heal(float amount)
@@ -166,14 +223,52 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     private void OnHealthChanged(float from, float to)
     {
-        if (isDead) return;
         healthProgressBarVisual.SetBar01(Mathf.Clamp01(to / maxHealth.Value));
-        if (to <= 0 && IsServer)
-        {
-            isDead = true;
-            _serverHandler?.OnPlayerDeath(selfNetworkObject.OwnerClientId);
-            selfNetworkObject.Despawn();
-        }
+    }
+
+    private UniTaskCompletionSource _deathAckTcs;
+    private UniTaskCompletionSource _killAckTcs;
+
+    public UniTask NotifyDeathAndAwaitAck(ulong killCreditId)
+    {
+        _deathAckTcs = new UniTaskCompletionSource();
+        NotifyPlayerDeadClientRpc(killCreditId);
+        return _deathAckTcs.Task;
+    }
+
+    public UniTask NotifyKillCreditAndAwaitAck(ulong victimId)
+    {
+        _killAckTcs = new UniTaskCompletionSource();
+        NotifyPlayerKillCreditClientRpc(victimId);
+        return _killAckTcs.Task;
+    }
+
+
+    [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
+    public void NotifyPlayerDeadClientRpc(ulong killCreditId)
+    {
+        PlayerCombatHooks.TriggerOnDeath(killCreditId);
+        AckDeathProcessedServerRpc();
+    }
+
+    [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
+    public void NotifyPlayerKillCreditClientRpc(ulong victimId)
+    {
+        PlayerCombatHooks.TriggerOnKill(victimId);
+        AckKillCreditProcessedServerRpc();
+    }
+
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Owner)]
+    private void AckDeathProcessedServerRpc()
+    {
+        _deathAckTcs?.TrySetResult();
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Owner)]
+    private void AckKillCreditProcessedServerRpc()
+    {
+        _killAckTcs?.TrySetResult();
     }
 
     private void OnMaxHealthChanged(float from, float to)
@@ -183,19 +278,24 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     }
 
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
-    public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition, bool critical = false)
+    public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition, ulong fromAttackerId, float damage, bool critical = false)
     {
-        NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId, critical);
-        
         if (!IsOwner) return;
+        Debug.Log($"[PlayerHealth] calling spawn hit effects event on player {OwnerClientId}");
+        NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId, critical, fromPosition, damage);
         ctx.lastHitFromPosition = fromPosition;
         ctx.shouldTakeKnockback = true;
+        PlayerCombatHooks.TriggerOnHit(fromAttackerId);
         Debug.Log($"I've been hit! New health is {health.Value}");
     }
 
+    // This gets called before the final winner is calculated so the scene can transition immediately if this player has enough wins to become the final winner
+    // That can result in this method being called with null references as the objects are destroyed and the scene transitions
     public async void OnWinRound(int victoryLapDelay)
     {
-        Destroy(playerGameplayUI.gameObject);
+
+        if (playerGameplayUI != null)
+            Destroy(playerGameplayUI.gameObject);
 
         if (!IsOwner) return;
 
@@ -203,7 +303,8 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
         await UniTask.Delay(victoryLapDelay);
 
-        ctx.allowInputs = false;
+        if (ctx != null)
+            ctx.allowInputs = false;
     }
 
     public PlayerContext GetPlayerContext() => ctx;

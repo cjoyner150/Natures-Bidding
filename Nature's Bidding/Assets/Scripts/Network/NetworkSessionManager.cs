@@ -21,7 +21,7 @@ using Debug = UnityEngine.Debug;
 
 public class NetworkSessionManager : Singleton<NetworkSessionManager>
 {
-    private const bool EnableSessionDebugLogging = false;
+    private const bool EnableSessionDebugLogging = true;
 
     ISession activeSession;
 
@@ -227,6 +227,10 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
             MaxPlayers = 4,
             IsPrivate = false,
             IsLocked = false,
+            SessionProperties = new Dictionary<string, SessionProperty>
+            {
+                { "version", new SessionProperty(Application.version, VisibilityPropertyOptions.Public, PropertyIndex.String1) }
+            }
         }.WithRelayNetwork();
 
         for (int i = 0; i < maxRetries; i++)
@@ -436,6 +440,9 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
                 ),
                 new FilterOption(
                     FilterField.IsLocked, "false", FilterOperation.Equal
+                ),
+                new FilterOption(
+                    FilterField.StringIndex1, Application.version, FilterOperation.Equal
                 )
             }
         };

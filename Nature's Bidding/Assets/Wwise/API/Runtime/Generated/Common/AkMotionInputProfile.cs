@@ -18,6 +18,8 @@ public enum AkMotionInputProfile {
   AkMotionInputProfile_GenericLoResHaptics,
   ///  Generic PCM for linear actuators supporting &gt;= 1KHz sample rates
   AkMotionInputProfile_GenericHiResHaptics,
+  ///  PCM haptics for Meta Quest controllers
+  AkMotionInputProfile_MetaQuestHaptics,
   AkMotionInputProfile_Last
 }
 #endif // #if !(UNITY_QNX) // Disable under unsupported platforms.

@@ -1,0 +1,10 @@
+Event	ID	Name			Wwise Object Path	Notes
+	3980822666	Play_UI_Bid_Adjust			\UI Work Unit\Play_UI_Bid_Adjust	
+
+Switch Group	ID	Name			Wwise Object Path	Notes
+	4110079352	Bid_Direction			\Default Work Unit\Bid_Direction	
+
+Switch	ID	Name	Switch Group			Notes
+	1551306158	Up	Bid_Direction			
+	2280510569	Down	Bid_Direction			
+

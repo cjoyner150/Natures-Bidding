@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{6949BC57-2612-4D09-ABA1-5198942D42F4}" SchemaVersion="133">
 	<States>
-		<WorkUnit Name="Default Work Unit" ID="{6949BC57-2612-4D09-ABA1-5198942D42F4}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{6949BC57-2612-4D09-ABA1-5198942D42F4}" PersistMode="Standalone">
+			<ChildrenList>
+				<StateGroup Name="Game_Phase" ID="{75357766-F5A1-4703-BC5A-F7BC4CF3FCB7}">
+					<ChildrenList>
+						<State Name="None" ID="{F19062E5-3F11-47B2-A1A0-85036279551B}"/>
+						<State Name="Menu" ID="{F1E0877A-485F-4551-99E4-762926D35072}"/>
+						<State Name="Lobby" ID="{D7C918A9-A591-46E8-9FD8-6093433816E7}"/>
+						<State Name="Bidding" ID="{2F9BA0E6-E155-4A4D-869A-FD6D6D6BF5A3}"/>
+						<State Name="Combat" ID="{AF2EE265-C86B-40BD-97FE-DE5FEE14D9AC}"/>
+					</ChildrenList>
+				</StateGroup>
+				<StateGroup Name="Combat_Result" ID="{1139FE66-A674-4BC0-8D57-C8980C748FE5}">
+					<ChildrenList>
+						<State Name="None" ID="{CF322A44-4FBD-48A0-8702-65FDD9525566}"/>
+						<State Name="Victory" ID="{8FB979FF-C118-4F55-BB2A-4374ADF88A28}"/>
+						<State Name="Defeat" ID="{713197F5-AA40-4CBC-9276-FAFC95329ED6}"/>
+					</ChildrenList>
+				</StateGroup>
+				<StateGroup Name="Map" ID="{34ADBFF0-DAEF-4ED8-BA8A-3FA9901AB826}">
+					<ChildrenList>
+						<State Name="None" ID="{B582B5AA-26BC-420A-A1B4-62606537B8F3}"/>
+						<State Name="Lava" ID="{D5BA4557-9946-47D0-B9A0-7045CF947424}"/>
+						<State Name="Cliff" ID="{93B52BF6-F969-483A-A7EA-3C9E82A44F89}"/>
+					</ChildrenList>
+				</StateGroup>
+				<StateGroup Name="Players" ID="{63D51DCF-9267-496B-ACC4-74FEF4F018B8}">
+					<ChildrenList>
+						<State Name="None" ID="{56E396D1-2538-40B6-AD3B-B3986F903F3C}"/>
+						<State Name="Two" ID="{CED468E2-4C46-43A6-B63C-D30CE5A84F69}"/>
+						<State Name="Three" ID="{0FE37B61-91DD-4580-86F5-795762D5C8CC}"/>
+						<State Name="Four" ID="{F74A0D10-4777-446F-9FFA-B2E7BF50B9FD}"/>
+					</ChildrenList>
+				</StateGroup>
+			</ChildrenList>
+		</WorkUnit>
 	</States>
 </WwiseDocument>

@@ -1,13 +1,15 @@
 ﻿using Cinemachine;
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Unity.Netcode;
-using UnityEngine.Events;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Xml.Linq;
+using Unity.Netcode;
+using Unity.Services.Multiplayer;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, IGameServerHandler
 {
@@ -15,19 +17,41 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
     public static UnityEvent OnCombatBegin = new UnityEvent();
 
+
     [SerializeField] private CinemachineVirtualCamera winCamera;
     [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private GameObject[] hazardSystemGameObjects;
+    private IHazardSystem[] hazardSystems;
 
     [Range(1000, 20000)]
     [SerializeField] private int victoryLapDelay;
+
+    bool initializationComplete = false;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
 
         gameOverUI?.SetActive(false);
+        WaitUntilPlayersReady();
+    }
 
+    private async void WaitUntilPlayersReady()
+    {
+        await UniTask.WaitUntil(() => NetworkManager.ConnectedClientsList.All(c => c.PlayerObject != null));
         PersistentGameStateManager.Instance.OnCombatSceneReady();
+
+        hazardSystems = hazardSystemGameObjects.Select(h => h.GetComponent<IHazardSystem>()).Where(h => h != null).ToArray();
+
+        if (IsServer)
+        {
+            foreach (var hazard in hazardSystems)
+            {
+                hazard.StartHazard();
+            }
+        }
+
+        initializationComplete = true;
     }
 
     private void OnSceneLoadCompleted(string sceneName, LoadSceneMode loadSceneMode,
@@ -86,13 +110,90 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         NetworkManager.OnClientDisconnectCallback -= OnClientDisconnected;
     }
 
+    void Update()
+    {
+        if (initializationComplete)
+        {
+            foreach (var hazard in hazardSystems)
+            {
+                hazard.TickHazard(Time.deltaTime);
+            }
+        }
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void RequestTickPlayerHealthServerRpc(ulong targetPlayerId, ulong fromPlayerId, float damage)
+    {
+        if (!IsServer) return;
+
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(targetPlayerId, out var hitClient)) return;
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(fromPlayerId, out var fromClient)) return;
+
+        var hitNetObj = hitClient.PlayerObject;
+        var fromNetObj = fromClient.PlayerObject;
+
+        if (hitNetObj == null || fromNetObj == null) return;
+
+        OnTickDownPlayerHealth(hitNetObj, fromNetObj, damage);
+    }
+
+    protected void OnTickDownPlayerHealth(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage)
+    {
+        var targetHealth = hitPlayer.GetComponent<PlayerHealth>();
+        if (targetHealth == null) return;
+
+        float before = targetHealth.health.Value;
+        targetHealth.health.Value -= damage;
+        Debug.Log($"[CombatServerHandler] Health ticked. Before={before}, After={targetHealth.health.Value}, Damage={damage}");
+
+        if (targetHealth.health.Value <= 0)
+        {
+            OnPlayerDeath(hitPlayer.OwnerClientId);
+            NotifyPlayersOfDeath(targetHealth, attackingPlayer.GetComponent<PlayerHealth>());
+        }
+    }
+
     protected override void OnPlayerHit(NetworkObject hitPlayer, NetworkObject attackingPlayer, float damage, bool critical)
     {
-        var health = hitPlayer.GetComponent<PlayerHealth>();
-        if (health == null) return;
+        var targetHealth = hitPlayer.GetComponent<PlayerHealth>();
+        if (targetHealth == null) return;
 
-        health.health.Value -= damage;
-        health.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, critical);
+        targetHealth.health.Value -= damage;
+        targetHealth.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, attackingPlayer.OwnerClientId, damage, critical);
+
+        if (targetHealth.health.Value <= 0)
+        {
+            Debug.Log($"[CombatServerHandler] Player died via direct hit. Victim={hitPlayer.OwnerClientId}, Killer={attackingPlayer.OwnerClientId}");
+            OnPlayerDeath(hitPlayer.OwnerClientId);
+            NotifyPlayersOfDeath(targetHealth, attackingPlayer.GetComponent<PlayerHealth>());
+        }
+    }
+
+    public void NotifyPlayersOfDeath(PlayerHealth deadPlayer, PlayerHealth fromPlayer)
+    {
+        if (!IsServer) return;
+
+        DeathSequence(deadPlayer, fromPlayer).Forget();
+    }
+
+    private async UniTaskVoid DeathSequence(PlayerHealth deadPlayer, PlayerHealth fromPlayer)
+    {
+        ulong victimId = deadPlayer.OwnerClientId;
+        ulong killerId = fromPlayer.OwnerClientId;
+
+        UniTask deathTask = deadPlayer.NotifyDeathAndAwaitAck(killerId);
+        UniTask killTask = fromPlayer.NotifyKillCreditAndAwaitAck(victimId);
+
+        bool timedOut = await UniTask.WhenAny(
+            UniTask.WhenAll(deathTask, killTask),
+            UniTask.Delay(TimeSpan.FromSeconds(5))
+        ) == 1;
+
+        if (timedOut)
+            Debug.LogWarning($"[CombatServerHandler] Death sequence ack timeout for victim {victimId} — despawning anyway.");
+
+        if (deadPlayer != null && deadPlayer.NetworkObject != null && deadPlayer.NetworkObject.IsSpawned)
+            deadPlayer.NetworkObject.Despawn();
     }
 
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
@@ -115,6 +216,60 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         }
     }
 
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void RequestPlayerBoomServerRpc(ulong explodingPlayerId, float damage, float radius)
+    {
+        if (!IsServer) return;
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(explodingPlayerId, out var playerClient)) return;
+
+        var playerObject = playerClient.PlayerObject;
+        var playerHealth = playerObject?.GetComponent<PlayerHealth>();
+
+        if (playerHealth == null) return;
+
+        Vector3 boomOrigin = playerObject.transform.position + (Vector3.up * .5f);
+
+        NetworkVisualEffectManager.SpawnExplosionAtPosition.Invoke(boomOrigin);
+        Collider[] hits = Physics.OverlapSphere(boomOrigin, radius, playersLayer);
+        Debug.Log($"[CombatServerHandler] OverlapSphere found {hits.Length} colliders at {boomOrigin}, radius={radius}, layerMask={playersLayer.value}");
+
+        HashSet<IDamageable> damagedObjectsOnThisAttack = new();
+
+        foreach (Collider hit in hits)
+        {
+            GameObject go = hit.gameObject;
+            var hitNetObj = go.GetComponentInParent<NetworkObject>();
+            bool isSelf = hitNetObj != null && hitNetObj.OwnerClientId == explodingPlayerId;
+
+            if (isSelf) continue;
+
+            Debug.Log($"[CombatServerHandler] Overlap collider: {go.name}, owner={hitNetObj?.OwnerClientId}, isSelf={isSelf}");
+            UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
+
+            if (damageable != null)
+            {
+                if (damagedObjectsOnThisAttack.Contains(damageable)) continue;
+                damagedObjectsOnThisAttack.Add(damageable);
+
+                if (damageable is PlayerHealth targetHealth)
+                {
+                    Debug.Log($"[CombatServerHandler] PlayerHealth found. Damaging...");
+                    targetHealth.health.Value -= damage;
+                    targetHealth.PlayerDamagedFeedbackClientRpc(boomOrigin, explodingPlayerId, damage, false);
+
+                    if (targetHealth.health.Value <= 0)
+                    {
+                        OnPlayerDeath(targetHealth.OwnerClientId);
+                        var explodingPlayerHealth = NetworkManager.Singleton.ConnectedClients[explodingPlayerId].PlayerObject.GetComponent<PlayerHealth>();
+                        NotifyPlayersOfDeath(targetHealth, explodingPlayerHealth);
+                    }
+                }
+            }
+        }
+
+        HandleInstantKill(playerHealth);
+    }
+
     public void OnPlayerDeath(ulong clientId)
     {
         if (!IsServer) return;
@@ -127,7 +282,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
     public void OnRoundEndRpc(ulong winningPlayer)
     {
-        if (NetworkManager.ConnectedClients.TryGetValue(winningPlayer, out var winningClient) && winningClient.PlayerObject != null)
+        if (IsServer && NetworkManager.ConnectedClients.TryGetValue(winningPlayer, out var winningClient) && winningClient.PlayerObject != null)
         {
             var winningHealth = winningClient.PlayerObject.GetComponent<PlayerHealth>();
             if (winningHealth != null)
@@ -142,12 +297,22 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         NetworkManager.ConnectedClients[winningPlayer].PlayerObject.GetComponent<PlayerHealth>()?.OnWinRound(victoryLapDelay);
         await WinSequence(winningPlayer);
 
+        if (this == null) return;
+
         if (IsServer)
+        {
+            foreach (var hazard in hazardSystems)
+            {
+                hazard.StopHazard();
+            }
             PersistentGameStateManager.Instance.HandleCombatRoundEnded(winningPlayer).Forget();
+        }
     }
 
     private async UniTask WinSequence(ulong winningPlayer)
     {
+        NetworkVisualEffectManager.SpawnConfettiEffectsOnPlayer?.Invoke(winningPlayer);
+
         Transform winningPlayerTransform = NetworkManager.ConnectedClients[winningPlayer]
             .PlayerObject.transform;
 
@@ -157,13 +322,15 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
         await UniTask.Delay(victoryLapDelay);
 
+        if (this == null || gameOverUI == null) return;
+
         if (winCamera != null && winCamera.isActiveAndEnabled)
             winCamera.enabled = false;
 
         gameOverUI?.SetActive(true);
     }
 
-    protected override void OnPlayerReconnected(ulong clientId, PersistentPlayerState data)
+    protected override void OnPlayerReconnected(ulong clientId, PlayerData data)
     {
         Debug.Log($"Player {data.playerName} rejoined mid-combat. Will respawn next scene.");
         PlayerRejoiningClientRpc(clientId);
@@ -181,4 +348,24 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
         // Hook into UI here to show "Player X has rejoined"
     }
+
+    public void HandleInstantKill(PlayerHealth playerHealth)
+    {
+        if (!IsServer) return;
+        if (playerHealth == null) return;
+
+        playerHealth.health.Value = 0;
+
+        OnPlayerDeath(playerHealth.OwnerClientId);
+        EnvironmentalDeathSequence(playerHealth).Forget();
+    }
+
+    private async UniTaskVoid EnvironmentalDeathSequence(PlayerHealth deadPlayer)
+    {
+        await deadPlayer.NotifyDeathAndAwaitAck(deadPlayer.OwnerClientId);
+
+        if (deadPlayer != null && deadPlayer.NetworkObject != null && deadPlayer.NetworkObject.IsSpawned)
+            deadPlayer.NetworkObject.Despawn();
+    }
 }
+    

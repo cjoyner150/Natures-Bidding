@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Base Player Stats
   m_EditorClassIdentifier: Assembly-CSharp::BasePlayerStats
   MaxHealth: 100
-  Damage: 10
+  Damage: 5
   AttackSpeed: 1
   MoveSpeed: 1
   Jumps: 1

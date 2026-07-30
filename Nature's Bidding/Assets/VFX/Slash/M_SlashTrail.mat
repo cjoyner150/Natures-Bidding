@@ -38,7 +38,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+        m_Texture: {fileID: 2800000, guid: 9f9e4aca8bab2b74aaed6715f75873ef, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -200,6 +200,6 @@ Material:
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
-    - _Tint: {r: 5.3403134, g: 5.3403134, b: 5.3403134, a: 1}
+    - _Tint: {r: 4.4069595, g: 3.1983716, b: 0.85228926, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

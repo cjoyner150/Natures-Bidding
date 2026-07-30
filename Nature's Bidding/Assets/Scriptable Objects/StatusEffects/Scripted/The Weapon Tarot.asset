@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScriptedStatusEffectorSO
   _id: the_weapon_tarot
   Title: The Weapon Tarot
-  Description: 
+  Description: Take up arms!
   Duration: -1
   _effectTypeName: TheWeaponTarotStatusEffect
   _parameters:

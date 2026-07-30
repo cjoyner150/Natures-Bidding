@@ -1,3 +1,6 @@
+using Cysharp.Threading.Tasks;
+using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,10 +16,24 @@ public class BatMaskStatusEffect : StatusEffect
 
         playerInput = player.GetComponent<PlayerInputManager>();
         playerInput?.ReverseControls();
+
+        SpawnBatMaskVFX().Forget();
     }
+
+    public async UniTask SpawnBatMaskVFX()
+    {
+        await UniTask.WaitUntil(() =>
+            NetworkManager.Singleton.ConnectedClientsList.All(c => c.PlayerObject != null)
+        );
+
+        Debug.Log("[BatMaskStatusEffect] Calling SpawnBatConfusion event...");
+        NetworkVisualEffectManager.SpawnBatConfusionEffectsOnPlayer?.Invoke(NetworkManager.Singleton.LocalClientId);
+    }  
 
     public override void OnEnd()
     {
         playerInput?.ResetControls();
+
+        NetworkVisualEffectManager.RemoveBatConfusionEffectsOnPlayer?.Invoke(NetworkManager.Singleton.LocalClientId);
     }
 }

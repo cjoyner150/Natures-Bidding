@@ -14,7 +14,7 @@
 public enum AkConnectionType {
   ///  Direct (main, dry) connection.
   ConnectionType_Direct = 0,
-  ///  Connection by a game-defined send.
+  ///  Connection by an Automatic Room Send.
   ConnectionType_GameDefSend = 1,
   ///  Connection by a user-defined send.
   ConnectionType_UserDefSend = 2,

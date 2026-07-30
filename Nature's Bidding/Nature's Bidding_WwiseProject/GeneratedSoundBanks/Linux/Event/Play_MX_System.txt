@@ -1,0 +1,33 @@
+Event	ID	Name			Wwise Object Path	Notes
+	3580595815	Play_MX_System			\Music Work Unit\Play_MX_System	
+
+State Group	ID	Name			Wwise Object Path	Notes
+	1048449605	Map			\Default Work Unit\Map	
+	3211383847	Game_Phase			\Default Work Unit\Game_Phase	
+
+State	ID	Name	State Group			Notes
+	540301611	Lava	Map			
+	748895195	None	Map			
+	1668395945	Cliff	Map			
+	290285391	Lobby	Game_Phase			
+	500842706	Bidding	Game_Phase			
+	748895195	None	Game_Phase			
+	2607556080	Menu	Game_Phase			
+	2764240573	Combat	Game_Phase			
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	42008625	Lobby Switch	.cache\FA\{FAD858A9-0837-AE9D-8AC7-451853CFCAB9}.wem		\Containers\Music Work Unit\MX_System\MX_Lobby\Lobby Segment\Lobby Switch		2648
+	115717617	AuctionTime_Master	.cache\56\{562BCBE9-CCB7-160A-8D12-4ED6B09FFAE0}.wem		\Containers\Music Work Unit\MX_System\MX_Bidding\AuctionTime_Master\AuctionTime_Master		2767
+	210727261	GGJ2026 - Woodland Brawl_v1_01	.cache\7F\{7F8F856C-1E13-F472-F0DF-DC7B92EF03A7}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\GGJ2026 - Woodland Brawl_v1\GGJ2026 - Woodland Brawl_v1_01		2747
+	476834380	Nature's Bidding_MainMenu_v2	.cache\93\{930C504D-3D9C-EDE3-769B-C05F9CC32966}.wem		\Containers\Music Work Unit\MX_System\MX_Menu\GGJ2026 - Main Menu_v1\Nature's Bidding_MainMenu_v2		2622
+	713782309	Lobby Switch	.cache\DE\{DEDD541C-C75B-5E2F-7E90-FD29EB94C8BE}.wem		\Containers\Music Work Unit\MX_System\MX_Lobby\Lobby Segment\Lobby Switch		3094
+	810338921	Nature's Bidding - Volcanic Brawl v2	.cache\CA\{CA201E34-1BF5-3864-21AB-7D50B58C5EDE}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\Nature's Bidding - Volcanic Brawl v2\Nature's Bidding - Volcanic Brawl v2		3001
+
+Streamed Audio	ID	Name	Audio source file	Generated audio file	Wwise Object Path	Notes
+	42008625	Lobby Switch	.cache\FA\{FAD858A9-0837-AE9D-8AC7-451853CFCAB9}.wem	42008625.wem	\Containers\Music Work Unit\MX_System\MX_Lobby\Lobby Segment\Lobby Switch	
+	115717617	AuctionTime_Master	.cache\56\{562BCBE9-CCB7-160A-8D12-4ED6B09FFAE0}.wem	115717617.wem	\Containers\Music Work Unit\MX_System\MX_Bidding\AuctionTime_Master\AuctionTime_Master	
+	210727261	GGJ2026 - Woodland Brawl_v1_01	.cache\7F\{7F8F856C-1E13-F472-F0DF-DC7B92EF03A7}.wem	210727261.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\GGJ2026 - Woodland Brawl_v1\GGJ2026 - Woodland Brawl_v1_01	
+	476834380	Nature's Bidding_MainMenu_v2	.cache\93\{930C504D-3D9C-EDE3-769B-C05F9CC32966}.wem	476834380.wem	\Containers\Music Work Unit\MX_System\MX_Menu\GGJ2026 - Main Menu_v1\Nature's Bidding_MainMenu_v2	
+	713782309	Lobby Switch	.cache\DE\{DEDD541C-C75B-5E2F-7E90-FD29EB94C8BE}.wem	713782309.wem	\Containers\Music Work Unit\MX_System\MX_Lobby\Lobby Segment\Lobby Switch	
+	810338921	Nature's Bidding - Volcanic Brawl v2	.cache\CA\{CA201E34-1BF5-3864-21AB-7D50B58C5EDE}.wem	810338921.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\Nature's Bidding - Volcanic Brawl v2\Nature's Bidding - Volcanic Brawl v2	
+

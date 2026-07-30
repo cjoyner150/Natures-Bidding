@@ -1,16 +1,19 @@
+using Cysharp.Threading.Tasks;
+using Steamworks;
 using System;
+using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityUtils;
 
 public class PlayerPauseManager : Singleton<PlayerPauseManager>
 {
     [SerializeField] GameObject pausePanel;
     [SerializeField] GameObject lobbyWaitingPanel;
+    [SerializeField] GameObject hostPanel;
 
-    public Action OnPausePressed;
-    public Action OnResumed;
-    public Action OnPaused;
+    public static Action OnPausePressed;
+    public static Action OnResumed;
+    public static Action OnPaused;
     [HideInInspector] public bool Paused { get; private set; }
 
     protected override void Awake()
@@ -19,6 +22,7 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
 
         Paused = false;
         pausePanel.SetActive(false);
+        hostPanel.SetActive(false);
     }
 
     private void OnEnable()
@@ -46,10 +50,11 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
     {
         Paused = true;
 
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true;
-
         pausePanel.SetActive(true);
+        if (NetworkManager.Singleton.IsHost)
+        {
+            hostPanel.SetActive(true);
+        }
 
         if (lobbyWaitingPanel != null) lobbyWaitingPanel.SetActive(false);
 
@@ -60,11 +65,9 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
     {
         Paused = false;
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
         pausePanel.SetActive(false);
-
+        hostPanel.SetActive(false);
+        
         if (lobbyWaitingPanel != null) lobbyWaitingPanel.SetActive(true);
 
         OnResumed?.Invoke();
@@ -81,6 +84,33 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
     public void OnResumeButton()
     {
         UnpauseGame();
+    }
+
+    public void LeaveSessionByButton()
+    {
+        LeaveSession();
+    }
+
+    public async void QuitGameByButton()
+    {
+        await NetworkSessionManager.Instance.LeaveSession();
+
+        if (SteamClient.IsValid)
+        {
+            await PersistentSteamManager.Instance.ShutdownSteam();
+        }
+
+        Application.Quit();
+    }
+
+    public void LeaveSession()
+    {
+        ForceResume();
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+
+        PersistentGameStateManager.Instance.ReturnToMenu().Forget();
     }
 
 }

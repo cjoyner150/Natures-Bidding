@@ -119,7 +119,7 @@ public class AkAmbient : AkEvent
 		}
 	}
 
-	private void OnDisable()
+	private new void OnDisable()
 	{
 #if UNITY_EDITOR
 		if (UnityEngine.Application.isBatchMode)
@@ -143,6 +143,7 @@ public class AkAmbient : AkEvent
 				AkUnitySoundEngine.SetMultiplePositions(eventPosList.list[0].gameObject, positionArray, (ushort) positionArray.Count, MultiPositionType);
 			}
 		}
+		base.OnDisable();
 	}
 	
 	protected new void OnDestroy()

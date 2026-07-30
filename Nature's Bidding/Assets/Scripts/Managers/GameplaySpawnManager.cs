@@ -9,9 +9,9 @@ using UnityEngine.SceneManagement;
 
 public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
 {
-
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private List<Transform> spawnPoints;
+    [SerializeField] private LayerMask playerLayerMask;
     private int nextSpawnIndex = 0;
 
     [SerializeField] private GameObject playerHealthBarPrefab;
@@ -47,11 +47,7 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
             return null;
         }
 
-        if (nextSpawnIndex >= spawnPoints.Count)
-            nextSpawnIndex = 0;
-
-        Transform spawnPoint = spawnPoints[nextSpawnIndex];
-        nextSpawnIndex = (nextSpawnIndex + 1) % spawnPoints.Count;
+        var spawnPoint = GetNextAvailableSpawnPoint();
 
         if (spawnPoint == null)
         {
@@ -124,6 +120,31 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
 
         nextSpawnIndex = 0;
     }
-    
+
+    // Used for resetting player to a spawn point after lobby death
+    public Transform GetNextAvailableSpawnPoint()
+    {
+        int attempts = 0;
+        while (attempts < spawnPoints.Count)
+        {
+            if (nextSpawnIndex >= spawnPoints.Count)
+                nextSpawnIndex = 0;
+
+            Transform candidate = spawnPoints[nextSpawnIndex];
+            nextSpawnIndex = (nextSpawnIndex + 1) % spawnPoints.Count;
+            attempts++;
+
+            // Check if the spot is clear of other players before using it
+            Collider[] overlaps = Physics.OverlapSphere(candidate.position, 1f, playerLayerMask);
+            if (overlaps.Length == 0)
+                return candidate;
+        }
+
+        // Fallback — all spawn points occupied, just return the next one anyway
+        Transform fallback = spawnPoints[nextSpawnIndex];
+        nextSpawnIndex = (nextSpawnIndex + 1) % spawnPoints.Count;
+        return fallback;
+    }
+
 }
 

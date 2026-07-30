@@ -310,12 +310,11 @@ public static class AkCallbackManager
 	}
 	
 #if UNITY_EDITOR
-	private static void FreeXMLFileHandle()
+	private static void FreeXMLFileHandle(uint xmlTimeout)
 	{
-		uint XmlTimeout = uint.Parse(AkWwiseEditorSettings.Instance.XMLTranslatorTimeout);
 		string baseSoundBankPath = AkBasePathGetter.GetPlatformBasePath();
 		baseSoundBankPath += "SoundbanksInfo.xml";
-		AkCallbackSerializer.FreeXmlTranslatorHandle(baseSoundBankPath, XmlTimeout);
+		AkCallbackSerializer.FreeXmlTranslatorHandle(baseSoundBankPath, xmlTimeout);
 	}
 #endif
 
@@ -551,9 +550,10 @@ public static class AkCallbackManager
 			}
 			
 #if UNITY_EDITOR
-			if (atLeastOneMonitoringCallback)
+			uint xmlTimeout = uint.Parse(AkWwiseEditorSettings.Instance.XMLTranslatorTimeout);
+			if (atLeastOneMonitoringCallback && xmlTimeout > 0)
 			{
-				FreeXMLFileHandle();
+				FreeXMLFileHandle(xmlTimeout);
 			}
 #endif
 			return numCallbacks;

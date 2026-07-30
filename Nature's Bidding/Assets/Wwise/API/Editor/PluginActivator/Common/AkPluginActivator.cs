@@ -127,6 +127,7 @@ public class AkPluginActivator : UnityEditor.AssetPostprocessor
 
 		var importers = GetWwisePluginImporters();
 		var assetChanged = false;
+		AssetDatabase.StartAssetEditing();
 		foreach (var pluginImporter in importers)
 		{
 			if (pluginImporter.GetCompatibleWithAnyPlatform())
@@ -183,7 +184,7 @@ public class AkPluginActivator : UnityEditor.AssetPostprocessor
 				pluginImporter.SaveAndReimport();
 			}
 		}
-
+		AssetDatabase.StopAssetEditing();
 		bIsAlreadyActivating = false;
 	}
 

@@ -60,8 +60,6 @@ namespace HSM
         internal void Exit()
         {
             HSMDebug.Log($"[Exit] {GetType().Name}");
-            if (ActiveChild != null) ActiveChild.Exit();
-            ActiveChild = null;
             OnExit();
         }
 

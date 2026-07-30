@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16b8f994c1e4e6e498fdb723c8718a8d, type: 3}
+  m_Name: Shop Man Mask
+  m_EditorClassIdentifier: Assembly-CSharp::BiddableItem
+  itemId: man_mask
+  itemName: Man Mask
+  description: A terrible curse indeed...
+  icon: {fileID: 0}
+  displayPrefab: {fileID: 1471524667041046909, guid: 38f2d1ca36d7e394d88062457262c017, type: 3}
+  displayRotation: {x: 0, y: 0, z: 0}
+  displayScale: 2
+  startingBid: 10
+  rarity: 1

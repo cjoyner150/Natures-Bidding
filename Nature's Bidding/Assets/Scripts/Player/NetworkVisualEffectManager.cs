@@ -131,6 +131,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     public void OnSpawnJumpEffectsOnPlayer(ulong clientId)
     {
         var localVFXManager = GetPlayerEffectManagerById(clientId);
+        Debug.Log($"[NetworkVisualEffectManager] OnSpawnJumpEffectsOnPlayer clientId={clientId}, localVFXManager found={localVFXManager != null}");
         if (localVFXManager != null) localVFXManager.SpawnJumpParticles();
 
         SpawnJumpEffectsClientRpc(clientId);

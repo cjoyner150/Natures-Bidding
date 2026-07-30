@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: defensive_stance
   upgradeName: Defensive Stance
-  description: dencreases attackspeed by -10 sec Increases +50 HP
+  description: Move slower to tank more damage
   icon: {fileID: 21300000, guid: 928156dfbd31f7349a593146099f8d70, type: 3}
-  effectorId: Defensive Stance
+  effectorId: defensive_stance
   effectorBucket: 2
   upgradeType: 3
   effectValue: 0.5

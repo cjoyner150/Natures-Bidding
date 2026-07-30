@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: glass_man
   upgradeName: Glass Man
-  description: Increases damage by +30 Dmg decrease Health by 1/2x HP
+  description: Become fragile, but hit hard.
   icon: {fileID: 21300000, guid: 3a1f1434ead69344dbec3a7f731178fa, type: 3}
-  effectorId: Glass Man
+  effectorId: glass_man
   effectorBucket: 2
   upgradeType: 2
   effectValue: 0.7

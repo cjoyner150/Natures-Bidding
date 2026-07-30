@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: dash_distance_up
   upgradeName: Dash Distance Up
-  description: Increases Dash Distance by +20%.
+  description: Modestly increase your dash distance
   icon: {fileID: 21300000, guid: 028c3b2e471bf294fbe5bf4722ae705d, type: 3}
-  effectorId: Dash Distance Up
+  effectorId: dash_distance_up
   effectorBucket: 2
   upgradeType: 0
   effectValue: 0.2
-  cost: 30
+  cost: 40
   maxPurchases: 3
   isConsumable: 0
   cardColor: {r: 0.78234273, g: 0.88235295, b: 0.18039213, a: 1}

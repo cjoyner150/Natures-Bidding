@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: hp_up
   upgradeName: HP Up
-  description: Increases Health by 20 HP.
+  description: Modestly increase your health
   icon: {fileID: 21300000, guid: d7d9ce8094226d741897682d59028b91, type: 3}
-  effectorId: HP Up
+  effectorId: hp_up
   effectorBucket: 2
   upgradeType: 5
   effectValue: 0.2
-  cost: 30
+  cost: 40
   maxPurchases: 3
   isConsumable: 0
   cardColor: {r: 0.4289212, g: 0.96862745, b: 0.2235294, a: 1}

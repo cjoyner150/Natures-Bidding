@@ -1702,6 +1702,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1929779636}
     m_Modifications:
+    - target: {fileID: -7511558181221131132, guid: 41481b32e070d19429f1ff0a0add4f89, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 22e47083ea818c349a1b1453467f5733, type: 2}
     - target: {fileID: -8679921383154817045, guid: 81ed970f2f948b446bd4b2c2d0e782e9, type: 3}
       propertyPath: m_LocalScale.x
       value: 50
@@ -1762,10 +1766,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: stump
       objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: 41481b32e070d19429f1ff0a0add4f89, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 22e47083ea818c349a1b1453467f5733, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4438,12 +4438,28 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   upgradePool:
-  - {fileID: 11400000, guid: 5c78b3d82c5e6564d8a51c62f907651b, type: 2}
-  - {fileID: 11400000, guid: def82102a24aa0149b1cc5ff023ca716, type: 2}
-  - {fileID: 11400000, guid: f296bb877dbffb44fb7e7684d66f97d7, type: 2}
-  - {fileID: 11400000, guid: ba11d267344fabf48802d522fa62cda4, type: 2}
-  - {fileID: 11400000, guid: 6be1f09033a279744ae82c5746e69489, type: 2}
-  - {fileID: 11400000, guid: b4c6c036938b8c2428463e198a1bac77, type: 2}
+  - {fileID: 11400000, guid: f85ea190fe4daf145a278a39318d213f, type: 2}
+  - {fileID: 11400000, guid: fa505c0e77f86a04f828160998ebd500, type: 2}
+  - {fileID: 11400000, guid: 34cd94c67f98f96419a81990abaf910b, type: 2}
+  - {fileID: 11400000, guid: e60f1cfec7dadec41bbd1291d3e31fa2, type: 2}
+  - {fileID: 11400000, guid: d9d50579f5f6be14b9f3959303462c56, type: 2}
+  - {fileID: 11400000, guid: b730c02777d41b441bb9600ac90fae34, type: 2}
+  - {fileID: 11400000, guid: de6e513214dba8047aeb8441aaad4a56, type: 2}
+  - {fileID: 11400000, guid: bc03baa0d73bf924996ddb6f47644168, type: 2}
+  - {fileID: 11400000, guid: 5720e77d3a15b3340b1e16c0363402a0, type: 2}
+  - {fileID: 11400000, guid: d2e31dbc5df011a42b9dcb28f3814a92, type: 2}
+  - {fileID: 11400000, guid: 99f506a93a88c3e4782dca9a520d8441, type: 2}
+  - {fileID: 11400000, guid: 1de00d3bd67b8cf478931b1be7adaa60, type: 2}
+  - {fileID: 11400000, guid: d2c975c17955b824e8853e87a938a4b6, type: 2}
+  - {fileID: 11400000, guid: fd6dd2899a86f2c4396975f869ddb122, type: 2}
+  - {fileID: 11400000, guid: 0e49e4c9dcb8904408aac00578a8143e, type: 2}
+  - {fileID: 11400000, guid: 8922d096f9b1c07418ec9f36c851db9f, type: 2}
+  - {fileID: 11400000, guid: 38ca2721ee63f1b42821d0eadd517165, type: 2}
+  - {fileID: 11400000, guid: 008491dd8aeda5a4a9988aaee21fae2c, type: 2}
+  - {fileID: 11400000, guid: 7189a587dbdb0a049a5c2882cfc3fac9, type: 2}
+  - {fileID: 11400000, guid: 15a823fb60eca0041b1d7aaa1f706a08, type: 2}
+  - {fileID: 11400000, guid: b2c90b93f1e33ef4da391ae129d4e4f7, type: 2}
+  - {fileID: 11400000, guid: 6f020b4f74df24943959aef72de28fae, type: 2}
   shopPanelsContainer: {fileID: 1172933857}
   playerShopPanelPrefab: {fileID: 7786274424010861874, guid: 1fdebb8aba146d143b750da5f9ee1511, type: 3}
   smallPotCost: 20
@@ -4753,9 +4769,14 @@ MonoBehaviour:
   itemBobHeight: 0.15
   itemSpinSpeed: 30
   itemPool:
-  - {fileID: 11400000, guid: 6eb683a2304a89c41ae1f2870363f84f, type: 2}
+  - {fileID: 11400000, guid: 96c14bbaf8e08bf4d9b7280826a71465, type: 2}
   - {fileID: 11400000, guid: 86fb1c0fc39af314e97cd90bce3d41af, type: 2}
+  - {fileID: 11400000, guid: 71749bc591baa484f939147035767b35, type: 2}
+  - {fileID: 11400000, guid: ec9032ae4ea523f4d84637138e11058a, type: 2}
   - {fileID: 11400000, guid: fa54b29a9e9d806469d58ddf3bf3ff85, type: 2}
+  - {fileID: 11400000, guid: 83e81fa584e26d341bf656d03cf7e31c, type: 2}
+  - {fileID: 11400000, guid: 50cd9a6d5ad5ae1499da6449f5b66046, type: 2}
+  - {fileID: 11400000, guid: 6eb683a2304a89c41ae1f2870363f84f, type: 2}
   itemNameText: {fileID: 832492167}
   itemDescText: {fileID: 1608198873}
   itemIconImage: {fileID: 0}

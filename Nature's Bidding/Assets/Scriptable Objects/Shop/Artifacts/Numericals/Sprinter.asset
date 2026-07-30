@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: sprinter
   upgradeName: Sprinter
-  description: Increases Move speed by +20% ands dash distance by +20%
+  description: Move and dash faster.
   icon: {fileID: 21300000, guid: 9a6f8aadd2e9dc440b53c0470d6fb5a1, type: 3}
-  effectorId: Sprinter
+  effectorId: sprinter
   effectorBucket: 2
   upgradeType: 0
   effectValue: 0.3

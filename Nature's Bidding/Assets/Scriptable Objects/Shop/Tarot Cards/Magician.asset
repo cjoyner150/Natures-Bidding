@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TarotCardReward
   cardId: the_magician_tarot
   cardName: The Magician
-  flavorText: Gives an additional jump.
+  flavorText: Who needs dashing when you can teleport?
   cardFaceSprite: {fileID: 21300000, guid: 115f1b76e39c65c44810e46d2cfb2587, type: 3}
   cardBackSprite: {fileID: 21300000, guid: fabc87e1b5e54924d959550cd1f7823b, type: 3}
   rewardType: 1

@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: crit_damage_multiplier_up
   upgradeName: Crit Damage Multiplier Up
-  description: Increases Crit Damage Multiplier by +.5
+  description: Modestly increase your crit damage
   icon: {fileID: 21300000, guid: 3c4de0367e7abe54e977e749c87f7090, type: 3}
-  effectorId: Crit Damage Multiplier Up
+  effectorId: crit_damage_multiplier_up
   effectorBucket: 2
   upgradeType: 2
   effectValue: 0.1
-  cost: 30
+  cost: 40
   maxPurchases: 3
   isConsumable: 0
   cardColor: {r: 0.8805031, g: 0.25736043, b: 0.17997698, a: 1}

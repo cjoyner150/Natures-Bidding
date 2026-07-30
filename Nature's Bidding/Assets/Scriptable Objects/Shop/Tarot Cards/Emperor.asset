@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TarotCardReward
   cardId: the_emperor_tarot
   cardName: The Emperor
-  flavorText: Double damage if the Richest
+  flavorText: Double your attack damage if you're the richest player.
   cardFaceSprite: {fileID: 21300000, guid: 8a5ddcf92d56fa248849f79942b9f583, type: 3}
   cardBackSprite: {fileID: 21300000, guid: fabc87e1b5e54924d959550cd1f7823b, type: 3}
   rewardType: 7

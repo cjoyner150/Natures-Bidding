@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: dash_cooldown_down
   upgradeName: Dash Cooldown Down
-  description: Decreases Dash Cooldown by -.5sec.
+  description: Modestly decrease your dash cooldown
   icon: {fileID: 21300000, guid: 028c3b2e471bf294fbe5bf4722ae705d, type: 3}
-  effectorId: Dash Cooldown Down
+  effectorId: dash_cooldown_down
   effectorBucket: 2
   upgradeType: 0
   effectValue: 0.2
-  cost: 30
+  cost: 40
   maxPurchases: 3
   isConsumable: 0
   cardColor: {r: 0.78234273, g: 0.88235295, b: 0.18039213, a: 1}

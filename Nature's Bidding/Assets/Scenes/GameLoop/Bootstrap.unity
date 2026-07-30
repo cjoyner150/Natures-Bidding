@@ -14,8 +14,8 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0.8773585, g: 0.5196409, b: 0.19450872, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
   m_LinearFogStart: 0
@@ -1018,7 +1018,7 @@ MonoBehaviour:
   loadingStatus: {fileID: 416426921}
   loadingProgress: {fileID: 15051646}
   combatWinsRequiredToEnd: 1
-  skipToCombat: 0
+  skipToCombat: 1
   biddingCanvas: {fileID: 0}
   shopCanvas: {fileID: 0}
   biddingManager: {fileID: 0}

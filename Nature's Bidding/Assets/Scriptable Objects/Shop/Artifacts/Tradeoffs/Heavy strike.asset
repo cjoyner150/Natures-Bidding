@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: heavy_strike
   upgradeName: Heavy strike
-  description: Increases damage by 2x Dmg but increase attackspeed by 2x Sec
+  description: Hit twice as hard, move half as fast.
   icon: {fileID: 21300000, guid: 939cdbd63b25911439e4dc1459fa91f6, type: 3}
-  effectorId: Heavy strike
+  effectorId: heavy_strike
   effectorBucket: 2
   upgradeType: 2
   effectValue: 0.7

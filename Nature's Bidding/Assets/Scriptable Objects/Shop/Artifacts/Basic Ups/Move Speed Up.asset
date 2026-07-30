@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: move_speed_up
   upgradeName: Move Speed Up
-  description: Increases movment speed by +15%.
+  description: Modestly increase your movement speed
   icon: {fileID: 21300000, guid: d7d9ce8094226d741897682d59028b91, type: 3}
-  effectorId: Move Speed Up
+  effectorId: move_speed_up
   effectorBucket: 2
   upgradeType: 0
   effectValue: 0.15
-  cost: 30
+  cost: 40
   maxPurchases: 3
   isConsumable: 0
   cardColor: {r: 0.8647485, g: 1, b: 0, a: 1}

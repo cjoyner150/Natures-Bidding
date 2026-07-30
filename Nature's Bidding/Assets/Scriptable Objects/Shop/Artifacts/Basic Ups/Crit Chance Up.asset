@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: crit_chance_up
   upgradeName: Crit Chance Up
-  description: Increases Crit Chance by +10%.
+  description: Modestly increase your crit chance
   icon: {fileID: 21300000, guid: 028c3b2e471bf294fbe5bf4722ae705d, type: 3}
-  effectorId: Crit Chance Up
+  effectorId: crit_chance_up
   effectorBucket: 2
   upgradeType: 2
   effectValue: 0.1
-  cost: 30
+  cost: 40
   maxPurchases: 3
   isConsumable: 0
   cardColor: {r: 0.8805031, g: 0.25736043, b: 0.17997698, a: 1}

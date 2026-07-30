@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: wombo_combo
   upgradeName: Wombo Combo
-  description: Increases Combo damage by +5%.
+  description: Combo more to deal more damage.
   icon: {fileID: 21300000, guid: 1ddb0cf63100ce448adb185e906da26c, type: 3}
-  effectorId: Wombo Combo
+  effectorId: wombo_combo
   effectorBucket: 2
   upgradeType: 2
   effectValue: 0.05

@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: parry_duration_up
   upgradeName: Parry Duration Up
-  description: Increases parry duration by .3 sec.
+  description: Modestly increase your parry duration
   icon: {fileID: 21300000, guid: be8f49288c000ea4dafbeebfe228025d, type: 3}
-  effectorId: Parry Duration Up
+  effectorId: parry_duration_up
   effectorBucket: 2
   upgradeType: 3
   effectValue: 0.3
-  cost: 30
+  cost: 40
   maxPurchases: 3
   isConsumable: 0
   cardColor: {r: 0.22506933, g: 0.7597608, b: 0.96981126, a: 1}

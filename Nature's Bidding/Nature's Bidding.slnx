@@ -4,6 +4,7 @@
   <Project Path="Unity.VisualEffectGraph.Editor.csproj" />
   <Project Path="Unity.RenderPipelines.GPUDriven.Runtime.csproj" />
   <Project Path="MoreMountains.Tools.csproj" />
+  <Project Path="Unity.VisualScripting.Core.Editor.csproj" />
   <Project Path="Unity.Services.Multiplayer.csproj" />
   <Project Path="Unity.Services.Core.Internal.csproj" />
   <Project Path="Unity.Services.Authentication.PlayerAccounts.csproj" />
@@ -21,7 +22,6 @@
   <Project Path="Unity.Multiplayer.Tools.NetStatsMonitor.Editor.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.2D.Runtime.csproj" />
   <Project Path="UnityUtils.csproj" />
-  <Project Path="Unity.VisualScripting.Core.Editor.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Editor.csproj" />
   <Project Path="Unity.PerformanceTesting.Editor.csproj" />
   <Project Path="UnityEngine.TestRunner.csproj" />

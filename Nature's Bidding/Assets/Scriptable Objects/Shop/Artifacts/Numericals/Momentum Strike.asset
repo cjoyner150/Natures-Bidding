@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: momentum_strike
   upgradeName: Momentum Strike
-  description: Increases Momentum by +10%.
+  description: The faster you move, the harder you hit.
   icon: {fileID: 21300000, guid: aa36fc84a20025b4396562ebb51ddf9a, type: 3}
-  effectorId: Momentum Strike
+  effectorId: momentum_strike
   effectorBucket: 2
   upgradeType: 0
   effectValue: 0.1

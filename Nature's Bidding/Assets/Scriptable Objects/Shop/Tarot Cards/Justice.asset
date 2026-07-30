@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 97ab8516c7ac3b64cbf8d316ef48807a, type: 3}
-  m_Name: Preistess
+  m_Name: Justice
   m_EditorClassIdentifier: Assembly-CSharp::TarotCardReward
-  cardId: the_high_priestess_tarot
-  cardName: The High Preistess
-  flavorText: Health is moderately buffed.
-  cardFaceSprite: {fileID: 21300000, guid: 83777708f9833414682a226bd111d8d9, type: 3}
+  cardId: the_justice_tarot
+  cardName: Justice
+  flavorText: Claim some taxes when you hit an opponent.
+  cardFaceSprite: {fileID: 21300000, guid: a6a482205cec90940ac9d49a09cfa9e8, type: 3}
   cardBackSprite: {fileID: 21300000, guid: fabc87e1b5e54924d959550cd1f7823b, type: 3}
-  rewardType: 3
-  effectValue: 0.2
-  rewardSummary: +20% Health
+  rewardType: 12
+  effectValue: 0.15
+  rewardSummary: +15% Speed
   rarity: 1

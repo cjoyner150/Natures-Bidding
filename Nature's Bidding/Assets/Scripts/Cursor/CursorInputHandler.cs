@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 public class CursorInputHandler : MonoBehaviour
@@ -8,11 +10,19 @@ public class CursorInputHandler : MonoBehaviour
     bool networkedCursor = false;
 
     Image cursorImage;
+    RectTransform cursorRoot;
     PlayerCursorNetworkBehavior cursorNetworkSync;
+    VirtualMouseInput virtualMouseInput;
+
+    private InputDeviceTracker.InputType _lastInputType;
 
     void Awake()
     {
         cursorImage = GetComponentInChildren<Image>();
+        virtualMouseInput = GetComponent<VirtualMouseInput>();
+        cursorRoot = virtualMouseInput.cursorTransform;
+        _lastInputType = InputDeviceTracker.CurrentInputType;
+        Debug.Log($"[CursorInputHandler] Awake. cursorRoot={cursorRoot}, cursorImage={cursorImage}, virtualMouseInput.cursorTransform={virtualMouseInput.cursorTransform}");
     }
 
     public void InitializeNetworkSync(PlayerCursorNetworkBehavior networkSync, bool isNetworked)
@@ -28,7 +38,6 @@ public class CursorInputHandler : MonoBehaviour
         if (Keyboard.current != null && Keyboard.current.pKey.wasPressedThisFrame)
         {
             _cursorPaused = !_cursorPaused;
-            Debug.Log($"Cursor pause: {(_cursorPaused ? "ON" : "OFF")}");
         }
 
         if (CursorUIManager.Instance == null || !CursorUIManager.Instance.cursorEnabled)
@@ -37,14 +46,40 @@ public class CursorInputHandler : MonoBehaviour
             return;
         }
 
+        // Detect input type change: sync position and enable/disable the
+        // stick action so VirtualMouseInput's own UpdateMotion doesn't fight
+        // mouse-driven position updates.
+        if (InputDeviceTracker.CurrentInputType != _lastInputType)
+        {
+            Debug.Log($"[CursorInputHandler] Switch detected: {_lastInputType} -> {InputDeviceTracker.CurrentInputType}");
+
+            if (InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.Gamepad)
+            {
+                if (virtualMouseInput != null && virtualMouseInput.virtualMouse != null && cursorRoot != null)
+                {
+                    InputState.Change(virtualMouseInput.virtualMouse.position, cursorRoot.anchoredPosition);
+                }
+                virtualMouseInput.stickAction.action?.Enable();
+                Debug.Log($"[CursorInputHandler] stickAction enabled: {virtualMouseInput.stickAction.action?.enabled}");
+            }
+            else
+            {
+                virtualMouseInput.stickAction.action?.Disable();
+                Debug.Log($"[CursorInputHandler] stickAction disabled: {virtualMouseInput.stickAction.action?.enabled}");
+            }
+
+            _lastInputType = InputDeviceTracker.CurrentInputType;
+        }
+
         Vector2 normPos;
         if (InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.MouseAndKeyboard)
         {
             Vector2 mousePos = Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
             if (!_cursorPaused)
             {
-                if (cursorImage != null)
-                    cursorImage.rectTransform.anchoredPosition = mousePos;
+                if (cursorRoot != null)
+                    cursorRoot.anchoredPosition = mousePos;
+
                 normPos = new Vector2(mousePos.x / Screen.width, mousePos.y / Screen.height);
 
                 if (networkedCursor && cursorNetworkSync != null)
@@ -53,7 +88,7 @@ public class CursorInputHandler : MonoBehaviour
         }
         else if (InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.Gamepad && networkedCursor && cursorNetworkSync != null)
         {
-            normPos = new Vector2(cursorImage.rectTransform.anchoredPosition.x / Screen.width, cursorImage.rectTransform.anchoredPosition.y / Screen.height);
+            normPos = new Vector2(cursorRoot.anchoredPosition.x / Screen.width, cursorRoot.anchoredPosition.y / Screen.height);
             cursorNetworkSync.SyncCursorPosition(normPos);
         }
     }

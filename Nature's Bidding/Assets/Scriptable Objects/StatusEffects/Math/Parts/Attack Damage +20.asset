@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce4ee29c916845b4fb8bc73834bef549, type: 3}
-  m_Name: Attack Damage +50
+  m_Name: Attack Damage +20
   m_EditorClassIdentifier: Assembly-CSharp::BasicNumericalStatusEffectorSO
-  _id: attack_damage_+100
-  Title: Attack Damage +100
+  _id: attack_damage_+20
+  Title: Attack Damage +20
   Description: 
   Duration: -1
   Stat: 1
-  Value: 50
+  Value: 20
   OperationType: 0

@@ -121,12 +121,16 @@ public class PlayerShopPanel : MonoBehaviour
         if (detailPanel) detailPanel.SetActive(false);
         if (buyButton)   buyButton.gameObject.SetActive(false);
 
+        Debug.Log($"[PlayerShopPanel] reroll button is null: {rerollButton == null}");
+
         if (rerollButton != null)
         {
             _rerollButtonRect = rerollButton.GetComponent<RectTransform>();
             if (_rerollButtonRect != null)
                 _rerollButtonBasePosition = _rerollButtonRect.anchoredPosition;
 
+            Debug.Log($"[PlayerShopPanel] reroll button rect is null: {_rerollButtonRect == null}");
+            Debug.Log($"[PlayerShopPanel] reroll button setup on isLocal: {_isLocal}");
             rerollButton.onClick.RemoveAllListeners();
             rerollButton.onClick.AddListener(() => { if (_isLocal) StartRerollChainPull(); });
             rerollButton.gameObject.SetActive(isLocal);
@@ -226,6 +230,8 @@ public class PlayerShopPanel : MonoBehaviour
 
     void StartRerollChainPull()
     {
+        Debug.Log("[PlayerShopPanel] Reroll chain pulled!");
+
         if (!_isLocal)
             return;
 
@@ -364,6 +370,7 @@ public class PlayerShopPanel : MonoBehaviour
         DestroyTooltip();
         if (buyButton) buyButton.gameObject.SetActive(false);
         BuildCards();
+        RefreshStats();
     }
 
     #endregion

@@ -1390,10 +1390,10 @@ RectTransform:
   - {fileID: 6765054680876377049}
   m_Father: {fileID: 1351826805716563966}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 291, y: 608}
-  m_SizeDelta: {x: 195.025, y: 112.22}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.82888657, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3432026572087767796
 CanvasRenderer:
@@ -1425,7 +1425,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: b1d57a0d28e633c46a9caba62ea0eb2c, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1501,9 +1501,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
-  playHover: 1
-  playClick: 1
-  playHoverOnNavigation: 1
 --- !u!1 &4292047942560435333
 GameObject:
   m_ObjectHideFlags: 0
@@ -2275,7 +2272,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1351826805716563966}
   m_Layer: 0
-  m_Name: Buy/ready
+  m_Name: Ready Section
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2296,10 +2293,10 @@ RectTransform:
   - {fileID: 5420442384138475244}
   m_Father: {fileID: 2025874749703496825}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.029370371}
-  m_AnchorMax: {x: 0.9823321, y: 0.21000001}
-  m_AnchoredPosition: {x: 19.885, y: -0.6689453}
-  m_SizeDelta: {x: -49.969, y: -1.3378}
+  m_AnchorMin: {x: 0.47216627, y: 0.6981044}
+  m_AnchorMax: {x: 0.92538947, y: 0.882}
+  m_AnchoredPosition: {x: 13, y: -0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7497109264354140213
 GameObject:
@@ -2909,9 +2906,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
-  playHover: 1
-  playClick: 1
-  playHoverOnNavigation: 1
 --- !u!1 &8164817386906376932
 GameObject:
   m_ObjectHideFlags: 0

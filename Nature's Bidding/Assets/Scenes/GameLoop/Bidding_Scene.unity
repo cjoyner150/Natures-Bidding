@@ -1015,7 +1015,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &264980706
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4462,13 +4462,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6f020b4f74df24943959aef72de28fae, type: 2}
   shopPanelsContainer: {fileID: 1172933857}
   playerShopPanelPrefab: {fileID: 7786274424010861874, guid: 1fdebb8aba146d143b750da5f9ee1511, type: 3}
-  smallPotCost: 20
-  grandPotCost: 50
+  smallPotCost: 100
+  grandPotCost: 150
   rerollCost: 15
   backToBiddingButton: {fileID: 0}
   phaseLabel: {fileID: 0}
   shopCanvasRoot: {fileID: 264980705}
   playerCrosshairPrefab: {fileID: 6947474001905322135, guid: db42880c095dc494b982e3122ad8292a, type: 3}
+  biddingCanvas: {fileID: 2009265870}
 --- !u!4 &1434504657
 Transform:
   m_ObjectHideFlags: 0
@@ -5951,6 +5952,129 @@ MonoBehaviour:
   resultsPanel: {fileID: 0}
   resultsContainer: {fileID: 0}
   resultRowPrefab: {fileID: 5588017994755361512, guid: b08850e0150af604ca7bed7d6f3ee5e4, type: 3}
+  bidUpAction:
+    m_Name: Bid Up
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: efa0ec52-3370-4b35-be01-7684e1cea5c1
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 935a51bb-95de-48b7-b3a6-628acf0cbb02
+      m_Path: <Gamepad>/dpad/up
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Bid Up
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 2a414d38-7b8b-46c8-9756-5ac593eb5ace
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Bid Up
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 60037087-fe4c-4cd8-a3ef-13dd824d94a5
+      m_Path: <Keyboard>/upArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Bid Up
+      m_Flags: 0
+    - m_Name: 
+      m_Id: f4cf4ae3-e498-4d7c-b4ae-f88b3b00a586
+      m_Path: <Gamepad>/leftStick/up
+      m_Interactions: Press
+      m_Processors: 
+      m_Groups: 
+      m_Action: Bid Up
+      m_Flags: 0
+    m_Flags: 0
+  bidDownAction:
+    m_Name: Bid Down
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: bc05fcde-9795-4db2-ac56-db2f79be25e3
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 1a54eac2-83ed-439c-994f-b3a205489666
+      m_Path: <Gamepad>/leftStick/down
+      m_Interactions: Press
+      m_Processors: 
+      m_Groups: 
+      m_Action: Bid Down
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 677a9518-cf5f-4911-8ade-4cb148e91bf3
+      m_Path: <Gamepad>/dpad/down
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Bid Down
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 2c2cadf3-f348-42cc-98ab-18a7e14482d2
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Bid Down
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 348f6d83-e712-4b45-af6d-9475e270b2a5
+      m_Path: <Keyboard>/downArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Bid Down
+      m_Flags: 0
+    m_Flags: 0
+  bidSubmitAction:
+    m_Name: Bid Submit
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e802df1d-aa55-43d5-89ee-d52f9add1808
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 49655b8a-60c8-463c-a64a-f17edcc584f7
+      m_Path: <Keyboard>/enter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Bid Submit
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 84ed6e60-09cd-4b27-abe6-951adacdfd2c
+      m_Path: <Keyboard>/space
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Bid Submit
+      m_Flags: 0
+    - m_Name: 
+      m_Id: c2593ca5-5429-483b-889f-9c9d72ea80c9
+      m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Bid Submit
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 8ec99626-e032-443a-975c-8191d8df34db
+      m_Path: <Gamepad>/dpad/right
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Bid Submit
+      m_Flags: 0
+    m_Flags: 0
   roundTimerSeconds: 180
   resultsDisplayTime: 2
   bidFlipDuration: 0.18

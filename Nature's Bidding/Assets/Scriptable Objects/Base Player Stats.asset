@@ -23,7 +23,7 @@ MonoBehaviour:
   ParryCooldown: 4
   DashDistance: 1
   DashCooldown: 3.65
-  CritChance: 30
+  CritChance: 10
   CritDamageMultiplier: 1.5
   Momentum: 0
   ComboDamage: 0

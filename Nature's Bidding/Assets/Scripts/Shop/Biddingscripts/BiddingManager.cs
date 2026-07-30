@@ -40,6 +40,9 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     public GameObject resultRowPrefab;
 
     [Header("Settings")]
+    [SerializeField] InputAction bidUpAction;
+    [SerializeField] InputAction bidDownAction;
+    [SerializeField] InputAction bidSubmitAction;
     public float roundTimerSeconds  = 30f;   // Safety timer in case a player disconnects
     public float resultsDisplayTime = 4f;
     public float bidFlipDuration    = 0.18f; // How long the flip animation lasts
@@ -95,20 +98,26 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
             audioFeedback = GetComponent<BiddingAudioFeedback>();
     }
 
-    void Update()
+    private void OnEnable()
     {
-        if (!bidHUDPanel || !bidHUDPanel.activeInHierarchy) return;
-        if (_localBidSubmitted) return;
-        if (Keyboard.current == null) return;
+        bidUpAction.Enable();
+        bidDownAction.Enable();
+        bidSubmitAction.Enable();
 
-        if (Keyboard.current.upArrowKey.wasPressedThisFrame)
-            OnBidUp();
+        bidUpAction.performed += OnBidUp;
+        bidDownAction.performed += OnBidDown;
+        bidSubmitAction.performed += OnSubmitBid;
+    }
 
-        if (Keyboard.current.downArrowKey.wasPressedThisFrame)
-            OnBidDown();
+    private void OnDisable()
+    {
+        bidUpAction.Disable();
+        bidDownAction.Disable();
+        bidSubmitAction.Disable();
 
-        if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.numpadEnterKey.wasPressedThisFrame)
-            OnSubmitBid();
+        bidUpAction.performed -= OnBidUp;
+        bidDownAction.performed -= OnBidDown;
+        bidSubmitAction.performed -= OnSubmitBid;
     }
 
     public override void OnNetworkSpawn()
@@ -366,7 +375,6 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     [Rpc(SendTo.Everyone)]
     void RevealResultsRpc(string packedBids, string winnerIdStr, int winningBid, string winnerName, string itemName)
     {
-        if (bidHUDPanel != null) bidHUDPanel.SetActive(false);
         if (resultsPanel != null) resultsPanel.SetActive(true);
 
         PointerNPC.Instance?.CelebrateTwo();
@@ -410,7 +418,6 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     [Rpc(SendTo.Everyone)]
     void ShowTransitionMessageRpc(string message)
     {
-        if (bidHUDPanel != null) bidHUDPanel.SetActive(false);
         if (resultsPanel != null) resultsPanel.SetActive(false);
         PointerNPC.Instance?.SetIdle();
         PointerNPC.Instance?.SayTransition();
@@ -422,8 +429,9 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     #region Player Input — Bid Controls
 
     /// <summary>Increase bid by one step. Call from + button or right trigger.</summary>
-    public void OnBidUp()
+    public void OnBidUp(InputAction.CallbackContext callbackContext)
     {
+        if (!bidHUDPanel || !bidHUDPanel.activeInHierarchy) return;
         if (_localBidSubmitted) return;
 
         int nextBid = _localBidAmount + bidStep;
@@ -442,8 +450,9 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     }
 
     /// <summary>Decrease bid by one step. Call from - button or left trigger.</summary>
-    public void OnBidDown()
+    public void OnBidDown(InputAction.CallbackContext callbackContext)
     {
+        if (!bidHUDPanel || !bidHUDPanel.activeInHierarchy) return;
         if (_localBidSubmitted) return;
 
         int nextBid = _localBidAmount - bidStep;
@@ -462,8 +471,9 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     }
 
     /// <summary>Submit the current bid. Call from Submit button or confirm button.</summary>
-    public void OnSubmitBid()
+    public void OnSubmitBid(InputAction.CallbackContext callbackContext)
     {
+        if (!bidHUDPanel || !bidHUDPanel.activeInHierarchy) return;
         if (_localBidSubmitted) return;
 
         if (_localBidAmount < minBid ||

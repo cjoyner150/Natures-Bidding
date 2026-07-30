@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
-using TMPro;
 
 /// <summary>
 /// PlayerShopPanel — One quarter of the shop screen, belonging to one player.
@@ -17,6 +18,7 @@ public class PlayerShopPanel : MonoBehaviour
 
     [Header("Panel Identity")]
     public Image    panelBackground;
+    public Image[]    basketFronts;
     public Image    localPlayerBorder;
     public Color    localColor  = new Color(0.18f, 0.14f, 0.30f, 1f);
     public Color    remoteColor = new Color(0.09f, 0.08f, 0.13f, 1f);
@@ -116,6 +118,10 @@ public class PlayerShopPanel : MonoBehaviour
         _grandPotUsed = false;
 
         if (panelBackground)   panelBackground.color = isLocal ? localColor : remoteColor;
+        foreach (Image i in basketFronts)
+        {
+            i.color = isLocal ? localColor : remoteColor;
+        } 
         if (localPlayerBorder) localPlayerBorder.gameObject.SetActive(isLocal);
 
         if (detailPanel) detailPanel.SetActive(false);
@@ -175,6 +181,10 @@ public class PlayerShopPanel : MonoBehaviour
         _grandPotUsed = false;
 
         if (panelBackground) panelBackground.color = remoteColor;
+        foreach (Image i in basketFronts)
+        {
+            i.color = remoteColor;
+        }
         if (localPlayerBorder) localPlayerBorder.gameObject.SetActive(false);
 
         if (playerNameText) playerNameText.text = slotLabel;

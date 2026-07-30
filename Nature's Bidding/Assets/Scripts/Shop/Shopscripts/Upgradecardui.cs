@@ -112,11 +112,6 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
 
         UpdateOwnedCount(ownedCount);
-        if (cardButton != null)
-        {
-            cardButton.onClick.RemoveAllListeners();
-            cardButton.onClick.AddListener(HandleCardClicked);
-        }
 
         if (cardBackground) cardBackground.color = upgrade.cardColor;
     }
@@ -146,8 +141,6 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (cardButton != null)
         {
             cardButton.interactable = !used;
-            cardButton.onClick.RemoveAllListeners();
-            cardButton.onClick.AddListener(HandleCardClicked);
         }
 
         SetSelected(false);
@@ -370,7 +363,7 @@ public class UpgradeCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         HandleCardClicked();
     }
 
-    private void HandleCardClicked()
+    public void HandleCardClicked()
     {
         if (_lockedOut) return;
         if (_lastClickFrame == Time.frameCount) return;

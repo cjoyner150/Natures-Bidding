@@ -63,14 +63,11 @@ public class BiddingArenaManager : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        int seatIdx = 0;
         foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
         {
-            if (seatIdx >= seats.Count) break;
             var    pd   = PersistentPlayerRegistry.Instance?.GetByClientId(kvp.Key);
             string name = pd != null ? pd.playerName : $"Player {kvp.Key}";
-            AssignSeatRpc(kvp.Key, seatIdx, name);
-            seatIdx++;
+            AssignSeatRpc(kvp.Key, pd.playerIndex, name);
         }
     }
 

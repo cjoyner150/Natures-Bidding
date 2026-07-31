@@ -272,7 +272,7 @@ MonoBehaviour:
     parryWarmUpDelay: 100
     shouldStunSelf: 0
     isStunned: 0
-    stunTime: 3
+    stunTime: 1.5
     stunRecoveryTimer: 0
     additionalStunTime: 0
     dashTime: 0.25

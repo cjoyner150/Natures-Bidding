@@ -404,8 +404,8 @@ MonoBehaviour:
   attackableLayers:
     serializedVersion: 2
     m_Bits: 128
-  attackRadius: 0.4
-  attackLength: 2
+  attackRadius: 1
+  attackLength: 0.5
   debugAttackCast: 1
 --- !u!114 &2143706486958459292
 MonoBehaviour:

@@ -49,8 +49,8 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     public float bidFlipDuration    = 0.18f; // How long the flip animation lasts
     public float bidFlatScaleY      = 0.02f; // How flat the card gets mid-flip
     public int   bidStep            = 5;     // How much each key press changes the bid
-    public int   minBid             = 1;
-    public int   startingBid        = 10;
+    public int   minBid             = 0;
+    public int   startingBid        = 0;
 
     [Header("Audio")]
     [SerializeField] private BiddingAudioFeedback audioFeedback;
@@ -156,13 +156,18 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
 
         if (bidHUDPanel != null) bidHUDPanel.SetActive(false);
         if (resultsPanel != null) resultsPanel.SetActive(false);
+
+        InitializeGoldAsync();
     }
 
     public async void OnBiddingPhaseStart()
     {
         PointerNPC.Instance?.CelebrateOne();
         PointerNPC.Instance?.SayOpeningInstructions();
+    }
 
+    private async void InitializeGoldAsync()
+    {
         var localPlayer = PersistentPlayerRegistry.Instance.GetByClientId(NetworkManager.LocalClientId);
 
         if (localPlayer == null)
@@ -567,13 +572,11 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
             RestartBidFlipAnimation();
         else
             ResetBidFlipVisual();
-
-        // No button interactables in keyboard-only UI.
     }
 
     void RefreshSubmitButton()
     {
-        // Keyboard-driven UI: nothing to toggle here.
+        
     }
 
     RectTransform GetBidFlipTarget()

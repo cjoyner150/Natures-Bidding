@@ -14,6 +14,10 @@ public sealed class GameAudioController : MonoBehaviour
     [SerializeField] private AK.Wwise.Event playMusicSystem;
     [SerializeField] private AK.Wwise.Event stopMusicSystem;
 
+    [Header("Ambience Events")]
+    [SerializeField] private AK.Wwise.Event playForestAmbience;
+    [SerializeField] private AK.Wwise.Event stopForestAmbience;
+
     [Header("Game_Phase States")]
     [SerializeField] private AK.Wwise.State phaseMenu;
     [SerializeField] private AK.Wwise.State phaseLobby;
@@ -31,6 +35,7 @@ public sealed class GameAudioController : MonoBehaviour
     [SerializeField] private AK.Wwise.State playersFour;
 
     private bool musicSystemIsPlaying;
+    private bool forestAmbienceIsPlaying;
     private PersistentGameStateManager.GameState currentGameState;
     private NetworkManager networkManager;
     private int currentPlayersStateCount = -1;
@@ -122,6 +127,7 @@ public sealed class GameAudioController : MonoBehaviour
         }
 
         StartMusic();
+        RefreshForestAmbience(SceneManager.GetActiveScene());
     }
 
     public void SetLobbyPlayerCount(int playerCount)
@@ -171,6 +177,7 @@ public sealed class GameAudioController : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode _)
     {
         SetMapForScene(scene);
+        RefreshForestAmbience(scene);
 
         if (IsCombatScene(scene))
             nextCombatPlayerStatePollTime = 0f;
@@ -230,6 +237,42 @@ public sealed class GameAudioController : MonoBehaviour
     private static bool IsCombatScene(Scene scene)
     {
         return scene.name == CliffSceneName || scene.name == LavaSceneName;
+    }
+
+    private void RefreshForestAmbience(Scene scene)
+    {
+        bool shouldPlay =
+            currentGameState == PersistentGameStateManager.GameState.Lobby ||
+            (currentGameState == PersistentGameStateManager.GameState.Combat &&
+             scene.name == CliffSceneName);
+
+        if (shouldPlay)
+            StartForestAmbience();
+        else
+            StopForestAmbience();
+    }
+
+    private void StartForestAmbience()
+    {
+        if (forestAmbienceIsPlaying)
+            return;
+
+        if (!IsAssigned(playForestAmbience, "Play_AMB_Forest"))
+            return;
+
+        uint playingId = playForestAmbience.Post(gameObject);
+        forestAmbienceIsPlaying = playingId != AkUnitySoundEngine.AK_INVALID_PLAYING_ID;
+    }
+
+    private void StopForestAmbience()
+    {
+        if (!forestAmbienceIsPlaying)
+            return;
+
+        if (IsAssigned(stopForestAmbience, "Stop_AMB_Forest"))
+            stopForestAmbience.Post(gameObject);
+
+        forestAmbienceIsPlaying = false;
     }
 
     private void SetMapForScene(Scene scene)

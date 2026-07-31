@@ -50,10 +50,7 @@ public sealed class GameAudioController : MonoBehaviour
     {
         networkManager = NetworkManager.Singleton;
         if (networkManager != null)
-        {
-            networkManager.OnClientConnectedCallback += OnClientCountChanged;
-            networkManager.OnClientDisconnectCallback += OnClientCountChanged;
-        }
+            networkManager.OnConnectionEvent += OnConnectionEvent;
 
         SetMapForScene(SceneManager.GetActiveScene());
 
@@ -68,10 +65,7 @@ public sealed class GameAudioController : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
 
         if (networkManager != null)
-        {
-            networkManager.OnClientConnectedCallback -= OnClientCountChanged;
-            networkManager.OnClientDisconnectCallback -= OnClientCountChanged;
-        }
+            networkManager.OnConnectionEvent -= OnConnectionEvent;
     }
 
     private void Update()
@@ -183,10 +177,20 @@ public sealed class GameAudioController : MonoBehaviour
             nextCombatPlayerStatePollTime = 0f;
     }
 
-    private void OnClientCountChanged(ulong _)
+    private void OnConnectionEvent(NetworkManager _, ConnectionEventData eventData)
     {
-        if (currentGameState == PersistentGameStateManager.GameState.Lobby)
-            SetPlayerCountState(GetConnectedPlayerCount());
+        if (currentGameState != PersistentGameStateManager.GameState.Lobby)
+            return;
+
+        switch (eventData.EventType)
+        {
+            case ConnectionEvent.ClientConnected:
+            case ConnectionEvent.PeerConnected:
+            case ConnectionEvent.ClientDisconnected:
+            case ConnectionEvent.PeerDisconnected:
+                SetPlayerCountState(GetConnectedPlayerCount());
+                break;
+        }
     }
 
     private int GetConnectedPlayerCount()

@@ -13,12 +13,14 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID PLAY_AMB_FOREST = 994146778U;
         static const AkUniqueID PLAY_MX_SYSTEM = 3580595815U;
         static const AkUniqueID PLAY_UI_BID_ADJUST = 3980822666U;
         static const AkUniqueID PLAY_UI_BID_REJECT = 1191336738U;
         static const AkUniqueID PLAY_UI_BID_SUBMIT = 2289452967U;
         static const AkUniqueID PLAY_UI_CLICK = 1749424733U;
         static const AkUniqueID PLAY_UI_HOVER = 1339559671U;
+        static const AkUniqueID STOP_AMB_FOREST = 3443576024U;
         static const AkUniqueID STOP_MX_SYSTEM = 3534127541U;
     } // namespace EVENTS
 

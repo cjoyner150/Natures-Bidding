@@ -1060,6 +1060,14 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 8301cdc8bde2f4653a89edb7fa6473c1, type: 2}
+  playForestAmbience:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 89e1cd85ad7a4411ac7db475682c7459, type: 2}
+  stopForestAmbience:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 25046e6027564b77b7da8530d74f6801, type: 2}
   phaseMenu:
     idInternal: 0
     valueGuidInternal: 

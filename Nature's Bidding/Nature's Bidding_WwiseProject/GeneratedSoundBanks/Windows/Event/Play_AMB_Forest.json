@@ -1,0 +1,185 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "994146778",
+    "Type": "Event",
+    "GUID": "{E6111105-4B67-4AF0-B526-83D7003FAD60}",
+    "Language": "SFX",
+    "Hash": "{0366F70F-9B02-5263-7AAE-26B3C9E40B5E}",
+    "ObjectPath": "Play_AMB_Forest",
+    "ShortName": "Play_AMB_Forest",
+    "Path": "Event/Play_AMB_Forest.bnk",
+    "Media": [
+     {
+      "Id": "114428027",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "amb_forest_01.wav",
+      "Path": "Media/114428027.wem",
+      "CachePath": "60/{60EFA219-881A-925C-CD51-23DDCB132B42}.wem"
+     },
+     {
+      "Id": "271994692",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Rumble\\amb_forest_rumble_04.wav",
+      "Path": "Media/271994692.wem",
+      "CachePath": "9E/{9E678BDC-68A7-0189-74B5-6B4F4B7BAD87}.wem"
+     },
+     {
+      "Id": "317005902",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Wind\\amb_forest_wind_02.wav",
+      "Path": "Media/317005902.wem",
+      "CachePath": "30/{30FEB8E5-E27B-4408-B9BD-E9624EE04C31}.wem"
+     },
+     {
+      "Id": "337994838",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Rumble\\amb_forest_rumble_01.wav",
+      "Path": "Media/337994838.wem",
+      "CachePath": "7E/{7EFDE43E-D15B-67F5-971E-9EBF4919F883}.wem"
+     },
+     {
+      "Id": "358460421",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Rumble\\amb_forest_rumble_03.wav",
+      "Path": "Media/358460421.wem",
+      "CachePath": "8B/{8B513FA2-0BD4-7A76-B70F-451E2114A53C}.wem"
+     },
+     {
+      "Id": "361946497",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Wind\\amb_forest_wind_03.wav",
+      "Path": "Media/361946497.wem",
+      "CachePath": "1B/{1B84CCFF-7074-0C94-2B2E-F9EB98F5F492}.wem"
+     },
+     {
+      "Id": "389383668",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "amb_forest_03.wav",
+      "Path": "Media/389383668.wem",
+      "CachePath": "00/{00A775B1-2399-E624-0219-43191AE4BB9C}.wem"
+     },
+     {
+      "Id": "542962287",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Wind\\amb_forest_wind_01.wav",
+      "Path": "Media/542962287.wem",
+      "CachePath": "11/{119FBD0D-5718-CA1F-A1B8-BF43AE6C7143}.wem"
+     },
+     {
+      "Id": "809208575",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "amb_forest_02.wav",
+      "Path": "Media/809208575.wem",
+      "CachePath": "46/{46DE7A4F-EDE2-014F-1651-43D0336E6629}.wem"
+     },
+     {
+      "Id": "849588940",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "amb_forest_04.wav",
+      "Path": "Media/849588940.wem",
+      "CachePath": "58/{5866663E-46FF-DAC3-9635-AF4E7BE7C8C7}.wem"
+     },
+     {
+      "Id": "868682208",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Rumble\\amb_forest_rumble_02.wav",
+      "Path": "Media/868682208.wem",
+      "CachePath": "2C/{2C9E3F4A-A6CE-19E3-F468-C38FEA76014B}.wem"
+     }
+    ],
+    "Plugins": {
+     "Custom": [
+      {
+       "Id": "662780474",
+       "Name": "Silence",
+       "ObjectPath": "\\Containers\\Ambience Work Unit\\AMB_Forest\\Wind\\amb_forest_silence\\Silence",
+       "GUID": "{2B87AB2B-83E5-4F90-B7DD-9F3A14333C85}",
+       "LibName": "Wwise Silence",
+       "LibId": "6619138"
+      }
+     ]
+    },
+    "Events": [
+     {
+      "Id": "994146778",
+      "Name": "Play_AMB_Forest",
+      "ObjectPath": "\\Events\\Ambience Work Unit\\Play_AMB_Forest",
+      "GUID": "{E6111105-4B67-4AF0-B526-83D7003FAD60}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "114428027"
+       },
+       {
+        "Id": "271994692"
+       },
+       {
+        "Id": "317005902"
+       },
+       {
+        "Id": "337994838"
+       },
+       {
+        "Id": "358460421"
+       },
+       {
+        "Id": "361946497"
+       },
+       {
+        "Id": "389383668"
+       },
+       {
+        "Id": "542962287"
+       },
+       {
+        "Id": "809208575"
+       },
+       {
+        "Id": "849588940"
+       },
+       {
+        "Id": "868682208"
+       }
+      ],
+      "PluginRefs": {
+       "Custom": [
+        {
+         "Id": "662780474"
+        }
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "FileHash": "{69020162-C98D-E533-69DF-D516E03B0233}"
+ }
+}

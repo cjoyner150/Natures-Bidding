@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce4ee29c916845b4fb8bc73834bef549, type: 3}
-  m_Name: Stealing +3
+  m_Name: Stealing +6
   m_EditorClassIdentifier: Assembly-CSharp::BasicNumericalStatusEffectorSO
-  _id: stealing_+3
-  Title: Stealing +3
+  _id: stealing_+6
+  Title: Stealing +6
   Description: 
   Duration: -1
   Stat: 15
-  Value: 3
+  Value: 6
   OperationType: 0

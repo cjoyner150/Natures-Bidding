@@ -64,9 +64,9 @@ public class CardTooltip : MonoBehaviour
         if (stockText)  stockText.text  = used ? "Already used this phase" : "Available";
     }
 
-    public void PositionBesideCard(RectTransform cardRect)
+    public void PositionBesideCard(RectTransform cardRect, float extraOffsetX = 20f)
     {
-        Debug.Log($"[Tooltip] PositionBesideCard called — rt:{_rt != null} card:{cardRect != null} canvas:{_rootCanvas?.name ?? "NULL"}");
+        Debug.Log($"[Tooltip] PositionBesideCard called — extraOffsetX={extraOffsetX}, rt:{_rt != null} card:{cardRect != null} canvas:{_rootCanvas?.name ?? "NULL"}");
         if (_rt == null || cardRect == null || _rootCanvas == null) return;
 
         float scale = _rootCanvas.scaleFactor;
@@ -75,22 +75,27 @@ public class CardTooltip : MonoBehaviour
         Vector3[] corners = new Vector3[4];
         cardRect.GetWorldCorners(corners);
         // 0=BL  1=TL  2=TR  3=BR
-        float cardRightPx   = corners[2].x;
-        float cardLeftPx    = corners[0].x;
+        float cardRightPx = corners[2].x;
+        float cardLeftPx = corners[0].x;
         float cardCentrePxY = (corners[0].y + corners[1].y) * 0.5f;
 
         // Use assumed width for edge check since sizeDelta may be 0 with ContentSizeFitter
-        bool goRight = (cardRightPx + sideGap + assumedWidthPx) <= Screen.width;
+        bool goRight = (cardRightPx + sideGap + extraOffsetX + assumedWidthPx) <= Screen.width;
 
-        // Screen pixel X of the tooltip's pivot point
-        float screenX = goRight ? cardRightPx + sideGap : cardLeftPx - sideGap;
+        // Screen pixel X of the tooltip's pivot point — extraOffsetX pushes further
+        // away from the card in whichever direction the tooltip is opening, so it
+        // clears a card that's visually larger than its RectTransform (e.g. popped
+        // out of the basket) without overlapping.
+        float screenX = goRight
+            ? cardRightPx + sideGap + extraOffsetX
+            : cardLeftPx - sideGap - extraOffsetX;
         float screenY = cardCentrePxY;   // vertically centred on the card
 
         // Convert screen pixels → canvas units (anchor at canvas bottom-left)
         float canvasX = screenX / scale;
         float canvasY = screenY / scale;
 
-        _rt.pivot            = new Vector2(goRight ? 0f : 1f, 0.5f);
+        _rt.pivot = new Vector2(goRight ? 0f : 1f, 0.5f);
         _rt.anchoredPosition = new Vector2(canvasX, canvasY);
 
         Debug.Log($"[Tooltip] cardRight:{cardRightPx:F0} cardLeft:{cardLeftPx:F0} centreY:{cardCentrePxY:F0} scale:{scale} goRight:{goRight} → canvas({canvasX:F0},{canvasY:F0}) screen({Screen.width}x{Screen.height})");

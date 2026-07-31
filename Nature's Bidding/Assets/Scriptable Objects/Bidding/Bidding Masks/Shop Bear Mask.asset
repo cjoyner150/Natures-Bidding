@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16b8f994c1e4e6e498fdb723c8718a8d, type: 3}
   m_Name: Shop Bear Mask
   m_EditorClassIdentifier: Assembly-CSharp::BiddableItem
-  itemId: Bear_mask
+  itemId: bear_mask
   itemName: Bear Mask
-  description: Makes you much larger but at what cost
+  description: Big and slow.
   icon: {fileID: 0}
-  displayPrefab: {fileID: 3474356598696536439, guid: 34b7e2f235440ce4995fb79bd3e63556, type: 3}
+  displayPrefab: {fileID: 3334988474426576908, guid: c309877316cd7064c9de9ee63a824795, type: 3}
   displayRotation: {x: 0, y: 0, z: 0}
   displayScale: 50
   startingBid: 10

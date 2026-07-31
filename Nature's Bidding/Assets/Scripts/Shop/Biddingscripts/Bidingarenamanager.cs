@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 /// <summary>
 /// BiddingArenaManager — Manages the 3D side of the bidding phase.
@@ -38,8 +39,8 @@ public class BiddingArenaManager : NetworkBehaviour
 
     private GameObject   _spawnedItemDisplay;
     private BiddableItem _currentItem;
-    private int          _itemPoolIndex = 0;
     private Dictionary<ulong, PlayerSeat> _playerSeatMap = new Dictionary<ulong, PlayerSeat>();
+    private List<BiddableItem> currentPool;
 
     #endregion
 
@@ -49,6 +50,8 @@ public class BiddingArenaManager : NetworkBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+
+        currentPool = itemPool.ToList(); // Make a copy
     }
 
     #endregion
@@ -60,14 +63,11 @@ public class BiddingArenaManager : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        int seatIdx = 0;
         foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
         {
-            if (seatIdx >= seats.Count) break;
             var    pd   = PersistentPlayerRegistry.Instance?.GetByClientId(kvp.Key);
             string name = pd != null ? pd.playerName : $"Player {kvp.Key}";
-            AssignSeatRpc(kvp.Key, seatIdx, name);
-            seatIdx++;
+            AssignSeatRpc(kvp.Key, pd.playerIndex, name);
         }
     }
 
@@ -86,15 +86,19 @@ public class BiddingArenaManager : NetworkBehaviour
 
     public BiddableItem PickNextItem()
     {
-        if (itemPool == null || itemPool.Count == 0)
+        if (currentPool == null || itemPool == null || itemPool.Count == 0)
         {
             Debug.LogWarning("[BiddingArenaManager] Item pool is empty!");
             return null;
         }
 
-        _currentItem = itemPool[_itemPoolIndex % itemPool.Count];
-        _itemPoolIndex++;
-        ShowItemRpc(_itemPoolIndex - 1);
+        if (currentPool.Count == 0) currentPool = itemPool.ToList();
+
+        _currentItem = currentPool[Random.Range(0, currentPool.Count)];
+        int itemIndex = itemPool.FindIndex(c => c.itemId == _currentItem.itemId);
+        currentPool.Remove(_currentItem);
+
+        ShowItemRpc(itemIndex);
         return _currentItem;
     }
 
@@ -103,9 +107,13 @@ public class BiddingArenaManager : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void ShowItemRpc(int poolIndex)
     {
-        if (itemPool == null || itemPool.Count == 0) return;
+        if (itemPool == null || itemPool.Count == 0)
+        {
+            Debug.LogWarning("[BiddingArenaManager] Item pool is empty!");
+            return;
+        }
 
-        var item = itemPool[poolIndex % itemPool.Count];
+        var item = itemPool[poolIndex];
         _currentItem = item;
 
         if (_spawnedItemDisplay != null) Destroy(_spawnedItemDisplay);
@@ -119,7 +127,7 @@ public class BiddingArenaManager : NetworkBehaviour
             _spawnedItemDisplay.transform.localScale = Vector3.one * item.displayScale;
         }
 
-        if (itemNameText)  { itemNameText.text  = item.itemName; itemNameText.color = item.RarityColor(); }
+        if (itemNameText)  { itemNameText.text  = item.itemName; }
         if (itemDescText)    itemDescText.text   = item.description;
         if (itemIconImage)   itemIconImage.sprite = item.icon;
         if (itemRarityText)

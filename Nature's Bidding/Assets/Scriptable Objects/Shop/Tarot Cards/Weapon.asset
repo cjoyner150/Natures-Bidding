@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97ab8516c7ac3b64cbf8d316ef48807a, type: 3}
+  m_Name: Weapon
+  m_EditorClassIdentifier: Assembly-CSharp::TarotCardReward
+  cardId: the_weapon_tarot
+  cardName: The Weapon
+  flavorText: Be armed and ready.
+  cardFaceSprite: {fileID: 21300000, guid: 913d562a3fa9fd541880e91dcf1f2142, type: 3}
+  cardBackSprite: {fileID: 21300000, guid: fabc87e1b5e54924d959550cd1f7823b, type: 3}
+  rewardType: 0
+  effectValue: 0.15
+  rewardSummary: +15% Speed
+  rarity: 1

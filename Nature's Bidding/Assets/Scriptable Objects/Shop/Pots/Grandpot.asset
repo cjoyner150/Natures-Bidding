@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PotType
   potName: Grand Pot
   description: Draw 5 tarot cards, choose 1 reward.
-  cost: 80
+  cost: 150
   clicksToOpen: 3
   cardsToDraw: 5
   cardsToKeep: 2

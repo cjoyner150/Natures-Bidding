@@ -1,9 +1,11 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 /// <summary>
 /// PotManager — Full-screen pot opening sequence.
@@ -82,7 +84,7 @@ public class PotManager : NetworkBehaviour
     private bool                  _autoResolvingSelection;
 
     private CardTooltip           _activeTooltip;
-    private Canvas                _rootCanvas;
+    [SerializeField] private Canvas                _rootCanvas;
 
     #endregion
 
@@ -151,10 +153,11 @@ public class PotManager : NetworkBehaviour
         ClearCards();
         DestroyTooltip();
 
-        // Cache root canvas
-        _rootCanvas = null;
-        foreach (var c in FindObjectsByType<Canvas>(FindObjectsSortMode.None))
-            if (c.isRootCanvas) { _rootCanvas = c; break; }
+        //// Cache root canvas
+        //_rootCanvas = null;
+        //foreach (var c in FindObjectsByType<Canvas>(FindObjectsSortMode.None))
+        //    if (c.isRootCanvas) { _rootCanvas = c; break; }
+        Debug.Log($"[PotManager] root canvas is {_rootCanvas == null}");
 
         // Show overlay
         if (potOverlay == null)
@@ -469,6 +472,10 @@ public class PotManager : NetworkBehaviour
 
     public void OnCloseOverlay()
     {
+        _hideTooltipCts?.Cancel();
+        _hideTooltipCts?.Dispose();
+        _hideTooltipCts = null;
+
         potOverlay?.SetActive(false);
         ClearCards();
         DestroyTooltip();
@@ -479,6 +486,9 @@ public class PotManager : NetworkBehaviour
 
     public override void OnDestroy()
     {
+        _hideTooltipCts?.Cancel();
+        _hideTooltipCts?.Dispose();
+
         if (Instance == this)
             Instance = null;
     }
@@ -487,38 +497,64 @@ public class PotManager : NetworkBehaviour
 
     #region Tooltip
 
+    private TarotCardReward _activeTooltipReward;
+
+    private CancellationTokenSource _hideTooltipCts;
+
     void OnCardHover(TarotCardReward reward, bool enter)
     {
-        if (!enter) { DestroyTooltip(); return; }
-        if (tooltipPrefab == null || _rootCanvas == null) return;
+        if (enter)
+        {
+            // Cancel any pending hide if we're re-entering quickly
+            _hideTooltipCts?.Cancel();
+            _hideTooltipCts?.Dispose();
+            _hideTooltipCts = null;
 
-        DestroyTooltip();
-        var go = Instantiate(tooltipPrefab, _rootCanvas.transform);
-        _activeTooltip = go.GetComponent<CardTooltip>();
-        if (_activeTooltip == null) return;
+            if (_activeTooltip != null && _activeTooltipReward == reward)
+                return;
 
-        _activeTooltip.SetCanvas(_rootCanvas);
+            if (tooltipPrefab == null || _rootCanvas == null) return;
 
-        // Populate with tarot card data
-        if (_activeTooltip.nameText)   _activeTooltip.nameText.text   = reward.cardName;
-        if (_activeTooltip.effectText) _activeTooltip.effectText.text = reward.rewardSummary;
-        if (_activeTooltip.descText)   _activeTooltip.descText.text   = reward.flavorText;
-        if (_activeTooltip.costText)   _activeTooltip.costText.text   = "";
-        if (_activeTooltip.stockText)  _activeTooltip.stockText.text  = "";
+            DestroyTooltip();
+            var go = Instantiate(tooltipPrefab, _rootCanvas.transform);
+            _activeTooltip = go.GetComponent<CardTooltip>();
+            _activeTooltipReward = reward;
+            if (_activeTooltip == null) return;
 
-        go.SetActive(true);
+            _activeTooltip.SetCanvas(_rootCanvas);
 
-        // Find the specific card that owns this reward for positioning
-        var hoveredCard = _spawnedCards.Find(c => c != null && c.Reward == reward);
-        if (hoveredCard != null)
-            StartCoroutine(PositionTooltipNextFrame(hoveredCard.GetComponent<RectTransform>()));
+            if (_activeTooltip.nameText) _activeTooltip.nameText.text = reward.cardName;
+            if (_activeTooltip.effectText) _activeTooltip.effectText.text = reward.rewardSummary;
+            if (_activeTooltip.descText) _activeTooltip.descText.text = reward.flavorText;
+            if (_activeTooltip.costText) _activeTooltip.costText.text = "";
+            if (_activeTooltip.stockText) _activeTooltip.stockText.text = "";
+
+            var hoveredCard = _spawnedCards.Find(c => c != null && c.Reward == reward);
+            if (hoveredCard != null)
+                _activeTooltip.PositionBesideCard(hoveredCard.GetComponent<RectTransform>());
+
+            go.SetActive(true);
+        }
+        else
+        {
+            // Delay the actual destroy slightly — if a matching enter fires
+            // within this window (edge jitter), it cancels this and nothing flashes.
+            _hideTooltipCts?.Cancel();
+            _hideTooltipCts?.Dispose();
+            _hideTooltipCts = new CancellationTokenSource();
+            HideTooltipAfterDelay(_hideTooltipCts.Token).Forget();
+        }
     }
 
-    IEnumerator PositionTooltipNextFrame(RectTransform cardRect)
+    private async UniTaskVoid HideTooltipAfterDelay(CancellationToken token)
     {
-        yield return null;
-        if (_activeTooltip != null)
-            _activeTooltip.PositionBesideCard(cardRect);
+        bool cancelled = await UniTask.Delay(50, cancellationToken: token).SuppressCancellationThrow();
+        if (cancelled) return; // a new hover-enter cancelled this before it fired
+
+        if (this == null) return; // guard against destroy mid-wait
+
+        DestroyTooltip();
+        _activeTooltipReward = null;
     }
 
     void DestroyTooltip()

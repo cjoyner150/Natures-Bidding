@@ -24,7 +24,7 @@ public class PersistentSteamManager : Singleton<PersistentSteamManager>
 #if !UNITY_EDITOR
     try
     {
-        SteamClient.Init(4462510);
+        SteamClient.Init(5039210);
         Debug.Log($"Steam initialized. Name: {SteamClient.Name}");
         SteamFriends.OnGameRichPresenceJoinRequested += OnFriendJoinRequested;
         Application.quitting += OnApplicationQuitting;

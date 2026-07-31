@@ -129,8 +129,16 @@ public class PlayerVisualEffectManager : MonoBehaviour
     public void SpawnJumpParticles()
     {
         GameObject go = Instantiate(jumpParticle, gameObject.transform, false);
+        Debug.Log($"[PlayerVisualEffectManager] SpawnJumpParticles called. Instantiated: {go != null}, activeInHierarchy: {go?.activeInHierarchy}");
         go.transform.localPosition = Vector3.zero;
         go.transform.SetParent(null);
+
+        var allParticleSystems = go.GetComponentsInChildren<ParticleSystem>();
+        foreach (var ps in allParticleSystems)
+        {
+            Debug.Log($"[PlayerVisualEffectManager] ParticleSystem '{ps.gameObject.name}' isPlaying: {ps.isPlaying}, particleCount: {ps.particleCount}");
+        }
+
         SafeDispose(go, 1000).Forget();
     }
 

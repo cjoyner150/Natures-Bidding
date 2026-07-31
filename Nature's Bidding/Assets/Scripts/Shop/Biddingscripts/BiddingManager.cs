@@ -450,6 +450,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         if (!bidHUDPanel || !bidHUDPanel.activeInHierarchy) return;
         if (_localBidSubmitted) return;
 
+        Debug.Log($"[BiddingManager] OnBidUp: _localBidAmount = {_localBidAmount} and bidStep = {bidStep}");
         int nextBid = _localBidAmount + bidStep;
         if (nextBid == _localBidAmount)
             return;
@@ -459,6 +460,8 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
             audioFeedback?.PlayBidReject();
             return;
         }
+
+        Debug.Log($"[BiddingManager] gold = {availableGold}");
 
         _localBidAmount = nextBid;
         RefreshBidDisplay(true);
@@ -471,10 +474,11 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         if (!bidHUDPanel || !bidHUDPanel.activeInHierarchy) return;
         if (_localBidSubmitted) return;
 
+        Debug.Log($"[BiddingManager] OnBidDown: _localBidAmount = {_localBidAmount} and bidStep = {bidStep}");
         int nextBid = _localBidAmount - bidStep;
         if (nextBid == _localBidAmount)
             return;
-
+        Debug.Log($"[BiddingManager] OnBidDown: nextBid = {nextBid} and minBid = {minBid}");
         if (nextBid < minBid)
         {
             audioFeedback?.PlayBidReject();

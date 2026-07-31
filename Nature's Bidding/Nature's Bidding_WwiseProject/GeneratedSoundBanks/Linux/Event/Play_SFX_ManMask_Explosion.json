@@ -1,0 +1,56 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "735357806",
+    "Type": "Event",
+    "GUID": "{CF7B40B4-05B4-4E7E-AF5D-19893A335BE9}",
+    "Language": "SFX",
+    "Hash": "{89B7A8D2-E2A3-A2B1-9E9D-6E6EEA8E6D1B}",
+    "ObjectPath": "Play_SFX_ManMask_Explosion",
+    "ShortName": "Play_SFX_ManMask_Explosion",
+    "Path": "Event/Play_SFX_ManMask_Explosion.bnk",
+    "Media": [
+     {
+      "Id": "122476698",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Explosion_ver1.wav",
+      "Path": "Media/122476698.wem",
+      "CachePath": "FB/{FB4D96A0-D55A-FE2C-5A39-E4096B061340}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "735357806",
+      "Name": "Play_SFX_ManMask_Explosion",
+      "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_ManMask_Explosion",
+      "GUID": "{CF7B40B4-05B4-4E7E-AF5D-19893A335BE9}",
+      "DurationType": "OneShot",
+      "DurationMin": "1.2971458",
+      "DurationMax": "1.2971458",
+      "MediaRefs": [
+       {
+        "Id": "122476698"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{1FEC40EF-2D1C-F57F-6A70-8B0B4207EB35}"
+ }
+}

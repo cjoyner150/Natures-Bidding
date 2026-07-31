@@ -4879,6 +4879,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7110314130974944575, guid: af8edeedba6daeb458c85db439a1307a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1376231641}
+    - targetCorrespondingSourceObject: {fileID: 7110314130974944575, guid: af8edeedba6daeb458c85db439a1307a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1376231642}
     - targetCorrespondingSourceObject: {fileID: 8231725102144538898, guid: af8edeedba6daeb458c85db439a1307a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 888561828}
@@ -7803,6 +7806,31 @@ MonoBehaviour:
   startDelay: 10
   dropWaitTime: 8
   fallTime: 5
+--- !u!114 &1376231642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376231639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d0ee52dd5314858b1289ee69bbbb27d, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::DroppingPlatformAudioFeedback
+  rockSlideEvent:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 4c0c1ebdf6544bd7b7afe8b5634dcf40, type: 2}
+  applyScreenSpacePan: 1
+  combatPan:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: d3789b5d1dcc4b77835432f774ddfae0, type: 2}
+  edgePanValue: 50
+  panCameraOverride: {fileID: 0}
+  minimumDownwardMovement: 0.02
+  startupGraceSeconds: 1
 --- !u!1 &1422292351
 GameObject:
   m_ObjectHideFlags: 0

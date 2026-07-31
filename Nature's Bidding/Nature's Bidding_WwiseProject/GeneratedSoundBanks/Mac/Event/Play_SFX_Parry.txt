@@ -1,0 +1,9 @@
+Event	ID	Name			Wwise Object Path	Notes
+	3835174908	Play_SFX_Parry			\SFX Work Unit\Play_SFX_Parry	
+
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	2369427653	Combat_Pan			\Default Work Unit\Combat_Pan	
+
+Effect plug-ins	ID	Name	Type				Notes
+	1008402193	Low_Pass_20KHz	Wwise Parametric EQ			
+

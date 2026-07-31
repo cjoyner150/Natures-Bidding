@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5250727152392134735}
   - component: {fileID: 75405309780540609}
   - component: {fileID: 8459374008664521644}
+  - component: {fileID: 920000000000000202}
   m_Layer: 0
   m_Name: PF_dmgLeaves
   m_TagString: Untagged
@@ -4912,3 +4913,27 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &920000000000000202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8529731307266586866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a49f3237efc842b9aa0d77d5688208f2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::WwiseOneShotOnStart
+  eventToPost:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 97954d23dc2b4d7e88d82ef1a378d4de, type: 2}
+  postOnRoot: 1
+  applyScreenSpacePan: 1
+  combatPan:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: d3789b5d1dcc4b77835432f774ddfae0, type: 2}
+  edgePanValue: 50
+  panCameraOverride: {fileID: 0}

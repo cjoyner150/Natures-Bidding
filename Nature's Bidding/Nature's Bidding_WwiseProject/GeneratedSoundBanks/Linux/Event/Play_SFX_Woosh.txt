@@ -1,0 +1,6 @@
+Event	ID	Name			Wwise Object Path	Notes
+	415287154	Play_SFX_Woosh			\SFX Work Unit\Play_SFX_Woosh	
+
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	2369427653	Combat_Pan			\Default Work Unit\Combat_Pan	
+

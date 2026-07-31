@@ -349,6 +349,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1
 --- !u!223 &4078623086403484420
 Canvas:
   m_ObjectHideFlags: 0

@@ -10,19 +10,19 @@
     "Type": "Event",
     "GUID": "{E6111105-4B67-4AF0-B526-83D7003FAD60}",
     "Language": "SFX",
-    "Hash": "{512BDEE9-EC5C-4D1E-C982-D01683602F34}",
+    "Hash": "{9FEA694E-70B6-89E4-200A-8B50396E60F8}",
     "ObjectPath": "Play_AMB_Forest",
     "ShortName": "Play_AMB_Forest",
     "Path": "Event/Play_AMB_Forest.bnk",
     "Media": [
      {
-      "Id": "114428027",
+      "Id": "35306303",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Loose",
-      "ShortName": "amb_forest_01.wav",
-      "Path": "Media/114428027.wem",
-      "CachePath": "60/{60EFA219-881A-925C-CD51-23DDCB132B42}.wem"
+      "ShortName": "amb_forest_bed_03.wav",
+      "Path": "Media/35306303.wem",
+      "CachePath": "19/{19B692F2-A8FC-9A95-3AAD-DC52FF5A423A}.wem"
      },
      {
       "Id": "271994692",
@@ -70,13 +70,13 @@
       "CachePath": "1B/{1B84CCFF-7074-0C94-2B2E-F9EB98F5F492}.wem"
      },
      {
-      "Id": "389383668",
+      "Id": "445858667",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Loose",
-      "ShortName": "amb_forest_03.wav",
-      "Path": "Media/389383668.wem",
-      "CachePath": "00/{00A775B1-2399-E624-0219-43191AE4BB9C}.wem"
+      "ShortName": "amb_forest_bed_02.wav",
+      "Path": "Media/445858667.wem",
+      "CachePath": "81/{817B71DC-D686-FA06-D58B-C2390BF93882}.wem"
      },
      {
       "Id": "542962287",
@@ -88,24 +88,6 @@
       "CachePath": "11/{119FBD0D-5718-CA1F-A1B8-BF43AE6C7143}.wem"
      },
      {
-      "Id": "809208575",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Loose",
-      "ShortName": "amb_forest_02.wav",
-      "Path": "Media/809208575.wem",
-      "CachePath": "46/{46DE7A4F-EDE2-014F-1651-43D0336E6629}.wem"
-     },
-     {
-      "Id": "849588940",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Loose",
-      "ShortName": "amb_forest_04.wav",
-      "Path": "Media/849588940.wem",
-      "CachePath": "58/{5866663E-46FF-DAC3-9635-AF4E7BE7C8C7}.wem"
-     },
-     {
       "Id": "868682208",
       "Language": "SFX",
       "Streaming": "false",
@@ -113,6 +95,33 @@
       "ShortName": "Rumble\\amb_forest_rumble_02.wav",
       "Path": "Media/868682208.wem",
       "CachePath": "2C/{2C9E3F4A-A6CE-19E3-F468-C38FEA76014B}.wem"
+     },
+     {
+      "Id": "881390669",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "amb_forest_bed_04.wav",
+      "Path": "Media/881390669.wem",
+      "CachePath": "5D/{5D19620D-495A-8A8A-A199-97A7E9D36A9F}.wem"
+     },
+     {
+      "Id": "1036629975",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "amb_forest_bed_01.wav",
+      "Path": "Media/1036629975.wem",
+      "CachePath": "F0/{F05BF1DF-12C1-2103-E2CE-B350DDA73F6A}.wem"
+     },
+     {
+      "Id": "1040805943",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "amb_forest_bed_05.wav",
+      "Path": "Media/1040805943.wem",
+      "CachePath": "F0/{F0C6E707-A150-6625-2168-E1578830FBB3}.wem"
      }
     ],
     "Plugins": {
@@ -122,6 +131,7 @@
        "Name": "Silence",
        "ObjectPath": "\\Containers\\Ambience Work Unit\\AMB_Forest\\Wind\\amb_forest_silence\\Silence",
        "GUID": "{2B87AB2B-83E5-4F90-B7DD-9F3A14333C85}",
+       "Color": "19",
        "LibName": "Wwise Silence",
        "LibId": "6619138"
       },
@@ -144,7 +154,7 @@
       "DurationType": "Infinite",
       "MediaRefs": [
        {
-        "Id": "114428027"
+        "Id": "35306303"
        },
        {
         "Id": "271994692"
@@ -162,19 +172,22 @@
         "Id": "361946497"
        },
        {
-        "Id": "389383668"
+        "Id": "445858667"
        },
        {
         "Id": "542962287"
        },
        {
-        "Id": "809208575"
-       },
-       {
-        "Id": "849588940"
-       },
-       {
         "Id": "868682208"
+       },
+       {
+        "Id": "881390669"
+       },
+       {
+        "Id": "1036629975"
+       },
+       {
+        "Id": "1040805943"
        }
       ],
       "PluginRefs": {
@@ -191,6 +204,6 @@
     ]
    }
   ],
-  "FileHash": "{FC92DB0A-73FA-42DF-9BF3-547D01985CE1}"
+  "FileHash": "{F93BB193-B96E-9368-F0F1-F4BE11C6DBEF}"
  }
 }

@@ -29,6 +29,31 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_AMB_Lava" ID="{293B6982-FBBF-4CAD-9DDB-6D34E0FC70EA}">
+					<ChildrenList>
+						<Action Name="" ID="{E7FB9915-7F47-4429-A21E-F3EFAE790684}" ShortID="85209493">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="AMB_Lava" ID="{65C8549A-87C5-41E3-8EC4-C6639304F70B}" WorkUnitID="{B9190133-2ADD-4907-9F1E-71803388E4A6}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_AMB_Lava" ID="{20A451B1-EC79-45D8-AF82-7840097AF6C6}">
+					<ChildrenList>
+						<Action Name="" ID="{622992C0-BBC7-46BF-A249-4107651A8651}" ShortID="501261873">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="AMB_Lava" ID="{65C8549A-87C5-41E3-8EC4-C6639304F70B}" WorkUnitID="{B9190133-2ADD-4907-9F1E-71803388E4A6}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

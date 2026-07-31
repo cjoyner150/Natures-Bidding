@@ -469,7 +469,15 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         });
 
         string playerId = AuthenticationService.Instance.PlayerId ?? "unknown";
-        string playerName = AuthenticationService.Instance.PlayerName ?? "Player";
+
+#if UNITY_EDITOR
+        string playerName = "EditorPlayer";
+#else
+    string playerName = SteamClient.Name;
+    if (string.IsNullOrWhiteSpace(playerName)) playerName = "Player";
+#endif
+
+        if (playerName.Length > 24) playerName = playerName.Substring(0, 24);
 
         if (LobbyServerHandler.Instance != null)
             LobbyServerHandler.Instance.SendAuthToServerRpc(playerId, playerName);

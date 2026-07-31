@@ -62,7 +62,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         try
         {
             await UnityServices.InitializeAsync();
-
+            
             if (AuthenticationService.Instance.IsSignedIn)
                 AuthenticationService.Instance.SignOut(true);
 

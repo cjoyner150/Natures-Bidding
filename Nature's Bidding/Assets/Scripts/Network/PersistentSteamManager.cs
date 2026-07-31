@@ -141,7 +141,7 @@ public class PersistentSteamManager : Singleton<PersistentSteamManager>
             if (NetworkSessionManager.Instance.HasActiveSession)
             {
                 Debug.Log("Has active session — calling ReturnToMenu before joining.");
-                PersistentGameStateManager.Instance.ReturnToMenu();
+                PersistentGameStateManager.Instance.ReturnToMenu().Forget();
 
                 waitFrame = 0;
                 await UniTask.WaitUntil(() =>

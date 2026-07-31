@@ -8,6 +8,7 @@ public sealed class GameAudioController : MonoBehaviour
 {
     private const string CliffSceneName = "CliffGameplay";
     private const string LavaSceneName = "LavaGameplay";
+    private const float CombatPlayerStatePollInterval = 0.2f;
 
     [Header("Music Events")]
     [SerializeField] private AK.Wwise.Event playMusicSystem;
@@ -32,6 +33,8 @@ public sealed class GameAudioController : MonoBehaviour
     private bool musicSystemIsPlaying;
     private PersistentGameStateManager.GameState currentGameState;
     private NetworkManager networkManager;
+    private int currentPlayersStateCount = -1;
+    private float nextCombatPlayerStatePollTime;
 
     private void Awake()
     {
@@ -66,6 +69,21 @@ public sealed class GameAudioController : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (currentGameState != PersistentGameStateManager.GameState.Combat)
+            return;
+
+        if (!IsCombatScene(SceneManager.GetActiveScene()))
+            return;
+
+        if (Time.unscaledTime < nextCombatPlayerStatePollTime)
+            return;
+
+        nextCombatPlayerStatePollTime = Time.unscaledTime + CombatPlayerStatePollInterval;
+        UpdateCombatPlayersState();
+    }
+
     public void SetGameState(PersistentGameStateManager.GameState gameState)
     {
         currentGameState = gameState;
@@ -84,7 +102,7 @@ public sealed class GameAudioController : MonoBehaviour
                 // MX_Lobby is a Players-driven Music Switch Track. Set its
                 // State before selecting the Lobby phase so it has a sequence
                 // ready on the first frame of the transition.
-                SetLobbyPlayerCount(GetConnectedPlayerCount());
+                SetPlayerCountState(GetConnectedPlayerCount());
                 SetState(phaseLobby, "Game_Phase/Lobby");
                 break;
             case PersistentGameStateManager.GameState.Bidding:
@@ -94,6 +112,11 @@ public sealed class GameAudioController : MonoBehaviour
                 SetState(phaseBidding, "Game_Phase/Bidding");
                 break;
             case PersistentGameStateManager.GameState.Combat:
+                // Both combat maps use the same Players State Group. Seed it
+                // before entering the Combat phase, then Update() follows the
+                // replicated PlayerHealth values as combatants are eliminated.
+                SetPlayerCountState(GetConnectedPlayerCount());
+                nextCombatPlayerStatePollTime = 0f;
                 SetState(phaseCombat, "Game_Phase/Combat");
                 break;
         }
@@ -103,12 +126,23 @@ public sealed class GameAudioController : MonoBehaviour
 
     public void SetLobbyPlayerCount(int playerCount)
     {
-        if (playerCount >= 4)
+        SetPlayerCountState(playerCount);
+    }
+
+    public void SetPlayerCountState(int playerCount)
+    {
+        int playersStateCount = Mathf.Clamp(playerCount, 2, 4);
+        if (playersStateCount == currentPlayersStateCount)
+            return;
+
+        if (playersStateCount >= 4)
             SetState(playersFour, "Players/Four");
-        else if (playerCount == 3)
+        else if (playersStateCount == 3)
             SetState(playersThree, "Players/Three");
         else
             SetState(playersTwo, "Players/Two");
+
+        currentPlayersStateCount = playersStateCount;
     }
 
     public void StartMusic()
@@ -137,12 +171,15 @@ public sealed class GameAudioController : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode _)
     {
         SetMapForScene(scene);
+
+        if (IsCombatScene(scene))
+            nextCombatPlayerStatePollTime = 0f;
     }
 
     private void OnClientCountChanged(ulong _)
     {
         if (currentGameState == PersistentGameStateManager.GameState.Lobby)
-            SetLobbyPlayerCount(GetConnectedPlayerCount());
+            SetPlayerCountState(GetConnectedPlayerCount());
     }
 
     private int GetConnectedPlayerCount()
@@ -151,6 +188,48 @@ public sealed class GameAudioController : MonoBehaviour
             return 2;
 
         return Mathf.Clamp(NetworkManager.Singleton.ConnectedClientsList.Count, 2, 4);
+    }
+
+    private void UpdateCombatPlayersState()
+    {
+        PlayerHealth[] players = FindObjectsByType<PlayerHealth>(
+            FindObjectsInactive.Exclude,
+            FindObjectsSortMode.None);
+
+        int spawnedPlayers = 0;
+        int initializedPlayers = 0;
+        int alivePlayers = 0;
+
+        foreach (PlayerHealth player in players)
+        {
+            if (player == null || !player.IsSpawned)
+                continue;
+
+            spawnedPlayers++;
+
+            // Health begins at zero while each player's replicated stats are
+            // initialized. Keep the seeded connection count until the whole
+            // local combat roster is ready.
+            if (player.maxHealth.Value <= 0f)
+                continue;
+
+            initializedPlayers++;
+
+            if (player.health.Value > 0f)
+                alivePlayers++;
+        }
+
+        if (spawnedPlayers == 0 || initializedPlayers < spawnedPlayers || alivePlayers == 0)
+            return;
+
+        // Wwise currently exposes Two, Three, and Four. One survivor therefore
+        // remains on Players/Two through the victory sequence.
+        SetPlayerCountState(alivePlayers);
+    }
+
+    private static bool IsCombatScene(Scene scene)
+    {
+        return scene.name == CliffSceneName || scene.name == LavaSceneName;
     }
 
     private void SetMapForScene(Scene scene)

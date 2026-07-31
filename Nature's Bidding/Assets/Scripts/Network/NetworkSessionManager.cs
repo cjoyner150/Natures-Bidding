@@ -157,6 +157,8 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
     private void OnSessionDisconnected(ISession session)
     {
+        PersistentPlayerRegistry.Instance.ApplyClear();
+
         session.Deleted -= OnSessionDeleted;
         session.RemovedFromSession -= OnRemovedFromSession;
 

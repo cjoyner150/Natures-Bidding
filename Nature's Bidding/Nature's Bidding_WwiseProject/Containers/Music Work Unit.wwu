@@ -71,7 +71,7 @@
 											<ChildrenList>
 												<MusicPlaylistItem Name="" ID="{19AE7376-BC7A-4AC2-AAC9-8EC07966D803}" ShortID="19005593">
 													<PropertyList>
-														<Property Name="LoopCount" Type="int16" Value="3">
+														<Property Name="LoopCount" Type="int16">
 															<ModifierList>
 																<ModifierInfo>
 																	<Modifier Name="" ID="{11991407-A258-43FE-87AE-4225A43036E4}"/>
@@ -108,6 +108,39 @@
 											</PropertyList>
 											<ChildrenList>
 												<MusicTransition Name="Transition" ID="{B48701D5-0DB8-4AE0-8336-7B9BAE4A7F0A}">
+													<TransitionInfo/>
+												</MusicTransition>
+												<MusicTransition Name="Transition" ID="{B0A72E21-9DA0-4552-81A5-9FDB98572E52}">
+													<PropertyList>
+														<Property Name="DestinationContextType" Type="int16" Value="2"/>
+														<Property Name="PlaySourcePostExit" Type="bool" Value="False"/>
+														<Property Name="SourceContextType" Type="int16" Value="2"/>
+													</PropertyList>
+													<ReferenceList>
+														<Reference Name="DestinationContextObject">
+															<ObjectRef Name="Lobby B Segment" ID="{C40EA47D-C741-4520-A909-2B5FEF3A55E6}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
+														</Reference>
+														<Reference Name="SourceContextObject">
+															<ObjectRef Name="Lobby Segment" ID="{C18A9069-D810-4CF4-8596-F7CB876722F7}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
+														</Reference>
+													</ReferenceList>
+													<TransitionInfo/>
+												</MusicTransition>
+												<MusicTransition Name="Transition" ID="{BFE8E1AB-FD93-4028-8F6E-B8549C36BE2F}">
+													<PropertyList>
+														<Property Name="DestinationContextType" Type="int16" Value="2"/>
+														<Property Name="PlayDestinationPreEntry" Type="bool" Value="False"/>
+														<Property Name="PlaySourcePostExit" Type="bool" Value="False"/>
+														<Property Name="SourceContextType" Type="int16" Value="2"/>
+													</PropertyList>
+													<ReferenceList>
+														<Reference Name="DestinationContextObject">
+															<ObjectRef Name="Lobby Segment" ID="{C18A9069-D810-4CF4-8596-F7CB876722F7}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
+														</Reference>
+														<Reference Name="SourceContextObject">
+															<ObjectRef Name="Lobby B Segment" ID="{C40EA47D-C741-4520-A909-2B5FEF3A55E6}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
+														</Reference>
+													</ReferenceList>
 													<TransitionInfo/>
 												</MusicTransition>
 											</ChildrenList>
@@ -457,6 +490,344 @@
 												</ObjectList>
 											</ObjectLists>
 										</MusicTrack>
+										<MusicTrack Name="Lobby Switch_01" ID="{91264F71-7E3E-48C9-A3D9-F185D8BDBF51}" ShortID="396006903">
+											<PropertyList>
+												<Property Name="Inclusion" Type="bool">
+													<ValueList>
+														<Value>False</Value>
+													</ValueList>
+												</Property>
+												<Property Name="IsStreamingEnabled" Type="bool">
+													<ValueList>
+														<Value>True</Value>
+													</ValueList>
+												</Property>
+												<Property Name="IsZeroLatency" Type="bool">
+													<ValueList>
+														<Value>True</Value>
+													</ValueList>
+												</Property>
+												<Property Name="MusicTrackType" Type="int16" Value="3"/>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="DefaultSwitchOrState">
+													<ObjectRef Name="Two" ID="{CED468E2-4C46-43A6-B63C-D30CE5A84F69}" WorkUnitID="{6949BC57-2612-4D09-ABA1-5198942D42F4}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+												</Reference>
+												<Reference Name="SwitchGroupOrStateGroup">
+													<ObjectRef Name="Players" ID="{63D51DCF-9267-496B-ACC4-74FEF4F018B8}" WorkUnitID="{6949BC57-2612-4D09-ABA1-5198942D42F4}"/>
+												</Reference>
+												<Reference Name="TransitionRoot">
+													<Custom>
+														<MusicTransition Name="Root" ID="{73FFB775-A137-4705-92B6-575A4D70E6E4}">
+															<PropertyList>
+																<Property Name="IsFolder" Type="bool" Value="True"/>
+															</PropertyList>
+															<ChildrenList>
+																<MusicTransition Name="Transition" ID="{EC97CC23-19EE-425C-8DB6-845EC75DC588}">
+																	<PropertyList>
+																		<Property Name="EnableDestinationFadeIn" Type="bool" Value="True"/>
+																		<Property Name="EnableSourceFadeOut" Type="bool" Value="True"/>
+																		<Property Name="ExitSourceAt" Type="int16" Value="3"/>
+																	</PropertyList>
+																	<TransitionInfo>
+																		<SourceFadeOut>
+																			<MusicFade Name="Source Fade-out" ID="{0EB039D7-1D8A-495E-90FB-E426CCAD82FE}">
+																				<PropertyList>
+																					<Property Name="FadeCurve" Type="int16" Value="1"/>
+																					<Property Name="FadeOffset" Type="Real64" Value="1"/>
+																					<Property Name="FadeTime" Type="Real64" Value="1"/>
+																					<Property Name="FadeType" Type="int16" Value="1"/>
+																				</PropertyList>
+																			</MusicFade>
+																		</SourceFadeOut>
+																		<DestinationFadeIn>
+																			<MusicFade Name="Destination Fade-in" ID="{9D54BE51-D5A7-4745-9E34-404C04970971}">
+																				<PropertyList>
+																					<Property Name="FadeCurve" Type="int16" Value="1"/>
+																					<Property Name="FadeTime" Type="Real64" Value="1"/>
+																				</PropertyList>
+																			</MusicFade>
+																		</DestinationFadeIn>
+																	</TransitionInfo>
+																</MusicTransition>
+															</ChildrenList>
+															<TransitionInfo/>
+														</MusicTransition>
+													</Custom>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="Nature's Bidding - Waterfall Brawl_01" ID="{B21B3D20-308A-46E0-B97A-A4E5A57513F8}">
+													<Language>SFX</Language>
+													<AudioFile>Nature's Bidding - Waterfall Brawl.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="42008625"/>
+													</MediaIDList>
+												</AudioFileSource>
+												<AudioFileSource Name="GGJ2026 - Wilderness Waiting v2" ID="{EA3D5B13-7EF2-465B-A872-8A226450BA72}">
+													<Language>SFX</Language>
+													<AudioFile>GGJ2026 - Wilderness Waiting v2.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="713782309"/>
+													</MediaIDList>
+												</AudioFileSource>
+												<AudioFileSource Name="Nature's Bidding - Waterfall Brawl" ID="{9921B4DF-60FC-4306-B2AE-974B592461A4}">
+													<Language>SFX</Language>
+													<AudioFile>Nature's Bidding - Waterfall Brawl.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="42008625"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ObjectLists>
+												<ObjectList Name="Sequences">
+													<MusicTrackSequence Name="" ID="{59F9606E-DD1B-434B-9E2C-3C07B5E4A7F8}">
+														<ObjectLists>
+															<ObjectList Name="Clips">
+																<MusicClip Name="Nature's Bidding - Waterfall Brawl" ID="{D1C12EDF-9474-4954-BDDF-FF0036172A5D}">
+																	<PropertyList>
+																		<Property Name="EndTrimOffset" Type="Real64" Value="9333.3333333334"/>
+																		<Property Name="FadeInMode" Type="int16" Value="0"/>
+																		<Property Name="FadeOutDuration" Type="Real64" Value="518.411284487023"/>
+																		<Property Name="FadeOutShape" Type="int16" Value="1"/>
+																	</PropertyList>
+																	<AudioSourceRef Name="Nature's Bidding - Waterfall Brawl" ID="{9921B4DF-60FC-4306-B2AE-974B592461A4}"/>
+																	<PropertyCurveList>
+																		<PropertyCurve PropertyName="Highpass">
+																			<Curve Name="" ID="{27F3936B-A07E-4F1B-8558-D4528D5FF558}">
+																				<PropertyList>
+																					<Property Name="Flags" Type="int32" Value="1"/>
+																				</PropertyList>
+																				<PointList>
+																					<Point>
+																						<XPos>0</XPos>
+																						<YPos>0</YPos>
+																						<Flags>5</Flags>
+																					</Point>
+																					<Point>
+																						<XPos>9.33333</XPos>
+																						<YPos>0</YPos>
+																						<Flags>37</Flags>
+																					</Point>
+																				</PointList>
+																			</Curve>
+																		</PropertyCurve>
+																		<PropertyCurve PropertyName="Lowpass">
+																			<Curve Name="" ID="{F67FE703-EB5F-4F77-8131-4090FA28F840}">
+																				<PropertyList>
+																					<Property Name="Flags" Type="int32" Value="1"/>
+																				</PropertyList>
+																				<PointList>
+																					<Point>
+																						<XPos>0</XPos>
+																						<YPos>0</YPos>
+																						<Flags>5</Flags>
+																					</Point>
+																					<Point>
+																						<XPos>9.33333</XPos>
+																						<YPos>0</YPos>
+																						<Flags>37</Flags>
+																					</Point>
+																				</PointList>
+																			</Curve>
+																		</PropertyCurve>
+																		<PropertyCurve PropertyName="Volume">
+																			<Curve Name="" ID="{E2AF0D32-B42F-43E5-B56B-1B862FEC531A}">
+																				<PropertyList>
+																					<Property Name="Flags" Type="int32" Value="3"/>
+																				</PropertyList>
+																				<PointList>
+																					<Point>
+																						<XPos>0</XPos>
+																						<YPos>0</YPos>
+																						<Flags>5</Flags>
+																					</Point>
+																					<Point>
+																						<XPos>9.33333</XPos>
+																						<YPos>0</YPos>
+																						<Flags>37</Flags>
+																					</Point>
+																				</PointList>
+																			</Curve>
+																		</PropertyCurve>
+																	</PropertyCurveList>
+																</MusicClip>
+															</ObjectList>
+														</ObjectLists>
+														<ReferenceList>
+															<Reference Name="TrackSequenceSwitch">
+																<ObjectRef Name="Two" ID="{CED468E2-4C46-43A6-B63C-D30CE5A84F69}" WorkUnitID="{6949BC57-2612-4D09-ABA1-5198942D42F4}"/>
+															</Reference>
+														</ReferenceList>
+													</MusicTrackSequence>
+													<MusicTrackSequence Name="" ID="{63C2D673-86A8-4B56-A06A-A436C346A539}">
+														<ObjectLists>
+															<ObjectList Name="Clips">
+																<MusicClip Name="Nature's Bidding - Waterfall Brawl" ID="{A64D34E1-2123-4290-BF04-3458971D7181}">
+																	<PropertyList>
+																		<Property Name="BeginTrimOffset" Type="Real64" Value="18666.6666666667"/>
+																		<Property Name="EndTrimOffset" Type="Real64" Value="28000.0000000001"/>
+																		<Property Name="FadeInMode" Type="int16" Value="0"/>
+																		<Property Name="FadeOutDuration" Type="Real64" Value="538.556265263041"/>
+																		<Property Name="FadeOutShape" Type="int16" Value="1"/>
+																		<Property Name="PlayAt" Type="Real64" Value="-18666.6666666667"/>
+																	</PropertyList>
+																	<AudioSourceRef Name="Nature's Bidding - Waterfall Brawl" ID="{9921B4DF-60FC-4306-B2AE-974B592461A4}"/>
+																	<PropertyCurveList>
+																		<PropertyCurve PropertyName="Highpass">
+																			<Curve Name="" ID="{6F5A8050-AD44-4A1E-BA36-2F2164B7AA0F}">
+																				<PropertyList>
+																					<Property Name="Flags" Type="int32" Value="1"/>
+																				</PropertyList>
+																				<PointList>
+																					<Point>
+																						<XPos>18.6666666666667</XPos>
+																						<YPos>0</YPos>
+																						<Flags>5</Flags>
+																					</Point>
+																					<Point>
+																						<XPos>28</XPos>
+																						<YPos>0</YPos>
+																						<Flags>37</Flags>
+																					</Point>
+																				</PointList>
+																			</Curve>
+																		</PropertyCurve>
+																		<PropertyCurve PropertyName="Lowpass">
+																			<Curve Name="" ID="{DBE5C479-7EFF-44DE-BA65-AC2A6EAE8B6F}">
+																				<PropertyList>
+																					<Property Name="Flags" Type="int32" Value="1"/>
+																				</PropertyList>
+																				<PointList>
+																					<Point>
+																						<XPos>18.6666666666667</XPos>
+																						<YPos>0</YPos>
+																						<Flags>5</Flags>
+																					</Point>
+																					<Point>
+																						<XPos>28</XPos>
+																						<YPos>0</YPos>
+																						<Flags>37</Flags>
+																					</Point>
+																				</PointList>
+																			</Curve>
+																		</PropertyCurve>
+																		<PropertyCurve PropertyName="Volume">
+																			<Curve Name="" ID="{F49B7C87-DEBC-4D1F-A6A8-F3DE14CAA621}">
+																				<PropertyList>
+																					<Property Name="Flags" Type="int32" Value="3"/>
+																				</PropertyList>
+																				<PointList>
+																					<Point>
+																						<XPos>18.6666666666667</XPos>
+																						<YPos>0</YPos>
+																						<Flags>5</Flags>
+																					</Point>
+																					<Point>
+																						<XPos>28</XPos>
+																						<YPos>0</YPos>
+																						<Flags>37</Flags>
+																					</Point>
+																				</PointList>
+																			</Curve>
+																		</PropertyCurve>
+																	</PropertyCurveList>
+																</MusicClip>
+															</ObjectList>
+														</ObjectLists>
+														<ReferenceList>
+															<Reference Name="TrackSequenceSwitch">
+																<ObjectRef Name="Three" ID="{0FE37B61-91DD-4580-86F5-795762D5C8CC}" WorkUnitID="{6949BC57-2612-4D09-ABA1-5198942D42F4}"/>
+															</Reference>
+														</ReferenceList>
+													</MusicTrackSequence>
+													<MusicTrackSequence Name="" ID="{A32E0F38-31E3-4166-BD21-B0BF1108E5E2}">
+														<ObjectLists>
+															<ObjectList Name="Clips">
+																<MusicClip Name="Nature's Bidding - Waterfall Brawl" ID="{6C94F0A5-4907-480D-8F05-668A3A9CB65A}">
+																	<PropertyList>
+																		<Property Name="BeginTrimOffset" Type="Real64" Value="37333.3333333333"/>
+																		<Property Name="EndTrimOffset" Type="Real64" Value="46666.6666666667"/>
+																		<Property Name="FadeInMode" Type="int16" Value="0"/>
+																		<Property Name="FadeOutDuration" Type="Real64" Value="535.147681305683"/>
+																		<Property Name="FadeOutShape" Type="int16" Value="1"/>
+																		<Property Name="PlayAt" Type="Real64" Value="-37333.3333333333"/>
+																	</PropertyList>
+																	<AudioSourceRef Name="Nature's Bidding - Waterfall Brawl" ID="{9921B4DF-60FC-4306-B2AE-974B592461A4}"/>
+																	<PropertyCurveList>
+																		<PropertyCurve PropertyName="Highpass">
+																			<Curve Name="" ID="{45CA2BCA-AE7B-4C0C-8908-385391F327AD}">
+																				<PropertyList>
+																					<Property Name="Flags" Type="int32" Value="1"/>
+																				</PropertyList>
+																				<PointList>
+																					<Point>
+																						<XPos>37.3333333333333</XPos>
+																						<YPos>0</YPos>
+																						<Flags>5</Flags>
+																					</Point>
+																					<Point>
+																						<XPos>46.66667</XPos>
+																						<YPos>0</YPos>
+																						<Flags>37</Flags>
+																					</Point>
+																				</PointList>
+																			</Curve>
+																		</PropertyCurve>
+																		<PropertyCurve PropertyName="Lowpass">
+																			<Curve Name="" ID="{EEF0795E-03D6-47BC-8846-C5A4D493A49C}">
+																				<PropertyList>
+																					<Property Name="Flags" Type="int32" Value="1"/>
+																				</PropertyList>
+																				<PointList>
+																					<Point>
+																						<XPos>37.3333333333333</XPos>
+																						<YPos>0</YPos>
+																						<Flags>5</Flags>
+																					</Point>
+																					<Point>
+																						<XPos>46.66667</XPos>
+																						<YPos>0</YPos>
+																						<Flags>37</Flags>
+																					</Point>
+																				</PointList>
+																			</Curve>
+																		</PropertyCurve>
+																		<PropertyCurve PropertyName="Volume">
+																			<Curve Name="" ID="{FAF85684-71C3-44FD-93F6-787E1C8D199B}">
+																				<PropertyList>
+																					<Property Name="Flags" Type="int32" Value="3"/>
+																				</PropertyList>
+																				<PointList>
+																					<Point>
+																						<XPos>37.3333333333333</XPos>
+																						<YPos>0</YPos>
+																						<Flags>5</Flags>
+																					</Point>
+																					<Point>
+																						<XPos>46.66667</XPos>
+																						<YPos>0</YPos>
+																						<Flags>37</Flags>
+																					</Point>
+																				</PointList>
+																			</Curve>
+																		</PropertyCurve>
+																	</PropertyCurveList>
+																</MusicClip>
+															</ObjectList>
+														</ObjectLists>
+														<ReferenceList>
+															<Reference Name="TrackSequenceSwitch">
+																<ObjectRef Name="Four" ID="{F74A0D10-4777-446F-9FFA-B2E7BF50B9FD}" WorkUnitID="{6949BC57-2612-4D09-ABA1-5198942D42F4}"/>
+															</Reference>
+														</ReferenceList>
+													</MusicTrackSequence>
+												</ObjectList>
+											</ObjectLists>
+										</MusicTrack>
 									</ChildrenList>
 									<ObjectLists>
 										<ObjectList Name="Cues">
@@ -473,6 +844,11 @@
 								<MusicSegment Name="Lobby B Segment" ID="{C40EA47D-C741-4520-A909-2B5FEF3A55E6}" ShortID="659977090">
 									<PropertyList>
 										<Property Name="EndPosition" Type="Real64" Value="154666.666666667"/>
+										<Property Name="Inclusion" Type="bool">
+											<ValueList>
+												<Value>False</Value>
+											</ValueList>
+										</Property>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">

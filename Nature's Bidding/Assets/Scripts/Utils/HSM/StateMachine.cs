@@ -55,7 +55,11 @@ namespace HSM
             // Exit leaf → lca (exclusive), leaf-first ordering, each state exactly once.
             for (State s = exitLeaf; s != lca; s = s.Parent)
             {
-                s.Exit();
+                try { s.Exit(); }
+                catch (System.Exception e)
+                {
+                    Debug.LogError($"[HSM] Exception in {s.GetType().Name}.OnExit — continuing transition. {e}");
+                }
                 if (s.Parent != null) s.Parent.ActiveChild = null;
             }
 

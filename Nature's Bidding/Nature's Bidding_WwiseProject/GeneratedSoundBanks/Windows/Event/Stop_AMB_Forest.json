@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{99A56689-A446-4980-8F28-BF17186FD824}",
     "Language": "SFX",
-    "Hash": "{CA5F3F05-065D-B74D-0947-AC0548A5094D}",
+    "Hash": "{74341DC4-62EF-107A-5980-FB2BD58E167D}",
     "ObjectPath": "Stop_AMB_Forest",
     "ShortName": "Stop_AMB_Forest",
     "Path": "Event/Stop_AMB_Forest.bnk",
@@ -28,6 +28,6 @@
     ]
    }
   ],
-  "FileHash": "{F9151DA8-EA0A-8443-2D67-0D340002DF65}"
+  "FileHash": "{C0A24528-4473-718F-E0A7-FA051B898796}"
  }
 }

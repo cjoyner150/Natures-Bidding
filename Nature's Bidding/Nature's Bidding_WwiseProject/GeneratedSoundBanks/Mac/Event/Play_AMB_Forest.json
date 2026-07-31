@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{E6111105-4B67-4AF0-B526-83D7003FAD60}",
     "Language": "SFX",
-    "Hash": "{0366F70F-9B02-5263-7AAE-26B3C9E40B5E}",
+    "Hash": "{512BDEE9-EC5C-4D1E-C982-D01683602F34}",
     "ObjectPath": "Play_AMB_Forest",
     "ShortName": "Play_AMB_Forest",
     "Path": "Event/Play_AMB_Forest.bnk",
@@ -124,6 +124,14 @@
        "GUID": "{2B87AB2B-83E5-4F90-B7DD-9F3A14333C85}",
        "LibName": "Wwise Silence",
        "LibId": "6619138"
+      },
+      {
+       "Id": "858329902",
+       "Name": "Low_Pass_20KHz (Custom)",
+       "ObjectPath": "\\Containers\\Ambience Work Unit\\AMB_Forest\\Forest_Bed\\[Effect Slot [0]: (Parametric EQ)]\\Low_Pass_20KHz (Custom)",
+       "GUID": "{EE410C99-4DFD-4C32-97F8-35B3D62DF829}",
+       "LibName": "Wwise Parametric EQ",
+       "LibId": "6881283"
       }
      ]
     },
@@ -173,6 +181,9 @@
        "Custom": [
         {
          "Id": "662780474"
+        },
+        {
+         "Id": "858329902"
         }
        ]
       }
@@ -180,6 +191,6 @@
     ]
    }
   ],
-  "FileHash": "{7B8B9AC0-411D-BAA6-F5AD-7102B6C2AFD7}"
+  "FileHash": "{1E9EB88C-776D-8604-5CBB-82F75BAEB776}"
  }
 }

@@ -6438,8 +6438,8 @@ MonoBehaviour:
   bidFlipDuration: 0.18
   bidFlatScaleY: 0.02
   bidStep: 10
-  minBid: 10
-  startingBid: 10
+  minBid: 0
+  startingBid: 0
   audioFeedback: {fileID: 2025650895}
   TimeRemaining:
     m_InternalValue: 0

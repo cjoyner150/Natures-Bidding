@@ -597,13 +597,13 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
             return;
 
         PersistentPlayerRegistry.Instance.AddCombatWin(winningPlayerId);
-        PersistentPlayerRegistry.Instance.AddGold(winningPlayerId, 75);
+        PersistentPlayerRegistry.Instance.AddGold(winningPlayerId, 150);
 
         foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
             if (clientId == winningPlayerId) continue;
 
-            PersistentPlayerRegistry.Instance.AddGold(clientId, 150);
+            PersistentPlayerRegistry.Instance.AddGold(clientId, 300);
         }
 
         PlayerData winningPlayer = PersistentPlayerRegistry.Instance.GetByClientId(winningPlayerId);

@@ -65,13 +65,12 @@
 									<Custom>
 										<MusicPlaylistItem Name="" ID="{A72B2127-FC03-430B-8795-FDB7BEC56608}" ShortID="477233641">
 											<PropertyList>
-												<Property Name="LoopCount" Type="int16" Value="0"/>
 												<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
 											</PropertyList>
 											<ChildrenList>
 												<MusicPlaylistItem Name="" ID="{19AE7376-BC7A-4AC2-AAC9-8EC07966D803}" ShortID="19005593">
 													<PropertyList>
-														<Property Name="LoopCount" Type="int16">
+														<Property Name="LoopCount" Type="int16" Value="0">
 															<ModifierList>
 																<ModifierInfo>
 																	<Modifier Name="" ID="{11991407-A258-43FE-87AE-4225A43036E4}"/>
@@ -83,16 +82,6 @@
 													<ReferenceList>
 														<Reference Name="Segment">
 															<ObjectRef Name="Lobby Segment" ID="{C18A9069-D810-4CF4-8596-F7CB876722F7}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
-														</Reference>
-													</ReferenceList>
-												</MusicPlaylistItem>
-												<MusicPlaylistItem Name="" ID="{23DDE8AA-E3D6-41F6-854A-80D4A95E00DB}" ShortID="777114397">
-													<PropertyList>
-														<Property Name="PlaylistItemType" Type="int16" Value="1"/>
-													</PropertyList>
-													<ReferenceList>
-														<Reference Name="Segment">
-															<ObjectRef Name="Lobby B Segment" ID="{C40EA47D-C741-4520-A909-2B5FEF3A55E6}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
 														</Reference>
 													</ReferenceList>
 												</MusicPlaylistItem>
@@ -108,39 +97,6 @@
 											</PropertyList>
 											<ChildrenList>
 												<MusicTransition Name="Transition" ID="{B48701D5-0DB8-4AE0-8336-7B9BAE4A7F0A}">
-													<TransitionInfo/>
-												</MusicTransition>
-												<MusicTransition Name="Transition" ID="{B0A72E21-9DA0-4552-81A5-9FDB98572E52}">
-													<PropertyList>
-														<Property Name="DestinationContextType" Type="int16" Value="2"/>
-														<Property Name="PlaySourcePostExit" Type="bool" Value="False"/>
-														<Property Name="SourceContextType" Type="int16" Value="2"/>
-													</PropertyList>
-													<ReferenceList>
-														<Reference Name="DestinationContextObject">
-															<ObjectRef Name="Lobby B Segment" ID="{C40EA47D-C741-4520-A909-2B5FEF3A55E6}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
-														</Reference>
-														<Reference Name="SourceContextObject">
-															<ObjectRef Name="Lobby Segment" ID="{C18A9069-D810-4CF4-8596-F7CB876722F7}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
-														</Reference>
-													</ReferenceList>
-													<TransitionInfo/>
-												</MusicTransition>
-												<MusicTransition Name="Transition" ID="{BFE8E1AB-FD93-4028-8F6E-B8549C36BE2F}">
-													<PropertyList>
-														<Property Name="DestinationContextType" Type="int16" Value="2"/>
-														<Property Name="PlayDestinationPreEntry" Type="bool" Value="False"/>
-														<Property Name="PlaySourcePostExit" Type="bool" Value="False"/>
-														<Property Name="SourceContextType" Type="int16" Value="2"/>
-													</PropertyList>
-													<ReferenceList>
-														<Reference Name="DestinationContextObject">
-															<ObjectRef Name="Lobby Segment" ID="{C18A9069-D810-4CF4-8596-F7CB876722F7}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
-														</Reference>
-														<Reference Name="SourceContextObject">
-															<ObjectRef Name="Lobby B Segment" ID="{C40EA47D-C741-4520-A909-2B5FEF3A55E6}" WorkUnitID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}"/>
-														</Reference>
-													</ReferenceList>
 													<TransitionInfo/>
 												</MusicTransition>
 											</ChildrenList>
@@ -199,7 +155,7 @@
 																	<PropertyList>
 																		<Property Name="EnableDestinationFadeIn" Type="bool" Value="True"/>
 																		<Property Name="EnableSourceFadeOut" Type="bool" Value="True"/>
-																		<Property Name="ExitSourceAt" Type="int16" Value="3"/>
+																		<Property Name="ExitSourceAt" Type="int16" Value="0"/>
 																	</PropertyList>
 																	<TransitionInfo>
 																		<SourceFadeOut>
@@ -1211,7 +1167,31 @@
 											</PropertyList>
 											<ChildrenList>
 												<MusicTransition Name="Transition" ID="{99C1AD15-ABB9-4F5B-9336-EA974616E48B}">
-													<TransitionInfo/>
+													<PropertyList>
+														<Property Name="EnableDestinationFadeIn" Type="bool" Value="True"/>
+														<Property Name="EnableSourceFadeOut" Type="bool" Value="True"/>
+														<Property Name="ExitSourceAt" Type="int16" Value="0"/>
+													</PropertyList>
+													<TransitionInfo>
+														<SourceFadeOut>
+															<MusicFade Name="Source Fade-out" ID="{2B60DCCB-E026-4C78-BE73-E235BC9B21AD}">
+																<PropertyList>
+																	<Property Name="FadeCurve" Type="int16" Value="1"/>
+																	<Property Name="FadeOffset" Type="Real64" Value="1"/>
+																	<Property Name="FadeTime" Type="Real64" Value="1"/>
+																	<Property Name="FadeType" Type="int16" Value="1"/>
+																</PropertyList>
+															</MusicFade>
+														</SourceFadeOut>
+														<DestinationFadeIn>
+															<MusicFade Name="Destination Fade-in" ID="{5BD36C89-3B70-41A4-AA09-F0EF669067E5}">
+																<PropertyList>
+																	<Property Name="FadeCurve" Type="int16" Value="1"/>
+																	<Property Name="FadeTime" Type="Real64" Value="1"/>
+																</PropertyList>
+															</MusicFade>
+														</DestinationFadeIn>
+													</TransitionInfo>
 												</MusicTransition>
 											</ChildrenList>
 											<TransitionInfo/>

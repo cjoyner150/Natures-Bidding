@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityUtils;
 using Random = UnityEngine.Random;
+using Steamworks;
 
 public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 {

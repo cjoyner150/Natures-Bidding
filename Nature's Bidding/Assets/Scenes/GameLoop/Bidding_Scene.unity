@@ -3268,22 +3268,6 @@ MonoBehaviour:
   characterDelay: 0.03
   linePauseSeconds: 0.9
   bubbleScaleSpeed: 10
---- !u!114 &869348596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 869348593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d67afaa699424f33b251f8047248140f, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::AuctioneerAudioFeedback
-  speechEvent:
-    idInternal: 0
-    valueGuidInternal:
-    WwiseObjectReference: {fileID: 11400000, guid: d709f5efbb2643a5b89be3fea1e5596d, type: 2}
 --- !u!4 &869348595
 Transform:
   m_ObjectHideFlags: 0
@@ -3301,6 +3285,22 @@ Transform:
   - {fileID: 1698149043}
   m_Father: {fileID: 1929779636}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &869348596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869348593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d67afaa699424f33b251f8047248140f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AuctioneerAudioFeedback
+  speechEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: d709f5efbb2643a5b89be3fea1e5596d, type: 2}
 --- !u!1 &874254988
 GameObject:
   m_ObjectHideFlags: 0
@@ -5902,10 +5902,23 @@ MonoBehaviour:
   grandPot: {fileID: 11400000, guid: e233a958962e6254c8c53027a107134e, type: 2}
   cardPool:
   - {fileID: 11400000, guid: ad3f3f1bf946baf41bb6bffa87503878, type: 2}
+  - {fileID: 11400000, guid: e92a22bb1b12fa14f9677142b5e081cd, type: 2}
   - {fileID: 11400000, guid: a9ad3efd6e1eae544a9fed00d1fbc822, type: 2}
+  - {fileID: 11400000, guid: e17943c64cfd12c42be105dd0b3c7e5e, type: 2}
+  - {fileID: 11400000, guid: e3d15387212fe6c45a04696c82a1646e, type: 2}
+  - {fileID: 11400000, guid: df5699b749114aa4b8ce1a7da8a92d24, type: 2}
   - {fileID: 11400000, guid: 8771aecec8e3dc0488a9b57f982626bd, type: 2}
+  - {fileID: 11400000, guid: d2a62a91963e43c4da39ee20a4f09da0, type: 2}
+  - {fileID: 11400000, guid: 92ffeeffcb9e68c4391996d1b62c923b, type: 2}
   - {fileID: 11400000, guid: a9140ba8b9b60b24ea81c10b8328ed4a, type: 2}
+  - {fileID: 11400000, guid: 56a49ac2b7b4a264285c61b3e9fce057, type: 2}
   - {fileID: 11400000, guid: b5a0ed7ef28211b46891c11f489deed5, type: 2}
+  - {fileID: 11400000, guid: 1f40ec51caf15d643bfe3e5c5d378af6, type: 2}
+  - {fileID: 11400000, guid: 6e16c607ccb194f42b405bf9442c3233, type: 2}
+  - {fileID: 11400000, guid: 964f7f4564fa3dd4bb4d27b2adc18201, type: 2}
+  - {fileID: 11400000, guid: 727c608f9e21c3e44b3225619bc63a8e, type: 2}
+  - {fileID: 11400000, guid: 95ba5c89811a7bf4283acf5bb94e9954, type: 2}
+  - {fileID: 11400000, guid: 8017dc78a16878243b2c8a493e313cc4, type: 2}
   cardBackSprite: {fileID: 21300000, guid: fabc87e1b5e54924d959550cd1f7823b, type: 3}
   potOverlay: {fileID: 536756032}
   overlayCanvasGroup: {fileID: 536756034}
@@ -5922,6 +5935,48 @@ MonoBehaviour:
   closeButton: {fileID: 443152133}
   tooltipPrefab: {fileID: 2826328358326014803, guid: 3d86d35e2a86a5349ba7709613fbe317, type: 3}
   _rootCanvas: {fileID: 264980709}
+--- !u!114 &1900000011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443152131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1
+--- !u!114 &1900000012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661870315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1
+--- !u!114 &1900000013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043653420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1
 --- !u!1 &1905197527
 GameObject:
   m_ObjectHideFlags: 0
@@ -6443,16 +6498,8 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Bid Submit
       m_Flags: 0
-    - m_Name: 
-      m_Id: 8ec99626-e032-443a-975c-8191d8df34db
-      m_Path: <Gamepad>/dpad/right
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Bid Submit
-      m_Flags: 0
     m_Flags: 0
-  roundTimerSeconds: 180
+  roundTimerSeconds: 120
   resultsDisplayTime: 2
   bidFlipDuration: 0.18
   bidFlatScaleY: 0.02
@@ -7071,48 +7118,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1900000011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 443152131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
-  playHover: 1
-  playClick: 1
---- !u!114 &1900000012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1661870315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
-  playHover: 1
-  playClick: 1
---- !u!114 &1900000013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043653420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
-  playHover: 1
-  playClick: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

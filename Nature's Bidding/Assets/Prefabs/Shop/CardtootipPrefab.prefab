@@ -285,6 +285,7 @@ GameObject:
   - component: {fileID: 2887390358771755062}
   - component: {fileID: 6356866200488380542}
   - component: {fileID: 3204103422893204854}
+  - component: {fileID: 7321806315750028806}
   m_Layer: 5
   m_Name: CardtootipPrefab
   m_TagString: Untagged
@@ -346,6 +347,29 @@ MonoBehaviour:
   stockText: {fileID: 0}
   sideGap: 12
   assumedWidthPx: 220
+--- !u!223 &7321806315750028806
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2826328358326014803}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 3000
+  m_TargetDisplay: 0
 --- !u!1 &3425838724908175430
 GameObject:
   m_ObjectHideFlags: 0

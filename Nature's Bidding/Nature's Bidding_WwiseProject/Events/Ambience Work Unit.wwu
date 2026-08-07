@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{7E994C95-B386-48DD-853D-D4339C406EFA}" SchemaVersion="133">
+	<Events>
+		<WorkUnit Name="Ambience Work Unit" ID="{7E994C95-B386-48DD-853D-D4339C406EFA}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="Play_AMB_Forest" ID="{E6111105-4B67-4AF0-B526-83D7003FAD60}">
+					<ChildrenList>
+						<Action Name="" ID="{B0D41D54-53DD-487B-985F-FCE8D42C1C8A}" ShortID="894763161">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="AMB_Forest" ID="{EECDB04F-8316-4FE4-8828-A3EA5866884D}" WorkUnitID="{B9190133-2ADD-4907-9F1E-71803388E4A6}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_AMB_Forest" ID="{99A56689-A446-4980-8F28-BF17186FD824}">
+					<ChildrenList>
+						<Action Name="" ID="{5AEA1738-B3FE-431A-99BA-9FC6925B969C}" ShortID="667278795">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="AMB_Forest" ID="{EECDB04F-8316-4FE4-8828-A3EA5866884D}" WorkUnitID="{B9190133-2ADD-4907-9F1E-71803388E4A6}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

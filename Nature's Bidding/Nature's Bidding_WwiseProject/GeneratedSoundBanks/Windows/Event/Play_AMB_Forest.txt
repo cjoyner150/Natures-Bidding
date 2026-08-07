@@ -1,0 +1,9 @@
+Event	ID	Name			Wwise Object Path	Notes
+	994146778	Play_AMB_Forest			\Ambience Work Unit\Play_AMB_Forest	
+
+Effect plug-ins	ID	Name	Type				Notes
+	858329902	Low_Pass_20KHz (Custom)	Wwise Parametric EQ			
+
+Source plug-ins	ID	Name	Type		Wwise Object Path	Notes
+	662780474	Silence	Wwise Silence		\Containers\Ambience Work Unit\AMB_Forest\Wind\amb_forest_silence\Silence	
+

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BiddableItem
   itemId: Turtle_mask
   itemName: Turtle Mask
-  description: Slow and Steady wins the race
+  description: Why not slow down?
   icon: {fileID: 21300000, guid: 235a27ee3a73ea5448984a87551d56cd, type: 3}
-  displayPrefab: {fileID: 2101979414586505801, guid: b5240bc104c4a5440bb7bb225496a57a, type: 3}
+  displayPrefab: {fileID: 7806434552370689164, guid: a3440cfcc33b42140aeeb6708fb84706, type: 3}
   displayRotation: {x: 0, y: 0, z: 0}
   displayScale: 50
   startingBid: 10

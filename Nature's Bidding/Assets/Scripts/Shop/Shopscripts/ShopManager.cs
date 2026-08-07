@@ -49,6 +49,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
     [Header("Shop Visuals")]
     public GameObject shopCanvasRoot;
     public GameObject playerCrosshairPrefab;
+    public GameObject biddingCanvas;
 
     #endregion
 
@@ -89,10 +90,18 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
         PotManager.Instance?.ResetForNewPhase();
         SetShopBackgroundVisible(true);
 
+        OnShopPhaseStartEveryoneRpc();
+        
         SpawnAllPlayerCrosshairs();
 
         if (IsServer)
             ServerRollAllOfferings();
+    }
+
+    [Rpc(SendTo.Everyone)]
+    public void OnShopPhaseStartEveryoneRpc()
+    {
+        biddingCanvas.SetActive(false);
     }
 
     [Rpc(SendTo.Server)]

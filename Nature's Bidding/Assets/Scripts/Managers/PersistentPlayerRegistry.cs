@@ -32,11 +32,23 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 
         if (_playerData.TryGetValue(authId, out var existing))
         {
-            existing.clientId = clientId;
-            Debug.Log($"Returning player {playerName} rejoined with index {existing.playerIndex}");
-            PlayerRegistryNetworkSync.Instance?.BroadcastPlayerData(
-                clientId, authId, playerName, existing.playerIndex, existing.gold, existing.combatWins);
-            return existing;
+            bool oldClientStillConnected =
+                existing.clientId != clientId &&
+                NetworkManager.Singleton.ConnectedClients.ContainsKey(existing.clientId);
+
+            if (!oldClientStillConnected)
+            {
+                _clientToAuth.Remove(existing.clientId); // clean up the stale mapping
+                existing.clientId = clientId;
+                Debug.Log($"Returning player {playerName} rejoined with index {existing.playerIndex}");
+                PlayerRegistryNetworkSync.Instance?.BroadcastPlayerData(
+                    clientId, authId, playerName, existing.playerIndex, existing.gold, existing.combatWins);
+                return existing;
+            }
+
+            Debug.LogWarning($"[Registry] Duplicate authId '{authId}' while original client {existing.clientId} is still connected — registering as a NEW player.");
+            authId = $"{authId}_dup{clientId}"; // give the concurrent duplicate its own identity
+            _clientToAuth[clientId] = authId;
         }
 
         int index = AssignIndex();
@@ -254,6 +266,8 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         {
             var data = _playerData[authId];
             data.clientId = clientId;
+            data.playerName = playerName;
+            data.playerIndex = playerIndex;
             data.gold = gold;
             data.combatWins = combatWins;
         }

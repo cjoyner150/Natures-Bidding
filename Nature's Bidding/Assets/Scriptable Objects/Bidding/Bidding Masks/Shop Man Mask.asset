@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BiddableItem
   itemId: man_mask
   itemName: Man Mask
-  description: A terrible curse indeed...
+  description: Something is ticking...
   icon: {fileID: 0}
   displayPrefab: {fileID: 1471524667041046909, guid: 38f2d1ca36d7e394d88062457262c017, type: 3}
   displayRotation: {x: 0, y: 0, z: 0}
-  displayScale: 2
+  displayScale: 50
   startingBid: 10
   rarity: 1

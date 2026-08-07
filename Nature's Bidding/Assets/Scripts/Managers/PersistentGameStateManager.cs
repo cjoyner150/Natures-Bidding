@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityUtils;
 using Random = UnityEngine.Random;
+using Steamworks;
 
 public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 {
@@ -469,7 +470,15 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         });
 
         string playerId = AuthenticationService.Instance.PlayerId ?? "unknown";
-        string playerName = AuthenticationService.Instance.PlayerName ?? "Player";
+
+#if UNITY_EDITOR
+        string playerName = "EditorPlayer";
+#else
+    string playerName = SteamClient.Name;
+    if (string.IsNullOrWhiteSpace(playerName)) playerName = "Player";
+#endif
+
+        if (playerName.Length > 24) playerName = playerName.Substring(0, 24);
 
         if (LobbyServerHandler.Instance != null)
             LobbyServerHandler.Instance.SendAuthToServerRpc(playerId, playerName);
@@ -588,13 +597,13 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
             return;
 
         PersistentPlayerRegistry.Instance.AddCombatWin(winningPlayerId);
-        PersistentPlayerRegistry.Instance.AddGold(winningPlayerId, 75);
+        PersistentPlayerRegistry.Instance.AddGold(winningPlayerId, 150);
 
         foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
             if (clientId == winningPlayerId) continue;
 
-            PersistentPlayerRegistry.Instance.AddGold(clientId, 150);
+            PersistentPlayerRegistry.Instance.AddGold(clientId, 300);
         }
 
         PlayerData winningPlayer = PersistentPlayerRegistry.Instance.GetByClientId(winningPlayerId);

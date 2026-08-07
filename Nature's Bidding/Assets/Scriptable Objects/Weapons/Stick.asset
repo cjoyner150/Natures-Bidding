@@ -16,6 +16,7 @@ MonoBehaviour:
   Name: Stick
   heldEffects:
   - {fileID: 11400000, guid: b97ad79bdb8b4c04e9f1b9ea03f2eef7, type: 2}
+  - {fileID: 11400000, guid: b97ad79bdb8b4c04e9f1b9ea03f2eef7, type: 2}
   applyEffects: []
   weaponPrefab: {fileID: 5405618815215461842, guid: b5a29847c2ae89945aa1cd0bdbf68bd1, type: 3}
   weaponCollectablePrefab: {fileID: 0}

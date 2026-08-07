@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TMPro;
 using Unity.Netcode;
 using Unity.Services.Multiplayer;
 using UnityEngine;
@@ -19,7 +20,8 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
 
     [SerializeField] private CinemachineVirtualCamera winCamera;
-    [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private GameObject roundWinUI;
+    [SerializeField] private TextMeshProUGUI roundWinTMP;
     [SerializeField] private GameObject[] hazardSystemGameObjects;
     private IHazardSystem[] hazardSystems;
 
@@ -32,7 +34,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
     {
         base.OnNetworkSpawn();
 
-        gameOverUI?.SetActive(false);
+        roundWinUI?.SetActive(false);
         WaitUntilPlayersReady();
     }
 
@@ -312,7 +314,6 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
     private async UniTask WinSequence(ulong winningPlayer)
     {
         NetworkVisualEffectManager.SpawnConfettiEffectsOnPlayer?.Invoke(winningPlayer);
-
         Transform winningPlayerTransform = NetworkManager.ConnectedClients[winningPlayer]
             .PlayerObject.transform;
 
@@ -320,14 +321,28 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         winCamera.LookAt = winningPlayerTransform;
         winCamera.enabled = true;
 
+        roundWinUI.SetActive(true);
+
+        PlayerData playerData = PersistentPlayerRegistry.Instance.GetByClientId(winningPlayer);
+
+        if (playerData == null)
+        {
+            Debug.LogError("No player data found for winning player.");
+        }
+        else
+        {
+            if (playerData.combatWins + 1 < 3)
+            {
+                roundWinTMP.text = $"{playerData.playerName} won the round! They have {playerData.combatWins + 1} / 3 wins.";
+            }
+            else
+            {
+                roundWinTMP.text = $"{playerData.playerName} has won the game!";
+            }
+
+        }
         await UniTask.Delay(victoryLapDelay);
 
-        if (this == null || gameOverUI == null) return;
-
-        if (winCamera != null && winCamera.isActiveAndEnabled)
-            winCamera.enabled = false;
-
-        gameOverUI?.SetActive(true);
     }
 
     protected override void OnPlayerReconnected(ulong clientId, PlayerData data)

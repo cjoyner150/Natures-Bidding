@@ -4,6 +4,7 @@
   <Project Path="Unity.VisualEffectGraph.Editor.csproj" />
   <Project Path="Unity.RenderPipelines.GPUDriven.Runtime.csproj" />
   <Project Path="MoreMountains.Tools.csproj" />
+  <Project Path="Unity.VisualScripting.Core.Editor.csproj" />
   <Project Path="Unity.Services.Multiplayer.csproj" />
   <Project Path="Unity.Services.Core.Internal.csproj" />
   <Project Path="Unity.Services.Authentication.PlayerAccounts.csproj" />
@@ -21,7 +22,6 @@
   <Project Path="Unity.Multiplayer.Tools.NetStatsMonitor.Editor.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.2D.Runtime.csproj" />
   <Project Path="UnityUtils.csproj" />
-  <Project Path="Unity.VisualScripting.Core.Editor.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Editor.csproj" />
   <Project Path="Unity.PerformanceTesting.Editor.csproj" />
   <Project Path="UnityEngine.TestRunner.csproj" />
@@ -81,10 +81,7 @@
   <Project Path="Unity.Multiplayer.Tools.Initialization.csproj" />
   <Project Path="Unity.Networking.Transport.csproj" />
   <Project Path="Unity.Rider.Editor.csproj" />
-<<<<<<< HEAD
-=======
   <Project Path="AK.Wwise.Unity.OpenXR.csproj" />
->>>>>>> main
   <Project Path="Unity.VisualScripting.State.csproj" />
   <Project Path="Unity.AI.Navigation.Updater.csproj" />
   <Project Path="AK.Wwise.Unity.Logging.csproj" />
@@ -95,10 +92,7 @@
   <Project Path="Unity.Networking.Editor.csproj" />
   <Project Path="Unity.Services.Authentication.PlayerAccounts.Editor.csproj" />
   <Project Path="UnityUtils.Editor.csproj" />
-<<<<<<< HEAD
-=======
   <Project Path="Unity.2D.Sprite.Editor.csproj" />
->>>>>>> main
   <Project Path="Unity.Multiplayer.Tools.NetworkSimulator.Runtime.csproj" />
   <Project Path="Unity.Multiplayer.Tools.MetricTestData.csproj" />
   <Project Path="Unity.Multiplayer.Center.NetcodeForGameObjectsExample.csproj" />
@@ -161,10 +155,7 @@
   <Project Path="Unity.RenderPipelines.Core.Runtime.Shared.csproj" />
   <Project Path="Unity.InternalAPIEngineBridge.004.csproj" />
   <Project Path="Unity.Multiplayer.Tools.Adapters.Ngo1.csproj" />
-<<<<<<< HEAD
-=======
   <Project Path="Unity.2D.Sprite.AIIntegration.Editor.csproj" />
->>>>>>> main
   <Project Path="Unity.Multiplayer.Tools.NetStatsReporting.csproj" />
   <Project Path="Unity.RenderPipelines.Core.Editor.Shared.csproj" />
   <Project Path="Unity.Services.Core.Networking.csproj" />

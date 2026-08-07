@@ -62,7 +62,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         try
         {
             await UnityServices.InitializeAsync();
-
+            
             if (AuthenticationService.Instance.IsSignedIn)
                 AuthenticationService.Instance.SignOut(true);
 
@@ -157,6 +157,8 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
     private void OnSessionDisconnected(ISession session)
     {
+        PersistentPlayerRegistry.Instance.ApplyClear();
+
         session.Deleted -= OnSessionDeleted;
         session.RemovedFromSession -= OnRemovedFromSession;
 

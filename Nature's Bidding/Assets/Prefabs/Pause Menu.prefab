@@ -963,6 +963,7 @@ GameObject:
   - component: {fileID: 3257978301334481083}
   - component: {fileID: 633677189162209015}
   - component: {fileID: 5347699191812738265}
+  - component: {fileID: 900000000000000001}
   m_Layer: 5
   m_Name: Back to Menu Button
   m_TagString: Untagged
@@ -1097,6 +1098,7 @@ GameObject:
   - component: {fileID: 8055211716318540306}
   - component: {fileID: 8137095766441837731}
   - component: {fileID: 7427045862339886990}
+  - component: {fileID: 900000000000000002}
   m_Layer: 5
   m_Name: Random Select Button
   m_TagString: Untagged
@@ -1911,6 +1913,7 @@ GameObject:
   - component: {fileID: 3025802027387268180}
   - component: {fileID: 2443500289142492455}
   - component: {fileID: 5848491001682457705}
+  - component: {fileID: 900000000000000003}
   m_Layer: 5
   m_Name: Quit Game Button
   m_TagString: Untagged
@@ -2045,6 +2048,7 @@ GameObject:
   - component: {fileID: 2650299359999223187}
   - component: {fileID: 6854987795173896968}
   - component: {fileID: 913851286661285020}
+  - component: {fileID: 900000000000000004}
   m_Layer: 5
   m_Name: Volcano Select Button
   m_TagString: Untagged
@@ -2402,6 +2406,7 @@ GameObject:
   - component: {fileID: 5070261769968498821}
   - component: {fileID: 3114776571981249765}
   - component: {fileID: 4095437470902656545}
+  - component: {fileID: 900000000000000005}
   m_Layer: 5
   m_Name: Cliffs Select Button
   m_TagString: Untagged
@@ -2658,6 +2663,7 @@ GameObject:
   - component: {fileID: 9012255287781633932}
   - component: {fileID: 8606519964082312274}
   - component: {fileID: 3008162513118517546}
+  - component: {fileID: 900000000000000006}
   m_Layer: 5
   m_Name: Resume Button
   m_TagString: Untagged
@@ -2872,3 +2878,87 @@ MonoBehaviour:
   pausePanel: {fileID: 345172083565550141}
   lobbyWaitingPanel: {fileID: 0}
   hostPanel: {fileID: 3924788934151342242}
+--- !u!114 &900000000000000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2090766694320297153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1
+--- !u!114 &900000000000000002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2681383939086013859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1
+--- !u!114 &900000000000000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5828038092111569833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1
+--- !u!114 &900000000000000004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6149857414658330959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1
+--- !u!114 &900000000000000005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6527123841843631008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1
+--- !u!114 &900000000000000006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8096853649059728218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1

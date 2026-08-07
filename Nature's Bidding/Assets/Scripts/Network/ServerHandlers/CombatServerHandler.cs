@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TMPro;
 using Unity.Netcode;
 using Unity.Services.Multiplayer;
 using UnityEngine;
@@ -19,7 +20,8 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
 
     [SerializeField] private CinemachineVirtualCamera winCamera;
-    [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private GameObject roundWinUI;
+    [SerializeField] private TextMeshProUGUI roundWinTMP;
     [SerializeField] private GameObject[] hazardSystemGameObjects;
     private IHazardSystem[] hazardSystems;
 
@@ -32,7 +34,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
     {
         base.OnNetworkSpawn();
 
-        gameOverUI?.SetActive(false);
+        roundWinUI?.SetActive(false);
         WaitUntilPlayersReady();
     }
 
@@ -216,6 +218,60 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         }
     }
 
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void RequestPlayerBoomServerRpc(ulong explodingPlayerId, float damage, float radius)
+    {
+        if (!IsServer) return;
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(explodingPlayerId, out var playerClient)) return;
+
+        var playerObject = playerClient.PlayerObject;
+        var playerHealth = playerObject?.GetComponent<PlayerHealth>();
+
+        if (playerHealth == null) return;
+
+        Vector3 boomOrigin = playerObject.transform.position + (Vector3.up * .5f);
+
+        NetworkVisualEffectManager.SpawnExplosionAtPosition.Invoke(boomOrigin);
+        Collider[] hits = Physics.OverlapSphere(boomOrigin, radius, playersLayer);
+        Debug.Log($"[CombatServerHandler] OverlapSphere found {hits.Length} colliders at {boomOrigin}, radius={radius}, layerMask={playersLayer.value}");
+
+        HashSet<IDamageable> damagedObjectsOnThisAttack = new();
+
+        foreach (Collider hit in hits)
+        {
+            GameObject go = hit.gameObject;
+            var hitNetObj = go.GetComponentInParent<NetworkObject>();
+            bool isSelf = hitNetObj != null && hitNetObj.OwnerClientId == explodingPlayerId;
+
+            if (isSelf) continue;
+
+            Debug.Log($"[CombatServerHandler] Overlap collider: {go.name}, owner={hitNetObj?.OwnerClientId}, isSelf={isSelf}");
+            UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
+
+            if (damageable != null)
+            {
+                if (damagedObjectsOnThisAttack.Contains(damageable)) continue;
+                damagedObjectsOnThisAttack.Add(damageable);
+
+                if (damageable is PlayerHealth targetHealth)
+                {
+                    Debug.Log($"[CombatServerHandler] PlayerHealth found. Damaging...");
+                    targetHealth.health.Value -= damage;
+                    targetHealth.PlayerDamagedFeedbackClientRpc(boomOrigin, explodingPlayerId, damage, false);
+
+                    if (targetHealth.health.Value <= 0)
+                    {
+                        OnPlayerDeath(targetHealth.OwnerClientId);
+                        var explodingPlayerHealth = NetworkManager.Singleton.ConnectedClients[explodingPlayerId].PlayerObject.GetComponent<PlayerHealth>();
+                        NotifyPlayersOfDeath(targetHealth, explodingPlayerHealth);
+                    }
+                }
+            }
+        }
+
+        HandleInstantKill(playerHealth);
+    }
+
     public void OnPlayerDeath(ulong clientId)
     {
         if (!IsServer) return;
@@ -258,7 +314,6 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
     private async UniTask WinSequence(ulong winningPlayer)
     {
         NetworkVisualEffectManager.SpawnConfettiEffectsOnPlayer?.Invoke(winningPlayer);
-
         Transform winningPlayerTransform = NetworkManager.ConnectedClients[winningPlayer]
             .PlayerObject.transform;
 
@@ -266,14 +321,28 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         winCamera.LookAt = winningPlayerTransform;
         winCamera.enabled = true;
 
+        roundWinUI.SetActive(true);
+
+        PlayerData playerData = PersistentPlayerRegistry.Instance.GetByClientId(winningPlayer);
+
+        if (playerData == null)
+        {
+            Debug.LogError("No player data found for winning player.");
+        }
+        else
+        {
+            if (playerData.combatWins + 1 < 3)
+            {
+                roundWinTMP.text = $"{playerData.playerName} won the round! They have {playerData.combatWins + 1} / 3 wins.";
+            }
+            else
+            {
+                roundWinTMP.text = $"{playerData.playerName} has won the game!";
+            }
+
+        }
         await UniTask.Delay(victoryLapDelay);
 
-        if (this == null || gameOverUI == null) return;
-
-        if (winCamera != null && winCamera.isActiveAndEnabled)
-            winCamera.enabled = false;
-
-        gameOverUI?.SetActive(true);
     }
 
     protected override void OnPlayerReconnected(ulong clientId, PlayerData data)

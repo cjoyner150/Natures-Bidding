@@ -24,7 +24,7 @@ public class PersistentSteamManager : Singleton<PersistentSteamManager>
 #if !UNITY_EDITOR
     try
     {
-        SteamClient.Init(4462510);
+        SteamClient.Init(5039210);
         Debug.Log($"Steam initialized. Name: {SteamClient.Name}");
         SteamFriends.OnGameRichPresenceJoinRequested += OnFriendJoinRequested;
         Application.quitting += OnApplicationQuitting;
@@ -141,7 +141,7 @@ public class PersistentSteamManager : Singleton<PersistentSteamManager>
             if (NetworkSessionManager.Instance.HasActiveSession)
             {
                 Debug.Log("Has active session — calling ReturnToMenu before joining.");
-                PersistentGameStateManager.Instance.ReturnToMenu();
+                PersistentGameStateManager.Instance.ReturnToMenu().Forget();
 
                 waitFrame = 0;
                 await UniTask.WaitUntil(() =>

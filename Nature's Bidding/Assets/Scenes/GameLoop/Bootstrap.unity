@@ -14,8 +14,8 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0.8773585, g: 0.5196409, b: 0.19450872, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
   m_LinearFogStart: 0
@@ -738,7 +738,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1328017597
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1017,7 +1017,7 @@ MonoBehaviour:
   loadingSlider: {fileID: 1759741159}
   loadingStatus: {fileID: 416426921}
   loadingProgress: {fileID: 15051646}
-  combatWinsRequiredToEnd: 1
+  combatWinsRequiredToEnd: 3
   skipToCombat: 0
   biddingCanvas: {fileID: 0}
   shopCanvas: {fileID: 0}
@@ -1056,10 +1056,22 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 7c4aaf3a7a046415b95cc8e681dd0dd9, type: 2}
-  stopMusicSystem:
+  playUIClick:
     idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 8301cdc8bde2f4653a89edb7fa6473c1, type: 2}
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 0f71cbd64fb34d38a77f27a33cc761d9, type: 2}
+  playUIHover:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 9f0c6f8d024a48e598c3e8bb6be89768, type: 2}
+  playForestAmbience:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 89e1cd85ad7a4411ac7db475682c7459, type: 2}
+  stopForestAmbience:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 25046e6027564b77b7da8530d74f6801, type: 2}
   phaseMenu:
     idInternal: 0
     valueGuidInternal: 
@@ -1466,7 +1478,7 @@ RectTransform:
   m_Father: {fileID: 1759741158}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}

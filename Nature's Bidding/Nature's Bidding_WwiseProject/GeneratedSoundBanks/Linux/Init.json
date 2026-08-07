@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{C58CB3FF-347D-6307-4434-A7416D028AEF}",
+    "Hash": "{7BC23F46-FE27-68D5-9A64-651C89A773ED}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -64,6 +64,14 @@
       "Name": "Music",
       "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\Music",
       "GUID": "{899FB7A5-9F49-4C90-AB8B-67097E3D5629}"
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
      }
     ],
     "StateGroups": [
@@ -242,6 +250,6 @@
     ]
    }
   ],
-  "FileHash": "{C62A1C9D-6738-449B-ED1C-9E03F4E4970A}"
+  "FileHash": "{EB8D3428-4963-A355-D8DF-F29415A3C165}"
  }
 }

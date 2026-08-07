@@ -35,7 +35,11 @@ public static class InputDeviceTracker
 
     private static void OnAnyInputEvent(InputEventPtr eventPtr, InputDevice device)
     {
+
         if (!eventPtr.IsA<StateEvent>() && !eventPtr.IsA<DeltaStateEvent>()) return;
+
+        if (device is Mouse mouse && !mouse.native)
+            return;
 
         InputType newType = device switch
         {

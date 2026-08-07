@@ -41,7 +41,11 @@ public class AirKnockback : State
         HandleRotation(deltaTime);
 
         knockbackTimer -= deltaTime;
-        if (knockbackTimer <= 0) exitKnockback = true;
+        if (knockbackTimer <= 0)
+        {
+            ctx.shouldTakeKnockback = false;
+            exitKnockback = true;
+        }
     }
 
     void HandleRotation(float deltaTime)

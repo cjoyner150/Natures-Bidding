@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5135352546155920175}
   - component: {fileID: 8111739894207900871}
   - component: {fileID: 6665150576407251841}
+  - component: {fileID: 910000000000000101}
+  - component: {fileID: 910000000000000102}
   m_Layer: 0
   m_Name: PF_Slash
   m_TagString: Untagged
@@ -4837,3 +4839,50 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &910000000000000101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5760442672778993801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2797c86f42eac848b3195a1b43335a3, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: AK.Wwise.Unity.MonoBehaviour::AkGameObj
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 0
+  isStaticObject: 0
+  usePositionOffsetData: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  scalingFactor: 1
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
+--- !u!114 &910000000000000102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5760442672778993801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a49f3237efc842b9aa0d77d5688208f2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::WwiseOneShotOnStart
+  eventToPost:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: df9a0ae429a048368955a609d39b6e58, type: 2}
+  applyScreenSpacePan: 1
+  combatPan:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: d3789b5d1dcc4b77835432f774ddfae0, type: 2}
+  edgePanValue: 50
+  panCameraOverride: {fileID: 0}

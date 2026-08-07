@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6702619c487f595469c4bd0a5c0c0053, type: 3}
+  m_Name: Grandpot
+  m_EditorClassIdentifier: Assembly-CSharp::PotType
+  potName: Grand Pot
+  description: Draw 5 tarot cards, choose 1 reward.
+  cost: 150
+  clicksToOpen: 3
+  cardsToDraw: 5
+  cardsToKeep: 2
+  clickSprites:
+  - {fileID: 21300000, guid: ff2ea62f39b4b9e4a9527e9501f54346, type: 3}
+  - {fileID: 21300000, guid: b769618d7c5195242888c1b4aefdde16, type: 3}
+  - {fileID: 21300000, guid: 80ae97619c774a54193e7ca097759ce4, type: 3}
+  explodeSprite: {fileID: 21300000, guid: b6962ab358c581d48910457ea1e740fd, type: 3}
+  explodeEffect: {fileID: 0}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{38127DB2-8F63-4FFD-895C-4EA48AAC818A}" SchemaVersion="133">
+	<Events>
+		<WorkUnit Name="Dialogue Work Unit" ID="{38127DB2-8F63-4FFD-895C-4EA48AAC818A}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="Play_Auctioneer" ID="{FC51EB7E-F371-4821-9E7A-9D7406953CA1}">
+					<ChildrenList>
+						<Action Name="" ID="{5EDED7A2-2081-4AAE-8801-D1D094C76370}" ShortID="100265354">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Auctioneer" ID="{D15D5C56-A529-4938-A655-39F6B36263D0}" WorkUnitID="{5DE131AE-4DD4-44BE-A4AC-B74B190212AE}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

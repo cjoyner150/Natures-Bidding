@@ -1,0 +1,116 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "415287154",
+    "Type": "Event",
+    "GUID": "{36E6308A-11AE-45B4-9188-B735237F920C}",
+    "Language": "SFX",
+    "Hash": "{1658F181-D8E9-CFB5-7547-E769E3B7453D}",
+    "ObjectPath": "Play_SFX_Woosh",
+    "ShortName": "Play_SFX_Woosh",
+    "Path": "Event/Play_SFX_Woosh.bnk",
+    "Media": [
+     {
+      "Id": "11121350",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Woosh\\gp_woosh_01.wav",
+      "Path": "Media/11121350.wem",
+      "CachePath": "7E/{7E608532-B7FE-88B9-9493-CBE89FAB14CA}.wem"
+     },
+     {
+      "Id": "185523131",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Woosh\\gp_woosh_04.wav",
+      "Path": "Media/185523131.wem",
+      "CachePath": "04/{0499C414-CA27-0DAB-0B8D-E80CF2934E10}.wem"
+     },
+     {
+      "Id": "212897607",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Woosh\\gp_woosh_03.wav",
+      "Path": "Media/212897607.wem",
+      "CachePath": "34/{34C5E3B2-709B-EDCA-72DC-D1DDB054D207}.wem"
+     },
+     {
+      "Id": "313660704",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Woosh\\gp_woosh_06.wav",
+      "Path": "Media/313660704.wem",
+      "CachePath": "50/{50942526-23BD-EE93-55CC-75315D82496B}.wem"
+     },
+     {
+      "Id": "916391361",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Woosh\\gp_woosh_05.wav",
+      "Path": "Media/916391361.wem",
+      "CachePath": "DE/{DEC48600-D80F-4BD4-5917-B70FFEF93B2E}.wem"
+     },
+     {
+      "Id": "956902779",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Woosh\\gp_woosh_02.wav",
+      "Path": "Media/956902779.wem",
+      "CachePath": "23/{23334955-50E8-34C0-564D-8A12B71EE3E2}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "415287154",
+      "Name": "Play_SFX_Woosh",
+      "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_Woosh",
+      "GUID": "{36E6308A-11AE-45B4-9188-B735237F920C}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.22451934",
+      "DurationMax": "0.31751826",
+      "MediaRefs": [
+       {
+        "Id": "11121350"
+       },
+       {
+        "Id": "185523131"
+       },
+       {
+        "Id": "212897607"
+       },
+       {
+        "Id": "313660704"
+       },
+       {
+        "Id": "916391361"
+       },
+       {
+        "Id": "956902779"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{B58107DD-0E0A-87EC-C9DE-52773D2809A1}"
+ }
+}

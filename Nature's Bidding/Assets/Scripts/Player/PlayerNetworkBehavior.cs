@@ -139,6 +139,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     public Color GetPlayerColor()
     {
         var data = PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId);
+        Debug.Log($"does data exist {data != null}");
         return colors[data.playerIndex];
     } 
 }

@@ -115,6 +115,8 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    private float _knockbackStuckTimer;
+
     void Update()
     {
 
@@ -126,6 +128,17 @@ public class PlayerInputManager : MonoBehaviour
         sm.Tick(Time.deltaTime);
 
         DebugCurrentState();
+
+        if (ctx.shouldTakeKnockback)
+        {
+            _knockbackStuckTimer += Time.deltaTime;
+            if (_knockbackStuckTimer > 1f)
+            {
+                Debug.LogError($"[WEDGE DETECTED] shouldTakeKnockback stuck true for >1s. Leaf: {ActivePathString(root.Leaf())}, desiredMaxSpeed: {ctx.desiredMaxSpeed}, currentMaxSpeed: {ctx.currentMaxSpeed}");
+                _knockbackStuckTimer = 0;
+            }
+        }
+        else _knockbackStuckTimer = 0;
     }
 
     private void FixedUpdate()

@@ -14691,6 +14691,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6673453822337826515}
+  - component: {fileID: 930000000000000202}
   m_Layer: 0
   m_Name: PF_DeflectVFX
   m_TagString: Untagged
@@ -19613,6 +19614,30 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &930000000000000202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4595470619510423577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a49f3237efc842b9aa0d77d5688208f2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::WwiseOneShotOnStart
+  eventToPost:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: f913187a06ba4690a2af2dcf9ca8c4c0, type: 2}
+  postOnRoot: 1
+  applyScreenSpacePan: 1
+  combatPan:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: d3789b5d1dcc4b77835432f774ddfae0, type: 2}
+  edgePanValue: 50
+  panCameraOverride: {fileID: 0}
 --- !u!1 &6491415983077961988
 GameObject:
   m_ObjectHideFlags: 0

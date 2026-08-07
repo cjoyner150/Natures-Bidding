@@ -1,0 +1,209 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "994146778",
+    "Type": "Event",
+    "GUID": "{E6111105-4B67-4AF0-B526-83D7003FAD60}",
+    "Language": "SFX",
+    "Hash": "{9FEA694E-70B6-89E4-200A-8B50396E60F8}",
+    "ObjectPath": "Play_AMB_Forest",
+    "ShortName": "Play_AMB_Forest",
+    "Path": "Event/Play_AMB_Forest.bnk",
+    "Media": [
+     {
+      "Id": "35306303",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "amb_forest_bed_03.wav",
+      "Path": "Media/35306303.wem",
+      "CachePath": "19/{19B692F2-A8FC-9A95-3AAD-DC52FF5A423A}.wem"
+     },
+     {
+      "Id": "271994692",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Rumble\\amb_forest_rumble_04.wav",
+      "Path": "Media/271994692.wem",
+      "CachePath": "9E/{9E678BDC-68A7-0189-74B5-6B4F4B7BAD87}.wem"
+     },
+     {
+      "Id": "317005902",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Wind\\amb_forest_wind_02.wav",
+      "Path": "Media/317005902.wem",
+      "CachePath": "30/{30FEB8E5-E27B-4408-B9BD-E9624EE04C31}.wem"
+     },
+     {
+      "Id": "337994838",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Rumble\\amb_forest_rumble_01.wav",
+      "Path": "Media/337994838.wem",
+      "CachePath": "7E/{7EFDE43E-D15B-67F5-971E-9EBF4919F883}.wem"
+     },
+     {
+      "Id": "358460421",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Rumble\\amb_forest_rumble_03.wav",
+      "Path": "Media/358460421.wem",
+      "CachePath": "8B/{8B513FA2-0BD4-7A76-B70F-451E2114A53C}.wem"
+     },
+     {
+      "Id": "361946497",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Wind\\amb_forest_wind_03.wav",
+      "Path": "Media/361946497.wem",
+      "CachePath": "1B/{1B84CCFF-7074-0C94-2B2E-F9EB98F5F492}.wem"
+     },
+     {
+      "Id": "445858667",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "amb_forest_bed_02.wav",
+      "Path": "Media/445858667.wem",
+      "CachePath": "81/{817B71DC-D686-FA06-D58B-C2390BF93882}.wem"
+     },
+     {
+      "Id": "542962287",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Wind\\amb_forest_wind_01.wav",
+      "Path": "Media/542962287.wem",
+      "CachePath": "11/{119FBD0D-5718-CA1F-A1B8-BF43AE6C7143}.wem"
+     },
+     {
+      "Id": "868682208",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Rumble\\amb_forest_rumble_02.wav",
+      "Path": "Media/868682208.wem",
+      "CachePath": "2C/{2C9E3F4A-A6CE-19E3-F468-C38FEA76014B}.wem"
+     },
+     {
+      "Id": "881390669",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "amb_forest_bed_04.wav",
+      "Path": "Media/881390669.wem",
+      "CachePath": "5D/{5D19620D-495A-8A8A-A199-97A7E9D36A9F}.wem"
+     },
+     {
+      "Id": "1036629975",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "amb_forest_bed_01.wav",
+      "Path": "Media/1036629975.wem",
+      "CachePath": "F0/{F05BF1DF-12C1-2103-E2CE-B350DDA73F6A}.wem"
+     },
+     {
+      "Id": "1040805943",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "amb_forest_bed_05.wav",
+      "Path": "Media/1040805943.wem",
+      "CachePath": "F0/{F0C6E707-A150-6625-2168-E1578830FBB3}.wem"
+     }
+    ],
+    "Plugins": {
+     "Custom": [
+      {
+       "Id": "662780474",
+       "Name": "Silence",
+       "ObjectPath": "\\Containers\\Ambience Work Unit\\AMB_Forest\\Wind\\amb_forest_silence\\Silence",
+       "GUID": "{2B87AB2B-83E5-4F90-B7DD-9F3A14333C85}",
+       "Color": "19",
+       "LibName": "Wwise Silence",
+       "LibId": "6619138"
+      },
+      {
+       "Id": "858329902",
+       "Name": "Low_Pass_20KHz (Custom)",
+       "ObjectPath": "\\Containers\\Ambience Work Unit\\AMB_Forest\\Forest_Bed\\[Effect Slot [0]: (Parametric EQ)]\\Low_Pass_20KHz (Custom)",
+       "GUID": "{EE410C99-4DFD-4C32-97F8-35B3D62DF829}",
+       "LibName": "Wwise Parametric EQ",
+       "LibId": "6881283"
+      }
+     ]
+    },
+    "Events": [
+     {
+      "Id": "994146778",
+      "Name": "Play_AMB_Forest",
+      "ObjectPath": "\\Events\\Ambience Work Unit\\Play_AMB_Forest",
+      "GUID": "{E6111105-4B67-4AF0-B526-83D7003FAD60}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "35306303"
+       },
+       {
+        "Id": "271994692"
+       },
+       {
+        "Id": "317005902"
+       },
+       {
+        "Id": "337994838"
+       },
+       {
+        "Id": "358460421"
+       },
+       {
+        "Id": "361946497"
+       },
+       {
+        "Id": "445858667"
+       },
+       {
+        "Id": "542962287"
+       },
+       {
+        "Id": "868682208"
+       },
+       {
+        "Id": "881390669"
+       },
+       {
+        "Id": "1036629975"
+       },
+       {
+        "Id": "1040805943"
+       }
+      ],
+      "PluginRefs": {
+       "Custom": [
+        {
+         "Id": "662780474"
+        },
+        {
+         "Id": "858329902"
+        }
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "FileHash": "{F93BB193-B96E-9368-F0F1-F4BE11C6DBEF}"
+ }
+}

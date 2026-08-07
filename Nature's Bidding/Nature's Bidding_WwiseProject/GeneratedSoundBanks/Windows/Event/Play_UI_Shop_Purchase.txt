@@ -1,0 +1,3 @@
+Event	ID	Name			Wwise Object Path	Notes
+	2035278795	Play_UI_Shop_Purchase			\UI Work Unit\Play_UI_Shop_Purchase	
+

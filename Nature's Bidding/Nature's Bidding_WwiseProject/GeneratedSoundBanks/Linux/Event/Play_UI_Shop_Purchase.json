@@ -1,0 +1,61 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "2035278795",
+    "Type": "Event",
+    "GUID": "{3F536E32-71C6-480B-8715-842AF6AFAE0B}",
+    "Language": "SFX",
+    "Hash": "{B980A432-0DB3-A7BC-1A04-8105B92CF4B9}",
+    "ObjectPath": "Play_UI_Shop_Purchase",
+    "ShortName": "Play_UI_Shop_Purchase",
+    "Path": "Event/Play_UI_Shop_Purchase.bnk",
+    "Media": [
+     {
+      "Id": "386609991",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "ui_shop_purchase_01.wav",
+      "Path": "Media/386609991.wem",
+      "CachePath": "E6/{E6787B35-CECA-DBFB-E81C-0E902364C284}.wem"
+     },
+     {
+      "Id": "1012166736",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "ui_shop_purchase_02.wav",
+      "Path": "Media/1012166736.wem",
+      "CachePath": "7B/{7BB21C89-0C7B-2DDC-5D4B-26D477A9A453}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "2035278795",
+      "Name": "Play_UI_Shop_Purchase",
+      "ObjectPath": "\\Events\\UI Work Unit\\Play_UI_Shop_Purchase",
+      "GUID": "{3F536E32-71C6-480B-8715-842AF6AFAE0B}",
+      "Color": "2",
+      "DurationType": "OneShot",
+      "DurationMin": "0.5187238",
+      "DurationMax": "0.8394137",
+      "MediaRefs": [
+       {
+        "Id": "386609991"
+       },
+       {
+        "Id": "1012166736"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{9F8422B2-E7A5-81F0-C697-EA1152730543}"
+ }
+}

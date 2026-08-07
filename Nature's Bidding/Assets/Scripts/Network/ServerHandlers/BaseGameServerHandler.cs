@@ -8,7 +8,7 @@ using UnityEngine;
 public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : NetworkBehaviour
 {
     [SerializeField] protected float acceptableAttackRange;
-    [SerializeField] LayerMask otherPlayersLayer;
+    [SerializeField] protected LayerMask playersLayer;
 
     protected virtual void RegisterCallbacks() { }
     protected virtual void UnregisterCallbacks() { }
@@ -43,44 +43,6 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
         {
             OnPlayerHit(hitNetObj, attackingNetObj, damage, critical);
         }
-    }
-
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void RequestPlayerBoomServerRpc(ulong explodingPlayerId, float damage, float radius)
-    {
-        if (!IsServer) return;
-        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(explodingPlayerId, out var playerClient)) return;
-
-        var playerObject = playerClient.PlayerObject;
-        var playerHealth = playerObject?.GetComponent<PlayerHealth>();
-
-        if (playerHealth == null) return;
-
-        Vector3 boomOrigin = playerObject.transform.position + (Vector3.up * .5f);
-
-        NetworkVisualEffectManager.SpawnExplosionAtPosition.Invoke(boomOrigin);
-        Collider[] hits = Physics.OverlapSphere(boomOrigin, radius, otherPlayersLayer);
-
-        print($"[BaseGameServerHandler] exploding in radius: {radius}");
-
-        HashSet<IDamageable> damagedObjectsOnThisAttack = new();
-
-        foreach ( Collider hit in hits )
-        {
-            GameObject go = hit.gameObject;
-            print($"[BaseGameServerHandler] hit {go.name}");
-            UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
-
-            if (damageable != null)
-            {
-                print($"[BaseGameServerHandler] found damageable on {go.name}");
-                if (damagedObjectsOnThisAttack.Contains(damageable)) continue;
-
-                damageable.Hit(damage, explodingPlayerId, out IDamageable.HitCallbackContext ctx);
-            }
-        }
-
-        playerHealth.health.Value = 0;
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]

@@ -66,11 +66,12 @@ namespace HSM
         internal void Update(float deltaTime)
         {
             State t = GetTransition();
-            if (t != null)
+            if (t != null && t != Leaf())          // suppress only true no-ops: requesting the already-active leaf
             {
                 Machine.Sequencer.RequestTransition(Leaf(), t);
                 return;
             }
+
             if (ActiveChild != null) ActiveChild.Update(deltaTime);
             OnUpdate(deltaTime);
         }

@@ -39,7 +39,7 @@ namespace HSM
         /// </summary>
         internal void ChangeState(State from, State to)
         {
-            HSMDebug.Log($"[ChangeState] {from.GetType().Name} → {to.GetType().Name}");
+            HSMDebug.Log($"[ChangeState] {from.GetType().Name} -> {to.GetType().Name}");
 
             if (from == to || from == null || to == null) return;
 
@@ -88,13 +88,11 @@ namespace HSM
 
     public static class HSMDebug
     {
-        public static bool Enabled = false;
+        public static bool Enabled = true;
 
         public static void Log(string msg)
         {
-#if UNITY_EDITOR
-            if (Enabled) UnityEngine.Debug.Log($"[HSM] {msg}");
-#endif
+            if (Enabled) Debug.Log($"[HSM] {msg}");
         }
     }
 }

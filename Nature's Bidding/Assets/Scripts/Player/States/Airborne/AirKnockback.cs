@@ -36,6 +36,18 @@ public class AirKnockback : State
 
     protected override void OnUpdate(float deltaTime)
     {
+        // Knockback is flagged again during knockback, so we need to reset the momentum direction and facing direction to the new hit direction
+        // This should really only happen for race conditions where the player invulnerable isn't set yet, but it can happen if the rpcs are slow or delayed.
+        if (ctx.shouldTakeKnockback)
+        {
+            ctx.shouldTakeKnockback = false;
+
+            momentumDirection = ctx.rb.transform.position - ctx.lastHitFromPosition;
+            momentumDirection.y = 0;
+            momentumDirection = momentumDirection.normalized;
+            facingDirection = -momentumDirection;
+        }
+
         ctx.rb.linearVelocity = momentumDirection * ctx.desiredMaxSpeed;
 
         HandleRotation(deltaTime);

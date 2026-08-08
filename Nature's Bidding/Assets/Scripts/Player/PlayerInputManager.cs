@@ -127,7 +127,7 @@ public class PlayerInputManager : MonoBehaviour
 
         sm.Tick(Time.deltaTime);
 
-        DebugCurrentState();
+        //DebugCurrentState();
 
         if (ctx.shouldTakeKnockback)
         {
@@ -135,6 +135,7 @@ public class PlayerInputManager : MonoBehaviour
             if (_knockbackStuckTimer > 1f)
             {
                 Debug.LogError($"[WEDGE DETECTED] shouldTakeKnockback stuck true for >1s. Leaf: {ActivePathString(root.Leaf())}, desiredMaxSpeed: {ctx.desiredMaxSpeed}, currentMaxSpeed: {ctx.currentMaxSpeed}");
+                Debug.LogError($"[WEDGE DETECTED] ... phaseActive={sm.Sequencer.IsPhaseActive}, phaseTimer={sm.Sequencer.PhaseTimerDebug:F2}");
                 _knockbackStuckTimer = 0;
             }
         }

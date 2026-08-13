@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{523D8481-4617-4947-84FB-07B128556FFD}",
     "Language": "SFX",
-    "Hash": "{1D5A094D-D6F1-ABCB-7FD8-38008785B01A}",
+    "Hash": "{E0B3440E-1C61-C444-32FA-F2C67FFE8BA2}",
     "ObjectPath": "Play_SFX_Hit",
     "ShortName": "Play_SFX_Hit",
     "Path": "Event/Play_SFX_Hit.bnk",
@@ -111,6 +111,6 @@
     ]
    }
   ],
-  "FileHash": "{6B055E9C-2864-032A-5EA0-D81398394E4A}"
+  "FileHash": "{AEFDE4C8-485C-5BE1-568B-1BEFC8566780}"
  }
 }

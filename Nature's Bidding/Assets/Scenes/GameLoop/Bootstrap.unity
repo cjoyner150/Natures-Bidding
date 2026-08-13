@@ -1056,10 +1056,14 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 7c4aaf3a7a046415b95cc8e681dd0dd9, type: 2}
-  stopMusicSystem:
+  playUIClick:
     idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 8301cdc8bde2f4653a89edb7fa6473c1, type: 2}
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 0f71cbd64fb34d38a77f27a33cc761d9, type: 2}
+  playUIHover:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 9f0c6f8d024a48e598c3e8bb6be89768, type: 2}
   playForestAmbience:
     idInternal: 0
     valueGuidInternal:

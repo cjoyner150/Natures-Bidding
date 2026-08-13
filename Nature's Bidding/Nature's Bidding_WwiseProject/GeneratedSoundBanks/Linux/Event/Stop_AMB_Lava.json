@@ -1,0 +1,33 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "3566511473",
+    "Type": "Event",
+    "GUID": "{20A451B1-EC79-45D8-AF82-7840097AF6C6}",
+    "Language": "SFX",
+    "Hash": "{BE64A2F4-525E-9EE7-5C68-0266552DF0AA}",
+    "ObjectPath": "Stop_AMB_Lava",
+    "ShortName": "Stop_AMB_Lava",
+    "Path": "Event/Stop_AMB_Lava.bnk",
+    "Events": [
+     {
+      "Id": "3566511473",
+      "Name": "Stop_AMB_Lava",
+      "ObjectPath": "\\Events\\Ambience Work Unit\\Stop_AMB_Lava",
+      "GUID": "{20A451B1-EC79-45D8-AF82-7840097AF6C6}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{DC031222-4EA1-5D9E-C3F6-697E44E7827C}"
+ }
+}

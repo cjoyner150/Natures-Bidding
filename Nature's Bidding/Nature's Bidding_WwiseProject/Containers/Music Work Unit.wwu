@@ -2,8 +2,16 @@
 <WwiseDocument Type="WorkUnit" ID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}" SchemaVersion="133">
 	<Containers>
 		<WorkUnit Name="Music Work Unit" ID="{0576B4D0-DE2F-4E37-82D1-B39B77FE606C}" PersistMode="Standalone">
+			<PropertyList>
+				<Property Name="Color" Type="int16" Value="1"/>
+				<Property Name="OverrideColor" Type="bool" Value="True"/>
+			</PropertyList>
 			<ChildrenList>
 				<MusicSwitchContainer Name="MX_System" ID="{D53AD1A6-6513-4D06-A1E6-96970ED2F4D4}" ShortID="815405">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="1"/>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Music" ID="{EB2C0550-85AF-4354-88A0-DA70E47776EA}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -51,7 +59,9 @@
 					<ChildrenList>
 						<MusicPlaylistContainer Name="MX_Lobby" ID="{1790BC28-FF3D-446B-A85B-579A21CACA05}" ShortID="807179071">
 							<PropertyList>
+								<Property Name="Color" Type="int16" Value="1"/>
 								<Property Name="OverrideClockSettings" Type="bool" Value="True"/>
+								<Property Name="OverrideColor" Type="bool" Value="True"/>
 								<Property Name="Tempo" Type="Real64" Value="135"/>
 							</PropertyList>
 							<ReferenceList>
@@ -108,7 +118,9 @@
 							<ChildrenList>
 								<MusicSegment Name="Lobby Segment" ID="{C18A9069-D810-4CF4-8596-F7CB876722F7}" ShortID="566860497">
 									<PropertyList>
+										<Property Name="Color" Type="int16" Value="1"/>
 										<Property Name="EndPosition" Type="Real64" Value="124670.842125496"/>
+										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="Tempo" Type="Real64" Value="135"/>
 									</PropertyList>
 									<ReferenceList>
@@ -122,6 +134,7 @@
 									<ChildrenList>
 										<MusicTrack Name="Lobby Switch" ID="{3404A6F0-9EEC-4C46-BF85-C4ECD55C6701}" ShortID="164575720">
 											<PropertyList>
+												<Property Name="Color" Type="int16" Value="1"/>
 												<Property Name="IsStreamingEnabled" Type="bool">
 													<ValueList>
 														<Value>True</Value>
@@ -133,6 +146,7 @@
 													</ValueList>
 												</Property>
 												<Property Name="MusicTrackType" Type="int16" Value="3"/>
+												<Property Name="OverrideColor" Type="bool" Value="True"/>
 											</PropertyList>
 											<ReferenceList>
 												<Reference Name="DefaultSwitchOrState">
@@ -448,6 +462,7 @@
 										</MusicTrack>
 										<MusicTrack Name="Lobby Switch_01" ID="{91264F71-7E3E-48C9-A3D9-F185D8BDBF51}" ShortID="396006903">
 											<PropertyList>
+												<Property Name="Color" Type="int16" Value="1"/>
 												<Property Name="Inclusion" Type="bool">
 													<ValueList>
 														<Value>False</Value>
@@ -464,6 +479,7 @@
 													</ValueList>
 												</Property>
 												<Property Name="MusicTrackType" Type="int16" Value="3"/>
+												<Property Name="OverrideColor" Type="bool" Value="True"/>
 											</PropertyList>
 											<ReferenceList>
 												<Reference Name="DefaultSwitchOrState">
@@ -799,12 +815,14 @@
 								</MusicSegment>
 								<MusicSegment Name="Lobby B Segment" ID="{C40EA47D-C741-4520-A909-2B5FEF3A55E6}" ShortID="659977090">
 									<PropertyList>
+										<Property Name="Color" Type="int16" Value="1"/>
 										<Property Name="EndPosition" Type="Real64" Value="154666.666666667"/>
 										<Property Name="Inclusion" Type="bool">
 											<ValueList>
 												<Value>False</Value>
 											</ValueList>
 										</Property>
+										<Property Name="OverrideColor" Type="bool" Value="True"/>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
@@ -1152,6 +1170,10 @@
 							</ChildrenList>
 						</MusicPlaylistContainer>
 						<MusicSwitchContainer Name="MX_Combat" ID="{06D2C8E9-C1DC-4025-B020-069C676C9F66}" ShortID="236514085">
+							<PropertyList>
+								<Property Name="Color" Type="int16" Value="1"/>
+								<Property Name="OverrideColor" Type="bool" Value="True"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -1202,7 +1224,9 @@
 							<ChildrenList>
 								<MusicPlaylistContainer Name="MX_Lava" ID="{9040B164-B157-4519-A27C-146489051170}" ShortID="15262129">
 									<PropertyList>
+										<Property Name="Color" Type="int16" Value="1"/>
 										<Property Name="OverrideClockSettings" Type="bool" Value="True"/>
+										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="Tempo" Type="Real64" Value="105"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
@@ -1276,7 +1300,9 @@
 									<ChildrenList>
 										<MusicSegment Name="Nature's Bidding - Volcanic Brawl v2" ID="{EAEEA2ED-454F-4CDE-A0B6-7FA9598B34A4}" ShortID="907559714">
 											<PropertyList>
+												<Property Name="Color" Type="int16" Value="1"/>
 												<Property Name="EndPosition" Type="Real64" Value="99438.8003309292"/>
+												<Property Name="OverrideColor" Type="bool" Value="True"/>
 												<Property Name="Tempo" Type="Real64" Value="105"/>
 											</PropertyList>
 											<ReferenceList>
@@ -1290,6 +1316,7 @@
 											<ChildrenList>
 												<MusicTrack Name="New Switch Music Track" ID="{39AA420E-19BA-4FE0-BD84-F6DBFD84E901}" ShortID="1003816794">
 													<PropertyList>
+														<Property Name="Color" Type="int16" Value="1"/>
 														<Property Name="IsStreamingEnabled" Type="bool">
 															<ValueList>
 																<Value>True</Value>
@@ -1301,6 +1328,7 @@
 															</ValueList>
 														</Property>
 														<Property Name="MusicTrackType" Type="int16" Value="3"/>
+														<Property Name="OverrideColor" Type="bool" Value="True"/>
 													</PropertyList>
 													<ReferenceList>
 														<Reference Name="DefaultSwitchOrState">
@@ -1457,7 +1485,9 @@
 								</MusicPlaylistContainer>
 								<MusicPlaylistContainer Name="MX_Cliff" ID="{763D503A-D9CA-4904-B1F4-63DE13B8B32F}" ShortID="471686469">
 									<PropertyList>
+										<Property Name="Color" Type="int16" Value="1"/>
 										<Property Name="OverrideClockSettings" Type="bool" Value="True"/>
+										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="Tempo" Type="Real64" Value="77"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
@@ -1539,7 +1569,9 @@
 									<ChildrenList>
 										<MusicSegment Name="GGJ2026 - Woodland Brawl_v1" ID="{C222FE45-32C4-41FA-B8BA-BBADC150DD3C}" ShortID="324546742">
 											<PropertyList>
+												<Property Name="Color" Type="int16" Value="1"/>
 												<Property Name="EndPosition" Type="Real64" Value="196567.846527651"/>
+												<Property Name="OverrideColor" Type="bool" Value="True"/>
 											</PropertyList>
 											<ReferenceList>
 												<Reference Name="Conversion">
@@ -1552,6 +1584,7 @@
 											<ChildrenList>
 												<MusicTrack Name="New Switch Music Track" ID="{82282129-605F-4F31-8E6F-C73F75D357FE}" ShortID="269953901">
 													<PropertyList>
+														<Property Name="Color" Type="int16" Value="1"/>
 														<Property Name="IsStreamingEnabled" Type="bool">
 															<ValueList>
 																<Value>True</Value>
@@ -1563,6 +1596,7 @@
 															</ValueList>
 														</Property>
 														<Property Name="MusicTrackType" Type="int16" Value="3"/>
+														<Property Name="OverrideColor" Type="bool" Value="True"/>
 													</PropertyList>
 													<ReferenceList>
 														<Reference Name="DefaultSwitchOrState">
@@ -1714,7 +1748,9 @@
 										</MusicSegment>
 										<MusicSegment Name="Woodland Intro" ID="{7A95D7B4-7C2C-4BA9-821C-59A007148CB3}" ShortID="828848598">
 											<PropertyList>
+												<Property Name="Color" Type="int16" Value="1"/>
 												<Property Name="EndPosition" Type="Real64" Value="13718.4986595174"/>
+												<Property Name="OverrideColor" Type="bool" Value="True"/>
 											</PropertyList>
 											<ReferenceList>
 												<Reference Name="Conversion">
@@ -1727,6 +1763,7 @@
 											<ChildrenList>
 												<MusicTrack Name="Nature's Bidding_Woodland Brawl v2_INTRO" ID="{4F1D3717-FBEF-4921-994D-DAAFF8ABBF15}" ShortID="650228103">
 													<PropertyList>
+														<Property Name="Color" Type="int16" Value="1"/>
 														<Property Name="IsStreamingEnabled" Type="bool">
 															<ValueList>
 																<Value>True</Value>
@@ -1737,6 +1774,7 @@
 																<Value>True</Value>
 															</ValueList>
 														</Property>
+														<Property Name="OverrideColor" Type="bool" Value="True"/>
 													</PropertyList>
 													<ReferenceList>
 														<Reference Name="Conversion">
@@ -1852,7 +1890,9 @@
 						</MusicSwitchContainer>
 						<MusicPlaylistContainer Name="MX_Menu" ID="{5F50A952-703D-4E94-BAF6-B888F8D7508C}" ShortID="480607776">
 							<PropertyList>
+								<Property Name="Color" Type="int16" Value="1"/>
 								<Property Name="OverrideClockSettings" Type="bool" Value="True"/>
+								<Property Name="OverrideColor" Type="bool" Value="True"/>
 								<Property Name="Tempo" Type="Real64" Value="93"/>
 							</PropertyList>
 							<ReferenceList>
@@ -1921,7 +1961,9 @@
 							<ChildrenList>
 								<MusicSegment Name="GGJ2026 - Main Menu_v1" ID="{FDF24A94-2ECD-4AE5-A6C5-EDBAA94876F3}" ShortID="597449670">
 									<PropertyList>
+										<Property Name="Color" Type="int16" Value="1"/>
 										<Property Name="EndPosition" Type="Real64" Value="178161.725274799"/>
+										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
 												<Value>-12</Value>
@@ -1939,6 +1981,7 @@
 									<ChildrenList>
 										<MusicTrack Name="Nature's Bidding_MainMenu_v2" ID="{485070E4-D506-45AD-9664-67AA8AA2ADFA}" ShortID="1038011875">
 											<PropertyList>
+												<Property Name="Color" Type="int16" Value="1"/>
 												<Property Name="IsStreamingEnabled" Type="bool">
 													<ValueList>
 														<Value>True</Value>
@@ -1949,6 +1992,7 @@
 														<Value>True</Value>
 													</ValueList>
 												</Property>
+												<Property Name="OverrideColor" Type="bool" Value="True"/>
 											</PropertyList>
 											<ReferenceList>
 												<Reference Name="OutputBus">
@@ -2009,6 +2053,10 @@
 							</ChildrenList>
 						</MusicPlaylistContainer>
 						<MusicPlaylistContainer Name="MX_Bidding" ID="{D805F52C-289C-4A6E-BFB7-7583764B2CF2}" ShortID="955006991">
+							<PropertyList>
+								<Property Name="Color" Type="int16" Value="1"/>
+								<Property Name="OverrideColor" Type="bool" Value="True"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -2056,7 +2104,9 @@
 							<ChildrenList>
 								<MusicSegment Name="AuctionTime_Master" ID="{5C29893A-3688-47C6-99D6-6026E5E5AB61}" ShortID="994758111">
 									<PropertyList>
+										<Property Name="Color" Type="int16" Value="1"/>
 										<Property Name="EndPosition" Type="Real64" Value="86186.4359710705"/>
+										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
 												<Value>-8</Value>

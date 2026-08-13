@@ -7,6 +7,9 @@ namespace HSM
 {
     public class TransitionSequencer
     {
+        public bool IsPhaseActive => sequencer != null;
+        public float PhaseTimerDebug => _phaseTimer;
+
         public readonly StateMachine Machine;
         public readonly bool UseSequential = true;
 
@@ -15,6 +18,9 @@ namespace HSM
         (State from, State to)? pending;
 
         CancellationTokenSource cts = new CancellationTokenSource();
+
+        float _phaseTimer;
+        const float MaxPhaseSeconds = 2f;
 
         public TransitionSequencer(StateMachine machine)
         {
@@ -69,12 +75,16 @@ namespace HSM
         void EndTransition()
         {
             sequencer = null;
+            _phaseTimer = 0f;
 
             if (pending.HasValue)
             {
                 var p = pending.Value;
                 pending = null;
-                BeginTransition(p.from, p.to);
+
+                State currentLeaf = Machine.Root.Leaf();
+                if (p.to != null && p.to != currentLeaf)
+                    BeginTransition(currentLeaf, p.to);
             }
         }
 
@@ -82,17 +92,50 @@ namespace HSM
         {
             if (sequencer != null)
             {
-                if (sequencer.Update())
+                bool phaseDone;
+                try
                 {
+                    phaseDone = sequencer.Update();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"[HSM] Phase Update threw — force-completing transition. {e}");
+                    phaseDone = true;
+                }
+
+                if (phaseDone)
+                {
+                    _phaseTimer = 0f;
                     if (nextPhase != null)
                     {
                         var n = nextPhase;
                         nextPhase = null;
-                        n();
+                        try { n(); }
+                        catch (Exception e)
+                        {
+                            Debug.LogError($"[HSM] nextPhase threw — abandoning transition. {e}");
+                            sequencer = null;
+                            EndTransition();
+                        }
                     }
                     else
                     {
                         EndTransition();
+                    }
+                }
+                else // Ensure no phase is wedged indefinitely; if it exceeds MaxPhaseSeconds, cancel and force nextPhase.
+                {
+                    _phaseTimer += deltaTime;
+                    if (_phaseTimer > MaxPhaseSeconds)
+                    {
+                        Debug.LogError($"[HSM] Phase exceeded {MaxPhaseSeconds}s — force-cancelling wedged transition.");
+                        cts?.Cancel();
+                        _phaseTimer = 0f;
+                        var n = nextPhase;
+                        nextPhase = null;
+                        sequencer = null;
+                        if (n != null) { try { n(); } catch (Exception e) { Debug.LogError($"[HSM] Forced nextPhase threw: {e}"); sequencer = null; } }
+                        if (sequencer == null) EndTransition();
                     }
                 }
                 return;

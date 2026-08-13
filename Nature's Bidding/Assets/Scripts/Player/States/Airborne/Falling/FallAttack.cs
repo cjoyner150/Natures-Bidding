@@ -63,11 +63,12 @@ public class FallAttack : State
 
     protected override void OnExit()
     {
+        ctx.rb.useGravity = true;
         ctx.forceToAdd = Vector3.zero;
         ctx.attackCDTimer = ctx.attackCD / ctx.playerStats.AttackSpeed;
 
-        ctx.playerAttackManager.EndAttack();
-        ctx.rb.useGravity = true;
+        try { ctx.playerAttackManager.EndAttack(); }
+        catch (System.Exception e) { Debug.LogError($"[FallAttack] EndAttack threw during exit: {e}"); }
     }
 
     protected override State GetTransition()

@@ -92,6 +92,7 @@ public class PlayerShopPanel : MonoBehaviour
     private RectTransform           _rerollButtonRect;
     private Vector2                 _rerollButtonBasePosition;
     private Coroutine               _rerollAnimationRoutine;
+    private ShopAudioFeedback       _audioFeedback;
 
     private Dictionary<string, int> _purchaseCounts = new Dictionary<string, int>();
     private bool                    _isPlaceholder;
@@ -99,6 +100,11 @@ public class PlayerShopPanel : MonoBehaviour
     #endregion
 
     #region Setup
+
+    private void Awake()
+    {
+        _audioFeedback = GetComponent<ShopAudioFeedback>();
+    }
 
     public void Initialise(ulong clientId, List<ShopUpgrade> offerings, bool isLocal)
     {
@@ -685,6 +691,9 @@ public class PlayerShopPanel : MonoBehaviour
     {
         DestroyTooltip();
 
+        if (_isLocal)
+            _audioFeedback?.PlayPurchase();
+
         if (!_purchaseCounts.ContainsKey(upgradeId))
             _purchaseCounts[upgradeId] = 0;
         _purchaseCounts[upgradeId]++;
@@ -718,6 +727,9 @@ public class PlayerShopPanel : MonoBehaviour
     public void OnPotUsed(bool isGrand)
     {
         DestroyTooltip();
+
+        if (_isLocal)
+            _audioFeedback?.PlayPurchase();
 
         if (isGrand)
         {

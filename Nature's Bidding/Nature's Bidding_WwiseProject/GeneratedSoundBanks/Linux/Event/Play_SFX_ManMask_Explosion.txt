@@ -1,0 +1,6 @@
+Event	ID	Name			Wwise Object Path	Notes
+	735357806	Play_SFX_ManMask_Explosion			\SFX Work Unit\Play_SFX_ManMask_Explosion	
+
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	2369427653	Combat_Pan			\Default Work Unit\Combat_Pan	
+

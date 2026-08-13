@@ -10,9 +10,25 @@ public sealed class GameAudioController : MonoBehaviour
     private const string LavaSceneName = "LavaGameplay";
     private const float CombatPlayerStatePollInterval = 0.2f;
 
+    private static GameAudioController instance;
+
+    public static GameAudioController Instance
+    {
+        get
+        {
+            if (instance == null)
+                instance = FindFirstObjectByType<GameAudioController>();
+
+            return instance;
+        }
+    }
+
     [Header("Music Events")]
     [SerializeField] private AK.Wwise.Event playMusicSystem;
-    [SerializeField] private AK.Wwise.Event stopMusicSystem;
+
+    [Header("UI Events")]
+    [SerializeField] private AK.Wwise.Event playUIClick;
+    [SerializeField] private AK.Wwise.Event playUIHover;
 
     [Header("Ambience Events")]
     [SerializeField] private AK.Wwise.Event playForestAmbience;
@@ -43,6 +59,9 @@ public sealed class GameAudioController : MonoBehaviour
 
     private void Awake()
     {
+        if (instance == null)
+            instance = this;
+
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -66,6 +85,9 @@ public sealed class GameAudioController : MonoBehaviour
 
         if (networkManager != null)
             networkManager.OnConnectionEvent -= OnConnectionEvent;
+
+        if (instance == this)
+            instance = null;
     }
 
     private void Update()
@@ -124,12 +146,7 @@ public sealed class GameAudioController : MonoBehaviour
         RefreshForestAmbience(SceneManager.GetActiveScene());
     }
 
-    public void SetLobbyPlayerCount(int playerCount)
-    {
-        SetPlayerCountState(playerCount);
-    }
-
-    public void SetPlayerCountState(int playerCount)
+    private void SetPlayerCountState(int playerCount)
     {
         int playersStateCount = Mathf.Clamp(playerCount, 2, 4);
         if (playersStateCount == currentPlayersStateCount)
@@ -145,7 +162,7 @@ public sealed class GameAudioController : MonoBehaviour
         currentPlayersStateCount = playersStateCount;
     }
 
-    public void StartMusic()
+    private void StartMusic()
     {
         if (musicSystemIsPlaying)
             return;
@@ -157,15 +174,14 @@ public sealed class GameAudioController : MonoBehaviour
         musicSystemIsPlaying = playingId != AkUnitySoundEngine.AK_INVALID_PLAYING_ID;
     }
 
-    public void StopMusic()
+    public void PlayUIClick()
     {
-        if (!musicSystemIsPlaying)
-            return;
+        PostEvent(playUIClick, "Play_UI_Click");
+    }
 
-        if (IsAssigned(stopMusicSystem, "Stop_MX_System"))
-            stopMusicSystem.Post(gameObject);
-
-        musicSystemIsPlaying = false;
+    public void PlayUIHover()
+    {
+        PostEvent(playUIHover, "Play_UI_Hover");
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode _)
@@ -301,6 +317,14 @@ public sealed class GameAudioController : MonoBehaviour
             return;
 
         state.SetValue();
+    }
+
+    private void PostEvent(AK.Wwise.Event wwiseEvent, string eventName)
+    {
+        if (!IsAssigned(wwiseEvent, eventName))
+            return;
+
+        wwiseEvent.Post(gameObject);
     }
 
     private bool IsAssigned(AK.Wwise.BaseType wwiseObject, string objectName)

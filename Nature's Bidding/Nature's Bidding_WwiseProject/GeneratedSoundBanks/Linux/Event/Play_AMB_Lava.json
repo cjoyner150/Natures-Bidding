@@ -1,0 +1,209 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "3906149303",
+    "Type": "Event",
+    "GUID": "{293B6982-FBBF-4CAD-9DDB-6D34E0FC70EA}",
+    "Language": "SFX",
+    "Hash": "{7C313001-1CFA-2389-F263-4B37C3CC0668}",
+    "ObjectPath": "Play_AMB_Lava",
+    "ShortName": "Play_AMB_Lava",
+    "Path": "Event/Play_AMB_Lava.bnk",
+    "Media": [
+     {
+      "Id": "26409865",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Bed\\amb_lava_bed_04.wav",
+      "Path": "Media/26409865.wem",
+      "CachePath": "29/{29089D6A-72DB-5D10-4A2D-03A07C871AD2}.wem"
+     },
+     {
+      "Id": "42949266",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Bed\\amb_lava_loop_05.wav",
+      "Path": "Media/42949266.wem",
+      "CachePath": "55/{55A63B0A-508F-028A-E33A-DCD27B487BCB}.wem"
+     },
+     {
+      "Id": "111197269",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Bed\\amb_lava_loop_04.wav",
+      "Path": "Media/111197269.wem",
+      "CachePath": "10/{106108DE-B7C0-076A-5BD2-DEBA7D3DC4FB}.wem"
+     },
+     {
+      "Id": "189369468",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Gurgle\\amb_lava_gurgle_04.wav",
+      "Path": "Media/189369468.wem",
+      "CachePath": "D4/{D40B2C2E-0331-9567-6E82-99856375F108}.wem"
+     },
+     {
+      "Id": "439149965",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Bed\\amb_lava_bed_02.wav",
+      "Path": "Media/439149965.wem",
+      "CachePath": "40/{40786D7C-D3AE-05C5-7C83-BA1698B60858}.wem"
+     },
+     {
+      "Id": "454247332",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Bed\\amb_lava_loop_01.wav",
+      "Path": "Media/454247332.wem",
+      "CachePath": "D0/{D031356E-329F-0967-9DE2-139CCEE19C1D}.wem"
+     },
+     {
+      "Id": "660958347",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Gurgle\\amb_lava_gurgle_03.wav",
+      "Path": "Media/660958347.wem",
+      "CachePath": "E6/{E65B60AA-E6F9-3340-336C-04903B532D87}.wem"
+     },
+     {
+      "Id": "664327660",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Bed\\amb_lava_bed_03.wav",
+      "Path": "Media/664327660.wem",
+      "CachePath": "47/{474B1974-37D4-A076-CA48-F52667C2DF47}.wem"
+     },
+     {
+      "Id": "831130637",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Bed\\amb_lava_bed_01.wav",
+      "Path": "Media/831130637.wem",
+      "CachePath": "AF/{AF349B6A-2D62-676E-5008-D814AF63E708}.wem"
+     },
+     {
+      "Id": "893786493",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Bed\\amb_lava_loop_02.wav",
+      "Path": "Media/893786493.wem",
+      "CachePath": "BB/{BBBAC3EA-53D2-7D80-8107-78EE87706389}.wem"
+     },
+     {
+      "Id": "994985155",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Gurgle\\amb_lava_gurgle_01.wav",
+      "Path": "Media/994985155.wem",
+      "CachePath": "EF/{EF554D09-6630-6C5C-B805-E6CA95495C46}.wem"
+     },
+     {
+      "Id": "1002895580",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Bed\\amb_lava_loop_03.wav",
+      "Path": "Media/1002895580.wem",
+      "CachePath": "F5/{F548B468-F53F-B847-28DB-0B5D3CBE7031}.wem"
+     },
+     {
+      "Id": "1053737788",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Gurgle\\amb_lava_gurgle_02.wav",
+      "Path": "Media/1053737788.wem",
+      "CachePath": "53/{53819800-BCE1-7617-DE04-173994FDE0F1}.wem"
+     }
+    ],
+    "Plugins": {
+     "ShareSets": [
+      {
+       "Id": "3604890626",
+       "Name": "High_Pass_60Hz",
+       "ObjectPath": "\\Effects\\Factory Effects\\Parametric EQ\\High Pass Filters\\High_Pass_60Hz",
+       "GUID": "{F9627628-0B10-4272-BC30-D4C20423CB38}",
+       "LibName": "Wwise Parametric EQ",
+       "LibId": "6881283"
+      }
+     ]
+    },
+    "Events": [
+     {
+      "Id": "3906149303",
+      "Name": "Play_AMB_Lava",
+      "ObjectPath": "\\Events\\Ambience Work Unit\\Play_AMB_Lava",
+      "GUID": "{293B6982-FBBF-4CAD-9DDB-6D34E0FC70EA}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "26409865"
+       },
+       {
+        "Id": "42949266"
+       },
+       {
+        "Id": "111197269"
+       },
+       {
+        "Id": "189369468"
+       },
+       {
+        "Id": "439149965"
+       },
+       {
+        "Id": "454247332"
+       },
+       {
+        "Id": "660958347"
+       },
+       {
+        "Id": "664327660"
+       },
+       {
+        "Id": "831130637"
+       },
+       {
+        "Id": "893786493"
+       },
+       {
+        "Id": "994985155"
+       },
+       {
+        "Id": "1002895580"
+       },
+       {
+        "Id": "1053737788"
+       }
+      ],
+      "PluginRefs": {
+       "ShareSets": [
+        {
+         "Id": "3604890626"
+        }
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "FileHash": "{6517716E-0039-38A4-DEC7-241C335CFE58}"
+ }
+}

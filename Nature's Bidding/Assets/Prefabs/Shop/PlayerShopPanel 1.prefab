@@ -1425,6 +1425,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1
 --- !u!1 &4292047942560435333
 GameObject:
   m_ObjectHideFlags: 0
@@ -2371,6 +2373,7 @@ GameObject:
   - component: {fileID: 8118092453722794185}
   - component: {fileID: 6564513603746912816}
   - component: {fileID: 709603021264317114}
+  - component: {fileID: 900000000000000201}
   m_Layer: 0
   m_Name: PlayerShopPanel 1
   m_TagString: Untagged
@@ -2474,6 +2477,22 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &900000000000000201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786274424010861874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94def51dbe8e34df89b0e3b6734f54d2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::ShopAudioFeedback
+  purchaseEvent:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 3a9194da914046038615f17207e183f7, type: 2}
 --- !u!1 &7916606797284276216
 GameObject:
   m_ObjectHideFlags: 0
@@ -2832,6 +2851,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d1f2f6a0fe9401ba4aecba6df3a637, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIAudioFeedback
+  playHover: 1
+  playClick: 1
 --- !u!1 &8164817386906376932
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// PointerNPC — A 3D character (host/auctioneer) that speaks in world space.
 /// </summary>
+[RequireComponent(typeof(AuctioneerAudioFeedback))]
 public class PointerNPC : MonoBehaviour
 {
     public static PointerNPC Instance { get; private set; }
@@ -41,11 +42,13 @@ public class PointerNPC : MonoBehaviour
 
     private Coroutine _speechCoroutine;
     private bool _speechInitialized;
+    private AuctioneerAudioFeedback _audioFeedback;
 
     void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+        _audioFeedback = GetComponent<AuctioneerAudioFeedback>();
         EnsureSpeechBubbleExists();
         HideSpeechBubbleImmediate();
     }
@@ -244,6 +247,11 @@ public class PointerNPC : MonoBehaviour
             if (speechBubbleText == null) yield break;
 
             speechBubbleText.text = string.Empty;
+            yield return null;
+
+            if (!string.IsNullOrWhiteSpace(line))
+                PlayAuctioneerAudio();
+
             for (int characterIndex = 0; characterIndex < line.Length; characterIndex++)
             {
                 speechBubbleText.text += line[characterIndex];
@@ -255,6 +263,14 @@ public class PointerNPC : MonoBehaviour
         }
 
         _speechCoroutine = null;
+    }
+
+    void PlayAuctioneerAudio()
+    {
+        if (_audioFeedback == null)
+            _audioFeedback = GetComponent<AuctioneerAudioFeedback>();
+
+        _audioFeedback?.PlayLine();
     }
 
     void HideSpeechBubbleImmediate()

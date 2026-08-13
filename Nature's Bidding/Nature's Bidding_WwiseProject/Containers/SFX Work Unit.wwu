@@ -1,6 +1,912 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{60E6AB22-942F-42AE-A57E-436AC9219521}" SchemaVersion="133">
 	<Containers>
-		<WorkUnit Name="SFX Work Unit" ID="{60E6AB22-942F-42AE-A57E-436AC9219521}" PersistMode="Standalone"/>
+		<WorkUnit Name="SFX Work Unit" ID="{60E6AB22-942F-42AE-A57E-436AC9219521}" PersistMode="Standalone">
+			<ChildrenList>
+				<PropertyContainer Name="Combat_2D" ID="{17FF35FD-9BEB-44B0-9EF5-0E1A0C3A7E66}" ShortID="34786400">
+					<PropertyList>
+						<Property Name="SpeakerPanning" Type="int16" Value="1"/>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="SFX" ID="{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<RandomSequenceContainer Name="sfx_woosh" ID="{F178F61F-E1F1-4E9F-A82C-C7E454B58B48}" ShortID="1068802216">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="Pitch" Type="int32">
+									<ModifierList>
+										<ModifierInfo>
+											<Modifier Name="" ID="{15754A11-1C9D-45AA-B6D4-99D545448950}">
+												<PropertyList>
+													<Property Name="Enabled" Type="bool" Value="True"/>
+													<Property Name="Max" Type="Real64" Value="300"/>
+													<Property Name="Min" Type="Real64" Value="-300"/>
+												</PropertyList>
+											</Modifier>
+										</ModifierInfo>
+									</ModifierList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="gp_woosh_01" ID="{CC8B2CAD-BCDC-4BC1-8EBC-E1B6E34E19BF}" ShortID="881467200">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="gp_woosh_01" ID="{F6098B54-0A88-4045-A754-88E3C1230933}">
+											<Language>SFX</Language>
+											<AudioFile>Woosh\gp_woosh_01.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="11121350"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="gp_woosh_01" ID="{F6098B54-0A88-4045-A754-88E3C1230933}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="gp_woosh_02" ID="{F0CBCE1C-F5FF-4902-8147-478BDAA517A8}" ShortID="482190717">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="gp_woosh_02" ID="{304A0B1D-EC11-4021-9614-475ADC9AFFCF}">
+											<Language>SFX</Language>
+											<AudioFile>Woosh\gp_woosh_02.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="956902779"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="gp_woosh_02" ID="{304A0B1D-EC11-4021-9614-475ADC9AFFCF}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="gp_woosh_03" ID="{99698ACD-E0A6-44FA-AD44-2F59FCE8FC90}" ShortID="926802014">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="gp_woosh_03" ID="{911CBDA8-BE73-4BAC-96A7-3B3A8E6168CE}">
+											<Language>SFX</Language>
+											<AudioFile>Woosh\gp_woosh_03.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="212897607"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="gp_woosh_03" ID="{911CBDA8-BE73-4BAC-96A7-3B3A8E6168CE}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="gp_woosh_04" ID="{04DF22CE-1896-478F-A5D4-B0E96D935907}" ShortID="69352567">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="gp_woosh_04" ID="{FDB4E15C-9203-4089-8E2B-44B26503852C}">
+											<Language>SFX</Language>
+											<AudioFile>Woosh\gp_woosh_04.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="185523131"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="gp_woosh_04" ID="{FDB4E15C-9203-4089-8E2B-44B26503852C}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="gp_woosh_05" ID="{8DF7FD1F-F9BB-4D3A-BDB0-1C1943BFBC6F}" ShortID="891896010">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="gp_woosh_05" ID="{4F56D540-E34A-4DFF-B2F2-8E1A4485E6C5}">
+											<Language>SFX</Language>
+											<AudioFile>Woosh\gp_woosh_05.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="916391361"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="gp_woosh_05" ID="{4F56D540-E34A-4DFF-B2F2-8E1A4485E6C5}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="gp_woosh_06" ID="{0568BE57-6267-4991-912A-11EA567173F1}" ShortID="194270510">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="gp_woosh_06" ID="{A64749B2-816B-499A-AD7E-5308B9DCB775}">
+											<Language>SFX</Language>
+											<AudioFile>Woosh\gp_woosh_06.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="313660704"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="gp_woosh_06" ID="{A64749B2-816B-499A-AD7E-5308B9DCB775}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+						</RandomSequenceContainer>
+						<Sound Name="sfx_man_mask_explosion_01" ID="{90AF0A7C-AE7D-4CA7-B5BD-7C7D3EE10333}" ShortID="629633191">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Explosion_ver1" ID="{E3CEBF34-8143-481F-B41F-927AE5462935}">
+									<Language>SFX</Language>
+									<AudioFile>Explosion_ver1.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="122476698"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="Effects">
+									<EffectSlot Name="" ID="{722518DB-229B-4DB6-AF1C-92C5ED81447F}" ShortID="957932665">
+										<PropertyList>
+											<Property Name="Render" Type="bool" Value="True"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="Effect" PluginName="Wwise RoomVerb" CompanyID="0" PluginID="118" PluginType="3">
+												<ObjectRef Name="Medium" ID="{AEB3F175-958B-45F2-A4C2-3FBD4F456568}" WorkUnitID="{E8613F7D-BAD3-45CD-A3ED-505576F31277}"/>
+											</Reference>
+										</ReferenceList>
+									</EffectSlot>
+								</ObjectList>
+							</ObjectLists>
+							<ActiveSourceList>
+								<ActiveSource Name="Explosion_ver1" ID="{E3CEBF34-8143-481F-B41F-927AE5462935}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<RandomSequenceContainer Name="sfx_parry" ID="{1464D94F-D611-47D1-AB77-953CBCEE9FE6}" ShortID="899598658">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="OverrideEffect" Type="bool" Value="True"/>
+								<Property Name="Pitch" Type="int32">
+									<ModifierList>
+										<ModifierInfo>
+											<Modifier Name="" ID="{072CEE4F-E346-4F26-9F91-2616C4DCC771}">
+												<PropertyList>
+													<Property Name="Enabled" Type="bool" Value="True"/>
+													<Property Name="Min" Type="Real64" Value="-300"/>
+												</PropertyList>
+											</Modifier>
+										</ModifierInfo>
+									</ModifierList>
+								</Property>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>5</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="gp_parry_01" ID="{35A4694F-F3F5-414C-9C3D-CA69EC3A6A0B}" ShortID="1067592192">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="gp_parry_01" ID="{5CF3D004-33AF-48BA-A02B-8B37093BA2B3}">
+											<Language>SFX</Language>
+											<AudioFile>gp_parry_01.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="155811665"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="gp_parry_01" ID="{5CF3D004-33AF-48BA-A02B-8B37093BA2B3}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="gp_parry_02" ID="{5EF56055-590C-47E9-8445-74A6B5A7012D}" ShortID="944423377">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="gp_parry_02" ID="{417E02BA-DF5A-4000-8892-5A1D0FA21BEA}">
+											<Language>SFX</Language>
+											<AudioFile>gp_parry_02.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="584268127"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="gp_parry_02" ID="{417E02BA-DF5A-4000-8892-5A1D0FA21BEA}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="gp_parry_03" ID="{73F7F117-DE53-4403-A4C4-9F55BAC44666}" ShortID="105206292">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="gp_parry_03" ID="{E9A7E601-91F6-449F-8DF9-EACD018DED83}">
+											<Language>SFX</Language>
+											<AudioFile>gp_parry_03.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="245074753"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="gp_parry_03" ID="{E9A7E601-91F6-449F-8DF9-EACD018DED83}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="gp_parry_04" ID="{5B5316B1-6AE9-4D5D-9FBA-00315FE5FC19}" ShortID="581883862">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="gp_parry_04" ID="{4D1B14DA-8B67-4E40-981F-8F01BD99F462}">
+											<Language>SFX</Language>
+											<AudioFile>gp_parry_04.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="78025422"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="gp_parry_04" ID="{4D1B14DA-8B67-4E40-981F-8F01BD99F462}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="Effects">
+									<EffectSlot Name="" ID="{64C153AA-4BD4-40A0-8940-AD50BC0C5FA6}" ShortID="416472595">
+										<ReferenceList>
+											<Reference Name="Effect" PluginName="Wwise Parametric EQ" CompanyID="0" PluginID="105" PluginType="3">
+												<ObjectRef Name="Low_Pass_20KHz" ID="{830124FB-B9D5-4AE8-846E-E94A74652666}" WorkUnitID="{E8613F7D-BAD3-45CD-A3ED-505576F31277}"/>
+											</Reference>
+										</ReferenceList>
+									</EffectSlot>
+								</ObjectList>
+							</ObjectLists>
+						</RandomSequenceContainer>
+						<RandomSequenceContainer Name="Hit" ID="{34ED782E-5143-41EE-8644-8964D9751D37}" ShortID="214376491">
+							<PropertyList>
+								<Property Name="Pitch" Type="int32">
+									<ValueList>
+										<Value>320</Value>
+									</ValueList>
+								</Property>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>3</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="sfx_hit_01" ID="{79A73E0A-10A3-48D7-A2F0-8E556406D07E}" ShortID="300887871">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sfx_hit_01" ID="{5115E46A-E0BC-49FB-A2FF-34BB6E9DDCD0}">
+											<Language>SFX</Language>
+											<AudioFile>Hit\sfx_hit_01.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="356569204"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sfx_hit_01" ID="{5115E46A-E0BC-49FB-A2FF-34BB6E9DDCD0}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sfx_hit_02" ID="{74F56D54-F6D9-4931-9CEA-C113353BE3B8}" ShortID="638032928">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sfx_hit_02" ID="{BF43C762-449E-4984-9176-F9C6198872D6}">
+											<Language>SFX</Language>
+											<AudioFile>Hit\sfx_hit_02.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="238395543"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sfx_hit_02" ID="{BF43C762-449E-4984-9176-F9C6198872D6}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sfx_hit_03" ID="{15BF6A3A-2CD6-44DD-B168-636ED69C385C}" ShortID="563071580">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sfx_hit_03" ID="{CCDA164E-2412-4555-9481-9949DB394081}">
+											<Language>SFX</Language>
+											<AudioFile>Hit\sfx_hit_03.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="643470763"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sfx_hit_03" ID="{CCDA164E-2412-4555-9481-9949DB394081}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sfx_hit_04" ID="{002D72BA-30D3-433E-9A46-D81C509E8F77}" ShortID="304138359">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sfx_hit_04" ID="{D2B19D7A-7DC4-492F-9250-E9662CDDBB27}">
+											<Language>SFX</Language>
+											<AudioFile>Hit\sfx_hit_04.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="946636474"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sfx_hit_04" ID="{D2B19D7A-7DC4-492F-9250-E9662CDDBB27}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sfx_hit_05" ID="{C44FD8D7-413F-40C9-A60A-AFAB64ABBB80}" ShortID="766467048">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sfx_hit_05" ID="{0AA9D643-A623-45F1-BD21-22AE09F52319}">
+											<Language>SFX</Language>
+											<AudioFile>Hit\sfx_hit_05.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="873160811"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sfx_hit_05" ID="{0AA9D643-A623-45F1-BD21-22AE09F52319}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sfx_hit_06" ID="{ABE2ECC8-088E-4B2F-A42B-5D7DB08BB7A1}" ShortID="721248622">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sfx_hit_06" ID="{25AAB655-F10C-4459-ABE9-A44250EA0B65}">
+											<Language>SFX</Language>
+											<AudioFile>Hit\sfx_hit_06.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="167838151"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sfx_hit_06" ID="{25AAB655-F10C-4459-ABE9-A44250EA0B65}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+						</RandomSequenceContainer>
+						<RandomSequenceContainer Name="sfx_rockslide" ID="{91F3F26E-AE9F-4267-9F57-3FEDD8FFD8AB}" ShortID="214510248">
+							<PropertyList>
+								<Property Name="SpeakerPanning" Type="int16" Value="1"/>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>4</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="sfx_rockslide_01" ID="{2663B970-16B9-403B-AD4F-1469B19C9341}" ShortID="360214444">
+									<PropertyList>
+										<Property Name="SpeakerPanning" Type="int16" Value="1"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="SFX" ID="{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sfx_rockslide_01" ID="{9CBC17BC-6AF8-4087-8A32-A3261D3F7BFE}">
+											<PropertyList>
+												<Property Name="FadeOutDuration" Type="Real64" Value="0.95732"/>
+												<Property Name="LoopBegin" Type="Real64" Value="0"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>RockSlide\sfx_rockslide_01.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="81383675"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<PositioningInfo>
+										<Panner Name="" ID="{6A3B42E1-3786-4ADD-84F5-C3F5B6DDA537}">
+											<ObjectLists>
+												<ObjectList Name="RTPC">
+													<RTPC Name="" ID="{83D8C8D9-1049-4442-8AD4-85156D9AB650}" ShortID="1036224794">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="PanX"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="Combat_Pan" ID="{1227142A-5FEB-462E-92E5-2D17A955B80D}" WorkUnitID="{B6944527-D057-47A5-932F-995FF1BDA1F0}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{F7DD9260-45AD-45A1-9891-11085282EE53}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="1"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>-50</XPos>
+																				<YPos>-30</YPos>
+																				<Flags>5</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>-0</XPos>
+																				<YPos>0</YPos>
+																				<Flags>0</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>50</XPos>
+																				<YPos>30</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</ObjectList>
+											</ObjectLists>
+										</Panner>
+									</PositioningInfo>
+									<ActiveSourceList>
+										<ActiveSource Name="sfx_rockslide_01" ID="{9CBC17BC-6AF8-4087-8A32-A3261D3F7BFE}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sfx_rockslide_02" ID="{BBAA3D4E-B4B1-40FB-9BCE-B0FE80087043}" ShortID="754173862">
+									<PropertyList>
+										<Property Name="SpeakerPanning" Type="int16" Value="1"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="SFX" ID="{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sfx_rockslide_02" ID="{0C105EA2-EDE7-4A9D-B06F-CE1CF4D8E4E1}">
+											<PropertyList>
+												<Property Name="FadeOutDuration" Type="Real64" Value="0.92543"/>
+												<Property Name="LoopBegin" Type="Real64" Value="0"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>RockSlide\sfx_rockslide_02.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="994979307"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<PositioningInfo>
+										<Panner Name="" ID="{A587B471-B8C7-4C3B-B399-ACB26F7DF4F6}">
+											<ObjectLists>
+												<ObjectList Name="RTPC">
+													<RTPC Name="" ID="{2B48DF70-0521-484D-B29F-A87DFD2D0636}" ShortID="825515527">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="PanX"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="Combat_Pan" ID="{1227142A-5FEB-462E-92E5-2D17A955B80D}" WorkUnitID="{B6944527-D057-47A5-932F-995FF1BDA1F0}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{B6F3567B-F6EB-4EDD-A9BB-82DD48ACCD23}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="1"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>-50</XPos>
+																				<YPos>-30</YPos>
+																				<Flags>5</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>-0</XPos>
+																				<YPos>0</YPos>
+																				<Flags>0</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>50</XPos>
+																				<YPos>30</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</ObjectList>
+											</ObjectLists>
+										</Panner>
+									</PositioningInfo>
+									<ActiveSourceList>
+										<ActiveSource Name="sfx_rockslide_02" ID="{0C105EA2-EDE7-4A9D-B06F-CE1CF4D8E4E1}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sfx_rockslide_03" ID="{5507BA2C-EE72-457C-BE5E-B637104E4BBF}" ShortID="994202210">
+									<PropertyList>
+										<Property Name="SpeakerPanning" Type="int16" Value="1"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="SFX" ID="{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sfx_rockslide_03" ID="{2BD09FAB-10F9-40AE-AEA7-3E23A2A6A267}">
+											<PropertyList>
+												<Property Name="FadeOutDuration" Type="Real64" Value="1.04509"/>
+												<Property Name="LoopBegin" Type="Real64" Value="0"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>RockSlide\sfx_rockslide_03.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="129135902"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<PositioningInfo>
+										<Panner Name="" ID="{71A6A698-5655-49F0-A9B5-7A8A6ABB5A64}">
+											<ObjectLists>
+												<ObjectList Name="RTPC">
+													<RTPC Name="" ID="{A151B3EE-35E3-4539-B77F-8E793F91AB5E}" ShortID="16492569">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="PanX"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="Combat_Pan" ID="{1227142A-5FEB-462E-92E5-2D17A955B80D}" WorkUnitID="{B6944527-D057-47A5-932F-995FF1BDA1F0}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{3470FE7E-AD6D-4A2D-A6E9-A6ACD412CD68}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="1"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>-50</XPos>
+																				<YPos>-30</YPos>
+																				<Flags>5</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>-0</XPos>
+																				<YPos>0</YPos>
+																				<Flags>0</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>50</XPos>
+																				<YPos>30</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</ObjectList>
+											</ObjectLists>
+										</Panner>
+									</PositioningInfo>
+									<ActiveSourceList>
+										<ActiveSource Name="sfx_rockslide_03" ID="{2BD09FAB-10F9-40AE-AEA7-3E23A2A6A267}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sfx_rockslide_04" ID="{9AD30D83-EC6A-4ED0-A1F3-DFCE6BE01067}" ShortID="887791249">
+									<PropertyList>
+										<Property Name="SpeakerPanning" Type="int16" Value="1"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="SFX" ID="{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sfx_rockslide_04" ID="{044C87B5-5E3D-4C3D-B5D8-D24E256DCDA3}">
+											<PropertyList>
+												<Property Name="FadeOutDuration" Type="Real64" Value="0.9015"/>
+												<Property Name="LoopBegin" Type="Real64" Value="0"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>RockSlide\sfx_rockslide_04.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="769724475"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<PositioningInfo>
+										<Panner Name="" ID="{C4078159-091B-43F4-88BA-C2C35C9A01DC}">
+											<ObjectLists>
+												<ObjectList Name="RTPC">
+													<RTPC Name="" ID="{697FD8EB-38BF-498B-922D-6253D5C89548}" ShortID="219724447">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="PanX"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="Combat_Pan" ID="{1227142A-5FEB-462E-92E5-2D17A955B80D}" WorkUnitID="{B6944527-D057-47A5-932F-995FF1BDA1F0}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{6A71E22B-50EB-4248-9973-1B0C6FC383FC}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="1"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>-50</XPos>
+																				<YPos>-30</YPos>
+																				<Flags>5</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>-0</XPos>
+																				<YPos>0</YPos>
+																				<Flags>0</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>50</XPos>
+																				<YPos>30</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</ObjectList>
+											</ObjectLists>
+										</Panner>
+									</PositioningInfo>
+									<ActiveSourceList>
+										<ActiveSource Name="sfx_rockslide_04" ID="{044C87B5-5E3D-4C3D-B5D8-D24E256DCDA3}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+							<PositioningInfo>
+								<Panner Name="" ID="{CCF3C099-D1FA-4023-9088-94CE65EBD4D9}">
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<RTPC Name="" ID="{DB84A42C-0269-4651-A9CD-BBF08449C311}" ShortID="987246791">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="PanX"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="Combat_Pan" ID="{1227142A-5FEB-462E-92E5-2D17A955B80D}" WorkUnitID="{B6944527-D057-47A5-932F-995FF1BDA1F0}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{A092D2D5-1A85-40FE-A439-8BD21E875E17}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="1"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>-50</XPos>
+																		<YPos>-30</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>-0</XPos>
+																		<YPos>0</YPos>
+																		<Flags>0</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>50</XPos>
+																		<YPos>30</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</ObjectList>
+									</ObjectLists>
+								</Panner>
+							</PositioningInfo>
+						</RandomSequenceContainer>
+					</ChildrenList>
+					<PositioningInfo>
+						<Panner Name="" ID="{AB4EB316-D5C3-47DC-BB4F-2CAB419029AA}">
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{DA3C8855-B77A-4AA3-9863-2EE5C6DEB991}" ShortID="174860113">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="PanX"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Combat_Pan" ID="{1227142A-5FEB-462E-92E5-2D17A955B80D}" WorkUnitID="{B6944527-D057-47A5-932F-995FF1BDA1F0}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{D8EAB9FA-F911-4CDA-8EE5-446D03C0DCAD}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="1"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>-50</XPos>
+																<YPos>-30</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>-0</XPos>
+																<YPos>0</YPos>
+																<Flags>0</Flags>
+															</Point>
+															<Point>
+																<XPos>50</XPos>
+																<YPos>30</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
+						</Panner>
+					</PositioningInfo>
+				</PropertyContainer>
+			</ChildrenList>
+		</WorkUnit>
 	</Containers>
 </WwiseDocument>

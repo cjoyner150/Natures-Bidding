@@ -1,0 +1,6 @@
+Event	ID	Name			Wwise Object Path	Notes
+	3230763644	Play_SFX_RockSlide			\SFX Work Unit\Play_SFX_RockSlide	
+
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	2369427653	Combat_Pan			\Default Work Unit\Combat_Pan	
+

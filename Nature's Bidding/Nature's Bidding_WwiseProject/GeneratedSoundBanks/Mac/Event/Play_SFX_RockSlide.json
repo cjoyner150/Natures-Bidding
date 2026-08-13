@@ -1,0 +1,92 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Mac",
+  "BasePlatform": "Mac",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "3230763644",
+    "Type": "Event",
+    "GUID": "{AA4FEBB9-D96F-4973-B31E-EF7C291E5439}",
+    "Language": "SFX",
+    "Hash": "{D20A10CF-0CE9-749A-11BE-9D31F8E68185}",
+    "ObjectPath": "Play_SFX_RockSlide",
+    "ShortName": "Play_SFX_RockSlide",
+    "Path": "Event/Play_SFX_RockSlide.bnk",
+    "Media": [
+     {
+      "Id": "81383675",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "RockSlide\\sfx_rockslide_01.wav",
+      "Path": "Media/81383675.wem",
+      "CachePath": "BF/{BFD9318F-C773-C359-F95D-F6E272698B13}.wem"
+     },
+     {
+      "Id": "129135902",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "RockSlide\\sfx_rockslide_03.wav",
+      "Path": "Media/129135902.wem",
+      "CachePath": "44/{44BDB02C-EA38-7474-2448-1B435B5752BA}.wem"
+     },
+     {
+      "Id": "769724475",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "RockSlide\\sfx_rockslide_04.wav",
+      "Path": "Media/769724475.wem",
+      "CachePath": "93/{93769EF8-B6C2-4538-7676-40A2FCEFEE8A}.wem"
+     },
+     {
+      "Id": "994979307",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "RockSlide\\sfx_rockslide_02.wav",
+      "Path": "Media/994979307.wem",
+      "CachePath": "25/{2509E700-1EBC-9B05-E9AF-50FA52F98555}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "3230763644",
+      "Name": "Play_SFX_RockSlide",
+      "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_RockSlide",
+      "GUID": "{AA4FEBB9-D96F-4973-B31E-EF7C291E5439}",
+      "DurationType": "OneShot",
+      "DurationMin": "5.01",
+      "DurationMax": "5.01",
+      "MediaRefs": [
+       {
+        "Id": "81383675"
+       },
+       {
+        "Id": "129135902"
+       },
+       {
+        "Id": "769724475"
+       },
+       {
+        "Id": "994979307"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{1D5486FE-C675-43C0-51C7-EE077BFB9AFB}"
+ }
+}

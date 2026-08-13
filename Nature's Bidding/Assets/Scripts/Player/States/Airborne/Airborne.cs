@@ -47,7 +47,7 @@ public class Airborne : State
     {
         if (ctx.shouldTakeKnockback) return airKnockback;
         else if (ctx.shouldStunSelf || ctx.isStunned) return airborneStunned;
-        else if (ctx.jumpPressed) return jump;
+        else if (ctx.jumpPressed && ctx.currentJumps > 0) return jump;
         else return fall;
     }
 

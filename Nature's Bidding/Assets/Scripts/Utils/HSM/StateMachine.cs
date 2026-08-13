@@ -22,7 +22,7 @@ namespace HSM
             if (started) return;
             started = true;
             // Resolve the full initial path from root to leaf and enter each state
-            EnterChain(Root, Root.ResolveLeaf(), parent: null);
+            EnterChain(Root, Root.ResolveLeaf());
         }
 
         public void Tick(float deltaTime)
@@ -63,13 +63,13 @@ namespace HSM
             // way down may read ctx state that the exiting state only sets in its own OnExit
             State leaf = to.ResolveLeaf();
 
-            EnterChain(lca, leaf, parent: lca);
+            EnterChain(lca, leaf);
         }
 
         /// <summary>
         /// Enters every state on the path from (exclusive) down to leaf (inclusive).
         /// </summary>
-        static void EnterChain(State ancestor, State leaf, State parent)
+        static void EnterChain(State ancestor, State leaf)
         {
             // Build the ordered path from just-below-ancestor down to leaf
             var stack = new Stack<State>();

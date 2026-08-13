@@ -22,7 +22,7 @@ namespace HSM
             if (started) return;
             started = true;
             // Resolve the full initial path from root to leaf and enter each state
-            EnterChain(Root, Root.ResolveLeaf(), parent: null);
+            EnterChain(Root, Root.ResolveLeaf());
         }
 
         public void Tick(float deltaTime)
@@ -44,11 +44,7 @@ namespace HSM
             if (from == to || from == null || to == null) return;
 
             State lca = TransitionSequencer.LCA(from, to);
-            State leaf = to.ResolveLeaf();
 
-            // 'from' may be an ancestor that requested the transition (e.g. Grounded → Airborne
-            // while the active leaf is Attack). Descend to the deepest active state first so
-            // every nested OnExit runs.
             State exitLeaf = from;
             while (exitLeaf.ActiveChild != null) exitLeaf = exitLeaf.ActiveChild;
 
@@ -63,13 +59,17 @@ namespace HSM
                 if (s.Parent != null) s.Parent.ActiveChild = null;
             }
 
-            EnterChain(lca, leaf, parent: lca);
+            // Resolve the target leaf AFTER all exits have run so GetInitialState() on the
+            // way down may read ctx state that the exiting state only sets in its own OnExit
+            State leaf = to.ResolveLeaf();
+
+            EnterChain(lca, leaf);
         }
 
         /// <summary>
         /// Enters every state on the path from (exclusive) down to leaf (inclusive).
         /// </summary>
-        static void EnterChain(State ancestor, State leaf, State parent)
+        static void EnterChain(State ancestor, State leaf)
         {
             // Build the ordered path from just-below-ancestor down to leaf
             var stack = new Stack<State>();

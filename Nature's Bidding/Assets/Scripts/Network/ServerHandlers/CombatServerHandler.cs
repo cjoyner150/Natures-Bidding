@@ -63,7 +63,11 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
         alivePlayers.Clear();
 
-        foreach (var data in PersistentPlayerRegistry.Instance.GetAllPlayers())
+        var allPlayers = PersistentPlayerRegistry.Instance.GetAllPlayers();
+        Debug.Log($"[CombatServerHandler] Registry has {allPlayers.Count} entries: " +
+            string.Join(" | ", allPlayers.Select(p => $"clientId={p.clientId}, authId={p.authenticationId}, name={p.playerName}")));
+
+        foreach (var data in allPlayers)
         {
             if (NetworkManager.Singleton.ConnectedClients.ContainsKey(data.clientId))
             {

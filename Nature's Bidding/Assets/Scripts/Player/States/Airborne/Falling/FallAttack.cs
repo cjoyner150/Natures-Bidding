@@ -15,29 +15,24 @@ public class FallAttack : State
     {
         this.ctx = ctx;
 
-        Add(new PauseInAirActivity(ctx, .2f));
+        //Add(new PauseInAirActivity(ctx, .2f));
     }
 
     protected override void OnEnter()
     {
         ctx.attackPressed = false;
         ctx.desiredMaxSpeed = ctx.attackSpeed * ctx.playerStats.MoveSpeed;
+        ctx.forceMode = ForceMode.Force;
 
         ctx.anim.SetTrigger("FallAttack");
         ctx.anim.SetFloat("AttackSpeed", 1 + ((ctx.playerStats.AttackSpeed - 1) / 2f));
-        SetAttackActive(ctx.attackActiveDelay);
+        ctx.playerAttackManager.BeginAttack();
 
         facingDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
-        momentumDirection = (facingDirection + -ctx.modelHolder.up).normalized;
+        momentumDirection = facingDirection.normalized;
 
         attackTimer = ctx.fallAttackTime / ctx.playerStats.AttackSpeed;
         exitAttack = false;
-    }
-
-    async void SetAttackActive(int delay)
-    {
-        await UniTask.Delay(delay);
-        ctx.playerAttackManager.BeginAttack();
     }
 
     protected override void OnUpdate(float deltaTime)
@@ -48,11 +43,11 @@ public class FallAttack : State
             return;
         }
 
-        ctx.rb.linearVelocity = momentumDirection * ctx.desiredMaxSpeed;
+        ctx.forceToAdd = (ctx.moveInput * ctx.acceleration * ctx.airControlMultiplier * .5f) + (-ctx.modelHolder.transform.up * ctx.acceleration * ctx.extraGravityMultiplier);
         HandleRotation(deltaTime);
 
         attackTimer -= deltaTime;
-        if (attackTimer <= 0) exitAttack = true;
+        //if (attackTimer <= 0) exitAttack = true;
 
     }
 
@@ -63,6 +58,8 @@ public class FallAttack : State
 
     protected override void OnExit()
     {
+        Debug.Log("[FallAttack] exiting after " + attackTimer);
+
         ctx.rb.useGravity = true;
         ctx.forceToAdd = Vector3.zero;
         ctx.attackCDTimer = ctx.attackCD / ctx.playerStats.AttackSpeed;

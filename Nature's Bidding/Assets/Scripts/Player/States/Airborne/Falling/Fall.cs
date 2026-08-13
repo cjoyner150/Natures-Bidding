@@ -25,7 +25,11 @@ public class Fall : State
         ctx.forceToAdd = Vector3.zero;
     }
 
-    protected override State GetInitialState() => (ctx.attackPressed && !ctx.attackOnCooldown) ? fallAttack : fallLocomotion;
+    protected override State GetInitialState() {
+        bool result = ctx.attackPressed && !ctx.attackOnCooldown;
+        Debug.Log($"[Fall.GetInitialState] attackPressed={ctx.attackPressed}, attackOnCooldown={ctx.attackOnCooldown}, attackCDTimer={ctx.attackCDTimer} → {(result ? "fallAttack" : "fallLocomotion")}");
+        return result ? fallAttack : fallLocomotion;
+    }
 
     protected override State GetTransition()
     {

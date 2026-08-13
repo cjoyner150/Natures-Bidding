@@ -19,6 +19,8 @@ public class PlayerRoot : State
         HandleSpeedControl();
         HandleMomentumConservation(deltaTime);
         HandleActionCooldowns(deltaTime);
+        
+        CheckGravityDebug();
     }
 
     void HandleSpeedControl()
@@ -61,6 +63,21 @@ public class PlayerRoot : State
             ctx.comboCDTimer -= deltaTime;
 
             if (ctx.comboCDTimer <= 0) ctx.combo = 0;
+        }
+    }
+
+    void CheckGravityDebug()
+    {
+        if (!ctx.rb.useGravity)
+        {
+            State leaf = Leaf();
+            bool allowed = leaf is JumpAttack || leaf is AirDash;   // the only state permitted to have gravity off
+
+            if (!allowed)
+            {
+                Debug.LogError($"[GRAVITY-WATCHDOG] useGravity was false in state '{leaf.GetType().Name}' — restoring. Something disabled gravity and leaked past its restore path.");
+                ctx.rb.useGravity = true;
+            }
         }
     }
 

@@ -48,7 +48,6 @@ namespace HSM
 
             State lca = LCA(from, to);
             var exitChain = StatesToExit(from, lca);
-            var enterChain = StatesToEnter(to.ResolveLeaf(), lca);
 
             var exitSteps = GatherPhaseSteps(exitChain, deactivate: true);
 
@@ -62,6 +61,9 @@ namespace HSM
             {
                 Machine.ChangeState(from, to);
 
+                // Resolve late to allow OnExit logic to affect initial state decision
+                State leaf = to.ResolveLeaf();
+                var enterChain = StatesToEnter(leaf, lca);
                 var enterSteps = GatherPhaseSteps(enterChain, deactivate: false);
 
                 sequencer = UseSequential

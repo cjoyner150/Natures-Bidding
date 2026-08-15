@@ -14,13 +14,13 @@ public class TheMagicianTarotStatusEffect : StatusEffect
         var player = StatusEffectManager?.gameObject;
         if (player == null)
         {
-            Debug.LogError($"[TheMagicianTarotStatusEffect] No status effect manager found.");
+            GameLogger.Log(LogSeverity.Error, "No status effect manager found.");
             return;
         }
 
         playerContext = player.GetComponent<PlayerNetworkBehavior>()?.ctx;
         if (playerContext == null) { 
-            Debug.LogError($"[TheMagicianTarotStatusEffect] There is no player context found on {player.name}");
+            GameLogger.Log(LogSeverity.Error, $"There is no player context found on {player.name}");
             return;
         }
 

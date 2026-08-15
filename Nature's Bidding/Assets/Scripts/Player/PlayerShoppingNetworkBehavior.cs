@@ -89,7 +89,7 @@ public class PlayerShoppingNetworkBehavior : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         _registry[OwnerClientId] = this;
-        Debug.Log($"[PlayerShoppingNetworkBehavior] Registered client {OwnerClientId} — total in registry: {_registry.Count}");
+        GameLogger.Log(LogSeverity.Debug, $"[PlayerShoppingNetworkBehavior] Registered client {OwnerClientId} — total in registry: {_registry.Count}");
 
         if (IsServer)
             LoadRuntimeData();
@@ -117,7 +117,7 @@ public class PlayerShoppingNetworkBehavior : NetworkBehaviour
     {
         if (!IsServer) return;
         Items.Add(itemName);
-        Debug.Log($"[Server] Player {OwnerClientId} received item: {itemName}");
+        GameLogger.Log(LogSeverity.Debug, $"[Server] Player {OwnerClientId} received item: {itemName}");
         SyncRegistrySnapshot();
     }
 

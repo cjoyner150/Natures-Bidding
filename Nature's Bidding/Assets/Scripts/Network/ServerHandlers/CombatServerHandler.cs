@@ -64,7 +64,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         alivePlayers.Clear();
 
         var allPlayers = PersistentPlayerRegistry.Instance.GetAllPlayers();
-        Debug.Log($"[CombatServerHandler] Registry has {allPlayers.Count} entries: " +
+        GameLogger.Log(LogSeverity.Debug, $"Registry has {allPlayers.Count} entries: " +
             string.Join(" | ", allPlayers.Select(p => $"clientId={p.clientId}, authId={p.authenticationId}, name={p.playerName}")));
 
         foreach (var data in allPlayers)
@@ -76,7 +76,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
             }
             else
             {
-                Debug.Log($"Player {data.playerName} in registry but not connected — skipping spawn, they may rejoin.");
+                GameLogger.Log(LogSeverity.Debug, $"Player {data.playerName} in registry but not connected — skipping spawn, they may rejoin.");
             }
         }
 
@@ -98,7 +98,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
             if (string.IsNullOrWhiteSpace(effectors))
                 effectors = "none";
 
-            Debug.Log($"[CombatServerHandler] Player {data.clientId} ({data.playerName}) state after combat scene load | gold:{data.gold} wins:{data.combatWins} | masks:[{maskIds}] | tarot:[{tarotIds}] | artifacts:[{artifactIds}] | effectors:[{effectors}]");
+            GameLogger.Log(LogSeverity.Debug, $"Player {data.clientId} ({data.playerName}) state after combat scene load | gold:{data.gold} wins:{data.combatWins} | masks:[{maskIds}] | tarot:[{tarotIds}] | artifacts:[{artifactIds}] | effectors:[{effectors}]");
         }
 
         CombatBeginClientRpc();
@@ -150,7 +150,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
         float before = targetHealth.health.Value;
         targetHealth.health.Value -= damage;
-        Debug.Log($"[CombatServerHandler] Health ticked. Before={before}, After={targetHealth.health.Value}, Damage={damage}");
+        GameLogger.Log(LogSeverity.Debug, $"Health ticked. Before={before}, After={targetHealth.health.Value}, Damage={damage}");
 
         if (targetHealth.health.Value <= 0)
         {
@@ -169,7 +169,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
         if (targetHealth.health.Value <= 0)
         {
-            Debug.Log($"[CombatServerHandler] Player died via direct hit. Victim={hitPlayer.OwnerClientId}, Killer={attackingPlayer.OwnerClientId}");
+            GameLogger.Log(LogSeverity.Debug, $"Player died via direct hit. Victim={hitPlayer.OwnerClientId}, Killer={attackingPlayer.OwnerClientId}");
             OnPlayerDeath(hitPlayer.OwnerClientId);
             NotifyPlayersOfDeath(targetHealth, attackingPlayer.GetComponent<PlayerHealth>());
         }
@@ -196,7 +196,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         ) == 1;
 
         if (timedOut)
-            Debug.LogWarning($"[CombatServerHandler] Death sequence ack timeout for victim {victimId} — despawning anyway.");
+            GameLogger.Log(LogSeverity.Warning, $"Death sequence ack timeout for victim {victimId} — despawning anyway.");
 
         if (deadPlayer != null && deadPlayer.NetworkObject != null && deadPlayer.NetworkObject.IsSpawned)
             deadPlayer.NetworkObject.Despawn();
@@ -237,7 +237,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
         NetworkVisualEffectManager.SpawnExplosionAtPosition.Invoke(boomOrigin);
         Collider[] hits = Physics.OverlapSphere(boomOrigin, radius, playersLayer);
-        Debug.Log($"[CombatServerHandler] OverlapSphere found {hits.Length} colliders at {boomOrigin}, radius={radius}, layerMask={playersLayer.value}");
+        GameLogger.Log(LogSeverity.Debug, $"OverlapSphere found {hits.Length} colliders at {boomOrigin}, radius={radius}, layerMask={playersLayer.value}");
 
         HashSet<IDamageable> damagedObjectsOnThisAttack = new();
 
@@ -249,7 +249,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
             if (isSelf) continue;
 
-            Debug.Log($"[CombatServerHandler] Overlap collider: {go.name}, owner={hitNetObj?.OwnerClientId}, isSelf={isSelf}");
+            GameLogger.Log(LogSeverity.Debug, $"Overlap collider: {go.name}, owner={hitNetObj?.OwnerClientId}, isSelf={isSelf}");
             UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
 
             if (damageable != null)
@@ -259,7 +259,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
                 if (damageable is PlayerHealth targetHealth)
                 {
-                    Debug.Log($"[CombatServerHandler] PlayerHealth found. Damaging...");
+                    GameLogger.Log(LogSeverity.Debug, $"PlayerHealth found. Damaging...");
                     targetHealth.health.Value -= damage;
                     targetHealth.PlayerDamagedFeedbackClientRpc(boomOrigin, explodingPlayerId, damage, false);
 
@@ -331,7 +331,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
         if (playerData == null)
         {
-            Debug.LogError("No player data found for winning player.");
+            GameLogger.Log(LogSeverity.Error, "No player data found for winning player.");
         }
         else
         {
@@ -351,19 +351,19 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
     protected override void OnPlayerReconnected(ulong clientId, PlayerData data)
     {
-        Debug.Log($"Player {data.playerName} rejoined mid-combat. Will respawn next scene.");
+        GameLogger.Log(LogSeverity.Info, $"Player {data.playerName} rejoined mid-combat. Will respawn next scene.");
         PlayerRejoiningClientRpc(clientId);
     }
 
     protected override void OnNewPlayerConnected(ulong clientId, string authId, string playerName)
     {
-        Debug.LogWarning($"Unknown player {playerName} tried to join during combat. Ignoring.");
+        GameLogger.Log(LogSeverity.Warning, $"Unknown player {playerName} tried to join during combat. Ignoring.");
     }
 
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
     private void PlayerRejoiningClientRpc(ulong clientId)
     {
-        Debug.Log($"Player {clientId} has rejoined and will respawn next scene.");
+        GameLogger.Log(LogSeverity.Info, $"Player {clientId} has rejoined and will respawn next scene.");
 
         // Hook into UI here to show "Player X has rejoined"
     }

@@ -101,7 +101,7 @@ namespace HSM
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"[HSM] Phase Update threw — force-completing transition. {e}");
+                    GameLogger.LogException(LogSeverity.Error, "[HSM] Phase Update threw — force-completing transition.", e);
                     phaseDone = true;
                 }
 
@@ -115,7 +115,7 @@ namespace HSM
                         try { n(); }
                         catch (Exception e)
                         {
-                            Debug.LogError($"[HSM] nextPhase threw — abandoning transition. {e}");
+                            GameLogger.LogException(LogSeverity.Error, "[HSM] nextPhase threw — abandoning transition.", e);
                             sequencer = null;
                             EndTransition();
                         }
@@ -130,13 +130,13 @@ namespace HSM
                     _phaseTimer += deltaTime;
                     if (_phaseTimer > MaxPhaseSeconds)
                     {
-                        Debug.LogError($"[HSM] Phase exceeded {MaxPhaseSeconds}s — force-cancelling wedged transition.");
+                        GameLogger.Log(LogSeverity.Error, $"[HSM] Phase exceeded {MaxPhaseSeconds}s — force-cancelling wedged transition.");
                         cts?.Cancel();
                         _phaseTimer = 0f;
                         var n = nextPhase;
                         nextPhase = null;
                         sequencer = null;
-                        if (n != null) { try { n(); } catch (Exception e) { Debug.LogError($"[HSM] Forced nextPhase threw: {e}"); sequencer = null; } }
+                        if (n != null) { try { n(); } catch (Exception e) { GameLogger.LogException(LogSeverity.Error, "[HSM] Forced nextPhase threw.", e); sequencer = null; } }
                         if (sequencer == null) EndTransition();
                     }
                 }

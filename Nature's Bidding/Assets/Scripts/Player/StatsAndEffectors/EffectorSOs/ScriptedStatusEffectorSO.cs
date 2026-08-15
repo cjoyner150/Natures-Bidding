@@ -27,20 +27,20 @@ public class ScriptedStatusEffectorSO : StatusEffectorSO
     {
         if (string.IsNullOrEmpty(_effectTypeName))
         {
-            Debug.LogError($"[{name}] No effect type name set.");
+            GameLogger.Log(LogSeverity.Error, $"[{name}] No effect type name set.");
             return new List<StatusEffect>();
         }
 
         var type = Type.GetType(_effectTypeName);
         if (type == null)
         {
-            Debug.LogError($"[{name}] Could not find type '{_effectTypeName}'.");
+            GameLogger.Log(LogSeverity.Error, $"[{name}] Could not find type '{_effectTypeName}'.");
             return new List<StatusEffect>();
         }
 
         if (!typeof(StatusEffect).IsAssignableFrom(type))
         {
-            Debug.LogError($"[{name}] Type '{_effectTypeName}' is not a StatusEffect.");
+            GameLogger.Log(LogSeverity.Error, $"[{name}] Type '{_effectTypeName}' is not a StatusEffect.");
             return new List<StatusEffect>();
         }
 
@@ -63,7 +63,7 @@ public class ScriptedStatusEffectorSO : StatusEffectorSO
 
                 if (match == null)
                 {
-                    Debug.LogError($"[{name}] Missing parameter '{paramInfos[i].Name}' for {type.Name}.");
+                    GameLogger.Log(LogSeverity.Error, $"[{name}] Missing parameter '{paramInfos[i].Name}' for {type.Name}.");
                     args[i] = GetDefault(paramType);
                     continue;
                 }
@@ -104,7 +104,7 @@ public class ScriptedStatusEffectorSO : StatusEffectorSO
             return match.ObjectListValue ?? new List<StatusEffectorSO>();
         }
 
-        Debug.LogError($"[{name}] Unsupported parameter type '{paramType.Name}' for '{paramName}'. Add support in ScriptedStatusEffectorSO.");
+        GameLogger.Log(LogSeverity.Error, $"[{name}] Unsupported parameter type '{paramType.Name}' for '{paramName}'. Add support in ScriptedStatusEffectorSO.");
         return GetDefault(paramType);
     }
 

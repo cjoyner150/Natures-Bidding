@@ -29,14 +29,14 @@ public class BootstrapManager : MonoBehaviour
     private async UniTask HandleCommandLineJoin()
     {
         string[] args = Environment.GetCommandLineArgs();
-        Debug.Log($"Command line args: {string.Join(", ", args)}");
+        GameLogger.Log(LogSeverity.Debug, $"Command line args: {string.Join(", ", args)}");
 
         for (int i = 0; i < args.Length; i++)
         {
             if (args[i] == "+connect" && i + 1 < args.Length)
             {
                 string sessionCode = args[i + 1];
-                Debug.Log($"Launched with connect argument: {sessionCode}");
+                GameLogger.Log(LogSeverity.Debug, $"Launched with connect argument: {sessionCode}");
 
                 await PersistentGameStateManager.Instance.LoadMenuScene();
 
@@ -44,7 +44,7 @@ public class BootstrapManager : MonoBehaviour
                 bool success = await NetworkSessionManager.Instance.JoinSessionByCode(sessionCode);
                 if (!success)
                 {
-                    Debug.LogWarning($"Failed to join session from command line: {sessionCode}");
+                    GameLogger.Log(LogSeverity.Warning, $"Failed to join session from command line: {sessionCode}");
                     PersistentGameStateManager.Instance.ClearLoadingState();
                 }
 

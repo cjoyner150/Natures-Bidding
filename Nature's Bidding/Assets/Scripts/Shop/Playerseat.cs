@@ -63,40 +63,40 @@ public class PlayerSeat : MonoBehaviour
 
             if (skinnedMeshRenderer == null)
             {
-                Debug.LogError("[PlayerSeat] mesh found on spawned player obj is null");
+                GameLogger.Log(LogSeverity.Error, "mesh found on spawned player obj is null");
                 return;
             }
 
-            Debug.Log($"[PlayerSeat] mesh.materials.Length={skinnedMeshRenderer.materials.Length}");
+            GameLogger.Log(LogSeverity.Debug, $"mesh.materials.Length={skinnedMeshRenderer.materials.Length}");
 
             var player = PersistentPlayerRegistry.Instance.GetByClientId(clientId);
             if (player == null)
             {
-                Debug.LogError($"[PlayerSeat] no registry entry found for client {clientId}");
+                GameLogger.Log(LogSeverity.Error, $"no registry entry found for client {clientId}");
                 return;
             }
 
-            Debug.Log($"[PlayerSeat] player.playerIndex={player.playerIndex}, colorHexByIndex.Length={colorHexByIndex.Length}");
+            GameLogger.Log(LogSeverity.Debug, $"player.playerIndex={player.playerIndex}, colorHexByIndex.Length={colorHexByIndex.Length}");
 
             if (player.playerIndex < 0 || player.playerIndex >= colorHexByIndex.Length)
             {
-                Debug.LogError($"[PlayerSeat] playerIndex {player.playerIndex} out of bounds for colorHexByIndex (length {colorHexByIndex.Length}). Using fallback color.");
+                GameLogger.Log(LogSeverity.Error, $"playerIndex {player.playerIndex} out of bounds for colorHexByIndex (length {colorHexByIndex.Length}). Using fallback color.");
                 skinnedMeshRenderer.materials[2].SetColor("_Tint", Color.white);
             }
             else
             {
                 string hex = colorHexByIndex[player.playerIndex];
                 bool parsed = ColorUtility.TryParseHtmlString(hex, out var c);
-                Debug.Log($"[PlayerSeat] hex='{hex}', parsed={parsed}, result={c}");
+                GameLogger.Log(LogSeverity.Debug, $"hex='{hex}', parsed={parsed}, result={c}");
                 Color playerColor = ColorUtility.TryParseHtmlString(colorHexByIndex[player.playerIndex], out c) ? c : Color.white;
-                Debug.Log($"[PlayerSeat] Has _Tint property: {skinnedMeshRenderer.materials[2].HasProperty("_Tint")}");
+                GameLogger.Log(LogSeverity.Debug, $"Has _Tint property: {skinnedMeshRenderer.materials[2].HasProperty("_Tint")}");
                 skinnedMeshRenderer.materials[2].SetColor("_Tint", playerColor);
-                Debug.Log($"[PlayerSeat] Color after set: {skinnedMeshRenderer.materials[2].GetColor("_Tint")}");
+                GameLogger.Log(LogSeverity.Debug, $"Color after set: {skinnedMeshRenderer.materials[2].GetColor("_Tint")}");
             }
 
             Animator anim = _spawnedStandIn.GetComponentInChildren<Animator>();
             if (anim == null) {
-                Debug.LogError("[PlayerSeat] No animator found on seated player obj");
+                GameLogger.Log(LogSeverity.Error, "No animator found on seated player obj");
                 return;
             }
 

@@ -58,14 +58,14 @@ public class FallAttack : State
 
     protected override void OnExit()
     {
-        Debug.Log("[FallAttack] exiting after " + attackTimer);
+        GameLogger.Log(LogSeverity.Verbose, $"exiting after {attackTimer}");
 
         ctx.rb.useGravity = true;
         ctx.forceToAdd = Vector3.zero;
         ctx.attackCDTimer = ctx.attackCD / ctx.playerStats.AttackSpeed;
 
         try { ctx.playerAttackManager.EndAttack(); }
-        catch (System.Exception e) { Debug.LogError($"[FallAttack] EndAttack threw during exit: {e}"); }
+        catch (System.Exception e) { GameLogger.LogException(LogSeverity.Error, "An unexpected error occurred while ending an attack.", e); }
     }
 
     protected override State GetTransition()

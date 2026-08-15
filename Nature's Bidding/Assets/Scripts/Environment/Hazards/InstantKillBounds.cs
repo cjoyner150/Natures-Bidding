@@ -7,15 +7,13 @@ public class InstantKillBounds : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        Debug.Log($"[InstantKillBounds] OnTriggerEnter fired. other={other.gameObject.name}, tag={other.gameObject.tag}");
-
         if (other.gameObject.CompareTag("Player"))
         {
             UtilityExtensions.TryGetInParents<PlayerHealth>(other.gameObject, out var playerHealth);
 
             if (playerHealth != null)
             {
-                Debug.Log($"[InstantKillBounds] Resolved PlayerHealth on {playerHealth.gameObject.name}, OwnerClientId={playerHealth.OwnerClientId}");
+                GameLogger.Log(LogSeverity.Info, $"Player clientId={playerHealth.OwnerClientId} entered instant kill bounds.");
 
                 IGameServerHandler serverHandler = CombatServerHandler.Instance;
                 serverHandler ??= LobbyServerHandler.Instance;
@@ -27,7 +25,7 @@ public class InstantKillBounds : NetworkBehaviour
             }
             else
             {
-                Debug.LogWarning($"[InstantKillBounds] No PlayerHealth found in parents of {other.gameObject.name}");
+                GameLogger.Log(LogSeverity.Warning, $"No PlayerHealth found in parents of {other.gameObject.name}");
             }
         }
     }

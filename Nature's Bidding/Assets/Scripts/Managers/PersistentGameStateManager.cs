@@ -212,7 +212,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         );
 
         if (PlayerRegistryNetworkSync.Instance == null || StatusEffectNetworkManager.Instance == null)
-            Debug.LogWarning("[PersistentGameStateManager] Lobby bootstrap singletons were not ready in time; continuing anyway.");
+            GameLogger.Log(LogSeverity.Warning, "Lobby bootstrap singletons were not ready in time; continuing anyway.");
 
         RegisterAuthData();
 
@@ -236,7 +236,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         ShopManager newShopManager,
         ReadyManager newReadyManager)
     {
-        Debug.Log("[PersistentGameManager] Configuring game flow references...");
+        GameLogger.Log(LogSeverity.Debug, "Configuring game flow references...");
         biddingCanvas = newBiddingCanvas;
         shopCanvas = newShopCanvas;
         biddingManager = newBiddingManager;
@@ -323,7 +323,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     public async UniTask ReturnToMenu()
     {
-        //Debug.Log($"[ReturnToMenu] CALLED. Stack trace:\n{System.Environment.StackTrace}");
+        GameLogger.Log(LogSeverity.Verbose, $"[ReturnToMenu] CALLED. Stack trace:\n{System.Environment.StackTrace}");
         if (IsReturningToMenu) return;
         IsReturningToMenu = true;
 
@@ -380,31 +380,31 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private async UniTask LoadNetworkedSceneAsync(string sceneName)
     {
-        Debug.Log($"LoadNetworkedSceneAsync. IsServer: {NetworkManager.Singleton.IsServer}, IsListening: {NetworkManager.Singleton.IsListening}");
+        GameLogger.Log(LogSeverity.Debug, $"LoadNetworkedSceneAsync. IsServer: {NetworkManager.Singleton.IsServer}, IsListening: {NetworkManager.Singleton.IsListening}");
 
         _sceneLoadTcs = new UniTaskCompletionSource();
 
-        Debug.Log($"Loading scene: {sceneName}");
+        GameLogger.Log(LogSeverity.Debug, $"Loading scene: {sceneName}");
 
         NetworkManager.Singleton.SceneManager.OnSceneEvent += OnSceneEvent;
 
         if (NetworkManager.Singleton.IsServer)
         {
-            Debug.Log("IsServer � calling LoadScene.");
+            GameLogger.Log(LogSeverity.Debug, "IsServer calling LoadScene.");
             NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
         }
         else
         {
-            Debug.Log("Not server � waiting for scene sync from server.");
+            GameLogger.Log(LogSeverity.Debug, "Not server waiting for scene sync from server.");
         }
 
         try
         {
             await _sceneLoadTcs.Task;
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException e)
         {
-            Debug.Log("Scene load cancelled.");
+            GameLogger.LogException(LogSeverity.Warning, "Scene load cancelled.", e);
         }
         finally
         {
@@ -415,7 +415,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private void OnSceneEvent(SceneEvent sceneEvent)
     {
-        Debug.Log($"SceneEvent: {sceneEvent.SceneEventType}, ClientId: {sceneEvent.ClientId}, Local: {NetworkManager.Singleton.LocalClientId}");
+        GameLogger.Log(LogSeverity.Debug, $"SceneEvent: {sceneEvent.SceneEventType}, ClientId: {sceneEvent.ClientId}, Local: {NetworkManager.Singleton.LocalClientId}");
 
         if (sceneEvent.ClientId != NetworkManager.Singleton.LocalClientId) return;
 
@@ -507,7 +507,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     {
         if (biddingCanvas == null || shopCanvas == null)
         {
-            Debug.LogWarning($"[PersistentGameStateManager] ApplyFlowPhase({phase}) called before canvases were configured. Deferring.");
+            GameLogger.Log(LogSeverity.Warning, $"ApplyFlowPhase({phase}) called before canvases were configured. Deferring.");
             WaitForCanvasesThenApply(phase).Forget();
             return;
         }
@@ -572,12 +572,12 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
                 else if (level == CombatLevelSelectType.Volcano) sceneName = VolcanoCombatSceneName;
                 else
                 {
-                    Debug.LogError("[PersistentGameManager] Random level type generated unimplemented level. Defaulting to cliffs level.");
+                    GameLogger.Log(LogSeverity.Error, "Random level type generated unimplemented level. Defaulting to cliffs level.");
                     sceneName = CliffsCombatSceneName;
                 }
                 break;
             default:
-                Debug.LogError("[PersistentGameManager] levelSelectionType is set to an unimplemented level. Defaulting to cliffs level.");
+                GameLogger.Log(LogSeverity.Error, "LevelSelectionType is set to an unimplemented level. Defaulting to cliffs level.");
                 sceneName = CliffsCombatSceneName;
                 break;
         }

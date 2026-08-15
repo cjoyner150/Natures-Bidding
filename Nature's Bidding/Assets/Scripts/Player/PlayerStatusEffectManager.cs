@@ -47,7 +47,7 @@ public class PlayerStatusEffectManager : MonoBehaviour
 
     public void AddModifiers(IEnumerable<StatusEffectorSO> addedEffects)
     {
-        Debug.Log($"Added modifiers: {string.Join(", ", addedEffects.Select(x => x.Id))}");
+        GameLogger.Log(LogSeverity.Debug, $"Added modifiers: {string.Join(", ", addedEffects.Select(x => x.Id))}");
         _debugShowCurrentStatusEffectors.AddRange(addedEffects);
 
         foreach (var effector in addedEffects)
@@ -62,7 +62,7 @@ public class PlayerStatusEffectManager : MonoBehaviour
 
     public void AddModifiers(StatusEffectorSO addedEffect)
     {
-        Debug.Log($"Added modifiers: {addedEffect.Id}");
+        GameLogger.Log(LogSeverity.Debug, $"Added modifiers: {addedEffect.Id}");
         _debugShowCurrentStatusEffectors.Add(addedEffect);
 
         var effectData = new EffectorData(addedEffect, playerStats, this, statsMediator);

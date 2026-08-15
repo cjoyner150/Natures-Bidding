@@ -84,7 +84,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
 
     public void OnShopPhaseStart()
     {
-        Debug.Log("[ShopManager] Shop phase is starting...");
+        GameLogger.Log(LogSeverity.Info, "Shop phase is starting...");
 
         if (phaseLabel) phaseLabel.text = "Shop Phase";
         PotManager.Instance?.ResetForNewPhase();
@@ -215,7 +215,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
 
             if (_upgradeLookup.ContainsKey(upgrade.Id))
             {
-                Debug.LogWarning($"[ShopManager] Duplicate upgrade ID '{upgrade.Id}' on '{upgrade.name}'.");
+                GameLogger.Log(LogSeverity.Warning, $"Duplicate upgrade ID '{upgrade.Id}' on '{upgrade.name}'.");
                 continue;
             }
 
@@ -245,12 +245,12 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
 
         if (playerShopPanelPrefab == null)
         {
-            Debug.LogError("[ShopManager] playerShopPanelPrefab is not assigned in the Inspector!");
+            GameLogger.Log(LogSeverity.Error, "playerShopPanelPrefab is not assigned in the Inspector!");
             return;
         }
         if (shopPanelsContainer == null)
         {
-            Debug.LogError("[ShopManager] shopPanelsContainer is not assigned in the Inspector!");
+            GameLogger.Log(LogSeverity.Error, "shopPanelsContainer is not assigned in the Inspector!");
             return;
         }
 
@@ -273,11 +273,11 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
 
             if (panel == null)
             {
-                Debug.LogError("[ShopManager] playerShopPanelPrefab is missing the PlayerShopPanel component!");
+                GameLogger.Log(LogSeverity.Error, "playerShopPanelPrefab is missing the PlayerShopPanel component!");
                 continue;
             }
 
-            Debug.Log($"[ShopManager] Building panel for client {clientId} isLocal:{isLocal} offerings:{offerings.Count}");
+            GameLogger.Log(LogSeverity.Info, $"Building panel for client {clientId} isLocal:{isLocal} offerings:{offerings.Count}");
             panel.Initialise(clientId, offerings, isLocal);
             _panels[clientId] = panel;
             createdPanels++;
@@ -306,7 +306,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
     /// <summary>Called by the local player's panel when Buy is clicked on an upgrade.</summary>
     public void LocalPlayerBuyUpgrade(ShopUpgrade upgrade, PlayerShopPanel sourcePanel)
     {
-        Debug.Log($"[ShopManager] LocalPlayerBuyUpgrade requested. id:{upgrade?.Id} localClient:{NetworkManager.Singleton?.LocalClientId}");
+        GameLogger.Log(LogSeverity.Info, $"LocalPlayerBuyUpgrade requested. id:{upgrade?.Id} localClient:{NetworkManager.Singleton?.LocalClientId}");
         BuyUpgradeRpc(upgrade.Id);
     }
 
@@ -362,7 +362,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
         if (_panels.TryGetValue(local, out var panel))
         {
             // Panel's buy button text is updated internally — just refresh it
-            Debug.LogWarning($"[Shop] Purchase failed: {reason}");
+            GameLogger.Log(LogSeverity.Warning, $"Purchase failed: {reason}");
         }
     }
 
@@ -373,7 +373,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
     /// <summary>Called by the local player's panel when Buy is clicked on the pot card.</summary>
     public void LocalPlayerBuyPot(PlayerShopPanel sourcePanel, bool isGrand)
     {
-        Debug.Log($"[ShopManager] LocalPlayerBuyPot requested. isGrand:{isGrand} localClient:{NetworkManager.Singleton?.LocalClientId}");
+        GameLogger.Log(LogSeverity.Info, $"LocalPlayerBuyPot requested. isGrand:{isGrand} localClient:{NetworkManager.Singleton?.LocalClientId}");
         BuyPotRpc(isGrand);
     }
 
@@ -385,18 +385,18 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
         var playerState = registry?.GetByClientId(buyer);
         if (registry == null || playerState == null)
         {
-            Debug.LogWarning($"[ShopManager] BuyPotRpc rejected for client {buyer}: persistent registry data not found.");
+            GameLogger.Log(LogSeverity.Warning, $"BuyPotRpc rejected for client {buyer}: persistent registry data not found.");
             return;
         }
 
         int cost = isGrand ? grandPotCost : smallPotCost;
         if (playerState.gold < cost)
         {
-            Debug.LogWarning($"[ShopManager] BuyPotRpc rejected for client {buyer}: not enough coins ({playerState.gold}/{cost}).");
+            GameLogger.Log(LogSeverity.Warning, $"BuyPotRpc rejected for client {buyer}: not enough coins ({playerState.gold}/{cost}).");
             return;
         }
 
-        Debug.Log($"[ShopManager] BuyPotRpc accepted for client {buyer}. Deducting {cost} and opening {(isGrand ? "Grand" : "Small")} pot.");
+        GameLogger.Log(LogSeverity.Debug, $"BuyPotRpc accepted for client {buyer}. Deducting {cost} and opening {(isGrand ? "Grand" : "Small")} pot.");
 
         if (!registry.TrySpendGold(buyer, cost))
             return;
@@ -422,11 +422,11 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
 
         if (potManager == null)
         {
-            Debug.LogError("[ShopManager] Could not find PotManager to open the pot UI.");
+            GameLogger.Log(LogSeverity.Error, "[ShopManager] Could not find PotManager to open the pot UI.");
             return;
         }
 
-        Debug.Log($"[ShopManager] Opening pot UI sequence on client. isGrand:{isGrand}");
+        GameLogger.Log(LogSeverity.Debug, $"[ShopManager] Opening pot UI sequence on client. isGrand:{isGrand}");
         potManager.OpenSequence(isGrand);
     }
 

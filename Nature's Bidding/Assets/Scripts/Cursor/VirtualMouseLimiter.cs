@@ -29,9 +29,6 @@ public class VirtualMouseLimiter : MonoBehaviour
         mousePos.x = Mathf.Clamp(mousePos.x, 50, Screen.width - 50);
         mousePos.y = Mathf.Clamp(mousePos.y, 50, Screen.height - 50);
 
-        if (before != mousePos)
-            Debug.Log($"[VirtualMouseLimiter] Clamped from {before} to {mousePos}");
-
         InputState.Change(virtualMouseInput.virtualMouse.position, mousePos);
 
     }

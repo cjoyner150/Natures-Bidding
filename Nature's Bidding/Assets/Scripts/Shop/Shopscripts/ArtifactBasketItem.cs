@@ -35,7 +35,7 @@ public class ArtifactBasketItem : MonoBehaviour
     {
         if (visual == null)
         {
-            Debug.LogError($"[ArtifactBasketItem] 'visual' not assigned on {gameObject.name}.");
+            GameLogger.Log(LogSeverity.Error, $"'visual' not assigned on {gameObject.name}.");
             return;
         }
 

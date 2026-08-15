@@ -27,7 +27,7 @@ public class Fall : State
 
     protected override State GetInitialState() {
         bool result = ctx.attackPressed && !ctx.attackOnCooldown;
-        Debug.Log($"[Fall.GetInitialState] attackPressed={ctx.attackPressed}, attackOnCooldown={ctx.attackOnCooldown}, attackCDTimer={ctx.attackCDTimer} → {(result ? "fallAttack" : "fallLocomotion")}");
+        GameLogger.Log(LogSeverity.Verbose, $"[GetInitialState] attackPressed={ctx.attackPressed}, attackOnCooldown={ctx.attackOnCooldown}, attackCDTimer={ctx.attackCDTimer} → {(result ? "fallAttack" : "fallLocomotion")}");
         return result ? fallAttack : fallLocomotion;
     }
 

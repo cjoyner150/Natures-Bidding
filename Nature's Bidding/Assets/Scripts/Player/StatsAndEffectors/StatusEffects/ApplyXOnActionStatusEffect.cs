@@ -28,7 +28,7 @@ public class ApplyXOnActionStatusEffect : StatusEffect
 
     public override async void OnInitialize()
     {
-        Debug.Log($"[ApplyXOnActionStatusEffect] OnInitialize called. Instance hash: {GetHashCode()}, actionType: {actionType}");
+        GameLogger.Log(LogSeverity.Verbose, $"OnInitialize called. Instance hash: {GetHashCode()}, actionType: {actionType}");
 
         await UniTask.WaitUntil(() =>
             NetworkManager.Singleton.ConnectedClientsList.All(x => x.PlayerObject != null)
@@ -37,7 +37,7 @@ public class ApplyXOnActionStatusEffect : StatusEffect
         selfClientId = NetworkManager.Singleton.LocalClientId;
 
         InitHooks();
-        Debug.Log($"[ApplyXOnActionStatusEffect] Hooks initialized. Instance hash: {GetHashCode()}");
+        GameLogger.Log(LogSeverity.Verbose, $"Hooks initialized. Instance hash: {GetHashCode()}");
 
         applied = false;
     }
@@ -102,7 +102,7 @@ public class ApplyXOnActionStatusEffect : StatusEffect
         ulong applyToPlayerId = applyToSelf ? selfClientId : targetClientId;
 
         string[] effectIds = effects.Select(x => x.Id).ToArray();
-        Debug.Log($"Sending effects ({string.Join(", ", effectIds)}) to {applyToPlayerId}");
+        GameLogger.Log(LogSeverity.Debug, $"Sending effects ({string.Join(", ", effectIds)}) to {applyToPlayerId}");
         StatusEffectNetworkManager.Instance.ApplyToPlayerServerRpc(applyToPlayerId, string.Join(",", effectIds));
 
         OnApplyEffectTo(applyToPlayerId);

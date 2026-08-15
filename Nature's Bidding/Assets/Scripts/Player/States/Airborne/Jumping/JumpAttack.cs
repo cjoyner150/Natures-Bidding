@@ -60,7 +60,7 @@ public class JumpAttack : State
     {
         ctx.forceToAdd = Vector3.zero;
         ctx.attackCDTimer = ctx.attackCD / ctx.playerStats.AttackSpeed;
-        Debug.Log($"[JumpAttack.OnExit] attackCD={ctx.attackCD}, AttackSpeed={ctx.playerStats.AttackSpeed}, attackCDTimer set to={ctx.attackCDTimer}, attackOnCooldown={ctx.attackOnCooldown}");
+        GameLogger.Log(LogSeverity.Verbose, $"[OnExit] attackCD={ctx.attackCD}, AttackSpeed={ctx.playerStats.AttackSpeed}, attackCDTimer set to={ctx.attackCDTimer}, attackOnCooldown={ctx.attackOnCooldown}");
 
         ctx.rb.useGravity = true;
         ctx.playerAttackManager.EndAttack();

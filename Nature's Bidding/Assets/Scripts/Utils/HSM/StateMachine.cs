@@ -39,7 +39,7 @@ namespace HSM
         /// </summary>
         internal void ChangeState(State from, State to)
         {
-            HSMDebug.Log($"[ChangeState] {from.GetType().Name} -> {to.GetType().Name}");
+            GameLogger.Log(LogSeverity.Debug, $"[ChangeState] {from.GetType().Name} -> {to.GetType().Name}");
 
             if (from == to || from == null || to == null) return;
 
@@ -54,7 +54,7 @@ namespace HSM
                 try { s.Exit(); }
                 catch (System.Exception e)
                 {
-                    Debug.LogError($"[HSM] Exception in {s.GetType().Name}.OnExit — continuing transition. {e}");
+                    GameLogger.Log(LogSeverity.Error, $"[HSM] Exception in {s.GetType().Name}.OnExit — continuing transition. {e}");
                 }
                 if (s.Parent != null) s.Parent.ActiveChild = null;
             }
@@ -77,22 +77,12 @@ namespace HSM
             {
                 if (s == null)
                 {
-                    Debug.LogError("[HSM] EnterChain: leaf is not a descendant of ancestor. Aborting.");
+                    GameLogger.Log(LogSeverity.Error, "EnterChain: leaf is not a descendant of ancestor. Aborting.");
                     return;
                 }
                 stack.Push(s);
             }
             while (stack.Count > 0) stack.Pop().Enter();
-        }
-    }
-
-    public static class HSMDebug
-    {
-        public static bool Enabled = true;
-
-        public static void Log(string msg)
-        {
-            if (Enabled) Debug.Log($"[HSM] {msg}");
         }
     }
 }

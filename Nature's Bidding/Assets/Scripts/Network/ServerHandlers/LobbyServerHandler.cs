@@ -47,7 +47,7 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
 
     private void OnClientConnected(ulong clientId)
     {
-        Debug.Log($"Client {clientId} connected.");
+        GameLogger.Log(LogSeverity.Info, $"Client {clientId} connected.");
     }
 
     private void OnClientDisconnected(ulong clientId)
@@ -64,7 +64,7 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
     {
         if (!PersistentPlayerRegistry.Instance.HasPlayer(clientId))
         {
-            Debug.LogWarning($"Client {clientId} has no registry entry yet, cannot spawn.");
+            GameLogger.Log(LogSeverity.Warning, $"Client {clientId} has no registry entry yet, cannot spawn.");
             return;
         }
 
@@ -117,7 +117,7 @@ public class LobbyServerHandler : BaseGameServerHandler<LobbyServerHandler>, IGa
 
     protected override void OnPlayerReconnected(ulong clientId, PlayerData data)
     {
-        Debug.LogWarning($"Unexpected reconnect: {data.playerName} tried to reconnect in lobby. Ignoring.");
+        GameLogger.Log(LogSeverity.Warning, $"Unexpected reconnect: {data.playerName} tried to reconnect in lobby. Ignoring.");
         PersistentPlayerRegistry.Instance.UnregisterLobbyPlayer(clientId);
         OnNewPlayerConnected(clientId, data.authenticationId, data.playerName);
     }

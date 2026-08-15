@@ -37,13 +37,13 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
 
         if (playerPrefab == null)
         {
-            Debug.LogError("[GameplaySpawnManager] playerPrefab is not assigned.");
+            GameLogger.Log(LogSeverity.Error, "[GameplaySpawnManager] playerPrefab is not assigned.");
             return null;
         }
 
         if (spawnPoints == null || spawnPoints.Count == 0)
         {
-            Debug.LogError("[GameplaySpawnManager] No spawn points available in the active scene.");
+            GameLogger.Log(LogSeverity.Error, "[GameplaySpawnManager] No spawn points available in the active scene.");
             return null;
         }
 
@@ -51,7 +51,7 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
 
         if (spawnPoint == null)
         {
-            Debug.LogError("[GameplaySpawnManager] Spawn point reference is missing.");
+            GameLogger.Log(LogSeverity.Error, "[GameplaySpawnManager] Spawn point reference is missing.");
             return null;
         }
 
@@ -66,7 +66,7 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
     {
         if (playerHealthBarPrefab == null)
         {
-            Debug.LogError("[GameplaySpawnManager] playerHealthBarPrefab is not assigned.");
+            GameLogger.Log(LogSeverity.Error, "[GameplaySpawnManager] playerHealthBarPrefab is not assigned.");
             return null;
         }
 
@@ -90,7 +90,7 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
 
         playerPrefab = NetworkManager.Singleton.NetworkConfig.PlayerPrefab;
         if (playerPrefab != null)
-            Debug.Log("[GameplaySpawnManager] Using player prefab from NetworkManager configuration.");
+            GameLogger.Log(LogSeverity.Warning, "[GameplaySpawnManager] Using player prefab from NetworkManager configuration.");
     }
 
     private void RefreshSpawnPointsIfNeeded()

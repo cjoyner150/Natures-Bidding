@@ -16,7 +16,7 @@ public class StatsMediator
 
         modifier.OnDispose += _ =>
         {
-            Debug.Log($"Disposing {modifier.GetType().Name}");
+            GameLogger.Log(LogSeverity.Debug, $"Disposing {modifier.GetType().Name}");
             modifiers.Remove(modifier);
 
             string printMods = "";
@@ -24,7 +24,7 @@ public class StatsMediator
             {
                 printMods += modifier.GetType().Name;
             }
-            Debug.Log("new list " + printMods);
+            GameLogger.Log(LogSeverity.Debug, "new list " + printMods);
 
             Queries -= modifier.Handle;
         };

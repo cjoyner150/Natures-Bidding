@@ -75,7 +75,7 @@ public class PlayerRoot : State
 
             if (!allowed)
             {
-                Debug.LogError($"[GRAVITY-WATCHDOG] useGravity was false in state '{leaf.GetType().Name}' — restoring. Something disabled gravity and leaked past its restore path.");
+                GameLogger.Log(LogSeverity.Warning, $"[GRAVITY-WATCHDOG] useGravity was false in state '{leaf.GetType().Name}' — restoring. Something disabled gravity and leaked past its restore path.");
                 ctx.rb.useGravity = true;
             }
         }

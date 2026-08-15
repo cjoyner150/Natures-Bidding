@@ -37,12 +37,12 @@ public class Knockback : State
     protected override void OnUpdate(float deltaTime)
     {
         if (Time.frameCount % 30 == 0)
-            Debug.Log($"[KB-DIAG] OnUpdate running. timer={knockbackTimer:F2}, flag={ctx.shouldTakeKnockback}, momentumDir={momentumDirection}, vel={ctx.rb.linearVelocity}");
+            GameLogger.Log(LogSeverity.Verbose, $"[KB-DIAG] OnUpdate running. timer={knockbackTimer:F2}, flag={ctx.shouldTakeKnockback}, momentumDir={momentumDirection}, vel={ctx.rb.linearVelocity}");
         // Knockback is flagged again during knockback, so we need to reset the momentum direction and facing direction to the new hit direction
         // This should really only happen for race conditions where the player invulnerable isn't set yet, but it can happen if the rpcs are slow or delayed.
         if (ctx.shouldTakeKnockback)
         {
-            Debug.Log($"[KB-DIAG] Consuming re-hit. lastHitFrom={ctx.lastHitFromPosition}, playerPos={ctx.rb.transform.position}");
+            GameLogger.Log(LogSeverity.Warning, $"[KB-DIAG] Consuming re-hit. lastHitFrom={ctx.lastHitFromPosition}, playerPos={ctx.rb.transform.position}");
             ctx.shouldTakeKnockback = false;
 
             momentumDirection = ctx.rb.transform.position - ctx.lastHitFromPosition;

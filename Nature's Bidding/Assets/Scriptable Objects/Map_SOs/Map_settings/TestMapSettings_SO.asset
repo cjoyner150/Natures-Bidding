@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1ae12bb5f520ab45a48c9025b549cb2, type: 3}
+  m_Name: TestMapSettings_SO
+  m_EditorClassIdentifier: Assembly-CSharp::MapSettingsSO
+  orientation: 1
+  totalFloors: 15
+  floors:
+  - inspectorName: Floor 0
+    maxWidth: 1
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 1
+    maxWidth: 6
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 2
+    maxWidth: 4
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 3
+    maxWidth: 6
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 4
+    maxWidth: 4
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 5
+    maxWidth: 5
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 6
+    maxWidth: 4
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 7
+    maxWidth: 6
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 8
+    maxWidth: 3
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 9
+    maxWidth: 4
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 10
+    maxWidth: 5
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 11
+    maxWidth: 4
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 12
+    maxWidth: 6
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 13
+    maxWidth: 3
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  - inspectorName: Floor 14
+    maxWidth: 6
+    nodeDensity: 0.8
+    forcedBlueprint: {fileID: 0}
+  pathsPerNodeMin: 1
+  pathsPerNodeMax: 3
+  maxConnectionDrift: 0.4

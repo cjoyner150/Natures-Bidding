@@ -33,6 +33,13 @@ public class AirborneStunned: State
 
     protected override void OnUpdate(float deltaTime)
     {
+        // If the player receives a parry response late, that means the rpc was delayed but the attacking player was parried, so we should not let the player be stunned. 
+        if (ctx.parryResponse)
+        {
+            exitStunned = true;
+            ctx.parryResponse = false;
+        }
+
         if (ctx.stunRecoveryTimer > 0) ctx.stunRecoveryTimer -= deltaTime;
         else if (ctx.additionalStunTime > 0) ctx.additionalStunTime -= deltaTime;
 

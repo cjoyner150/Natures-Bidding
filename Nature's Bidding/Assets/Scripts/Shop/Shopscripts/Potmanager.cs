@@ -129,7 +129,7 @@ public class PotManager : NetworkBehaviour
         _currentPotType = isGrand ? grandPot : smallPot;
         if (_currentPotType == null)
         {
-            Debug.LogError($"[PotManager] PotType not assigned ({(isGrand ? "grandPot" : "smallPot")})!");
+            GameLogger.Log(LogSeverity.Error, $"PotType not assigned ({(isGrand ? "grandPot" : "smallPot")})!");
             return;
         }
 
@@ -157,11 +157,11 @@ public class PotManager : NetworkBehaviour
         //_rootCanvas = null;
         //foreach (var c in FindObjectsByType<Canvas>(FindObjectsSortMode.None))
         //    if (c.isRootCanvas) { _rootCanvas = c; break; }
-        Debug.Log($"[PotManager] root canvas is {_rootCanvas == null}");
+        GameLogger.Log(LogSeverity.Verbose, $"root canvas is {_rootCanvas == null}");
 
         // Show overlay
         if (potOverlay == null)
-            Debug.LogWarning("[PotManager] potOverlay is not assigned, the pot UI will not be visible.");
+            GameLogger.Log(LogSeverity.Warning, "potOverlay is not assigned, the pot UI will not be visible.");
         potOverlay?.SetActive(true);
         if (overlayCanvasGroup != null)
         {
@@ -456,7 +456,7 @@ public class PotManager : NetworkBehaviour
             fx.LoversPartnerB.Value = partnerB;
         }
 
-        Debug.Log($"[Server] The Lovers: {partnerA} and {partnerB} now share health.");
+        GameLogger.Log(LogSeverity.Debug, $"The Lovers: {partnerA} and {partnerB} now share health.");
     }
 
     [Rpc(SendTo.SpecifiedInParams)]

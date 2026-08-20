@@ -37,14 +37,14 @@ public class TheStarTarotStatusEffect : StatusEffect
         var player = StatusEffectManager?.gameObject;
         if (player == null)
         {
-            Debug.LogError($"[TheStarTarotStatusEffect] No status effect manager found.");
+            GameLogger.Log(LogSeverity.Error, $"[TheStarTarotStatusEffect] No status effect manager found.");
             return;
         }
 
         playerContext = player.GetComponent<PlayerNetworkBehavior>()?.ctx;
         if (playerContext == null)
         {
-            Debug.LogError($"[TheStarTarotStatusEffect] There is no player context found on {player.name}");
+            GameLogger.Log(LogSeverity.Error, $"[TheStarTarotStatusEffect] There is no player context found on {player.name}");
             return;
         }
     }

@@ -26,7 +26,7 @@ public class CursorUIManager : Singleton<CursorUIManager>
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
 
         DontDestroyOnLoad(gameObject);
-        Debug.Log("[CursorUIManager] Initialized.");
+        GameLogger.Log(LogSeverity.Debug, "Initialized.");
         CreateCursorCanvas();
     }
 
@@ -55,7 +55,7 @@ public class CursorUIManager : Singleton<CursorUIManager>
     {
         if (playerColors.Count < PersistentPlayerRegistry.Instance.GetAllPlayers().Count)
         {
-            Debug.LogError("[CursorUIManager] Not enough player colors defined for the number of players. Please add more colors to the playerColors list.");
+            GameLogger.Log(LogSeverity.Error, "[CursorUIManager] Not enough player colors defined for the number of players. Please add more colors to the playerColors list.");
             return Color.white;
         }
 
@@ -73,7 +73,7 @@ public class CursorUIManager : Singleton<CursorUIManager>
             return playerColors[player.playerIndex];
         }
 
-        Debug.LogError("[CursorUIManager] No index assigned for player: " + clientId);
+        GameLogger.Log(LogSeverity.Error, "No index assigned for player: " + clientId);
         // Fallback (should not happen if assigned properly)
         int fallbackIdx = (int)(clientId % (ulong)playerColors.Count);
         return playerColors[fallbackIdx];
@@ -96,7 +96,7 @@ public class CursorUIManager : Singleton<CursorUIManager>
         if (_cursorImage == null) 
         { 
             Destroy(go); 
-            Debug.LogError("[CursorUIManager] Cursor prefab does not have an Image component.");
+            GameLogger.Log(LogSeverity.Error, "Cursor prefab does not have an Image component.");
             return null;
         }
         return go.GetComponent<RectTransform>();

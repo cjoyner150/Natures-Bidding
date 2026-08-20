@@ -23,7 +23,7 @@ public class ApplyStunOnActionStatusEffect : ApplyXOnActionStatusEffect
         {
             targetPlayer.GetComponent<PlayerHealth>().StunPlayer(stunTime);
         }
-        else Debug.LogError($"[ApplyStunOnActionStatusEffect] No player object with clientId: {targetId}");
+        else GameLogger.Log(LogSeverity.Error, $"No player object with clientId: {targetId}");
     }
 
 }

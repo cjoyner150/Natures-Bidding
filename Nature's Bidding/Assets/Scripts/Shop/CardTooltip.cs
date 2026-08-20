@@ -29,7 +29,7 @@ public class CardTooltip : MonoBehaviour
 
     public void SetCanvas(Canvas canvas)
     {
-        if (canvas == null) { Debug.LogWarning("[CardTooltip] SetCanvas called with null!"); return; }
+        if (canvas == null) { GameLogger.Log(LogSeverity.Warning, "SetCanvas called with null!"); return; }
 
         // If already root just use it directly
         if (canvas.isRootCanvas) { _rootCanvas = canvas; return; }
@@ -43,7 +43,7 @@ public class CardTooltip : MonoBehaviour
             c = parent;
         }
         _rootCanvas = c;
-        Debug.Log($"[CardTooltip] SetCanvas — input:{canvas.name} resolved root:{_rootCanvas?.name} isRoot:{_rootCanvas?.isRootCanvas}");
+        GameLogger.Log(LogSeverity.Verbose, $"SetCanvas — input:{canvas.name} resolved root:{_rootCanvas?.name} isRoot:{_rootCanvas?.isRootCanvas}");
     }
 
     public void Populate(ShopUpgrade upgrade, int owned)
@@ -66,7 +66,7 @@ public class CardTooltip : MonoBehaviour
 
     public void PositionBesideCard(RectTransform cardRect, float extraOffsetX = 20f)
     {
-        Debug.Log($"[Tooltip] PositionBesideCard called — extraOffsetX={extraOffsetX}, rt:{_rt != null} card:{cardRect != null} canvas:{_rootCanvas?.name ?? "NULL"}");
+        GameLogger.Log(LogSeverity.Debug, $"PositionBesideCard called — extraOffsetX={extraOffsetX}, rt:{_rt != null} card:{cardRect != null} canvas:{_rootCanvas?.name ?? "NULL"}");
         if (_rt == null || cardRect == null || _rootCanvas == null) return;
 
         float scale = _rootCanvas.scaleFactor;
@@ -98,6 +98,6 @@ public class CardTooltip : MonoBehaviour
         _rt.pivot = new Vector2(goRight ? 0f : 1f, 0.5f);
         _rt.anchoredPosition = new Vector2(canvasX, canvasY);
 
-        Debug.Log($"[Tooltip] cardRight:{cardRightPx:F0} cardLeft:{cardLeftPx:F0} centreY:{cardCentrePxY:F0} scale:{scale} goRight:{goRight} → canvas({canvasX:F0},{canvasY:F0}) screen({Screen.width}x{Screen.height})");
+        GameLogger.Log(LogSeverity.Verbose, $"cardRight:{cardRightPx:F0} cardLeft:{cardLeftPx:F0} centreY:{cardCentrePxY:F0} scale:{scale} goRight:{goRight} → canvas({canvasX:F0},{canvasY:F0}) screen({Screen.width}x{Screen.height})");
     }
 }

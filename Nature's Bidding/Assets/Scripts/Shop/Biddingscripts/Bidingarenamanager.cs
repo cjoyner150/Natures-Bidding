@@ -88,7 +88,7 @@ public class BiddingArenaManager : NetworkBehaviour
     {
         if (currentPool == null || itemPool == null || itemPool.Count == 0)
         {
-            Debug.LogWarning("[BiddingArenaManager] Item pool is empty!");
+            GameLogger.Log(LogSeverity.Warning, "Item pool is empty!");
             return null;
         }
 
@@ -109,7 +109,7 @@ public class BiddingArenaManager : NetworkBehaviour
     {
         if (itemPool == null || itemPool.Count == 0)
         {
-            Debug.LogWarning("[BiddingArenaManager] Item pool is empty!");
+            GameLogger.Log(LogSeverity.Warning, "Item pool is empty!");
             return;
         }
 

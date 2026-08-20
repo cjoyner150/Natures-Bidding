@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{CF7B40B4-05B4-4E7E-AF5D-19893A335BE9}",
     "Language": "SFX",
-    "Hash": "{89B7A8D2-E2A3-A2B1-9E9D-6E6EEA8E6D1B}",
+    "Hash": "{8A6C8D55-7F8E-BA46-F30A-3180EBE74922}",
     "ObjectPath": "Play_SFX_ManMask_Explosion",
     "ShortName": "Play_SFX_ManMask_Explosion",
     "Path": "Event/Play_SFX_ManMask_Explosion.bnk",
@@ -51,6 +51,6 @@
     ]
    }
   ],
-  "FileHash": "{1FEC40EF-2D1C-F57F-6A70-8B0B4207EB35}"
+  "FileHash": "{86FD24D0-823E-118E-4B70-69732CD20B96}"
  }
 }

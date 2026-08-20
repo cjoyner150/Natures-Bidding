@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{70FC38F5-5881-4468-A0ED-87520397CA12}",
     "Language": "SFX",
-    "Hash": "{0DACAA5A-8240-7EF4-B0FE-EF9FEA184981}",
+    "Hash": "{EC0E277B-74D1-FAF2-1E1A-A4E77A6251A9}",
     "ObjectPath": "Play_SFX_Parry",
     "ShortName": "Play_SFX_Parry",
     "Path": "Event/Play_SFX_Parry.bnk",
@@ -106,6 +106,6 @@
     ]
    }
   ],
-  "FileHash": "{D23ADD1D-FC82-5962-A697-690DA55B1FD0}"
+  "FileHash": "{2EE7042E-3778-C9F6-452A-B4741FBAA332}"
  }
 }

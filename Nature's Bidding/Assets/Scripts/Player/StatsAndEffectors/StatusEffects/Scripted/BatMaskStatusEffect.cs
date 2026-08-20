@@ -26,7 +26,7 @@ public class BatMaskStatusEffect : StatusEffect
             NetworkManager.Singleton.ConnectedClientsList.All(c => c.PlayerObject != null)
         );
 
-        Debug.Log("[BatMaskStatusEffect] Calling SpawnBatConfusion event...");
+        GameLogger.Log(LogSeverity.Debug, "Calling SpawnBatConfusion event...");
         NetworkVisualEffectManager.SpawnBatConfusionEffectsOnPlayer?.Invoke(NetworkManager.Singleton.LocalClientId);
     }  
 

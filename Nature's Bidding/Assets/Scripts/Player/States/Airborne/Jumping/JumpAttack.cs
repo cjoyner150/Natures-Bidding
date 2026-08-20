@@ -26,19 +26,13 @@ public class JumpAttack : State
 
         ctx.anim.SetTrigger("JumpAttack");
         ctx.anim.SetFloat("AttackSpeed", 1 + ((ctx.playerStats.AttackSpeed - 1) / 2f));
-        SetAttackActive(ctx.attackActiveDelay);
+        ctx.playerAttackManager.BeginAttack();
 
         facingDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
         momentumDirection = (facingDirection + ctx.modelHolder.up).normalized;
 
         attackTimer = ctx.jumpAttackTime / ctx.playerStats.AttackSpeed;
         exitAttack = false;
-    }
-
-    async void SetAttackActive(int delay)
-    {
-        await UniTask.Delay(delay);
-        ctx.playerAttackManager.BeginAttack();
     }
 
     protected override void OnUpdate(float deltaTime)
@@ -66,6 +60,7 @@ public class JumpAttack : State
     {
         ctx.forceToAdd = Vector3.zero;
         ctx.attackCDTimer = ctx.attackCD / ctx.playerStats.AttackSpeed;
+        GameLogger.Log(LogSeverity.Verbose, $"[OnExit] attackCD={ctx.attackCD}, AttackSpeed={ctx.playerStats.AttackSpeed}, attackCDTimer set to={ctx.attackCDTimer}, attackOnCooldown={ctx.attackOnCooldown}");
 
         ctx.rb.useGravity = true;
         ctx.playerAttackManager.EndAttack();

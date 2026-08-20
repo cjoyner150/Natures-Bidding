@@ -117,7 +117,7 @@ public class PlayerShopPanel : MonoBehaviour
             _canvas = _canvas.transform.parent?.GetComponentInParent<Canvas>();
         if (_canvas == null)
             _canvas = FindFirstObjectByType<Canvas>();
-        Debug.Log($"[PlayerShopPanel] Canvas found: {_canvas?.name} isRoot:{_canvas?.isRootCanvas}");
+        GameLogger.Log(LogSeverity.Verbose, $"Canvas found: {_canvas?.name} isRoot:{_canvas?.isRootCanvas}");
 
         _clientId  = clientId;
         _isLocal   = isLocal;
@@ -136,16 +136,14 @@ public class PlayerShopPanel : MonoBehaviour
         if (detailPanel) detailPanel.SetActive(false);
         if (buyButton)   buyButton.gameObject.SetActive(false);
 
-        Debug.Log($"[PlayerShopPanel] reroll button is null: {rerollButton == null}");
-
         if (rerollButton != null)
         {
             _rerollButtonRect = rerollButton.GetComponent<RectTransform>();
             if (_rerollButtonRect != null)
                 _rerollButtonBasePosition = _rerollButtonRect.anchoredPosition;
 
-            Debug.Log($"[PlayerShopPanel] reroll button rect is null: {_rerollButtonRect == null}");
-            Debug.Log($"[PlayerShopPanel] reroll button setup on isLocal: {_isLocal}");
+            GameLogger.Log(LogSeverity.Verbose, $"reroll button rect is null: {_rerollButtonRect == null}");
+            GameLogger.Log(LogSeverity.Verbose, $"reroll button setup on isLocal: {_isLocal}");
             rerollButton.onClick.RemoveAllListeners();
             rerollButton.onClick.AddListener(() => { if (_isLocal) StartRerollChainPull(); });
             rerollButton.gameObject.SetActive(isLocal);
@@ -240,7 +238,7 @@ public class PlayerShopPanel : MonoBehaviour
                 yield break;
             }
         }
-        Debug.LogWarning($"[PlayerShopPanel] Could not find persistent registry data for client {_clientId} after retries.");
+        GameLogger.Log(LogSeverity.Warning, $"Could not find persistent registry data for client {_clientId} after retries.");
     }
 
     #endregion
@@ -249,7 +247,7 @@ public class PlayerShopPanel : MonoBehaviour
 
     void StartRerollChainPull()
     {
-        Debug.Log("[PlayerShopPanel] Reroll chain pulled!");
+        GameLogger.Log(LogSeverity.Info, "Reroll chain pulled!");
 
         if (!_isLocal)
             return;
@@ -323,12 +321,12 @@ public class PlayerShopPanel : MonoBehaviour
 
         if (upgradeCardPrefab == null)
         {
-            Debug.LogError($"[PlayerShopPanel] upgradeCardPrefab not assigned on {gameObject.name}");
+            GameLogger.Log(LogSeverity.Error, $"upgradeCardPrefab not assigned on {gameObject.name}");
             return;
         }
         if (cardsRow == null)
         {
-            Debug.LogError($"[PlayerShopPanel] cardsRow not assigned on {gameObject.name}");
+            GameLogger.Log(LogSeverity.Error, $"cardsRow not assigned on {gameObject.name}");
             return;
         }
 
@@ -527,7 +525,7 @@ public class PlayerShopPanel : MonoBehaviour
             }
         }
 
-        if (_canvas == null) { Debug.LogError("[PlayerShopPanel] Cannot find any Canvas!"); return; }
+        if (_canvas == null) { GameLogger.Log(LogSeverity.Error, "Cannot find any Canvas!"); return; }
 
         var go = Instantiate(tooltipPrefab, _canvas.transform);
         go.SetActive(false);
@@ -569,7 +567,7 @@ public class PlayerShopPanel : MonoBehaviour
     {
         if (!_isLocal || _smallPotUsed) return;
 
-        Debug.Log("[PlayerShopPanel] Small Pot clicked, requesting purchase/open.");
+        GameLogger.Log(LogSeverity.Debug, "Small Pot clicked, requesting purchase/open.");
         ShopManager.Instance?.LocalPlayerBuyPot(this, false);
     }
 
@@ -577,7 +575,7 @@ public class PlayerShopPanel : MonoBehaviour
     {
         if (!_isLocal || _grandPotUsed) return;
 
-        Debug.Log("[PlayerShopPanel] Grand Pot clicked, requesting purchase/open.");
+        GameLogger.Log(LogSeverity.Debug, "Grand Pot clicked, requesting purchase/open.");
         ShopManager.Instance?.LocalPlayerBuyPot(this, true);
     }
 

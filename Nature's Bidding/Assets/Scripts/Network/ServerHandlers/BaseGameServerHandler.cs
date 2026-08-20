@@ -130,7 +130,7 @@ public abstract class BaseGameServerHandler<T> : NetworkSingleton<T> where T : N
 
         if (PersistentPlayerRegistry.Instance.TryReconnectPlayer(clientId, authId, out var data))
         {
-            Debug.Log($"Player {playerName} reconnected.");
+            GameLogger.Log(LogSeverity.Info, $"Player {playerName} reconnected.");
             OnPlayerReconnected(clientId, data);
             return;
         }

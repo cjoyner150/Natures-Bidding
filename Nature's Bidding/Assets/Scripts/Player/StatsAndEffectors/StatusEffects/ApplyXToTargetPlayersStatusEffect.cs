@@ -70,7 +70,7 @@ public class ApplyXToTargetPlayersStatusEffect : StatusEffect
     protected void ApplyToPlayer(ulong targetClientId)
     {
         string[] effectIds = effects.Select(x => x.Id).ToArray();
-        Debug.Log($"Sending effects ({string.Join(", ", effectIds)}) to {targetClientId}");
+        GameLogger.Log(LogSeverity.Debug, $"Sending effects ({string.Join(", ", effectIds)}) to {targetClientId}");
         StatusEffectNetworkManager.Instance.ApplyToPlayerServerRpc(targetClientId, string.Join(",", effectIds));
     }
 }

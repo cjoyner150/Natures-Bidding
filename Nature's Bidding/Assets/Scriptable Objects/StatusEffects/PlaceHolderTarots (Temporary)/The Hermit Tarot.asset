@@ -30,6 +30,8 @@ MonoBehaviour:
     ObjectListValue:
     - {fileID: 11400000, guid: cfe4a3454c8d5554a8fb99d5f2441d77, type: 2}
     - {fileID: 11400000, guid: e4c081ac0b6471c489ed6ec0a9ebff1d, type: 2}
+    - {fileID: 11400000, guid: e4c081ac0b6471c489ed6ec0a9ebff1d, type: 2}
+    - {fileID: 11400000, guid: e4c081ac0b6471c489ed6ec0a9ebff1d, type: 2}
   - ParamName: applyOnce
     FloatValue: 0
     BoolValue: 0

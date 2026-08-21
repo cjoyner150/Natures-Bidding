@@ -271,7 +271,7 @@ MonoBehaviour:
     parryCDTimer: 0
     shouldStunSelf: 0
     isStunned: 0
-    stunTime: 1.5
+    stunTime: 1.25
     stunRecoveryTimer: 0
     additionalStunTime: 0
     dashTime: 0.25

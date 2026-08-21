@@ -20,4 +20,4 @@ MonoBehaviour:
   TargetOperationType: 0
   EffectByStat: 17
   ChangeEffectByOperation: 2
-  ChangeEffectByOperationValue: 200
+  ChangeEffectByOperationValue: 125

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce4ee29c916845b4fb8bc73834bef549, type: 3}
-  m_Name: Move Speed +.2
+  m_Name: Crit Damage x3
   m_EditorClassIdentifier: Assembly-CSharp::BasicNumericalStatusEffectorSO
-  _id: move_speed_+.2
-  Title: Move Speed +.2
+  _id: crit_damage_x3
+  Title: Crit Damage x3
   Description: 
   Duration: -1
-  Stat: 3
-  Value: 0.2
-  OperationType: 0
+  Stat: 12
+  Value: 3
+  OperationType: 1

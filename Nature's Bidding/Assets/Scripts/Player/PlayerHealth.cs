@@ -97,7 +97,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
                 health.Value += to - from;
             }
 
-            Debug.Log($"[PlayerHealth] Health changed on client {OwnerClientId}. From: {from}, To: {to}, New max health: {maxHealth.Value}, New health: {health.Value}");
+            GameLogger.Log(LogSeverity.Debug, $"Health changed on client {OwnerClientId}. From: {from}, To: {to}, New max health: {maxHealth.Value}, New health: {health.Value}");
         }
 
         isProcessingHealthQueue = false;
@@ -128,7 +128,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         }
         else if (isParrying.Value)
         {
-            Debug.Log("[PlayerHealth] Hit Parried");
+            GameLogger.Log(LogSeverity.Debug, $"{OwnerClientId} parried a hit!");
 
             NotifyParrySuccessClientRpc(fromPlayerId);
 
@@ -147,7 +147,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
             var combatHandler = _serverHandler as CombatServerHandler;
             if (combatHandler == null)
             {
-                Debug.LogError("[PlayerHealth] TickHealth: _serverHandler is not a CombatServerHandler!");
+                GameLogger.Log(LogSeverity.Error, "TickHealth: _serverHandler is not a CombatServerHandler!");
                 return;
             }
 
@@ -203,13 +203,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     public void BeginParry()
     {
-        Debug.Log("[PlayerHealth] Parry Begun");
+        GameLogger.Log(LogSeverity.Debug, "Parry Begun");
         isParrying.Value = true;
     }
 
     public void EndParry()
     {
-        Debug.Log("[PlayerHealth] Parry End");
+        GameLogger.Log(LogSeverity.Debug, "Parry End");
         isParrying.Value = false;
     }
 
@@ -281,12 +281,12 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition, ulong fromAttackerId, float damage, bool critical = false)
     {
         if (!IsOwner) return;
-        Debug.Log($"[PlayerHealth] calling spawn hit effects event on player {OwnerClientId}");
+        GameLogger.Log(LogSeverity.Debug, $"Calling spawn hit effects event on player {OwnerClientId}");
         NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId, critical, fromPosition, damage);
         ctx.lastHitFromPosition = fromPosition;
         ctx.shouldTakeKnockback = true;
         PlayerCombatHooks.TriggerOnHit(fromAttackerId);
-        Debug.Log($"I've been hit! New health is {health.Value}");
+        GameLogger.Log(LogSeverity.Debug, $"I've been hit! New health is {health.Value}");
     }
 
     // This gets called before the final winner is calculated so the scene can transition immediately if this player has enough wins to become the final winner

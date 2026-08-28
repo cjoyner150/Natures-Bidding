@@ -52,7 +52,7 @@ public static class InputDeviceTracker
         if (newType != CurrentInputType)
         {
             CurrentInputType = newType;
-            Debug.Log($"[InputDeviceTracker] Switched to {CurrentInputType} (triggered by {device.displayName}).");
+            GameLogger.Log(LogSeverity.Info, $"[InputDeviceTracker] Switched to {CurrentInputType} (triggered by {device.displayName}).");
             OnInputTypeChanged?.Invoke(CurrentInputType);
         }
     }

@@ -48,7 +48,6 @@ namespace HSM
 
             State lca = LCA(from, to);
             var exitChain = StatesToExit(from, lca);
-            var enterChain = StatesToEnter(to.ResolveLeaf(), lca);
 
             var exitSteps = GatherPhaseSteps(exitChain, deactivate: true);
 
@@ -62,6 +61,9 @@ namespace HSM
             {
                 Machine.ChangeState(from, to);
 
+                // Resolve late to allow OnExit logic to affect initial state decision
+                State leaf = to.ResolveLeaf();
+                var enterChain = StatesToEnter(leaf, lca);
                 var enterSteps = GatherPhaseSteps(enterChain, deactivate: false);
 
                 sequencer = UseSequential
@@ -99,7 +101,7 @@ namespace HSM
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"[HSM] Phase Update threw — force-completing transition. {e}");
+                    GameLogger.LogException(LogSeverity.Error, "[HSM] Phase Update threw — force-completing transition.", e);
                     phaseDone = true;
                 }
 
@@ -113,7 +115,7 @@ namespace HSM
                         try { n(); }
                         catch (Exception e)
                         {
-                            Debug.LogError($"[HSM] nextPhase threw — abandoning transition. {e}");
+                            GameLogger.LogException(LogSeverity.Error, "[HSM] nextPhase threw — abandoning transition.", e);
                             sequencer = null;
                             EndTransition();
                         }
@@ -128,13 +130,13 @@ namespace HSM
                     _phaseTimer += deltaTime;
                     if (_phaseTimer > MaxPhaseSeconds)
                     {
-                        Debug.LogError($"[HSM] Phase exceeded {MaxPhaseSeconds}s — force-cancelling wedged transition.");
+                        GameLogger.Log(LogSeverity.Error, $"[HSM] Phase exceeded {MaxPhaseSeconds}s — force-cancelling wedged transition.");
                         cts?.Cancel();
                         _phaseTimer = 0f;
                         var n = nextPhase;
                         nextPhase = null;
                         sequencer = null;
-                        if (n != null) { try { n(); } catch (Exception e) { Debug.LogError($"[HSM] Forced nextPhase threw: {e}"); sequencer = null; } }
+                        if (n != null) { try { n(); } catch (Exception e) { GameLogger.LogException(LogSeverity.Error, "[HSM] Forced nextPhase threw.", e); sequencer = null; } }
                         if (sequencer == null) EndTransition();
                     }
                 }

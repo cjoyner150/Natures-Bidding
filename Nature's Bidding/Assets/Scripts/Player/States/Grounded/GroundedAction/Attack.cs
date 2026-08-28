@@ -22,30 +22,23 @@ public class Attack : State
 
         ctx.anim.SetTrigger("Attack");
         ctx.anim.SetFloat("AttackSpeed", 1 + ((ctx.playerStats.AttackSpeed - 1) / 2f));
-        SetAttackActive(ctx.attackActiveDelay);
-
-        momentumDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
+        ctx.playerAttackManager.BeginAttack();
 
         attackTimer = ctx.attackTime / ctx.playerStats.AttackSpeed;
         exitAttack = false;
-
-    }
-
-    async void SetAttackActive(int delay)
-    {
-        await UniTask.Delay(delay);
-        ctx.playerAttackManager.BeginAttack();
     }
 
     protected override void OnUpdate(float deltaTime)
     {
+        momentumDirection = ctx.moveInput.magnitude > 0.01f ? ctx.moveInput : ctx.modelHolder.forward;
+
         if (ctx.hitResponse)
         {
             exitAttack = true;
             return;
         }
 
-        ctx.forceToAdd = ctx.modelHolder.forward * ctx.acceleration * 10f;
+        ctx.forceToAdd = (momentumDirection * .5f + ctx.modelHolder.forward * .5f) * ctx.acceleration * 10f;
 
         HandleRotation(deltaTime);
 

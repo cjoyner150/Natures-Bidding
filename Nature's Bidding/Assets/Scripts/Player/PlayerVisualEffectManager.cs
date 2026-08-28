@@ -57,7 +57,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnParryEffectParticles(int milliseconds)
     {
-        Debug.Log(milliseconds);
+        GameLogger.Log(LogSeverity.Debug, $"SpawnParryEffectParticles called with duration: {milliseconds} ms");
         GameObject go = Instantiate(parryParticle, gameObject.transform, false);
         go.transform.localPosition = Vector3.zero;
         SafeDispose(go, milliseconds).Forget();
@@ -129,14 +129,14 @@ public class PlayerVisualEffectManager : MonoBehaviour
     public void SpawnJumpParticles()
     {
         GameObject go = Instantiate(jumpParticle, gameObject.transform, false);
-        Debug.Log($"[PlayerVisualEffectManager] SpawnJumpParticles called. Instantiated: {go != null}, activeInHierarchy: {go?.activeInHierarchy}");
+        GameLogger.Log(LogSeverity.Debug, $"SpawnJumpParticles called. Instantiated: {go != null}, activeInHierarchy: {go?.activeInHierarchy}");
         go.transform.localPosition = Vector3.zero;
         go.transform.SetParent(null);
 
         var allParticleSystems = go.GetComponentsInChildren<ParticleSystem>();
         foreach (var ps in allParticleSystems)
         {
-            Debug.Log($"[PlayerVisualEffectManager] ParticleSystem '{ps.gameObject.name}' isPlaying: {ps.isPlaying}, particleCount: {ps.particleCount}");
+            GameLogger.Log(LogSeverity.Debug, $"[PlayerVisualEffectManager] ParticleSystem '{ps.gameObject.name}' isPlaying: {ps.isPlaying}, particleCount: {ps.particleCount}");
         }
 
         SafeDispose(go, 1000).Forget();
@@ -144,7 +144,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnExplosionParticles(Vector3 spawnPos)
     {
-        Debug.Log("I've been told boom!");
+        GameLogger.Log(LogSeverity.Debug, "Explosion particles spawned.");
         GameObject go = Instantiate(explosionParticle, spawnPos, Quaternion.identity);
         SafeDispose(go, 4000).Forget();
     }

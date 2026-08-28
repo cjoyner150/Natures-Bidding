@@ -64,7 +64,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     public void OnSpawnExplosionAtPosition(Vector3 spawnPos) 
     {
-        Debug.Log("Server says boom!");
+        GameLogger.Log(LogSeverity.Debug, "Server has instructed an explosion to be spawned."); 
         var localVFXManager = GetFirstValidEffectManager();
         if (localVFXManager != null) localVFXManager.SpawnExplosionParticles(spawnPos);
 
@@ -72,7 +72,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     }
     public void OnSpawnHitReactionEffectsOnPlayer(ulong clientId, bool critical, Vector3 fromPos, float damage)
     {
-        Debug.Log($"[NetworkVisualEffectManager] OnSpawnHitReaction received for client {clientId}");
+        GameLogger.Log(LogSeverity.Debug, $"OnSpawnHitReaction received for client {clientId}");
         var localVFXManager = GetPlayerEffectManagerById(clientId);
         if (localVFXManager != null) localVFXManager.SpawnHitReactParticles(critical, fromPos, damage);
 
@@ -130,7 +130,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     public void OnSpawnJumpEffectsOnPlayer(ulong clientId)
     {
         var localVFXManager = GetPlayerEffectManagerById(clientId);
-        Debug.Log($"[NetworkVisualEffectManager] OnSpawnJumpEffectsOnPlayer clientId={clientId}, localVFXManager found={localVFXManager != null}");
+        GameLogger.Log(LogSeverity.Debug, $"OnSpawnJumpEffectsOnPlayer clientId={clientId}, localVFXManager found={localVFXManager != null}");
         if (localVFXManager != null) localVFXManager.SpawnJumpParticles();
 
         SpawnJumpEffectsClientRpc(clientId);
@@ -179,7 +179,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
         else
         {
-            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+            GameLogger.Log(LogSeverity.Error, "Player Visual Effect Manager not found.");
         }
     }
 
@@ -194,7 +194,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
         else
         {
-            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+            GameLogger.Log(LogSeverity.Error, "Player Visual Effect Manager not found.");
         }
     }
 
@@ -209,7 +209,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
         else
         {
-            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+            GameLogger.Log(LogSeverity.Error, "Player Visual Effect Manager not found.");
         }
     }
 
@@ -224,7 +224,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
         else
         {
-            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+            GameLogger.Log(LogSeverity.Error, "Player Visual Effect Manager not found.");
         }
     }
 
@@ -239,7 +239,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
         else
         {
-            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+            GameLogger.Log(LogSeverity.Error, "Player Visual Effect Manager not found.");
         }
     }
 
@@ -254,7 +254,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
         else
         {
-            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+            GameLogger.Log(LogSeverity.Error, "Player Visual Effect Manager not found.");
         }
     }
 
@@ -269,7 +269,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
         else
         {
-            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+            GameLogger.Log(LogSeverity.Error, "Player Visual Effect Manager not found.");
         }
     }
 
@@ -284,7 +284,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
         else
         {
-            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+            GameLogger.Log(LogSeverity.Error, "Player Visual Effect Manager not found.");
         }
     }
 
@@ -299,7 +299,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
         else
         {
-            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+            GameLogger.Log(LogSeverity.Error, "Player Visual Effect Manager not found.");
         }
     }
 
@@ -314,7 +314,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
         else
         {
-            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+            GameLogger.Log(LogSeverity.Error, "Player Visual Effect Manager not found.");
         }
     }
 
@@ -329,7 +329,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
         else
         {
-            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+            GameLogger.Log(LogSeverity.Error, "Player Visual Effect Manager not found.");
         }
     }
 
@@ -344,7 +344,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
         else
         {
-            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+            GameLogger.Log(LogSeverity.Error, "Player Visual Effect Manager not found.");
         }
     }
 
@@ -355,11 +355,11 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
         if (playerEffectManager != null)
         {
-            playerEffectManager.SpawnBatConfusionParticles();
+            playerEffectManager.RemoveBatConfusionParticles();
         }
         else
         {
-            Debug.LogError("[NetworkVisualEffectManager] Player Visual Effect Manager not found.");
+            GameLogger.Log(LogSeverity.Error, "Player Visual Effect Manager not found.");
         }
     }
 

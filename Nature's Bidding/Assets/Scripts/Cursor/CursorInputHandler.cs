@@ -22,7 +22,7 @@ public class CursorInputHandler : MonoBehaviour
         virtualMouseInput = GetComponent<VirtualMouseInput>();
         cursorRoot = virtualMouseInput.cursorTransform;
         _lastInputType = InputDeviceTracker.CurrentInputType;
-        Debug.Log($"[CursorInputHandler] Awake. cursorRoot={cursorRoot}, cursorImage={cursorImage}, virtualMouseInput.cursorTransform={virtualMouseInput.cursorTransform}");
+        GameLogger.Log(LogSeverity.Verbose, $"Awake. cursorRoot={cursorRoot}, cursorImage={cursorImage}, virtualMouseInput.cursorTransform={virtualMouseInput.cursorTransform}");
     }
 
     public void InitializeNetworkSync(PlayerCursorNetworkBehavior networkSync, bool isNetworked)
@@ -51,7 +51,7 @@ public class CursorInputHandler : MonoBehaviour
         // mouse-driven position updates.
         if (InputDeviceTracker.CurrentInputType != _lastInputType)
         {
-            Debug.Log($"[CursorInputHandler] Switch detected: {_lastInputType} -> {InputDeviceTracker.CurrentInputType}");
+            GameLogger.Log(LogSeverity.Info, $"Switch detected: {_lastInputType} -> {InputDeviceTracker.CurrentInputType}");
 
             if (InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.Gamepad)
             {
@@ -60,12 +60,12 @@ public class CursorInputHandler : MonoBehaviour
                     InputState.Change(virtualMouseInput.virtualMouse.position, cursorRoot.anchoredPosition);
                 }
                 virtualMouseInput.stickAction.action?.Enable();
-                Debug.Log($"[CursorInputHandler] stickAction enabled: {virtualMouseInput.stickAction.action?.enabled}");
+                GameLogger.Log(LogSeverity.Verbose, $"stickAction enabled: {virtualMouseInput.stickAction.action?.enabled}");
             }
             else
             {
                 virtualMouseInput.stickAction.action?.Disable();
-                Debug.Log($"[CursorInputHandler] stickAction disabled: {virtualMouseInput.stickAction.action?.enabled}");
+                GameLogger.Log(LogSeverity.Verbose, $"stickAction disabled: {virtualMouseInput.stickAction.action?.enabled}");
             }
 
             _lastInputType = InputDeviceTracker.CurrentInputType;

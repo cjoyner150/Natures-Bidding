@@ -36,7 +36,9 @@ public class JumpLocomotion : State
 
         if (spaceHeldTimer <= 0) spaceHeld = false;
 
-        ctx.forceToAdd = (ctx.moveInput * (ctx.acceleration * ctx.airControlMultiplier)) + (ctx.jumpHeldForce * ctx.rb.transform.up);
+        Vector3 vel = ctx.rb.linearVelocity;
+        vel.y = Mathf.Sqrt(2f * Physics.gravity.magnitude * ctx.jumpHeight);
+        ctx.rb.linearVelocity = vel;
     }
 
     void HandleRotation(float deltaTime)

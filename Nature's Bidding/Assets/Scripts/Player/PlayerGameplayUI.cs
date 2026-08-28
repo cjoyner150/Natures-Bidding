@@ -34,22 +34,16 @@ public class PlayerGameplayUI : MonoBehaviour
         int idx = 0;
 
         if (playerData != null) idx = PersistentPlayerRegistry.Instance.GetByClientId(clientId).playerIndex;
-        else Debug.LogError($"[PlayerGameplayUI] No player data found for player: {playerData}");
+        else GameLogger.Log(LogSeverity.Error, $"No player data found for player: {playerData}");
 
         backgroundImage.sprite = coloredSprites[idx];
 
-        Debug.Log($"[PlayerGameplayUI] rendercam is named: {renderCam.name} and is enabled: {renderCam.enabled} on init");
-    }
-
-    private void Update()
-    {
-        if (renderCam != null)
-            Debug.Log($"[PlayerGameplayUI] rendercam is named: {renderCam.name} and is enabled: {renderCam.enabled}");
+        GameLogger.Log(LogSeverity.Verbose, $"rendercam is named: {renderCam.name} and is enabled: {renderCam.enabled} on init");
     }
 
     private void OnDestroy()
     {
-        Debug.Log($"[PlayerGameplayUI] ui is destroyed");
+        GameLogger.Log(LogSeverity.Verbose, $"Player UI is destroyed");
 
         if (renderCam != null)
             renderCam.enabled = false;

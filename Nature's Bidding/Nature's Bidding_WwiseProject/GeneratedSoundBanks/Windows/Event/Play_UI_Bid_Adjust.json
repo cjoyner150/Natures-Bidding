@@ -10,20 +10,11 @@
     "Type": "Event",
     "GUID": "{C2E4B442-82BC-43CC-AF73-90A9B75CF663}",
     "Language": "SFX",
-    "Hash": "{16456004-579F-26DA-0E34-033478F4E1EC}",
+    "Hash": "{335B1F12-C343-B47E-4F17-1DB93DD22FD2}",
     "ObjectPath": "Play_UI_Bid_Adjust",
     "ShortName": "Play_UI_Bid_Adjust",
     "Path": "Event/Play_UI_Bid_Adjust.bnk",
     "Media": [
-     {
-      "Id": "139610937",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Loose",
-      "ShortName": "bid\\click\\down\\ui_bid_click_down_04.wav",
-      "Path": "Media/139610937.wem",
-      "CachePath": "B0/{B0C4BA91-5DCB-E464-3CD8-BD406E164FA8}.wem"
-     },
      {
       "Id": "279613791",
       "Language": "SFX",
@@ -34,22 +25,31 @@
       "CachePath": "13/{13C73296-B021-2E1C-CEB5-153CBF64B039}.wem"
      },
      {
-      "Id": "324981984",
+      "Id": "285808475",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Loose",
-      "ShortName": "bid\\click\\down\\ui_bid_click_down_02.wav",
-      "Path": "Media/324981984.wem",
-      "CachePath": "FA/{FAC9DF0C-B034-A593-8B60-C034EFFE393C}.wem"
+      "ShortName": "ui_bid_click_06.wav",
+      "Path": "Media/285808475.wem",
+      "CachePath": "BC/{BC9D5DC0-6F9F-329F-16CE-06794FC548FC}.wem"
      },
      {
-      "Id": "394700170",
+      "Id": "417578727",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Loose",
-      "ShortName": "bid\\click\\down\\ui_bid_click_down_03.wav",
-      "Path": "Media/394700170.wem",
-      "CachePath": "A4/{A479074A-4DD9-B2AA-071A-016A404C477C}.wem"
+      "ShortName": "ui_bid_click_02.wav",
+      "Path": "Media/417578727.wem",
+      "CachePath": "9C/{9C8E35C3-2AC7-7CF5-CD78-42418F327108}.wem"
+     },
+     {
+      "Id": "507841480",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "ui_bid_click_01.wav",
+      "Path": "Media/507841480.wem",
+      "CachePath": "80/{8030FB06-B869-15ED-79C3-B728BE424263}.wem"
      },
      {
       "Id": "513889449",
@@ -61,15 +61,6 @@
       "CachePath": "56/{5637DA4B-BD9E-F8FE-6823-EBF52849D886}.wem"
      },
      {
-      "Id": "552340410",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Loose",
-      "ShortName": "bid\\click\\up\\ui_bid_click_up_02.wav",
-      "Path": "Media/552340410.wem",
-      "CachePath": "24/{2492B04E-FA2B-21FB-A62C-E8D28C88E210}.wem"
-     },
-     {
       "Id": "842139254",
       "Language": "SFX",
       "Streaming": "false",
@@ -79,40 +70,31 @@
       "CachePath": "55/{55FC308B-7F2F-6CEC-E09D-A3B2DCE18321}.wem"
      },
      {
-      "Id": "881784285",
+      "Id": "902824185",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Loose",
-      "ShortName": "bid\\click\\up\\ui_bid_click_up_04.wav",
-      "Path": "Media/881784285.wem",
-      "CachePath": "C9/{C9ABB5D7-6293-6976-9F24-52A4298BCB75}.wem"
+      "ShortName": "ui_bid_click_04.wav",
+      "Path": "Media/902824185.wem",
+      "CachePath": "19/{19454A88-A2C1-D291-F55F-E929B85ECD36}.wem"
      },
      {
-      "Id": "885823333",
+      "Id": "963185542",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Loose",
-      "ShortName": "bid\\click\\up\\ui_bid_click_up_01.wav",
-      "Path": "Media/885823333.wem",
-      "CachePath": "FA/{FA063433-D9D2-9068-5DE5-9AF18F64C134}.wem"
+      "ShortName": "ui_bid_click_05.wav",
+      "Path": "Media/963185542.wem",
+      "CachePath": "E8/{E8C99BC7-D6B6-4B35-5B56-E10B41366D81}.wem"
      },
      {
-      "Id": "948264786",
+      "Id": "1025063735",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Loose",
-      "ShortName": "bid\\click\\up\\ui_bid_click_up_03.wav",
-      "Path": "Media/948264786.wem",
-      "CachePath": "58/{584AC184-0EDF-C7C4-26AD-67270A9E97DE}.wem"
-     },
-     {
-      "Id": "1026167919",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Loose",
-      "ShortName": "bid\\click\\down\\ui_bid_click_down_01.wav",
-      "Path": "Media/1026167919.wem",
-      "CachePath": "38/{38B15768-9CD8-55D8-C424-F01412FD05C4}.wem"
+      "ShortName": "ui_bid_click_03.wav",
+      "Path": "Media/1025063735.wem",
+      "CachePath": "4A/{4A254282-1199-AC4B-0E9B-E1AF91349261}.wem"
      },
      {
       "Id": "1040799385",
@@ -132,8 +114,8 @@
       "GUID": "{C2E4B442-82BC-43CC-AF73-90A9B75CF663}",
       "Color": "2",
       "DurationType": "OneShot",
-      "DurationMin": "0.2436781",
-      "DurationMax": "0.2716671",
+      "DurationMin": "0.117555365",
+      "DurationMax": "0.16578199",
       "MediaRefs": [
        {
         "Id": "279613791"
@@ -158,16 +140,22 @@
         },
         "MediaRefs": [
          {
-          "Id": "552340410"
+          "Id": "285808475"
          },
          {
-          "Id": "881784285"
+          "Id": "417578727"
          },
          {
-          "Id": "885823333"
+          "Id": "507841480"
          },
          {
-          "Id": "948264786"
+          "Id": "902824185"
+         },
+         {
+          "Id": "963185542"
+         },
+         {
+          "Id": "1025063735"
          }
         ]
        },
@@ -180,16 +168,22 @@
         },
         "MediaRefs": [
          {
-          "Id": "139610937"
+          "Id": "285808475"
          },
          {
-          "Id": "324981984"
+          "Id": "417578727"
          },
          {
-          "Id": "394700170"
+          "Id": "507841480"
          },
          {
-          "Id": "1026167919"
+          "Id": "902824185"
+         },
+         {
+          "Id": "963185542"
+         },
+         {
+          "Id": "1025063735"
          }
         ]
        }
@@ -220,6 +214,6 @@
     ]
    }
   ],
-  "FileHash": "{787F0830-C19B-B5F4-3657-1CD7A7F9E1DD}"
+  "FileHash": "{A286B610-13C2-1F31-AEFD-0586C9F9C9C9}"
  }
 }

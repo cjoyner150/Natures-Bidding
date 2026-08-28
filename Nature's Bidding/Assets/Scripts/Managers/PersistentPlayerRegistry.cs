@@ -40,13 +40,13 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
             {
                 _clientToAuth.Remove(existing.clientId); // clean up the stale mapping
                 existing.clientId = clientId;
-                Debug.Log($"Returning player {playerName} rejoined with index {existing.playerIndex}");
+                GameLogger.Log(LogSeverity.Debug, $"Returning player {playerName} rejoined with index {existing.playerIndex}");
                 PlayerRegistryNetworkSync.Instance?.BroadcastPlayerData(
                     clientId, authId, playerName, existing.playerIndex, existing.gold, existing.combatWins);
                 return existing;
             }
 
-            Debug.LogWarning($"[Registry] Duplicate authId '{authId}' while original client {existing.clientId} is still connected — registering as a NEW player.");
+            GameLogger.Log(LogSeverity.Warning, $"Duplicate authId '{authId}' while original client {existing.clientId} is still connected — registering as a NEW player.");
             authId = $"{authId}_dup{clientId}"; // give the concurrent duplicate its own identity
             _clientToAuth[clientId] = authId;
         }
@@ -54,7 +54,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         int index = AssignIndex();
         if (index == -1)
         {
-            Debug.LogError($"[PersistentPlayerRegistry] No available player indices for {playerName} (authId: {authId}). Current pool state: {string.Join(",", _indexPool)} ");
+            GameLogger.Log(LogSeverity.Error, $"No available player indices for {playerName} (authId: {authId}). Current pool state: {string.Join(",", _indexPool)}");
             return null;
         }
 
@@ -79,7 +79,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         };
 
         _playerData[authId] = data;
-        Debug.Log($"New player {playerName} registered with index {index}");
+        GameLogger.Log(LogSeverity.Debug, $"New player {playerName} registered with index {index}");
         BroadcastAll(data);
 
         return data;
@@ -87,7 +87,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 
     private void BroadcastAll(PlayerData data)
     {
-        Debug.Log($"[PersistentPlayerRegistry] Broadcasting player data for client {data.clientId}, {data.playerName} at index {data.playerIndex}: \n" +
+        GameLogger.Log(LogSeverity.Debug, $"Broadcasting player data for client {data.clientId}, {data.playerName} at index {data.playerIndex}: \n" +
             "Masks: " + string.Join(", ", data.masks) + "\n" +
             "Tarots: " + string.Join(", ", data.tarotCards) + "\n" +
             "Artifacts: " + string.Join(", ", data.artifacts));
@@ -122,7 +122,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         if (!IsServer) return;
         if (!_clientToAuth.TryGetValue(clientId, out var authId)) return;
         _clientToAuth.Remove(clientId);
-        Debug.Log($"Player {authId} disconnected during gameplay — data retained.");
+        GameLogger.Log(LogSeverity.Info, $"Player {authId} disconnected during gameplay — data retained.");
     }
 
     public bool TryReconnectPlayer(ulong newClientId, string authId, out PlayerData data)
@@ -133,7 +133,7 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         {
             data.clientId = newClientId;
             _clientToAuth[newClientId] = authId;
-            Debug.Log($"Player {authId} reconnected as clientId {newClientId}");
+            GameLogger.Log(LogSeverity.Info, $"Player {authId} reconnected as clientId {newClientId}");
             PlayerRegistryNetworkSync.Instance?.BroadcastPlayerData(
                 newClientId, authId, data.playerName, data.playerIndex, data.gold, data.combatWins);
             return true;

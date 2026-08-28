@@ -19,7 +19,7 @@ public class StatusEffectNetworkManager : NetworkSingleton<StatusEffectNetworkMa
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void ApplyToPlayerServerRpc(ulong playerId, string effectIds)
     {
-        Debug.Log($"Server received {effectIds} for {playerId}");
+        GameLogger.Log(LogSeverity.Debug, $"Server received {effectIds} for {playerId}");
         ApplyToPlayerWhenReady(playerId, effectIds).Forget();
     }
 
@@ -40,11 +40,11 @@ public class StatusEffectNetworkManager : NetworkSingleton<StatusEffectNetworkMa
     [Rpc(SendTo.SpecifiedInParams, InvokePermission = RpcInvokePermission.Server)]
     public void ApplyToPlayerClientRpc(string effectIds, RpcParams rpcParams)
     {
-        Debug.Log($"I received {(string.Join(", ", effectIds))}");
+        GameLogger.Log(LogSeverity.Debug, $"I received {(string.Join(", ", effectIds))}");
         string[] ids = effectIds.Split(',');
 
         var playerStatusManager = NetworkManager.Singleton.ConnectedClients[NetworkManager.LocalClientId].PlayerObject.GetComponent<PlayerStatusEffectManager>();
-        Debug.Log($"playerStatusManager is available: {playerStatusManager != null}, itemDatabase is available: {itemDatabase != null}");
+        GameLogger.Log(LogSeverity.Debug, $"playerStatusManager is available: {playerStatusManager != null}, itemDatabase is available: {itemDatabase != null}");
         if (playerStatusManager != null && itemDatabase != null)
         {
             List<StatusEffectorSO> effectors = new();

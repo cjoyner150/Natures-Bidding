@@ -316,7 +316,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
 
             waitedFrames++;
             if (waitedFrames % 300 == 0)
-                Debug.LogWarning($"[BiddingManager] Waiting for persistent player registry... frame {waitedFrames}");
+                GameLogger.Log(LogSeverity.Warning, $"Waiting for persistent player registry... frame {waitedFrames}");
 
             yield return null;
         }
@@ -450,7 +450,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         if (!bidHUDPanel || !bidHUDPanel.activeInHierarchy) return;
         if (_localBidSubmitted) return;
 
-        Debug.Log($"[BiddingManager] OnBidUp: _localBidAmount = {_localBidAmount} and bidStep = {bidStep}");
+        GameLogger.Log(LogSeverity.Debug, $"OnBidUp: _localBidAmount = {_localBidAmount} and bidStep = {bidStep}");
         int nextBid = _localBidAmount + bidStep;
         if (nextBid == _localBidAmount)
             return;
@@ -461,7 +461,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
             return;
         }
 
-        Debug.Log($"[BiddingManager] gold = {availableGold}");
+        GameLogger.Log(LogSeverity.Debug, $"gold = {availableGold}");
 
         _localBidAmount = nextBid;
         RefreshBidDisplay(true);
@@ -474,11 +474,11 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         if (!bidHUDPanel || !bidHUDPanel.activeInHierarchy) return;
         if (_localBidSubmitted) return;
 
-        Debug.Log($"[BiddingManager] OnBidDown: _localBidAmount = {_localBidAmount} and bidStep = {bidStep}");
+        GameLogger.Log(LogSeverity.Debug, $"OnBidDown: _localBidAmount = {_localBidAmount} and bidStep = {bidStep}");
         int nextBid = _localBidAmount - bidStep;
         if (nextBid == _localBidAmount)
             return;
-        Debug.Log($"[BiddingManager] OnBidDown: nextBid = {nextBid} and minBid = {minBid}");
+        GameLogger.Log(LogSeverity.Debug, $"OnBidDown: nextBid = {nextBid} and minBid = {minBid}");
         if (nextBid < minBid)
         {
             audioFeedback?.PlayBidReject();
@@ -527,7 +527,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         var player = registry?.GetByClientId(sender);
         if (player == null)
         {
-            Debug.LogWarning($"[BiddingManager] Bid rejected for client {sender}: persistent registry data not ready.");
+            GameLogger.Log(LogSeverity.Warning, $"Bid rejected for client {sender}: persistent registry data not ready.");
             BidRejectedRpc("Persistent player data not ready yet.", RpcTarget.Single(sender, RpcTargetUse.Temp));
             return;
         }

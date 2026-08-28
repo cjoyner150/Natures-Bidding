@@ -74,14 +74,14 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     private void OnPlayerRegistered()
     {
         if (!IsOwner) return;
-        Debug.Log("I have been registered!");
+        GameLogger.Log(LogSeverity.Info, "I have been registered!");
     }
 
     [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
     public void NotifyRegisteredRpc(ulong clientId, int playerCount)
     {
         var data = PersistentPlayerRegistry.Instance.GetByClientId(clientId);
-        Debug.Log($"Registered: clientId {clientId}, name {data?.playerName}. Total: {playerCount}");
+        GameLogger.Log(LogSeverity.Info, $"Registered: clientId {clientId}, name {data?.playerName}. Total: {playerCount}");
         LobbyServerHandler.OnPlayerRegistered?.Invoke();
     }
 
@@ -139,7 +139,11 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     public Color GetPlayerColor()
     {
         var data = PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId);
-        Debug.Log($"does data exist {data != null}");
+        if (data == null)
+        {
+            GameLogger.Log(LogSeverity.Error, $"Player data not found for clientId {OwnerClientId}. Returning default color.");
+            return Color.white;
+        }
         return colors[data.playerIndex];
     } 
 }

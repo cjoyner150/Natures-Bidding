@@ -17,16 +17,16 @@ public class DebugOnActionStatusEffect : ApplyXOnActionStatusEffect
     protected override void OnApplyEffectTo(ulong targetId) {
         foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
         {
-            Debug.Log($"[DebugOnActionStatusEffect] key={kvp.Key}, PlayerObject={(kvp.Value.PlayerObject != null ? kvp.Value.PlayerObject.name : "NULL")}");
+            GameLogger.Log(LogSeverity.Debug, $"key={kvp.Key}, PlayerObject={(kvp.Value.PlayerObject != null ? kvp.Value.PlayerObject.name : "NULL")}");
         }
 
         var targetPlayer = NetworkManager.Singleton.ConnectedClients[targetId]?.PlayerObject;
 
         if (targetPlayer != null)
         {
-            Debug.Log($"Applying debug effect on {actionType.ToString()} to target client with Id: {targetId} and Name: {targetPlayer.name}");
+            GameLogger.Log(LogSeverity.Debug, $"Applying debug effect on {actionType.ToString()} to target client with Id: {targetId} and Name: {targetPlayer.name}");
         }
-        else Debug.LogError($"[DebugOnActionStatusEffect] No player object with clientId: {targetId}");
+        else GameLogger.Log(LogSeverity.Error, $"[DebugOnActionStatusEffect] No player object with clientId: {targetId}");
     }
 
 }

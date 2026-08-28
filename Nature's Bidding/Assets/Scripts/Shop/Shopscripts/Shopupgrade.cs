@@ -73,7 +73,7 @@ public class ShopUpgrade : ScriptableObject
 
         if (_registry.TryGetValue(_id, out ShopUpgrade existing) && existing != null && existing != this)
         {
-            Debug.LogWarning($"[ShopUpgrade] Duplicate ID '{_id}' found on '{name}'. Existing asset: '{existing.name}'.");
+            GameLogger.Log(LogSeverity.Warning, $"[ShopUpgrade] Duplicate ID '{_id}' found on '{name}'. Existing asset: '{existing.name}'.");
             return;
         }
 

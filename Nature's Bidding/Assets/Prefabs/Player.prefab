@@ -236,26 +236,26 @@ MonoBehaviour:
     playerHealth: {fileID: 0}
     walkSpeed: 0
     sprintSpeed: 5.5
-    attackSpeed: 5
+    attackSpeed: 2
     dashSpeed: 20
     airSpeed: 10
     knockbackSpeed: 15
     currentMaxSpeed: 0
     desiredMaxSpeed: 0
-    momentumLerpSpeed: 15
+    momentumLerpSpeed: 20
     acceleration: 1000
-    turnSpeed: 15
+    turnSpeed: 20
     groundDrag: 1.5
     airDrag: 0
-    airControlMultiplier: 0.85
+    airControlMultiplier: 0.9
     forceToAdd: {x: 0, y: 0, z: 0}
     forceMode: 0
     maxJumps: 0
     currentJumps: 0
-    jumpHeight: 1
-    jumpHeldForce: 800
-    jumpHeldAllowedTime: 0.2
-    extraGravityMultiplier: 1.5
+    jumpHeight: 1.75
+    jumpHeldForce: 600
+    jumpHeldAllowedTime: 0.25
+    extraGravityMultiplier: 1.6
     attackTime: 0.4
     jumpAttackTime: 0.2
     fallAttackTime: 0.35
@@ -263,16 +263,15 @@ MonoBehaviour:
     attackCDTimer: 0
     attackResponseForce: 5
     hitResponse: 0
-    attackActiveDelay: 100
     comboCD: 0
     comboCDTimer: 0
     combo: 0
+    fallAttackSpeedMultiplier: 5
     parryResponse: 0
     parryCDTimer: 0
-    parryWarmUpDelay: 100
     shouldStunSelf: 0
     isStunned: 0
-    stunTime: 1.5
+    stunTime: 1.25
     stunRecoveryTimer: 0
     additionalStunTime: 0
     dashTime: 0.25

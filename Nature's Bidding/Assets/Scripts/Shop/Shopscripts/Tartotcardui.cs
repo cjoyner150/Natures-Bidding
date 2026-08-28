@@ -172,7 +172,7 @@ public class TarotCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData e)
     {
-        Debug.Log($"[TarotCardUI] OnPointerEnter at {Time.time:F3}, flipRoutine active={_flipRoutine != null}, isFaceUp={_isFaceUp}");
+        GameLogger.Log(LogSeverity.Verbose, $"OnPointerEnter at {Time.time:F3}, flipRoutine active={_flipRoutine != null}, isFaceUp={_isFaceUp}");
         _isHovered = true;
         if (!_selected && !_locked && !_isFaceUp && _flipRoutine == null)
             _flipRoutine = StartCoroutine(FlipToSide(true));
@@ -182,7 +182,7 @@ public class TarotCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerExit(PointerEventData e)
     {
-        Debug.Log($"[TarotCardUI] OnPointerExit at {Time.time:F3}, flipRoutine active={_flipRoutine != null}, isFaceUp={_isFaceUp}");
+        GameLogger.Log(LogSeverity.Verbose, $"OnPointerExit at {Time.time:F3}, flipRoutine active={_flipRoutine != null}, isFaceUp={_isFaceUp}");
         _isHovered = false;
 
         if (_reward != null) _onHover?.Invoke(_reward, false);

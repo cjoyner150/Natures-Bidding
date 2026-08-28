@@ -62,16 +62,15 @@ public class PlayerContext
     public bool attackOnCooldown => attackCDTimer > 0;
     public float attackResponseForce;
     public bool hitResponse;
-    public int attackActiveDelay;
     public float comboCD;
     public float comboCDTimer;
     public int combo;
+    public float fallAttackSpeedMultiplier = 5f;
 
     [Header("Parry")]
     public bool parryResponse;
     public float parryCDTimer;
     public bool parryOnCooldown => parryCDTimer > 0;
-    public int parryWarmUpDelay;
 
     [Header("Stun")]
     public bool shouldStunSelf;

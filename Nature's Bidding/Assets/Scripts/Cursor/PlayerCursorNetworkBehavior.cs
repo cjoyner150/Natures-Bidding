@@ -28,7 +28,7 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        Debug.Log($"[PlayerCursorNetworkBehavior] OnNetworkSpawn for client {OwnerClientId}, IsLocal={IsOwner}");
+        GameLogger.Log(LogSeverity.Debug, $"OnNetworkSpawn for client {OwnerClientId}, IsLocal={IsOwner}");
 
         if (IsServer)
         {
@@ -104,7 +104,7 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
     private async void CreateCursor()
     {
         if (!IsOwner && !syncCursorPosition) return; 
-        Debug.Log($"[PlayerCursorNetworkBehavior] CreateCursor START. OwnerClientId={OwnerClientId}, LocalClientId={NetworkManager.Singleton.LocalClientId}, IsOwner={IsOwner}");
+        GameLogger.Log(LogSeverity.Debug, $"CreateCursor START. OwnerClientId={OwnerClientId}, LocalClientId={NetworkManager.Singleton.LocalClientId}, IsOwner={IsOwner}");
         await UniTask.WaitUntil(() => CursorUIManager.Instance != null);
 
         if (!CursorUIManager.Instance.CheckCursorReady()) { enabled = false; return; }
@@ -122,7 +122,7 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
         // Use the color index assigned by server
         Color playerColor = await CursorUIManager.Instance.GetColorForPlayer(OwnerClientId);
         cursorImage.color = playerColor;
-        Debug.Log($"Cursor created for player {OwnerClientId} with color {playerColor} (index {_colorIndex.Value})");
+        GameLogger.Log(LogSeverity.Debug, $"Cursor created for player {OwnerClientId} with color {playerColor} (index {_colorIndex.Value})");
         
         cursorInput = cursorTransform.GetComponent<CursorInputHandler>();
         virtualMouseInput = cursorTransform.GetComponent<VirtualMouseInput>();
@@ -143,17 +143,17 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
             GivePrivateActionCopies();
 
             var state = PersistentGameStateManager.Instance.State;
-            Debug.Log($"[PlayerCursorNetworkBehavior] CreateCursor: IsOwner=true, GameState={state}");
+            GameLogger.Log(LogSeverity.Debug, $"CreateCursor: IsOwner=true, GameState={state}");
 
             if (state == PersistentGameStateManager.GameState.Combat ||
                 state == PersistentGameStateManager.GameState.Lobby)
             {
-                Debug.Log("[PlayerCursorNetworkBehavior] Calling DisableCursor (state is Combat/Lobby)");
+                GameLogger.Log(LogSeverity.Debug, "Calling DisableCursor (state is Combat/Lobby)");
                 DisableCursor();
             }
             else
             {
-                Debug.Log("[PlayerCursorNetworkBehavior] Calling EnableCursor (state is not Combat/Lobby)");
+                GameLogger.Log(LogSeverity.Debug, "Calling EnableCursor (state is not Combat/Lobby)");
                 EnableCursor();
             }
         }

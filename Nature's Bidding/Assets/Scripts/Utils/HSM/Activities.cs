@@ -35,7 +35,15 @@ namespace HSM
         {
             ctx.rb.useGravity = false;
             ctx.rb.linearVelocity = Vector3.zero;
-            await Task.Delay(TimeSpan.FromSeconds(seconds), ct);
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(seconds), ct);
+            }
+            catch (OperationCanceledException)
+            {
+                ctx.rb.useGravity = true;
+                throw;
+            }
             await base.ActivateAsync(ct);
         }
 

@@ -18,4 +18,6 @@ MonoBehaviour:
   Duration: -1
   Effects:
   - {fileID: 11400000, guid: e3052f58d9e90354c9ba367fe453ce5f, type: 2}
+  - {fileID: 11400000, guid: f7e21478a82039f449a7e8daa5d0e0c1, type: 2}
+  - {fileID: 11400000, guid: c83be17ae0e76a24e98daa1439eccbf7, type: 2}
   - {fileID: 11400000, guid: c83be17ae0e76a24e98daa1439eccbf7, type: 2}

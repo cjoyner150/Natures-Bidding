@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2036068895
+  GlobalObjectIdHash: 1770671079
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -236,26 +236,26 @@ MonoBehaviour:
     playerHealth: {fileID: 0}
     walkSpeed: 0
     sprintSpeed: 5.5
-    attackSpeed: 5
+    attackSpeed: 2
     dashSpeed: 20
     airSpeed: 10
     knockbackSpeed: 15
     currentMaxSpeed: 0
     desiredMaxSpeed: 0
-    momentumLerpSpeed: 15
+    momentumLerpSpeed: 20
     acceleration: 1000
-    turnSpeed: 15
+    turnSpeed: 20
     groundDrag: 1.5
     airDrag: 0
-    airControlMultiplier: 0.85
+    airControlMultiplier: 0.9
     forceToAdd: {x: 0, y: 0, z: 0}
     forceMode: 0
     maxJumps: 0
     currentJumps: 0
-    jumpHeight: 1
-    jumpHeldForce: 800
-    jumpHeldAllowedTime: 0.2
-    extraGravityMultiplier: 1.5
+    jumpHeight: 1.75
+    jumpHeldForce: 600
+    jumpHeldAllowedTime: 0.25
+    extraGravityMultiplier: 1.6
     attackTime: 0.4
     jumpAttackTime: 0.2
     fallAttackTime: 0.35
@@ -263,16 +263,15 @@ MonoBehaviour:
     attackCDTimer: 0
     attackResponseForce: 5
     hitResponse: 0
-    attackActiveDelay: 100
     comboCD: 0
     comboCDTimer: 0
     combo: 0
+    fallAttackSpeedMultiplier: 5
     parryResponse: 0
     parryCDTimer: 0
-    parryWarmUpDelay: 100
     shouldStunSelf: 0
     isStunned: 0
-    stunTime: 3
+    stunTime: 1.25
     stunRecoveryTimer: 0
     additionalStunTime: 0
     dashTime: 0.25
@@ -404,8 +403,8 @@ MonoBehaviour:
   attackableLayers:
     serializedVersion: 2
     m_Bits: 128
-  attackRadius: 0.4
-  attackLength: 2
+  attackRadius: 1
+  attackLength: 0.5
   debugAttackCast: 1
 --- !u!114 &2143706486958459292
 MonoBehaviour:
@@ -450,9 +449,8 @@ MonoBehaviour:
   confusionParticle: {fileID: 8375094254695761975, guid: 120d5c2083da75a4bb471879628f33b5, type: 3}
   parryParticle: {fileID: 2394006008497064591, guid: 40c46fda860a5064cbf8ab73bcbb7c31, type: 3}
   parrySuccessParticle: {fileID: 4595470619510423577, guid: fd3b76cd1c207284e833827d7d37d957, type: 3}
-  magicPoofParticle: {fileID: 7981934318694625484, guid: 7eb09148b5a5f2f4686ec0e43bbf878c, type: 3}
   stunParticle: {fileID: 0}
-  explosionParticle: {fileID: 5760442672778993801, guid: edec52a2346ad3a47956d7ed7d96d4a5, type: 3}
+  explosionParticle: {fileID: 451632614410866318, guid: 0e4b787d636420e4d8e6990b52597a86, type: 3}
   jumpParticle: {fileID: 6704440195855292504, guid: 4474d5daa2d1f3743a297f59dd0aab7e, type: 3}
   dashParticle: {fileID: 371010074459113082, guid: 44f822ef532e8bd438508c29a45b93a0, type: 3}
   teleportParticle: {fileID: 7981934318694625484, guid: 7eb09148b5a5f2f4686ec0e43bbf878c, type: 3}

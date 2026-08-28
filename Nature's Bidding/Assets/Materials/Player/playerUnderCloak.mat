@@ -25,6 +25,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _RECEIVE_SHADOWS_OFF
   - _SHADOWMIXMODE_MULTIPLY
   - _SHARPRIMLIGHT_ON
   - _USERIMLIGHT_ON
@@ -153,7 +154,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RampOffset: 0.5
-    - _ReceiveShadows: 1
+    - _ReceiveShadows: 0
     - _RimAmount: 0.311
     - _RimPower: 0.6547081
     - _SecondaryTextureSize: 1

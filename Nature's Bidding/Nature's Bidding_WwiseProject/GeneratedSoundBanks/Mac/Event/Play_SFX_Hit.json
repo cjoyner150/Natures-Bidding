@@ -1,0 +1,116 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Mac",
+  "BasePlatform": "Mac",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "1376640657",
+    "Type": "Event",
+    "GUID": "{523D8481-4617-4947-84FB-07B128556FFD}",
+    "Language": "SFX",
+    "Hash": "{E0B3440E-1C61-C444-32FA-F2C67FFE8BA2}",
+    "ObjectPath": "Play_SFX_Hit",
+    "ShortName": "Play_SFX_Hit",
+    "Path": "Event/Play_SFX_Hit.bnk",
+    "Media": [
+     {
+      "Id": "167838151",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Hit\\sfx_hit_06.wav",
+      "Path": "Media/167838151.wem",
+      "CachePath": "38/{3833B9A8-7DE1-5C51-38E8-EFA261C62630}.wem"
+     },
+     {
+      "Id": "238395543",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Hit\\sfx_hit_02.wav",
+      "Path": "Media/238395543.wem",
+      "CachePath": "33/{330FFE6A-71E6-99E5-5567-DCBE2F53F935}.wem"
+     },
+     {
+      "Id": "356569204",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Hit\\sfx_hit_01.wav",
+      "Path": "Media/356569204.wem",
+      "CachePath": "A4/{A4EE9F66-5FE6-3B15-BE19-A5F6489953B5}.wem"
+     },
+     {
+      "Id": "643470763",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Hit\\sfx_hit_03.wav",
+      "Path": "Media/643470763.wem",
+      "CachePath": "BE/{BED12E46-7BE0-5448-769D-728B1A78E20D}.wem"
+     },
+     {
+      "Id": "873160811",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Hit\\sfx_hit_05.wav",
+      "Path": "Media/873160811.wem",
+      "CachePath": "02/{021387A1-AC90-988D-0DCB-6DE9F3256A46}.wem"
+     },
+     {
+      "Id": "946636474",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "Hit\\sfx_hit_04.wav",
+      "Path": "Media/946636474.wem",
+      "CachePath": "C0/{C0F2870B-9577-D1D2-62A7-C0473B17A4E0}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "1376640657",
+      "Name": "Play_SFX_Hit",
+      "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_Hit",
+      "GUID": "{523D8481-4617-4947-84FB-07B128556FFD}",
+      "DurationType": "OneShot",
+      "DurationMin": "1.259308",
+      "DurationMax": "1.259308",
+      "MediaRefs": [
+       {
+        "Id": "167838151"
+       },
+       {
+        "Id": "238395543"
+       },
+       {
+        "Id": "356569204"
+       },
+       {
+        "Id": "643470763"
+       },
+       {
+        "Id": "873160811"
+       },
+       {
+        "Id": "946636474"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{AEFDE4C8-485C-5BE1-568B-1BEFC8566780}"
+ }
+}

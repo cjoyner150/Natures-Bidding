@@ -1,0 +1,120 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Mac",
+  "BasePlatform": "Mac",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "4115709719",
+    "Type": "Event",
+    "GUID": "{FC51EB7E-F371-4821-9E7A-9D7406953CA1}",
+    "Language": "SFX",
+    "Hash": "{DB722F4A-9CA1-980B-0CC7-AE391497C1C3}",
+    "ObjectPath": "Play_Auctioneer",
+    "ShortName": "Play_Auctioneer",
+    "Path": "Event/Play_Auctioneer.bnk",
+    "Media": [
+     {
+      "Id": "286959462",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "dlg_auctioneer_02.wav",
+      "Path": "Media/286959462.wem",
+      "CachePath": "7D/{7D2C33D1-36C0-B0B1-925B-4142348FED9B}.wem"
+     },
+     {
+      "Id": "315138502",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "dlg_auctioneer_06.wav",
+      "Path": "Media/315138502.wem",
+      "CachePath": "72/{722DBBF6-0601-D4C9-8C09-31945E6DEADD}.wem"
+     },
+     {
+      "Id": "387140954",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "dlg_auctioneer_01.wav",
+      "Path": "Media/387140954.wem",
+      "CachePath": "E4/{E4C3B3F6-12C1-BCB6-F657-429CD5EED39B}.wem"
+     },
+     {
+      "Id": "436289365",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "dlg_auctioneer_05.wav",
+      "Path": "Media/436289365.wem",
+      "CachePath": "AE/{AEAE7A02-9629-79ED-B278-E6B794E55475}.wem"
+     },
+     {
+      "Id": "510422161",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "dlg_auctioneer_04.wav",
+      "Path": "Media/510422161.wem",
+      "CachePath": "9D/{9D95372F-2F07-FFF7-264B-0776B65DAEF3}.wem"
+     },
+     {
+      "Id": "761025212",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "dlg_auctioneer_07.wav",
+      "Path": "Media/761025212.wem",
+      "CachePath": "D8/{D803CBC4-05C5-617F-AF8F-84287283AA29}.wem"
+     },
+     {
+      "Id": "906730273",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "dlg_auctioneer_03.wav",
+      "Path": "Media/906730273.wem",
+      "CachePath": "F1/{F1ABEA17-37A3-7D4D-DDFA-A293315532E1}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "4115709719",
+      "Name": "Play_Auctioneer",
+      "ObjectPath": "\\Events\\Dialogue Work Unit\\Play_Auctioneer",
+      "GUID": "{FC51EB7E-F371-4821-9E7A-9D7406953CA1}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.69122916",
+      "DurationMax": "1.346125",
+      "MediaRefs": [
+       {
+        "Id": "286959462"
+       },
+       {
+        "Id": "315138502"
+       },
+       {
+        "Id": "387140954"
+       },
+       {
+        "Id": "436289365"
+       },
+       {
+        "Id": "510422161"
+       },
+       {
+        "Id": "761025212"
+       },
+       {
+        "Id": "906730273"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{4849E0DD-B08C-E224-A064-E653E7F4238D}"
+ }
+}

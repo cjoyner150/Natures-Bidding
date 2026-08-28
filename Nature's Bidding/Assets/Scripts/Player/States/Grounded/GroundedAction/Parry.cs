@@ -16,23 +16,17 @@ public class Parry : State
 
     protected override void OnEnter()
     {
+        ctx.rb.linearVelocity = Vector3.zero;
         ctx.desiredMaxSpeed = 0;
         ctx.forceToAdd = Vector3.zero;
 
         ctx.anim.SetTrigger("Parry");
         NetworkVisualEffectManager.SpawnParryEffectsOnPlayer?.Invoke(ctx.playerHealth.OwnerClientId, (int)(ctx.playerStats.ParryDuration * 1000));
 
-        SetParryActive(ctx.parryWarmUpDelay);
-
-        parryTimer = ctx.playerStats.ParryDuration;
-        exitParry = false;
-
-    }
-
-    async void SetParryActive(int delay)
-    {
-        await UniTask.Delay(delay);
         ctx.playerHealth.BeginParry();
+        parryTimer = ctx.playerStats.ParryDuration;
+
+        exitParry = false;
     }
 
     protected override void OnUpdate(float deltaTime)

@@ -115,6 +115,8 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    private float _knockbackStuckTimer;
+
     void Update()
     {
 
@@ -126,6 +128,18 @@ public class PlayerInputManager : MonoBehaviour
         sm.Tick(Time.deltaTime);
 
         DebugCurrentState();
+
+        if (ctx.shouldTakeKnockback)
+        {
+            _knockbackStuckTimer += Time.deltaTime;
+            if (_knockbackStuckTimer > 1f)
+            {
+                GameLogger.Log(LogSeverity.Error, $"[WEDGE DETECTED] shouldTakeKnockback stuck true for >1s. Leaf: {ActivePathString(root.Leaf())}, desiredMaxSpeed: {ctx.desiredMaxSpeed}, currentMaxSpeed: {ctx.currentMaxSpeed}");
+                GameLogger.Log(LogSeverity.Error, $"[WEDGE DETECTED] ... phaseActive={sm.Sequencer.IsPhaseActive}, phaseTimer={sm.Sequencer.PhaseTimerDebug:F2}");
+                _knockbackStuckTimer = 0;
+            }
+        }
+        else _knockbackStuckTimer = 0;
     }
 
     private void FixedUpdate()
@@ -153,7 +167,7 @@ public class PlayerInputManager : MonoBehaviour
         return colliders.Length > 0;
     }
 
-    public void DebugCurrentState() => Debug.Log(ActivePathString(root.Leaf()));
+    public void DebugCurrentState() => GameLogger.Log(LogSeverity.Verbose, ActivePathString(root.Leaf()));
 
     static string ActivePathString(State s)
     {

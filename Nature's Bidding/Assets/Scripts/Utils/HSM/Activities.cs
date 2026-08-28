@@ -35,7 +35,15 @@ namespace HSM
         {
             ctx.rb.useGravity = false;
             ctx.rb.linearVelocity = Vector3.zero;
-            await Task.Delay(TimeSpan.FromSeconds(seconds), ct);
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(seconds), ct);
+            }
+            catch (OperationCanceledException)
+            {
+                ctx.rb.useGravity = true;
+                throw;
+            }
             await base.ActivateAsync(ct);
         }
 
@@ -70,7 +78,7 @@ namespace HSM
             Mode = ActivityMode.Activating;
             await Task.CompletedTask;
             Mode = ActivityMode.Active;
-            Debug.Log($"Activated {GetType().Name} (mode={Mode})");
+            GameLogger.Log(LogSeverity.Debug, $"Activated {GetType().Name} (mode={Mode})");
         }
 
         public virtual async Task DeactivateAsync(CancellationToken ct)
@@ -80,7 +88,7 @@ namespace HSM
             Mode = ActivityMode.Deactivating;
             await Task.CompletedTask;
             Mode = ActivityMode.Inactive;
-            Debug.Log($"Deactivated {GetType().Name} (mode={Mode})");
+            GameLogger.Log(LogSeverity.Debug, $"Deactivated {GetType().Name} (mode={Mode})");
         }
     }
 }

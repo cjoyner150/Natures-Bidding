@@ -18,15 +18,15 @@ public class PlayerWeaponManager : MonoBehaviour
 
     public async UniTask EquipWeapon(string weaponId)
     {
-        Debug.Log($"[PlayerWeaponManager] EquipWeapon START. LocalClientId={NetworkManager.Singleton.LocalClientId}, weaponId={weaponId}");
+        GameLogger.Log(LogSeverity.Debug, $"EquipWeapon START. LocalClientId={NetworkManager.Singleton.LocalClientId}, weaponId={weaponId}");
 
         var go = await NetworkedWeaponFactory.Instance.EquipWeapon(NetworkManager.Singleton.LocalClientId, weaponId);
 
-        Debug.Log($"[PlayerWeaponManager] EquipWeapon got result. go={(go == null ? "NULL" : go.name)}");
+        GameLogger.Log(LogSeverity.Debug, $"EquipWeapon got result. go={(go == null ? "NULL" : go.name)}");
 
         if (go == null)
         {
-            Debug.LogWarning($"Failed to equip weapon '{weaponId}'.");
+            GameLogger.Log(LogSeverity.Warning, $"Failed to equip weapon '{weaponId}'.");
             return;
         }
 

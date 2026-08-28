@@ -1,0 +1,111 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "3835174908",
+    "Type": "Event",
+    "GUID": "{70FC38F5-5881-4468-A0ED-87520397CA12}",
+    "Language": "SFX",
+    "Hash": "{EC0E277B-74D1-FAF2-1E1A-A4E77A6251A9}",
+    "ObjectPath": "Play_SFX_Parry",
+    "ShortName": "Play_SFX_Parry",
+    "Path": "Event/Play_SFX_Parry.bnk",
+    "Media": [
+     {
+      "Id": "78025422",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_parry_04.wav",
+      "Path": "Media/78025422.wem",
+      "CachePath": "2E/{2E1520CC-F2F1-1DE0-A036-0D63FB187E35}.wem"
+     },
+     {
+      "Id": "155811665",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_parry_01.wav",
+      "Path": "Media/155811665.wem",
+      "CachePath": "F3/{F391F7F8-333B-45A6-F3DF-0C4016D3D904}.wem"
+     },
+     {
+      "Id": "245074753",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_parry_03.wav",
+      "Path": "Media/245074753.wem",
+      "CachePath": "6B/{6B151AD1-97AD-BD31-D444-53BA561C94A9}.wem"
+     },
+     {
+      "Id": "584268127",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_parry_02.wav",
+      "Path": "Media/584268127.wem",
+      "CachePath": "0F/{0FB7B3D1-1935-4937-8890-279F15498D61}.wem"
+     }
+    ],
+    "Plugins": {
+     "ShareSets": [
+      {
+       "Id": "1008402193",
+       "Name": "Low_Pass_20KHz",
+       "ObjectPath": "\\Effects\\Factory Effects\\Parametric EQ\\Low Pass Filters\\Low_Pass_20KHz",
+       "GUID": "{830124FB-B9D5-4AE8-846E-E94A74652666}",
+       "LibName": "Wwise Parametric EQ",
+       "LibId": "6881283"
+      }
+     ]
+    },
+    "Events": [
+     {
+      "Id": "3835174908",
+      "Name": "Play_SFX_Parry",
+      "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_Parry",
+      "GUID": "{70FC38F5-5881-4468-A0ED-87520397CA12}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.39870834",
+      "DurationMax": "0.5823398",
+      "MediaRefs": [
+       {
+        "Id": "78025422"
+       },
+       {
+        "Id": "155811665"
+       },
+       {
+        "Id": "245074753"
+       },
+       {
+        "Id": "584268127"
+       }
+      ],
+      "PluginRefs": {
+       "ShareSets": [
+        {
+         "Id": "1008402193"
+        }
+       ]
+      }
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{5385ED03-8DEB-A62B-FEE1-6CED68F29A23}"
+ }
+}

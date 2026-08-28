@@ -23,7 +23,7 @@ public class ApplyDamageOnActionStatusEffect : ApplyXOnActionStatusEffect
         {
             targetPlayer.GetComponent<PlayerHealth>().TickHealth(damage, NetworkManager.Singleton.LocalClientId);
         }
-        else Debug.LogError($"[ApplyDamageOnActionStatusEffect] No player object with clientId: {targetId}");
+        else GameLogger.Log(LogSeverity.Error, $"No player object with clientId: {targetId}");
     }
 
 }

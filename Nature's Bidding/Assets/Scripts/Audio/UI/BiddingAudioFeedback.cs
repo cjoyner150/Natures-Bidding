@@ -22,13 +22,13 @@ public sealed class BiddingAudioFeedback : MonoBehaviour
 
     public void PlayBidSubmit()
     {
-    if (bidSubmitEvent == null || !bidSubmitEvent.IsValid())
-    {
-        Debug.LogWarning("[BiddingAudioFeedback] Bid submit Event is not assigned.", this);
-        return;
-    }
+        if (bidSubmitEvent == null || !bidSubmitEvent.IsValid())
+        {
+            Debug.LogWarning("[BiddingAudioFeedback] Bid submit Event is not assigned.", this);
+            return;
+        }
 
-    bidSubmitEvent.Post(gameObject);
+        bidSubmitEvent.Post(gameObject);
     }
 
     public void PlayBidReject()

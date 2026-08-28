@@ -93,6 +93,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0c8b37322dfdf6a4cb471d0ba5febec8, type: 2}
   - {fileID: 11400000, guid: 851b80ab4e673bc449b71640163641bc, type: 2}
   - {fileID: 11400000, guid: e7c4812691173964abf2c1521f3e7d3d, type: 2}
+  - {fileID: 11400000, guid: b0692cfe0bc047648a50b0ee9f0d3ec7, type: 2}
   allWeapons:
   - {fileID: 11400000, guid: 7ad51f3274f399f4aa5dcfd592269e7b, type: 2}
   allMaskVisuals:

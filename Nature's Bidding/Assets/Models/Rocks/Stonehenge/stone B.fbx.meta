@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Stonehenge2
-    second: {fileID: 2100000, guid: 0039722fed5e7b642825cf6b8def3178, type: 2}
+    second: {fileID: 2100000, guid: 71ee0664e77a3a946bfbf1f4ae65c69c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -96,7 +96,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.099999994
+    globalScale: 10
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

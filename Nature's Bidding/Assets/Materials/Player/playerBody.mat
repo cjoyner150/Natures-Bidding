@@ -26,6 +26,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _HIDERIMUNDERSHADOW_ON
+  - _RECEIVE_SHADOWS_OFF
   - _SHADOWMIXMODE_MULTIPLY
   - _SHARPRIMLIGHT_ON
   - _USERIMLIGHT_ON
@@ -154,7 +155,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RampOffset: 0.5
-    - _ReceiveShadows: 1
+    - _ReceiveShadows: 0
     - _RimAmount: 0.477
     - _RimPower: 0.591
     - _SecondaryTextureSize: 1

@@ -1,6 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{5DE131AE-4DD4-44BE-A4AC-B74B190212AE}" SchemaVersion="133">
 	<Containers>
-		<WorkUnit Name="Dialogue Work Unit" ID="{5DE131AE-4DD4-44BE-A4AC-B74B190212AE}" PersistMode="Standalone"/>
+		<WorkUnit Name="Dialogue Work Unit" ID="{5DE131AE-4DD4-44BE-A4AC-B74B190212AE}" PersistMode="Standalone">
+			<ChildrenList>
+				<PropertyContainer Name="Voices" ID="{08554F57-1B1B-4877-88C4-255A30391026}" ShortID="348209862">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="SFX" ID="{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<RandomSequenceContainer Name="Auctioneer" ID="{D15D5C56-A529-4938-A655-39F6B36263D0}" ShortID="436973410">
+							<PropertyList>
+								<Property Name="IgnoreParentMaxSoundInstance" Type="bool" Value="True"/>
+								<Property Name="MaxSoundPerInstance" Type="int16">
+									<ValueList>
+										<Value>1</Value>
+									</ValueList>
+								</Property>
+								<Property Name="UseMaxSoundPerInstance" Type="bool">
+									<ValueList>
+										<Value>True</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="dlg_auctioneer_01" ID="{497A6756-1439-4EC0-B661-C045F0A281B7}" ShortID="291604780">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="dlg_auctioneer_01" ID="{43C18C7A-B6B7-43C5-AD6D-B01DCD7D3A6C}">
+											<Language>SFX</Language>
+											<AudioFile>dlg_auctioneer_01.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="387140954"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="dlg_auctioneer_01" ID="{43C18C7A-B6B7-43C5-AD6D-B01DCD7D3A6C}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="dlg_auctioneer_02" ID="{75880F38-9C5E-41CD-B30A-E71EDAD75133}" ShortID="111747097">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="dlg_auctioneer_02" ID="{1B4B7863-4BDA-46C7-BAA6-094E02E0B6A3}">
+											<Language>SFX</Language>
+											<AudioFile>dlg_auctioneer_02.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="286959462"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="dlg_auctioneer_02" ID="{1B4B7863-4BDA-46C7-BAA6-094E02E0B6A3}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="dlg_auctioneer_03" ID="{BE7A6FC9-41CD-4037-8613-643CF7A21A0D}" ShortID="81012507">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="dlg_auctioneer_03" ID="{B5EAC4A5-A0BB-4E00-A8B5-B2AEA763FD2D}">
+											<Language>SFX</Language>
+											<AudioFile>dlg_auctioneer_03.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="906730273"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="dlg_auctioneer_03" ID="{B5EAC4A5-A0BB-4E00-A8B5-B2AEA763FD2D}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="dlg_auctioneer_04" ID="{3228842D-9343-49AB-8E8D-9AC3DA4EFEBA}" ShortID="355069480">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="dlg_auctioneer_04" ID="{AD4A541D-A9A8-4A3E-BEAB-B287F0DFC2AB}">
+											<Language>SFX</Language>
+											<AudioFile>dlg_auctioneer_04.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="510422161"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="dlg_auctioneer_04" ID="{AD4A541D-A9A8-4A3E-BEAB-B287F0DFC2AB}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="dlg_auctioneer_05" ID="{EA480BCC-DBB5-4A84-87B3-1707C060A133}" ShortID="129729077">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="dlg_auctioneer_05" ID="{E8CBCEA3-0DC4-49A9-A8B9-72065E0BDD58}">
+											<Language>SFX</Language>
+											<AudioFile>dlg_auctioneer_05.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="436289365"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="dlg_auctioneer_05" ID="{E8CBCEA3-0DC4-49A9-A8B9-72065E0BDD58}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="dlg_auctioneer_06" ID="{31C4DB09-4839-443B-8997-1C00144994C0}" ShortID="861675616">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="dlg_auctioneer_06" ID="{A0DE8C37-8927-436A-8B5C-FCBA94604366}">
+											<Language>SFX</Language>
+											<AudioFile>dlg_auctioneer_06.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="315138502"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="dlg_auctioneer_06" ID="{A0DE8C37-8927-436A-8B5C-FCBA94604366}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="dlg_auctioneer_07" ID="{F58B867C-E82F-4320-B12B-B11E17B2643C}" ShortID="628667989">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="dlg_auctioneer_07" ID="{3287E4C2-5DEA-40BF-81DE-F3D0F40EB880}">
+											<Language>SFX</Language>
+											<AudioFile>dlg_auctioneer_07.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="761025212"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="dlg_auctioneer_07" ID="{3287E4C2-5DEA-40BF-81DE-F3D0F40EB880}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+						</RandomSequenceContainer>
+					</ChildrenList>
+				</PropertyContainer>
+			</ChildrenList>
+		</WorkUnit>
 	</Containers>
 </WwiseDocument>

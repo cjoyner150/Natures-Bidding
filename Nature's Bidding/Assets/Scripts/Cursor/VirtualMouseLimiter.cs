@@ -24,7 +24,8 @@ public class VirtualMouseLimiter : MonoBehaviour
     {
         if (virtualMouseInput == null || !virtualMouseInput.enabled) return;
 
-        Vector2 mousePos = virtualMouseInput.virtualMouse.position.value;
+        Vector2 before = virtualMouseInput.virtualMouse.position.value;
+        Vector2 mousePos = before;
         mousePos.x = Mathf.Clamp(mousePos.x, 50, Screen.width - 50);
         mousePos.y = Mathf.Clamp(mousePos.y, 50, Screen.height - 50);
 

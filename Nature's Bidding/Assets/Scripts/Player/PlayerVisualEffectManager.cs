@@ -15,7 +15,6 @@ public class PlayerVisualEffectManager : MonoBehaviour
     [SerializeField] GameObject confusionParticle;
     [SerializeField] GameObject parryParticle;
     [SerializeField] GameObject parrySuccessParticle;
-    [SerializeField] GameObject magicPoofParticle;
     [SerializeField] GameObject stunParticle;
     [SerializeField] GameObject explosionParticle;
     [SerializeField] GameObject jumpParticle;
@@ -30,11 +29,21 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     GameObject batConfusionEffectCache;
     GameObject starEffectCache;
-    Color playerColor;
+    Color playerColor = Color.white;
 
-    public void Awake()
+    private void Start()
     {
-        playerColor = GetComponent<PlayerNetworkBehavior>().GetPlayerColor();
+        InitializeColorWhenReady().Forget();
+    }
+
+    private async UniTaskVoid InitializeColorWhenReady()
+    {
+        var playerNetworkBehavior = GetComponent<PlayerNetworkBehavior>();
+        await UniTask.WaitUntil(() => PersistentPlayerRegistry.Instance.GetByClientId(playerNetworkBehavior.OwnerClientId) != null);
+
+        if (this == null) return;
+
+        playerColor = playerNetworkBehavior.GetPlayerColor();
     }
 
     public void SpawnSlashEffectParticles(int milliseconds)
@@ -48,7 +57,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnParryEffectParticles(int milliseconds)
     {
-        Debug.Log(milliseconds);
+        GameLogger.Log(LogSeverity.Debug, $"SpawnParryEffectParticles called with duration: {milliseconds} ms");
         GameObject go = Instantiate(parryParticle, gameObject.transform, false);
         go.transform.localPosition = Vector3.zero;
         SafeDispose(go, milliseconds).Forget();
@@ -62,25 +71,24 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnHitReactParticles(bool critical, Vector3 fromPos, float dmg)
     {
-        if (critical)
-        {
-            GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
-            go.transform.localPosition = Vector3.zero;
-            SafeDispose(go, 1000).Forget();
-            hitReactFeedback.PlayFeedbacks();
-        }
-        else
-        {
-            Transform pTrans = gameObject.transform;
-            Vector3 direction = fromPos - gameObject.transform.position;
-            Quaternion rotation = Quaternion.LookRotation(direction);
-            pTrans.rotation = rotation;
+        //if (critical)
+        //{
+        //    GameObject go = Instantiate(hitReactParticle, gameObject.transform, false);
+        //    go.transform.localPosition = Vector3.zero;
+        //    SafeDispose(go, 1000).Forget();
+        //    hitReactFeedback.PlayFeedbacks();
+        //}
 
-            GameObject go = Instantiate(hitReactParticle, pTrans, false);
-            go.transform.localPosition = Vector3.zero;
-            SafeDispose(go, 1000).Forget();
-            hitReactFeedback.PlayFeedbacks();
-        }
+        Transform pTrans = gameObject.transform;
+        Vector3 direction = fromPos - gameObject.transform.position;
+        Quaternion rotation = Quaternion.LookRotation(direction);
+        pTrans.rotation = rotation;
+
+        GameObject go = Instantiate(hitReactParticle, pTrans, false);
+        go.transform.localPosition = Vector3.zero;
+        SafeDispose(go, 1000).Forget();
+        hitReactFeedback.PlayFeedbacks();
+        
     }
 
     public void SpawnDashParticles()
@@ -121,19 +129,29 @@ public class PlayerVisualEffectManager : MonoBehaviour
     public void SpawnJumpParticles()
     {
         GameObject go = Instantiate(jumpParticle, gameObject.transform, false);
+        GameLogger.Log(LogSeverity.Debug, $"SpawnJumpParticles called. Instantiated: {go != null}, activeInHierarchy: {go?.activeInHierarchy}");
         go.transform.localPosition = Vector3.zero;
         go.transform.SetParent(null);
+
+        var allParticleSystems = go.GetComponentsInChildren<ParticleSystem>();
+        foreach (var ps in allParticleSystems)
+        {
+            GameLogger.Log(LogSeverity.Debug, $"[PlayerVisualEffectManager] ParticleSystem '{ps.gameObject.name}' isPlaying: {ps.isPlaying}, particleCount: {ps.particleCount}");
+        }
+
         SafeDispose(go, 1000).Forget();
     }
 
     public void SpawnExplosionParticles(Vector3 spawnPos)
     {
+        GameLogger.Log(LogSeverity.Debug, "Explosion particles spawned.");
         GameObject go = Instantiate(explosionParticle, spawnPos, Quaternion.identity);
-        SafeDispose(go, 2000).Forget();
+        SafeDispose(go, 4000).Forget();
     }
 
     public void SpawnStunParticles(int milliseconds)
     {
+        if (stunParticle == null) return;
         GameObject go = Instantiate(stunParticle, gameObject.transform, false);
         go.transform.localPosition = Vector3.zero;
         SafeDispose(go, milliseconds).Forget();

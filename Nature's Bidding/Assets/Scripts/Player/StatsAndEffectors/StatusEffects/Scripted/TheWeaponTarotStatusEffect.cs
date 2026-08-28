@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -22,11 +23,11 @@ public class TheWeaponTarotStatusEffect : StatusEffect
 
         if (playerWeaponManager == null)
         {
-            Debug.LogError($"[TheWeaponTarotStatusEffect] PlayerWeaponManager missing on {player.name} during OnInitialize.");
+            GameLogger.Log(LogSeverity.Error, $"PlayerWeaponManager missing on {player.name} during OnInitialize.");
             return;
         }
 
-        playerWeaponManager.EquipWeapon(weaponIdToEquip);
+        playerWeaponManager.EquipWeapon(weaponIdToEquip).Forget();
     }
 
     public override void OnEnd()

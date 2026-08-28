@@ -20,12 +20,12 @@ public class ItemDatabase : ScriptableObject
         {
             if (string.IsNullOrEmpty(effector.Id))
             {
-                Debug.LogError($"Effector {effector.name} has no ID - skipping.");
+                GameLogger.Log(LogSeverity.Error, $"Effector {effector.name} has no ID - skipping.");
                 continue;
             }
             if (statusLookup.ContainsKey(effector.Id))
             {
-                Debug.LogError($"Duplicate ID: {effector.Id} on {effector.name}");
+                GameLogger.Log(LogSeverity.Error, $"Duplicate ID: {effector.Id} on {effector.name}");
                 continue;
             }
             statusLookup[effector.Id] = effector;
@@ -36,12 +36,12 @@ public class ItemDatabase : ScriptableObject
         {
             if (string.IsNullOrEmpty(weapon.Id))
             {
-                Debug.LogError($"Effector {weapon.name} has no ID - skipping.");
+                GameLogger.Log(LogSeverity.Error, $"Effector {weapon.name} has no ID - skipping.");
                 continue;
             }
             if (weaponLookup.ContainsKey(weapon.Id))
             {
-                Debug.LogError($"Duplicate ID: {weapon.Id} on {weapon.name}");
+                GameLogger.Log(LogSeverity.Error, $"Duplicate ID: {weapon.Id} on {weapon.name}");
                 continue;
             }
             weaponLookup[weapon.Id] = weapon;
@@ -52,12 +52,12 @@ public class ItemDatabase : ScriptableObject
         {
             if (string.IsNullOrEmpty(mask.Id))
             {
-                Debug.LogError($"Effector {mask.name} has no ID - skipping.");
+                GameLogger.Log(LogSeverity.Error, $"Effector {mask.name} has no ID - skipping.");
                 continue;
             }
             if (maskVisualLookup.ContainsKey(mask.Id))
             {
-                Debug.LogError($"Duplicate ID: {mask.Id} on {mask.name}");
+                GameLogger.Log(LogSeverity.Error, $"Duplicate ID: {mask.Id} on {mask.name}");
                 continue;
             }
             maskVisualLookup[mask.Id] = mask;
@@ -74,7 +74,7 @@ public class ItemDatabase : ScriptableObject
     public T Get<T>(string id)
     {
         if (TryGet<T>(id, out var item)) return item;
-        Debug.LogError($"ItemDatabase: no item found for id '{id}'");
+        GameLogger.Log(LogSeverity.Error, $"ItemDatabase: no item found for id '{id}'");
         return default(T);
     }
 

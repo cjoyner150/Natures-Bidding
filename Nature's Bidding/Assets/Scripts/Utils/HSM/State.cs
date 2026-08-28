@@ -49,7 +49,7 @@ namespace HSM
         /// </summary>
         internal void Enter()
         {
-            HSMDebug.Log($"[Enter] {GetType().Name}");
+            GameLogger.Log(LogSeverity.Debug, $"[Enter] {GetType().Name}");
             if (Parent != null) Parent.ActiveChild = this;
             OnEnter();
         }
@@ -59,18 +59,19 @@ namespace HSM
         /// </summary>
         internal void Exit()
         {
-            HSMDebug.Log($"[Exit] {GetType().Name}");
+            GameLogger.Log(LogSeverity.Debug, $"[Exit] {GetType().Name}");
             OnExit();
         }
 
         internal void Update(float deltaTime)
         {
             State t = GetTransition();
-            if (t != null)
+            if (t != null && t != Leaf())          // suppress only true no-ops: requesting the already-active leaf
             {
                 Machine.Sequencer.RequestTransition(Leaf(), t);
                 return;
             }
+
             if (ActiveChild != null) ActiveChild.Update(deltaTime);
             OnUpdate(deltaTime);
         }
@@ -90,7 +91,7 @@ namespace HSM
             {
                 if (!visited.Add(s))
                 {
-                    Debug.LogError($"[HSM] Cycle detected in GetInitialState() at {s.GetType().Name}. Stopping resolution.");
+                    GameLogger.Log(LogSeverity.Error, $"[HSM] Cycle detected in GetInitialState() at {s.GetType().Name}. Stopping resolution.");
                     return s;
                 }
                 State next = s.GetInitialState();

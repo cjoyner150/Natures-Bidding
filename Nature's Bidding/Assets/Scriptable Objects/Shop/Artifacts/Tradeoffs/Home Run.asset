@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c64c524e213d78a469ace7eb02e09a47, type: 3}
+  m_Name: Home Run
+  m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
+  _id: homerun
+  upgradeName: Home Run
+  description: Deal enormous damage for drastically reduced attack speed
+  icon: {fileID: 21300000, guid: e9a794d0543373c4d9e88de3df54b2c3, type: 3}
+  effectorId: home_run
+  effectorBucket: 2
+  upgradeType: 2
+  effectValue: 1
+  cost: 100
+  maxPurchases: 3
+  isConsumable: 0
+  cardColor: {r: 0.8805031, g: 0.25736043, b: 0.17997698, a: 1}
+  shadowSprite: {fileID: 0}

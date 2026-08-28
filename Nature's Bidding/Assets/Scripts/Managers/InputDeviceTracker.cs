@@ -35,7 +35,11 @@ public static class InputDeviceTracker
 
     private static void OnAnyInputEvent(InputEventPtr eventPtr, InputDevice device)
     {
+
         if (!eventPtr.IsA<StateEvent>() && !eventPtr.IsA<DeltaStateEvent>()) return;
+
+        if (device is Mouse mouse && !mouse.native)
+            return;
 
         InputType newType = device switch
         {
@@ -48,7 +52,7 @@ public static class InputDeviceTracker
         if (newType != CurrentInputType)
         {
             CurrentInputType = newType;
-            Debug.Log($"[InputDeviceTracker] Switched to {CurrentInputType} (triggered by {device.displayName}).");
+            GameLogger.Log(LogSeverity.Info, $"[InputDeviceTracker] Switched to {CurrentInputType} (triggered by {device.displayName}).");
             OnInputTypeChanged?.Invoke(CurrentInputType);
         }
     }

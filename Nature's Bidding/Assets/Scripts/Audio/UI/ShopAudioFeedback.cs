@@ -1,16 +1,18 @@
 using UnityEngine;
 
-public class ShopAudioFeedback : MonoBehaviour
+[DisallowMultipleComponent]
+public sealed class ShopAudioFeedback : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] private AK.Wwise.Event purchaseEvent;
 
-    // Update is called once per frame
-    void Update()
+    public void PlayPurchase()
     {
-        
+        if (purchaseEvent == null || !purchaseEvent.IsValid())
+        {
+            Debug.LogWarning("[ShopAudioFeedback] Purchase Event is not assigned.", this);
+            return;
+        }
+
+        purchaseEvent.Post(gameObject);
     }
 }

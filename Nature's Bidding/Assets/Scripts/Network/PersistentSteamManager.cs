@@ -24,14 +24,14 @@ public class PersistentSteamManager : Singleton<PersistentSteamManager>
 #if !UNITY_EDITOR
     try
     {
-        SteamClient.Init(4462510);
-        Debug.Log($"Steam initialized. Name: {SteamClient.Name}");
+        SteamClient.Init(5039210);
+        GameLogger.Log(LogSeverity.Info, $"Steam initialized. Name: {SteamClient.Name}");
         SteamFriends.OnGameRichPresenceJoinRequested += OnFriendJoinRequested;
         Application.quitting += OnApplicationQuitting;
     }
     catch (Exception e)
     {
-        Debug.LogError($"Steam failed to initialize: {e.Message}");
+        GameLogger.Log(LogSeverity.Error, $"Steam failed to initialize: {e.Message}");
         // Steam isn't running — quit the game
         Application.Quit();
     }
@@ -57,11 +57,11 @@ public class PersistentSteamManager : Singleton<PersistentSteamManager>
 
             case GameState.Lobby:
                 string connectString = $"+connect {NetworkSessionManager.Instance.ActiveSession?.Code}";
-                Debug.Log($"=== SetRichPresence ===");
-                Debug.Log($"SteamId: {SteamClient.SteamId}");
-                Debug.Log($"Setting connect: '{connectString}'");
+                GameLogger.Log(LogSeverity.Debug, $"=== SetRichPresence ===");
+                GameLogger.Log(LogSeverity.Debug, $"SteamId: {SteamClient.SteamId}");
+                GameLogger.Log(LogSeverity.Debug, $"Setting connect: '{connectString}'");
                 bool result = SteamFriends.SetRichPresence("connect", connectString);
-                Debug.Log($"SetRichPresence result: {result}");
+                GameLogger.Log(LogSeverity.Debug, $"SetRichPresence result: {result}");
                 SteamFriends.SetRichPresence("status", "In Lobby");
                 break;
 
@@ -86,28 +86,28 @@ public class PersistentSteamManager : Singleton<PersistentSteamManager>
 
     private void OnFriendJoinRequested(Friend friend, string connect)
     {
-        Debug.Log($"=== OnFriendJoinRequested ===");
-        Debug.Log($"Friend Name: {friend.Name}");
-        Debug.Log($"Friend SteamId: {friend.Id}");
-        Debug.Log($"Local SteamId: {SteamClient.SteamId}");
-        Debug.Log($"Connect string received: '{connect}'");
-        Debug.Log($"Our own Rich Presence connect: '{SteamFriends.GetRichPresence("connect")}'");
+        GameLogger.Log(LogSeverity.Debug, $"=== OnFriendJoinRequested ===");
+        GameLogger.Log(LogSeverity.Debug, $"Friend Name: {friend.Name}");
+        GameLogger.Log(LogSeverity.Debug, $"Friend SteamId: {friend.Id}");
+        GameLogger.Log(LogSeverity.Debug, $"Local SteamId: {SteamClient.SteamId}");
+        GameLogger.Log(LogSeverity.Debug, $"Connect string received: '{connect}'");
+        GameLogger.Log(LogSeverity.Debug, $"Our own Rich Presence connect: '{SteamFriends.GetRichPresence("connect")}'");
 
         // Check what Rich Presence the friend actually has
         string friendConnect = friend.GetRichPresence("connect");
         string friendStatus = friend.GetRichPresence("status");
-        Debug.Log($"Friend's Rich Presence connect: '{friendConnect}'");
-        Debug.Log($"Friend's Rich Presence status: '{friendStatus}'");
+        GameLogger.Log(LogSeverity.Debug, $"Friend's Rich Presence connect: '{friendConnect}'");
+        GameLogger.Log(LogSeverity.Debug, $"Friend's Rich Presence status: '{friendStatus}'");
 
         if (_isHandlingFriendJoin)
         {
-            Debug.LogWarning("HandleFriendJoin already in progress, ignoring.");
+            GameLogger.Log(LogSeverity.Warning, "HandleFriendJoin already in progress, ignoring.");
             return;
         }
         _isHandlingFriendJoin = true;
 
         string sessionCode = connect.Replace("+connect ", "").Trim();
-        Debug.Log($"Parsed session code: '{sessionCode}'");
+        GameLogger.Log(LogSeverity.Debug, $"Parsed session code: '{sessionCode}'");
         HandleFriendJoin(sessionCode).Forget();
     }
 
@@ -115,13 +115,13 @@ public class PersistentSteamManager : Singleton<PersistentSteamManager>
     {
         try
         {
-            Debug.Log($"HandleFriendJoin started. SessionCode: '{sessionCode}'");
-            Debug.Log($"  IsReturningToMenu: {PersistentGameStateManager.Instance.IsReturningToMenu}");
-            Debug.Log($"  IsBusy: {NetworkSessionManager.Instance.IsBusy}");
-            Debug.Log($"  HasActiveSession: {NetworkSessionManager.Instance.HasActiveSession}");
-            Debug.Log($"  GameState: {PersistentGameStateManager.Instance.State}");
-            Debug.Log($"  NetworkManager exists: {NetworkManager.Singleton != null}");
-            Debug.Log($"  NetworkManager IsListening: {NetworkManager.Singleton?.IsListening}");
+            GameLogger.Log(LogSeverity.Debug, $"HandleFriendJoin started. SessionCode: '{sessionCode}'");
+            GameLogger.Log(LogSeverity.Debug, $"  IsReturningToMenu: {PersistentGameStateManager.Instance.IsReturningToMenu}");
+            GameLogger.Log(LogSeverity.Debug, $"  IsBusy: {NetworkSessionManager.Instance.IsBusy}");
+            GameLogger.Log(LogSeverity.Debug, $"  HasActiveSession: {NetworkSessionManager.Instance.HasActiveSession}");
+            GameLogger.Log(LogSeverity.Debug, $"  GameState: {PersistentGameStateManager.Instance.State}");
+            GameLogger.Log(LogSeverity.Debug, $"  NetworkManager exists: {NetworkManager.Singleton != null}");
+            GameLogger.Log(LogSeverity.Debug, $"  NetworkManager IsListening: {NetworkManager.Singleton?.IsListening}");
 
             int waitFrame = 0;
             await UniTask.WaitUntil(() =>
@@ -130,18 +130,18 @@ public class PersistentSteamManager : Singleton<PersistentSteamManager>
                 bool busy = NetworkSessionManager.Instance.IsBusy;
 
                 if (waitFrame++ % 60 == 0) // Log every 60 frames if still waiting
-                    Debug.Log($"HandleFriendJoin waiting... IsReturningToMenu: {returningToMenu}, IsBusy: {busy}");
+                    GameLogger.Log(LogSeverity.Debug, $"HandleFriendJoin waiting... IsReturningToMenu: {returningToMenu}, IsBusy: {busy}");
 
                 return !returningToMenu && !busy;
             });
 
-            Debug.Log("HandleFriendJoin wait complete — proceeding.");
-            Debug.Log($"  HasActiveSession: {NetworkSessionManager.Instance.HasActiveSession}");
+            GameLogger.Log(LogSeverity.Debug, "HandleFriendJoin wait complete — proceeding.");
+            GameLogger.Log(LogSeverity.Debug, $"  HasActiveSession: {NetworkSessionManager.Instance.HasActiveSession}");
 
             if (NetworkSessionManager.Instance.HasActiveSession)
             {
-                Debug.Log("Has active session — calling ReturnToMenu before joining.");
-                PersistentGameStateManager.Instance.ReturnToMenu();
+                GameLogger.Log(LogSeverity.Debug, "Has active session — calling ReturnToMenu before joining.");
+                PersistentGameStateManager.Instance.ReturnToMenu().Forget();
 
                 waitFrame = 0;
                 await UniTask.WaitUntil(() =>
@@ -150,40 +150,40 @@ public class PersistentSteamManager : Singleton<PersistentSteamManager>
                     bool hasSession = NetworkSessionManager.Instance.HasActiveSession;
 
                     if (waitFrame++ % 60 == 0)
-                        Debug.Log($"Waiting for ReturnToMenu... IsReturningToMenu: {returningToMenu}, HasActiveSession: {hasSession}");
+                        GameLogger.Log(LogSeverity.Debug, $"Waiting for ReturnToMenu... IsReturningToMenu: {returningToMenu}, HasActiveSession: {hasSession}");
 
                     return !returningToMenu && !hasSession;
                 });
 
-                Debug.Log("ReturnToMenu complete.");
+                GameLogger.Log(LogSeverity.Debug, "ReturnToMenu complete.");
             }
 
-            Debug.Log($"Attempting to join session: '{sessionCode}'");
+            GameLogger.Log(LogSeverity.Debug, $"Attempting to join session: '{sessionCode}'");
             bool success = await NetworkSessionManager.Instance.JoinSessionByCode(sessionCode);
-            Debug.Log($"JoinSessionByCode result: {success}");
+            GameLogger.Log(LogSeverity.Debug, $"JoinSessionByCode result: {success}");
 
             if (success)
             {
-                Debug.Log("Join successful — scene loaded via Netcode sync, OnGameplaySceneReady will handle UI.");
-            } else Debug.LogWarning($"Failed to join friend's session: {sessionCode}");
+                GameLogger.Log(LogSeverity.Debug, "Join successful — scene loaded via Netcode sync, OnGameplaySceneReady will handle UI.");
+            } else GameLogger.Log(LogSeverity.Warning, $"Failed to join friend's session: {sessionCode}");
         }
         catch (Exception e)
         {
-            Debug.LogException(e);
+            GameLogger.LogException(LogSeverity.Error, "Exception occurred in HandleFriendJoin.", e);
         }
         finally
         {
-            Debug.Log("HandleFriendJoin complete — resetting _isHandlingFriendJoin.");
+            GameLogger.Log(LogSeverity.Debug, "HandleFriendJoin complete — resetting _isHandlingFriendJoin.");
             _isHandlingFriendJoin = false;
         }
     }
 
     private async void OnApplicationQuitting()
     {
-        Debug.Log($"OnApplicationQuitting. IsHandlingFriendJoin: {_isHandlingFriendJoin}, SteamClient.IsValid: {SteamClient.IsValid}");
+        GameLogger.Log(LogSeverity.Debug, $"OnApplicationQuitting. IsHandlingFriendJoin: {_isHandlingFriendJoin}, SteamClient.IsValid: {SteamClient.IsValid}");
         if (SteamClient.IsValid)
         {
-            Debug.Log("Calling SteamClient.Shutdown() in OnApplicationQuitting.");
+            GameLogger.Log(LogSeverity.Debug, "Calling SteamClient.Shutdown() in OnApplicationQuitting.");
             await ShutdownSteam();
         }
     }
@@ -196,7 +196,7 @@ public class PersistentSteamManager : Singleton<PersistentSteamManager>
 
         await UniTask.Delay(500);
 
-        Debug.Log("Steam Shutdown Complete.");
+        GameLogger.Log(LogSeverity.Debug, "Steam Shutdown Complete.");
     }
 
 }

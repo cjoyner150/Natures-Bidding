@@ -8,17 +8,22 @@ using UnityUtils;
 public class PlayerAttackManager : NetworkBehaviour
 {
     [SerializeField] private Transform attackTransform;
-    [SerializeField] private PlayerHealth selfPlayerHealth;
     [SerializeField] private LayerMask attackableLayers;
 
     private bool isAttacking;
 
     private HashSet<IDamageable> damagedObjectsOnThisAttack = new HashSet<IDamageable>();
-
+    
+    [Header("Basic Attack Settings")]
     [SerializeField] private float attackRadius;
     [SerializeField] private float attackLength;
 
-    PlayerContext ctx;
+    [Header("Falling Slam Settings")]
+    [SerializeField] private float fallingSlamRadius;
+    [SerializeField] private float fallingSlamLength;
+
+    private PlayerHealth selfPlayerHealth;
+    private PlayerContext ctx;
 
     public override void OnNetworkSpawn()
     {
@@ -55,6 +60,30 @@ public class PlayerAttackManager : NetworkBehaviour
         isAttacking = false;
     }
 
+    public void FallingSlamAttack()
+    {
+        RaycastHit[] hits = Physics.SphereCastAll(
+            transform.position + (ctx.modelHolder.forward * fallingSlamRadius / 2f), 
+            fallingSlamRadius, 
+            ctx.modelHolder.forward, 
+            fallingSlamLength, 
+            attackableLayers
+            );
+
+        if (debugAttackCast)
+            DrawSphereCastDebug(transform.position, fallingSlamRadius, ctx.modelHolder.forward, fallingSlamLength, hits);
+
+        foreach (RaycastHit hit in hits)
+        {
+            GameObject go = hit.collider.gameObject;
+            UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
+            if (damageable != null)
+            {
+                HandleHitDamageableTarget(damageable, go);
+            }
+        }
+    }
+
     void FixedUpdate()
     {
         if (!IsOwner) return;
@@ -89,7 +118,7 @@ public class PlayerAttackManager : NetworkBehaviour
     {
         bool didHit = hits.Length > 0;
         Color color = didHit ? Color.red : Color.green;
-        float duration = 0.15f;
+        float duration = 1f;
 
         Vector3 endPos = origin + direction.normalized * distance;
 

@@ -399,12 +399,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackManager
   ShowTopMostFoldoutHeaderGroup: 1
   attackTransform: {fileID: 6451522480683506389}
-  selfPlayerHealth: {fileID: 0}
   attackableLayers:
     serializedVersion: 2
     m_Bits: 128
   attackRadius: 1
   attackLength: 0.5
+  fallingSlamRadius: 3
+  fallingSlamLength: 0.5
   debugAttackCast: 1
 --- !u!114 &2143706486958459292
 MonoBehaviour:

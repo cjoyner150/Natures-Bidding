@@ -56,13 +56,32 @@ namespace HSM
         //}
     }
 
+    public class DelayDeactivationActivity : Activity
+    {
+        private int milliseconds;
+        public DelayDeactivationActivity(float seconds)
+        {
+            this.milliseconds = (int)(seconds * 1000);
+        }
+
+        public override async Task DeactivateAsync(CancellationToken ct)
+        {
+            await base.DeactivateAsync(ct);
+            await UniTask.Delay(milliseconds, false, PlayerLoopTiming.Update, ct);
+        }
+    }
+
     public class DelayActivationActivity : Activity
     {
-        public float seconds = 0.2f;
+        private int milliseconds;
+        public DelayActivationActivity(float seconds)
+        {
+            this.milliseconds = (int)(seconds * 1000);
+        }
 
         public override async Task ActivateAsync(CancellationToken ct)
         {
-            await Task.Delay(TimeSpan.FromSeconds(seconds), ct);
+            await UniTask.Delay(milliseconds, false, PlayerLoopTiming.Update, ct);
             await base.ActivateAsync(ct);
         }
     }

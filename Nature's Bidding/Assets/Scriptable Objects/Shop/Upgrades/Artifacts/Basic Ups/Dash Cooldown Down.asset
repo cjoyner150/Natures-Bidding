@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c64c524e213d78a469ace7eb02e09a47, type: 3}
+  m_Name: Dash Cooldown Down
+  m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
+  _id: dash_cooldown_down
+  upgradeName: Dash Cooldown Down
+  description: Decreases Dash Cooldown by -.5sec.
+  icon: {fileID: 21300000, guid: 028c3b2e471bf294fbe5bf4722ae705d, type: 3}
+  effectorId: Dash Cooldown Down
+  effectorBucket: 2
+  upgradeType: 0
+  effectValue: 0.2
+  cost: 30
+  maxPurchases: 3
+  isConsumable: 0
+  cardColor: {r: 0.78234273, g: 0.88235295, b: 0.18039213, a: 1}
+  shadowSprite: {fileID: 0}

@@ -1,5 +1,5 @@
 # SHA-256 hashes for every generated Wwise output.
-# Authoring manifest SHA-256: 6c0f70db0cfd351ad88f165747983e80177a4823143de51d82d04576e73a4c36
+# Authoring manifest SHA-256: ae2e2a67f3bfd273f06f5abbef31e6cf01c01a42abca57b6237fa15b56c43188
 f37d79ab29b8502c79727f9b5eec8ff7a1b7a8182e535f2ca896a48ef2df78f2  Linux/Event/Play_AMB_Forest.bnk
 96393547e4fafb280d1917dc3d299f84bdf58729f02b51af4519ee9771ab87e9  Linux/Event/Play_AMB_Forest.json
 03395333e3cde19e337077977b74175506698a57ac0e59e4dc12e8deadf48b6c  Linux/Event/Play_AMB_Forest.txt

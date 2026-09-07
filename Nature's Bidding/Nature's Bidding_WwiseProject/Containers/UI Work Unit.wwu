@@ -9,7 +9,7 @@
 			<ChildrenList>
 				<Folder Name="Bidding" ID="{076A6B80-B090-401B-A093-836729618B55}" ShortID="19523283">
 					<ChildrenList>
-						<SwitchContainer Name="click" ID="{E105CD71-ADB5-4E9A-91A3-E16C1D2F3D0E}" ShortID="204311014">
+						<SwitchContainer Name="UI_Bid_Adjust" ID="{E105CD71-ADB5-4E9A-91A3-E16C1D2F3D0E}" ShortID="204311014">
 							<PropertyList>
 								<Property Name="MaxSoundPerInstance" Type="int16">
 									<ValueList>
@@ -34,7 +34,7 @@
 								</Reference>
 							</ReferenceList>
 							<ChildrenList>
-								<RandomSequenceContainer Name="down" ID="{9CC95627-E6F9-4DF3-B72E-8B13FE6E73DE}" ShortID="911670586">
+								<RandomSequenceContainer Name="UI_Bid_Down" ID="{9CC95627-E6F9-4DF3-B72E-8B13FE6E73DE}" ShortID="911670586">
 									<PropertyList>
 										<Property Name="Pitch" Type="int32">
 											<ValueList>
@@ -62,7 +62,7 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<Sound Name="ui_bid_click_01" ID="{9FF54D82-452A-4C5E-A421-3351C4B6DE92}" ShortID="118705719">
+										<Sound Name="ui_bid_down_01" ID="{9FF54D82-452A-4C5E-A421-3351C4B6DE92}" ShortID="118705719">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -84,7 +84,7 @@
 												<ActiveSource Name="ui_bid_click_01" ID="{716A6BC2-4477-4BA8-A14E-787E9DA43F9E}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="ui_bid_click_02" ID="{E7D41BC1-9FFE-4A63-9763-0138C4B62BAA}" ShortID="747970647">
+										<Sound Name="ui_bid_down_02" ID="{E7D41BC1-9FFE-4A63-9763-0138C4B62BAA}" ShortID="747970647">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -106,7 +106,7 @@
 												<ActiveSource Name="ui_bid_click_02" ID="{BF469105-F9AC-4029-BB7D-F45ECD23B5B5}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="ui_bid_click_03" ID="{A18FDF49-A8BB-436A-AA3A-E284365AB0B8}" ShortID="849930388">
+										<Sound Name="ui_bid_down_03" ID="{A18FDF49-A8BB-436A-AA3A-E284365AB0B8}" ShortID="849930388">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -128,7 +128,7 @@
 												<ActiveSource Name="ui_bid_click_03" ID="{0D9BBB87-ECE9-43C3-85DF-6341CB7ACA1C}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="ui_bid_click_04" ID="{D4E928E5-A99B-41C6-B9C5-0F4C7A84BD9E}" ShortID="387129709">
+										<Sound Name="ui_bid_down_04" ID="{D4E928E5-A99B-41C6-B9C5-0F4C7A84BD9E}" ShortID="387129709">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -150,7 +150,7 @@
 												<ActiveSource Name="ui_bid_click_04" ID="{789CF7BE-6E71-4DDE-98FE-A7A042BDE6C0}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="ui_bid_click_05" ID="{5950280A-773B-47DE-BB11-50775D48BEC7}" ShortID="747426271">
+										<Sound Name="ui_bid_down_05" ID="{5950280A-773B-47DE-BB11-50775D48BEC7}" ShortID="747426271">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -172,7 +172,7 @@
 												<ActiveSource Name="ui_bid_click_05" ID="{42CCCC46-02A9-420B-8800-8AD8E7E86E1C}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="ui_bid_click_06" ID="{7306E4C2-9DB8-4B61-9852-0714EDDEF094}" ShortID="424071925">
+										<Sound Name="ui_bid_down_06" ID="{7306E4C2-9DB8-4B61-9852-0714EDDEF094}" ShortID="424071925">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -196,7 +196,7 @@
 										</Sound>
 									</ChildrenList>
 								</RandomSequenceContainer>
-								<RandomSequenceContainer Name="up" ID="{F220933A-8AD8-4E17-9BB0-0C13BA7DF6F8}" ShortID="652765482">
+								<RandomSequenceContainer Name="UI_Bid_Up" ID="{F220933A-8AD8-4E17-9BB0-0C13BA7DF6F8}" ShortID="652765482">
 									<PropertyList>
 										<Property Name="Pitch" Type="int32">
 											<ValueList>
@@ -224,7 +224,7 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<Sound Name="ui_bid_click_02" ID="{8EC7DBAE-AE44-46CC-9967-9F695F59F361}" ShortID="312539330">
+										<Sound Name="ui_bid_up_02" ID="{8EC7DBAE-AE44-46CC-9967-9F695F59F361}" ShortID="312539330">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -246,7 +246,7 @@
 												<ActiveSource Name="ui_bid_click_02" ID="{C0B93D1D-9CB3-4D90-B2B3-30A73C26B8E6}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="ui_bid_click_03" ID="{F262C4DD-6E12-4716-B7B8-7B5A8816A3E8}" ShortID="494640310">
+										<Sound Name="ui_bid_up_03" ID="{F262C4DD-6E12-4716-B7B8-7B5A8816A3E8}" ShortID="494640310">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -268,7 +268,7 @@
 												<ActiveSource Name="ui_bid_click_03" ID="{CA215350-8942-495B-AD00-0F90EBE246C3}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="ui_bid_click_01" ID="{7BF08DE9-487E-4EF6-BF87-EC691A8E1139}" ShortID="235808402">
+										<Sound Name="ui_bid_up_01" ID="{7BF08DE9-487E-4EF6-BF87-EC691A8E1139}" ShortID="235808402">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -290,7 +290,7 @@
 												<ActiveSource Name="ui_bid_click_01" ID="{7BA95D13-CE46-49AE-B895-C5A63A180958}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="ui_bid_click_06" ID="{4BBC9B84-611F-45F7-B990-9F9D46FEF608}" ShortID="527473678">
+										<Sound Name="ui_bid_up_06" ID="{4BBC9B84-611F-45F7-B990-9F9D46FEF608}" ShortID="527473678">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -312,7 +312,7 @@
 												<ActiveSource Name="ui_bid_click_06" ID="{EFA396A5-2BC5-4BE7-8937-7BDD56BD8249}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="ui_bid_click_05" ID="{AA422CD6-449C-477F-BFD7-4EFC7A92FACE}" ShortID="989538877">
+										<Sound Name="ui_bid_up_05" ID="{AA422CD6-449C-477F-BFD7-4EFC7A92FACE}" ShortID="989538877">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -334,7 +334,7 @@
 												<ActiveSource Name="ui_bid_click_05" ID="{9A5D2CC5-5950-4F3B-910F-27954B67D2F2}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
-										<Sound Name="ui_bid_click_04" ID="{ED4F3245-05AB-46D8-AF36-9233FDA357D0}" ShortID="1005721490">
+										<Sound Name="ui_bid_up_04" ID="{ED4F3245-05AB-46D8-AF36-9233FDA357D0}" ShortID="1005721490">
 											<ReferenceList>
 												<Reference Name="Conversion">
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -362,29 +362,29 @@
 							<GroupingInfo>
 								<GroupingBehaviorList>
 									<GroupingBehavior>
-										<ItemRef Name="down" ID="{9CC95627-E6F9-4DF3-B72E-8B13FE6E73DE}"/>
+										<ItemRef Name="UI_Bid_Down" ID="{9CC95627-E6F9-4DF3-B72E-8B13FE6E73DE}"/>
 									</GroupingBehavior>
 									<GroupingBehavior>
-										<ItemRef Name="up" ID="{F220933A-8AD8-4E17-9BB0-0C13BA7DF6F8}"/>
+										<ItemRef Name="UI_Bid_Up" ID="{F220933A-8AD8-4E17-9BB0-0C13BA7DF6F8}"/>
 									</GroupingBehavior>
 								</GroupingBehaviorList>
 								<GroupingList>
 									<Grouping>
 										<SwitchRef Name="Up" ID="{4A570298-AF13-4468-8D95-002DCFC71E96}"/>
 										<ItemList>
-											<ItemRef Name="up" ID="{F220933A-8AD8-4E17-9BB0-0C13BA7DF6F8}"/>
+											<ItemRef Name="UI_Bid_Up" ID="{F220933A-8AD8-4E17-9BB0-0C13BA7DF6F8}"/>
 										</ItemList>
 									</Grouping>
 									<Grouping>
 										<SwitchRef Name="Down" ID="{6D589AD8-8279-45C6-8882-D8D66C367B8A}"/>
 										<ItemList>
-											<ItemRef Name="down" ID="{9CC95627-E6F9-4DF3-B72E-8B13FE6E73DE}"/>
+											<ItemRef Name="UI_Bid_Down" ID="{9CC95627-E6F9-4DF3-B72E-8B13FE6E73DE}"/>
 										</ItemList>
 									</Grouping>
 								</GroupingList>
 							</GroupingInfo>
 						</SwitchContainer>
-						<RandomSequenceContainer Name="flick" ID="{5B7F5791-541C-4613-A203-7E399BB858DA}" ShortID="606359727">
+						<RandomSequenceContainer Name="UI_Bid_Flick" ID="{5B7F5791-541C-4613-A203-7E399BB858DA}" ShortID="606359727">
 							<PropertyList>
 								<Property Name="MaxSoundPerInstance" Type="int16">
 									<ValueList>
@@ -509,7 +509,7 @@
 								</Sound>
 							</ChildrenList>
 						</RandomSequenceContainer>
-						<RandomSequenceContainer Name="submit" ID="{7D6E3FC4-FD41-4D73-90D7-7593D7A8D7BE}" ShortID="1053703158">
+						<RandomSequenceContainer Name="UI_Bid_Submit" ID="{7D6E3FC4-FD41-4D73-90D7-7593D7A8D7BE}" ShortID="1053703158">
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -609,13 +609,13 @@
 								</Sound>
 							</ChildrenList>
 						</RandomSequenceContainer>
-						<RandomSequenceContainer Name="reject" ID="{EA016248-3CCE-4495-954B-20A1F7E22F2C}" ShortID="849692951">
+						<RandomSequenceContainer Name="UI_Bid_Reject" ID="{EA016248-3CCE-4495-954B-20A1F7E22F2C}" ShortID="849692951">
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
 								</Reference>
 								<Reference Name="OutputBus">
-									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+									<ObjectRef Name="UI" ID="{ADF1903D-2C27-4D5C-8A60-52061641C33E}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
 								</Reference>
 							</ReferenceList>
 							<ChildrenList>
@@ -694,9 +694,9 @@
 						</RandomSequenceContainer>
 					</ChildrenList>
 				</Folder>
-				<Folder Name="generic" ID="{A76C8CE2-0D1A-456E-9F29-82046E45882E}" ShortID="524834117">
+				<Folder Name="Generic" ID="{A76C8CE2-0D1A-456E-9F29-82046E45882E}" ShortID="524834117">
 					<ChildrenList>
-						<RandomSequenceContainer Name="click" ID="{E09119FB-4AB1-4904-8A89-E0C6392C31CF}" ShortID="916558616">
+						<RandomSequenceContainer Name="UI_Click" ID="{E09119FB-4AB1-4904-8A89-E0C6392C31CF}" ShortID="916558616">
 							<PropertyList>
 								<Property Name="Volume" Type="Real64">
 									<ValueList>
@@ -713,7 +713,7 @@
 								</Reference>
 							</ReferenceList>
 							<ChildrenList>
-								<Sound Name="ui_generic_click_01" ID="{638D3103-B84A-46E8-B37D-DABD5E2F7D6B}" ShortID="287888489">
+								<Sound Name="ui_click_01" ID="{638D3103-B84A-46E8-B37D-DABD5E2F7D6B}" ShortID="287888489">
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -735,7 +735,7 @@
 										<ActiveSource Name="ui_generic_click_01" ID="{43DB221B-92A5-4F85-9C86-B66A50F4050E}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
-								<Sound Name="ui_generic_click_02" ID="{025F0134-D613-4743-9DBB-1D8982E51D49}" ShortID="1027967589">
+								<Sound Name="ui_click_02" ID="{025F0134-D613-4743-9DBB-1D8982E51D49}" ShortID="1027967589">
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -759,7 +759,7 @@
 								</Sound>
 							</ChildrenList>
 						</RandomSequenceContainer>
-						<RandomSequenceContainer Name="hover" ID="{50E3C4D1-27C1-4D53-9347-B120858181BF}" ShortID="829710341">
+						<RandomSequenceContainer Name="UI_Hover" ID="{50E3C4D1-27C1-4D53-9347-B120858181BF}" ShortID="829710341">
 							<PropertyList>
 								<Property Name="Pitch" Type="int32">
 									<ModifierList>
@@ -784,7 +784,7 @@
 								</Reference>
 							</ReferenceList>
 							<ChildrenList>
-								<Sound Name="ui_generic_hover_01" ID="{4414A8BE-9EAC-431B-83C8-E39DC37BF7F7}" ShortID="1023819939">
+								<Sound Name="ui_hover_01" ID="{4414A8BE-9EAC-431B-83C8-E39DC37BF7F7}" ShortID="1023819939">
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -806,7 +806,7 @@
 										<ActiveSource Name="ui_generic_hover_01" ID="{EE34CC97-1009-420B-9DD8-F8F058A69E9F}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
-								<Sound Name="ui_generic_hover_02" ID="{D1A70F17-110E-439C-8F4C-CBDCC0E21196}" ShortID="343643408">
+								<Sound Name="ui_hover_02" ID="{D1A70F17-110E-439C-8F4C-CBDCC0E21196}" ShortID="343643408">
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -828,7 +828,7 @@
 										<ActiveSource Name="ui_generic_hover_02" ID="{0DD31B87-6358-4C9C-9B3A-DBB1347CEA5F}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
-								<Sound Name="ui_generic_hover_03" ID="{953FD364-E752-431A-9BDD-34866EEF43A4}" ShortID="659561740">
+								<Sound Name="ui_hover_03" ID="{953FD364-E752-431A-9BDD-34866EEF43A4}" ShortID="659561740">
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -850,7 +850,7 @@
 										<ActiveSource Name="ui_generic_hover_03" ID="{C592FB00-269E-49D4-A946-5AA47822FC86}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
-								<Sound Name="ui_generic_hover_04" ID="{EA549F25-2C3F-41DE-A177-C4650A93D4FD}" ShortID="1045484932">
+								<Sound Name="ui_hover_04" ID="{EA549F25-2C3F-41DE-A177-C4650A93D4FD}" ShortID="1045484932">
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -878,7 +878,7 @@
 				</Folder>
 				<Folder Name="Shop" ID="{3AFB1157-DF64-4F7E-9741-5C70B5AEEA19}" ShortID="261524697">
 					<ChildrenList>
-						<RandomSequenceContainer Name="purchase" ID="{A9B69FC4-9A4E-478F-99F5-3C672F5C3163}" ShortID="18736842">
+						<RandomSequenceContainer Name="UI_Shop_Purchase" ID="{A9B69FC4-9A4E-478F-99F5-3C672F5C3163}" ShortID="18736842">
 							<PropertyList>
 								<Property Name="Pitch" Type="int32">
 									<ModifierList>
@@ -915,7 +915,7 @@
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
 								</Reference>
 								<Reference Name="OutputBus">
-									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+									<ObjectRef Name="UI" ID="{ADF1903D-2C27-4D5C-8A60-52061641C33E}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
 								</Reference>
 							</ReferenceList>
 							<ChildrenList>

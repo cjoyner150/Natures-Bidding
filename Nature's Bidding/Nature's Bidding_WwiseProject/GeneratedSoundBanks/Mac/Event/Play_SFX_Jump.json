@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{62274A1C-0BD8-4A5F-9074-42B7CC2056F5}",
     "Language": "SFX",
-    "Hash": "{9F385BED-EFC4-E8DC-9B6E-9DA7EBBE9D63}",
+    "Hash": "{5DB3D74B-FEC4-6BF1-F836-A13AA06A6DB5}",
     "ObjectPath": "Play_SFX_Jump",
     "ShortName": "Play_SFX_Jump",
     "Path": "Event/Play_SFX_Jump.bnk",
@@ -49,6 +49,7 @@
       "Name": "Play_SFX_Jump",
       "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_Jump",
       "GUID": "{62274A1C-0BD8-4A5F-9074-42B7CC2056F5}",
+      "Color": "8",
       "DurationType": "OneShot",
       "DurationMin": "1.4163127",
       "DurationMax": "1.6842892",
@@ -70,11 +71,12 @@
       "Id": "2369427653",
       "Name": "Combat_Pan",
       "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
-      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
      }
     ]
    }
   ],
-  "FileHash": "{E96E1A8E-05E8-7BDE-CF40-EC27715DF59F}"
+  "FileHash": "{E6CE747C-1573-5253-5BA5-DCFF6E8DDF80}"
  }
 }

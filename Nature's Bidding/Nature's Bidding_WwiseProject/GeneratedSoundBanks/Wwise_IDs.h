@@ -15,7 +15,7 @@ namespace AK
     {
         static const AkUniqueID PLAY_AMB_FOREST = 994146778U;
         static const AkUniqueID PLAY_AMB_LAVA = 3906149303U;
-        static const AkUniqueID PLAY_AUCTIONEER = 4115709719U;
+        static const AkUniqueID PLAY_DLG_AUCTIONEER = 3605236953U;
         static const AkUniqueID PLAY_MX_SYSTEM = 3580595815U;
         static const AkUniqueID PLAY_SFX_DEATH = 729422592U;
         static const AkUniqueID PLAY_SFX_HIT = 1376640657U;
@@ -23,6 +23,7 @@ namespace AK
         static const AkUniqueID PLAY_SFX_MANMASK_EXPLOSION = 735357806U;
         static const AkUniqueID PLAY_SFX_PARRY = 3835174908U;
         static const AkUniqueID PLAY_SFX_ROCKSLIDE = 3230763644U;
+        static const AkUniqueID PLAY_SFX_WARP = 3667260136U;
         static const AkUniqueID PLAY_SFX_WOOSH = 415287154U;
         static const AkUniqueID PLAY_UI_BID_ADJUST = 3980822666U;
         static const AkUniqueID PLAY_UI_BID_REJECT = 1191336738U;

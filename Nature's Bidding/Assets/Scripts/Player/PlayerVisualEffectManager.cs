@@ -102,6 +102,8 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnTeleportParticles()
     {
+        audioFeedback?.PlayWarp();
+
         GameObject go = Instantiate(teleportParticle, gameObject.transform, false);
         go.transform.localPosition = Vector3.zero;
         go.transform.SetParent(null, true);

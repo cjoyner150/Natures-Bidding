@@ -503,6 +503,10 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal:
     WwiseObjectReference: {fileID: 11400000, guid: c21913f6c47f42ee802ab08622ecc6fe, type: 2}
+  warpEvent:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: cee7765acb594cefb8fed4d92395aa41, type: 2}
   combatPan:
     idInternal: 0
     valueGuidInternal:

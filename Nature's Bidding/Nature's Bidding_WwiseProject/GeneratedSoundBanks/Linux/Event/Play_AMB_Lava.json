@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{293B6982-FBBF-4CAD-9DDB-6D34E0FC70EA}",
     "Language": "SFX",
-    "Hash": "{4E18E92C-3B6D-1FA2-264E-2B323588D8CD}",
+    "Hash": "{F94E309F-0E45-33FC-D523-88A3DED1A01F}",
     "ObjectPath": "Play_AMB_Lava",
     "ShortName": "Play_AMB_Lava",
     "Path": "Event/Play_AMB_Lava.bnk",
@@ -151,6 +151,7 @@
       "Name": "Play_AMB_Lava",
       "ObjectPath": "\\Events\\Ambience Work Unit\\Play_AMB_Lava",
       "GUID": "{293B6982-FBBF-4CAD-9DDB-6D34E0FC70EA}",
+      "Color": "19",
       "DurationType": "Infinite",
       "MediaRefs": [
        {
@@ -204,6 +205,6 @@
     ]
    }
   ],
-  "FileHash": "{19F6C676-9491-C530-01C3-F917C51B6B48}"
+  "FileHash": "{FB7CA6CD-8C07-71BF-8063-89F30639A189}"
  }
 }

@@ -1,0 +1,82 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Mac",
+  "BasePlatform": "Mac",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "3667260136",
+    "Type": "Event",
+    "GUID": "{322A45A2-4058-4F8F-8E7D-8516BF02B0ED}",
+    "Language": "SFX",
+    "Hash": "{AC3B7BD4-73A2-1C77-1F24-FF307FCBBF5F}",
+    "ObjectPath": "Play_SFX_Warp",
+    "ShortName": "Play_SFX_Warp",
+    "Path": "Event/Play_SFX_Warp.bnk",
+    "Media": [
+     {
+      "Id": "528292289",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "sfx_warp_03.wav",
+      "Path": "Media/528292289.wem",
+      "CachePath": "75/{75EADD87-E017-862C-4944-6F37C00256CB}.wem"
+     },
+     {
+      "Id": "585802345",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "sfx_warp_02.wav",
+      "Path": "Media/585802345.wem",
+      "CachePath": "15/{15795B44-D1EA-150E-CBBB-C1F2DF6E3ED7}.wem"
+     },
+     {
+      "Id": "731812737",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "sfx_warp_01.wav",
+      "Path": "Media/731812737.wem",
+      "CachePath": "62/{6228296A-7E32-5C4B-EC03-D9D1F31F75C3}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "3667260136",
+      "Name": "Play_SFX_Warp",
+      "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_Warp",
+      "GUID": "{322A45A2-4058-4F8F-8E7D-8516BF02B0ED}",
+      "Color": "8",
+      "DurationType": "OneShot",
+      "DurationMin": "1.5863959",
+      "DurationMax": "1.59925",
+      "MediaRefs": [
+       {
+        "Id": "528292289"
+       },
+       {
+        "Id": "585802345"
+       },
+       {
+        "Id": "731812737"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{F6AB91AB-E523-332F-6463-08AC20AE6BB2}"
+ }
+}

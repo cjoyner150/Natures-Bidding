@@ -10,7 +10,6 @@
 				<BlendContainer Name="AMB_Forest" ID="{EECDB04F-8316-4FE4-8828-A3EA5866884D}" ShortID="611445162">
 					<PropertyList>
 						<Property Name="Color" Type="int16" Value="19"/>
-						<Property Name="OverrideColor" Type="bool" Value="True"/>
 					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
@@ -21,10 +20,9 @@
 						</Reference>
 					</ReferenceList>
 					<ChildrenList>
-						<RandomSequenceContainer Name="Forest_Bed" ID="{2906D537-BC9B-4AD2-83E1-BCA19661C6EC}" ShortID="415624635">
+						<RandomSequenceContainer Name="AMB_Forest_Bed" ID="{2906D537-BC9B-4AD2-83E1-BCA19661C6EC}" ShortID="415624635">
 							<PropertyList>
 								<Property Name="Color" Type="int16" Value="19"/>
-								<Property Name="OverrideColor" Type="bool" Value="True"/>
 								<Property Name="OverrideEffect" Type="bool" Value="True"/>
 								<Property Name="Pitch" Type="int32">
 									<ModifierList>
@@ -61,7 +59,6 @@
 								<Sound Name="amb_forest_bed_01" ID="{E0497043-4308-4F94-B2A5-732581DC6E8E}" ShortID="196490178">
 									<PropertyList>
 										<Property Name="Color" Type="int16" Value="19"/>
-										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="IsStreamingEnabled" Type="bool">
 											<ValueList>
 												<Value>True</Value>
@@ -92,7 +89,6 @@
 								<Sound Name="amb_forest_bed_02" ID="{6FE159F3-1DCE-4DE1-9E19-7962D417AFDB}" ShortID="52745569">
 									<PropertyList>
 										<Property Name="Color" Type="int16" Value="19"/>
-										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="IsStreamingEnabled" Type="bool">
 											<ValueList>
 												<Value>True</Value>
@@ -123,7 +119,6 @@
 								<Sound Name="amb_forest_bed_03" ID="{6A218BCA-01D6-4DEE-B5AF-6A7B72D20075}" ShortID="308819731">
 									<PropertyList>
 										<Property Name="Color" Type="int16" Value="19"/>
-										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="IsStreamingEnabled" Type="bool">
 											<ValueList>
 												<Value>True</Value>
@@ -154,7 +149,6 @@
 								<Sound Name="amb_forest_bed_04" ID="{D8237DB6-4CD2-4BB0-B01E-B1681FC8B8C0}" ShortID="276864625">
 									<PropertyList>
 										<Property Name="Color" Type="int16" Value="19"/>
-										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="IsStreamingEnabled" Type="bool">
 											<ValueList>
 												<Value>True</Value>
@@ -185,7 +179,6 @@
 								<Sound Name="amb_forest_bed_05" ID="{6DE1494F-1C52-4C36-BA75-41D2C0018F9C}" ShortID="490416073">
 									<PropertyList>
 										<Property Name="Color" Type="int16" Value="19"/>
-										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="IsStreamingEnabled" Type="bool">
 											<ValueList>
 												<Value>True</Value>
@@ -237,10 +230,9 @@
 								</ObjectList>
 							</ObjectLists>
 						</RandomSequenceContainer>
-						<RandomSequenceContainer Name="Rumble" ID="{70E0BE8C-94DD-44D6-BB6B-ABCCAD4BE2FD}" ShortID="852720948">
+						<RandomSequenceContainer Name="AMB_Forest_Rumble" ID="{70E0BE8C-94DD-44D6-BB6B-ABCCAD4BE2FD}" ShortID="852720948">
 							<PropertyList>
 								<Property Name="Color" Type="int16" Value="19"/>
-								<Property Name="OverrideColor" Type="bool" Value="True"/>
 								<Property Name="PlayMechanismLoop" Type="bool" Value="True"/>
 								<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
 								<Property Name="PlayMechanismSpecialTransitionsType" Type="int16" Value="2"/>
@@ -268,7 +260,6 @@
 								<Sound Name="amb_forest_rumble_01" ID="{D68428BE-F725-4612-85B0-1F2ADA30339A}" ShortID="483677237">
 									<PropertyList>
 										<Property Name="Color" Type="int16" Value="19"/>
-										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="IsStreamingEnabled" Type="bool">
 											<ValueList>
 												<Value>True</Value>
@@ -299,7 +290,6 @@
 								<Sound Name="amb_forest_rumble_02" ID="{3053F9E8-84C2-4918-B3AD-D281C82E7358}" ShortID="109003692">
 									<PropertyList>
 										<Property Name="Color" Type="int16" Value="19"/>
-										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="IsStreamingEnabled" Type="bool">
 											<ValueList>
 												<Value>True</Value>
@@ -330,7 +320,6 @@
 								<Sound Name="amb_forest_rumble_03" ID="{C309ED01-C4FE-470D-B10D-71F3AE827775}" ShortID="462534402">
 									<PropertyList>
 										<Property Name="Color" Type="int16" Value="19"/>
-										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="IsStreamingEnabled" Type="bool">
 											<ValueList>
 												<Value>True</Value>
@@ -361,7 +350,6 @@
 								<Sound Name="amb_forest_rumble_04" ID="{66F5E7FB-0B0F-4161-822B-144C42320822}" ShortID="253036679">
 									<PropertyList>
 										<Property Name="Color" Type="int16" Value="19"/>
-										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="IsStreamingEnabled" Type="bool">
 											<ValueList>
 												<Value>True</Value>
@@ -391,10 +379,9 @@
 								</Sound>
 							</ChildrenList>
 						</RandomSequenceContainer>
-						<RandomSequenceContainer Name="Wind" ID="{B31CBC08-852A-4A6F-9E28-DC38D4F578B7}" ShortID="187318320">
+						<RandomSequenceContainer Name="AMB_Forest_Wind" ID="{B31CBC08-852A-4A6F-9E28-DC38D4F578B7}" ShortID="187318320">
 							<PropertyList>
 								<Property Name="Color" Type="int16" Value="19"/>
-								<Property Name="OverrideColor" Type="bool" Value="True"/>
 								<Property Name="PlayMechanismLoop" Type="bool" Value="True"/>
 								<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
 							</PropertyList>
@@ -410,7 +397,6 @@
 								<Sound Name="amb_forest_wind_01" ID="{230FC4B3-EF50-40B6-9841-C7E8B1FB009E}" ShortID="1024484491">
 									<PropertyList>
 										<Property Name="Color" Type="int16" Value="19"/>
-										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="IsStreamingEnabled" Type="bool">
 											<ValueList>
 												<Value>True</Value>
@@ -446,7 +432,6 @@
 								<Sound Name="amb_forest_wind_02" ID="{1E929EC6-E31A-46B5-A925-FD2C1DCED9BD}" ShortID="487723851">
 									<PropertyList>
 										<Property Name="Color" Type="int16" Value="19"/>
-										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="IsStreamingEnabled" Type="bool">
 											<ValueList>
 												<Value>True</Value>
@@ -482,7 +467,6 @@
 								<Sound Name="amb_forest_wind_03" ID="{12EC9D31-6F1B-4C56-A20A-646BA85F3F86}" ShortID="529512367">
 									<PropertyList>
 										<Property Name="Color" Type="int16" Value="19"/>
-										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="IsStreamingEnabled" Type="bool">
 											<ValueList>
 												<Value>True</Value>
@@ -518,7 +502,6 @@
 								<Sound Name="amb_forest_silence" ID="{A80F580D-96E9-4293-99E3-BB03B77D0D20}" ShortID="458685017">
 									<PropertyList>
 										<Property Name="Color" Type="int16" Value="19"/>
-										<Property Name="OverrideColor" Type="bool" Value="True"/>
 										<Property Name="IsStreamingEnabled" Type="bool">
 											<ValueList>
 												<Value>True</Value>
@@ -557,13 +540,13 @@
 						<BlendTrack Name="Forest" ID="{2F4949B0-7CAB-4398-88B4-94AFC98BB6EC}" ShortID="533170862">
 							<BlendTrackAssocList>
 								<BlendTrackAssoc>
-									<ItemRef Name="Forest_Bed" ID="{2906D537-BC9B-4AD2-83E1-BCA19661C6EC}"/>
+									<ItemRef Name="AMB_Forest_Bed" ID="{2906D537-BC9B-4AD2-83E1-BCA19661C6EC}"/>
 								</BlendTrackAssoc>
 								<BlendTrackAssoc>
-									<ItemRef Name="Rumble" ID="{70E0BE8C-94DD-44D6-BB6B-ABCCAD4BE2FD}"/>
+									<ItemRef Name="AMB_Forest_Rumble" ID="{70E0BE8C-94DD-44D6-BB6B-ABCCAD4BE2FD}"/>
 								</BlendTrackAssoc>
 								<BlendTrackAssoc>
-									<ItemRef Name="Wind" ID="{B31CBC08-852A-4A6F-9E28-DC38D4F578B7}"/>
+									<ItemRef Name="AMB_Forest_Wind" ID="{B31CBC08-852A-4A6F-9E28-DC38D4F578B7}"/>
 								</BlendTrackAssoc>
 							</BlendTrackAssocList>
 						</BlendTrack>
@@ -583,11 +566,11 @@
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
 						</Reference>
 						<Reference Name="OutputBus">
-							<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+							<ObjectRef Name="Ambience" ID="{E3FF9C71-34A7-47B6-A750-804FE4397322}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
 						</Reference>
 					</ReferenceList>
 					<ChildrenList>
-						<RandomSequenceContainer Name="Bed2" ID="{46198BE7-FFBE-4692-A327-F68FA36CB6BB}" ShortID="312103230">
+						<RandomSequenceContainer Name="AMB_Lava_Loop" ID="{46198BE7-FFBE-4692-A327-F68FA36CB6BB}" ShortID="312103230">
 							<PropertyList>
 								<Property Name="PlayMechanismLoop" Type="bool" Value="True"/>
 								<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
@@ -753,7 +736,7 @@
 								<Panner Name="" ID="{EC9BE842-95AF-4166-BEB3-491EB047C29D}"/>
 							</PositioningInfo>
 						</RandomSequenceContainer>
-						<RandomSequenceContainer Name="Gurgle" ID="{D2765AA5-CA05-43B0-BA82-605F34CEC59B}" ShortID="978279375">
+						<RandomSequenceContainer Name="AMB_Lava_Gurgle" ID="{D2765AA5-CA05-43B0-BA82-605F34CEC59B}" ShortID="978279375">
 							<PropertyList>
 								<Property Name="PlayMechanismLoop" Type="bool" Value="True"/>
 								<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
@@ -892,7 +875,7 @@
 								</Sound>
 							</ChildrenList>
 						</RandomSequenceContainer>
-						<RandomSequenceContainer Name="Bed" ID="{904DAE6C-401E-4C30-822F-8BE262910428}" ShortID="441770208">
+						<RandomSequenceContainer Name="AMB_Lava_Bed" ID="{904DAE6C-401E-4C30-822F-8BE262910428}" ShortID="441770208">
 							<PropertyList>
 								<Property Name="PlayMechanismLoop" Type="bool" Value="True"/>
 								<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
@@ -1047,13 +1030,13 @@
 						<BlendTrack Name="Lava Blend" ID="{036F1B50-4ECF-4315-8536-52B8BDCFAF6F}" ShortID="175191900">
 							<BlendTrackAssocList>
 								<BlendTrackAssoc>
-									<ItemRef Name="Bed" ID="{904DAE6C-401E-4C30-822F-8BE262910428}"/>
+									<ItemRef Name="AMB_Lava_Bed" ID="{904DAE6C-401E-4C30-822F-8BE262910428}"/>
 								</BlendTrackAssoc>
 								<BlendTrackAssoc>
-									<ItemRef Name="Bed2" ID="{46198BE7-FFBE-4692-A327-F68FA36CB6BB}"/>
+									<ItemRef Name="AMB_Lava_Loop" ID="{46198BE7-FFBE-4692-A327-F68FA36CB6BB}"/>
 								</BlendTrackAssoc>
 								<BlendTrackAssoc>
-									<ItemRef Name="Gurgle" ID="{D2765AA5-CA05-43B0-BA82-605F34CEC59B}"/>
+									<ItemRef Name="AMB_Lava_Gurgle" ID="{D2765AA5-CA05-43B0-BA82-605F34CEC59B}"/>
 								</BlendTrackAssoc>
 							</BlendTrackAssocList>
 						</BlendTrack>

@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{CF7B40B4-05B4-4E7E-AF5D-19893A335BE9}",
     "Language": "SFX",
-    "Hash": "{8A6C8D55-7F8E-BA46-F30A-3180EBE74922}",
+    "Hash": "{61DBAC6D-775F-7A96-C025-4452FD399BF6}",
     "ObjectPath": "Play_SFX_ManMask_Explosion",
     "ShortName": "Play_SFX_ManMask_Explosion",
     "Path": "Event/Play_SFX_ManMask_Explosion.bnk",
@@ -31,6 +31,7 @@
       "Name": "Play_SFX_ManMask_Explosion",
       "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_ManMask_Explosion",
       "GUID": "{CF7B40B4-05B4-4E7E-AF5D-19893A335BE9}",
+      "Color": "8",
       "DurationType": "OneShot",
       "DurationMin": "1.2971458",
       "DurationMax": "1.2971458",
@@ -46,11 +47,12 @@
       "Id": "2369427653",
       "Name": "Combat_Pan",
       "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
-      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
      }
     ]
    }
   ],
-  "FileHash": "{86FD24D0-823E-118E-4B70-69732CD20B96}"
+  "FileHash": "{FD78E241-7ADF-9713-EED5-3E35A11C0F6C}"
  }
 }

@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{8BD0119F-3380-4754-BD73-C1A95C863AD6}" SchemaVersion="133">
 	<Events>
-		<WorkUnit Name="Default Work Unit" ID="{8BD0119F-3380-4754-BD73-C1A95C863AD6}" PersistMode="Standalone">
-			<ChildrenList>
-				<Event Name="Play_SFX_Death" ID="{1D4A0908-0C51-480F-90F3-B839978FF706}">
-					<ChildrenList>
-						<Action Name="" ID="{856BAF19-E594-436F-BFA9-4F1BB031D4CB}" ShortID="45721873">
-							<ReferenceList>
-								<Reference Name="Target">
-									<ObjectRef Name="Death" ID="{58F56393-C204-4CF2-A88A-A6E890B6BAFE}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
-								</Reference>
-							</ReferenceList>
-						</Action>
-					</ChildrenList>
-				</Event>
-			</ChildrenList>
-		</WorkUnit>
+		<WorkUnit Name="Default Work Unit" ID="{8BD0119F-3380-4754-BD73-C1A95C863AD6}" PersistMode="Standalone"/>
 	</Events>
 </WwiseDocument>

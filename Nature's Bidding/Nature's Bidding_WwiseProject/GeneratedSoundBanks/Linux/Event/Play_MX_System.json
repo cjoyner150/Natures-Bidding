@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{3E7521AF-2CB6-4065-BE54-9B9CCD3A9716}",
     "Language": "SFX",
-    "Hash": "{0D46434F-574D-4BB0-9B13-C47371847FEA}",
+    "Hash": "{BE4EFD16-ED61-4092-85FF-CE03981BACEB}",
     "ObjectPath": "Play_MX_System",
     "ShortName": "Play_MX_System",
     "Path": "Event/Play_MX_System.bnk",
@@ -341,6 +341,6 @@
     ]
    }
   ],
-  "FileHash": "{97A20785-EB35-798F-B36F-353D59D63C44}"
+  "FileHash": "{1EE8EB09-1740-7517-55E8-9BBD2CBE0880}"
  }
 }

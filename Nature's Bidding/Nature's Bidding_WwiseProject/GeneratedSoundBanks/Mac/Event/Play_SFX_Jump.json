@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{62274A1C-0BD8-4A5F-9074-42B7CC2056F5}",
     "Language": "SFX",
-    "Hash": "{89B83C99-D9CA-7C3A-0561-E7679A0BE869}",
+    "Hash": "{9F385BED-EFC4-E8DC-9B6E-9DA7EBBE9D63}",
     "ObjectPath": "Play_SFX_Jump",
     "ShortName": "Play_SFX_Jump",
     "Path": "Event/Play_SFX_Jump.bnk",
@@ -50,8 +50,8 @@
       "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_Jump",
       "GUID": "{62274A1C-0BD8-4A5F-9074-42B7CC2056F5}",
       "DurationType": "OneShot",
-      "DurationMin": "1.5445",
-      "DurationMax": "1.5445",
+      "DurationMin": "1.4163127",
+      "DurationMax": "1.6842892",
       "MediaRefs": [
        {
         "Id": "436435918"
@@ -75,6 +75,6 @@
     ]
    }
   ],
-  "FileHash": "{915A9901-0E41-3801-CE65-86CE051A3FEF}"
+  "FileHash": "{E96E1A8E-05E8-7BDE-CF40-EC27715DF59F}"
  }
 }

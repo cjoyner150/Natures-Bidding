@@ -17,7 +17,9 @@ namespace AK
         static const AkUniqueID PLAY_AMB_LAVA = 3906149303U;
         static const AkUniqueID PLAY_AUCTIONEER = 4115709719U;
         static const AkUniqueID PLAY_MX_SYSTEM = 3580595815U;
+        static const AkUniqueID PLAY_SFX_DEATH = 729422592U;
         static const AkUniqueID PLAY_SFX_HIT = 1376640657U;
+        static const AkUniqueID PLAY_SFX_JUMP = 3740002126U;
         static const AkUniqueID PLAY_SFX_MANMASK_EXPLOSION = 735357806U;
         static const AkUniqueID PLAY_SFX_PARRY = 3835174908U;
         static const AkUniqueID PLAY_SFX_ROCKSLIDE = 3230763644U;

@@ -232,6 +232,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     public UniTask NotifyDeathAndAwaitAck(ulong killCreditId)
     {
         _deathAckTcs = new UniTaskCompletionSource();
+        PlayDeathFeedbackClientRpc();
         NotifyPlayerDeadClientRpc(killCreditId);
         return _deathAckTcs.Task;
     }
@@ -249,6 +250,12 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         PlayerCombatHooks.TriggerOnDeath(killCreditId);
         AckDeathProcessedServerRpc();
+    }
+
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+    private void PlayDeathFeedbackClientRpc()
+    {
+        GetComponent<PlayerAudioFeedback>()?.PlayDeath();
     }
 
     [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]

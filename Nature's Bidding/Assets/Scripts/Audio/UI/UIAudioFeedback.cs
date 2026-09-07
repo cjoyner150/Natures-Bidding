@@ -13,10 +13,21 @@ public sealed class UIAudioFeedback : MonoBehaviour,
     [SerializeField] private bool playClick = true;
 
     private Selectable selectable;
+    private Button button;
 
     private void Awake()
     {
         selectable = GetComponent<Selectable>();
+        button = selectable as Button;
+
+        if (button != null)
+            button.onClick.AddListener(PlayButtonClick);
+    }
+
+    private void OnDestroy()
+    {
+        if (button != null)
+            button.onClick.RemoveListener(PlayButtonClick);
     }
 
     public void OnPointerEnter(PointerEventData _)
@@ -26,7 +37,7 @@ public sealed class UIAudioFeedback : MonoBehaviour,
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
+        if (button == null && eventData.button == PointerEventData.InputButton.Left)
             PlayClick();
     }
 
@@ -37,7 +48,8 @@ public sealed class UIAudioFeedback : MonoBehaviour,
 
     public void OnSubmit(BaseEventData _)
     {
-        PlayClick();
+        if (button == null)
+            PlayClick();
     }
 
     private void PlayHover()
@@ -51,6 +63,16 @@ public sealed class UIAudioFeedback : MonoBehaviour,
     private void PlayClick()
     {
         if (!playClick || !CanPlay())
+            return;
+
+        GameAudioController.Instance?.PlayUIClick();
+    }
+
+    private void PlayButtonClick()
+    {
+        // Button validates active/interactable state before invoking onClick.
+        // The callback must still run if an earlier listener deactivates the hierarchy.
+        if (!playClick || !enabled)
             return;
 
         GameAudioController.Instance?.PlayUIClick();

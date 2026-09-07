@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{E6111105-4B67-4AF0-B526-83D7003FAD60}",
     "Language": "SFX",
-    "Hash": "{9FEA694E-70B6-89E4-200A-8B50396E60F8}",
+    "Hash": "{2F2DAA30-3B78-E7B0-F5D9-70BBCA4AAABB}",
     "ObjectPath": "Play_AMB_Forest",
     "ShortName": "Play_AMB_Forest",
     "Path": "Event/Play_AMB_Forest.bnk",
@@ -18,7 +18,7 @@
      {
       "Id": "35306303",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "amb_forest_bed_03.wav",
       "Path": "Media/35306303.wem",
@@ -27,7 +27,7 @@
      {
       "Id": "271994692",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Rumble\\amb_forest_rumble_04.wav",
       "Path": "Media/271994692.wem",
@@ -36,7 +36,7 @@
      {
       "Id": "317005902",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Wind\\amb_forest_wind_02.wav",
       "Path": "Media/317005902.wem",
@@ -45,7 +45,7 @@
      {
       "Id": "337994838",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Rumble\\amb_forest_rumble_01.wav",
       "Path": "Media/337994838.wem",
@@ -54,7 +54,7 @@
      {
       "Id": "358460421",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Rumble\\amb_forest_rumble_03.wav",
       "Path": "Media/358460421.wem",
@@ -63,7 +63,7 @@
      {
       "Id": "361946497",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Wind\\amb_forest_wind_03.wav",
       "Path": "Media/361946497.wem",
@@ -72,7 +72,7 @@
      {
       "Id": "445858667",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "amb_forest_bed_02.wav",
       "Path": "Media/445858667.wem",
@@ -81,7 +81,7 @@
      {
       "Id": "542962287",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Wind\\amb_forest_wind_01.wav",
       "Path": "Media/542962287.wem",
@@ -90,7 +90,7 @@
      {
       "Id": "868682208",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Rumble\\amb_forest_rumble_02.wav",
       "Path": "Media/868682208.wem",
@@ -99,7 +99,7 @@
      {
       "Id": "881390669",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "amb_forest_bed_04.wav",
       "Path": "Media/881390669.wem",
@@ -108,7 +108,7 @@
      {
       "Id": "1036629975",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "amb_forest_bed_01.wav",
       "Path": "Media/1036629975.wem",
@@ -117,7 +117,7 @@
      {
       "Id": "1040805943",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "amb_forest_bed_05.wav",
       "Path": "Media/1040805943.wem",
@@ -204,6 +204,6 @@
     ]
    }
   ],
-  "FileHash": "{EDF768FB-1566-5733-33C1-8C251A7FD420}"
+  "FileHash": "{42709294-A27D-7019-A5F1-D5A79F7D8A4F}"
  }
 }

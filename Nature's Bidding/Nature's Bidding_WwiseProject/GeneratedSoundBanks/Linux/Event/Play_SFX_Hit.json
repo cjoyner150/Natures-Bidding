@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{523D8481-4617-4947-84FB-07B128556FFD}",
     "Language": "SFX",
-    "Hash": "{E0B3440E-1C61-C444-32FA-F2C67FFE8BA2}",
+    "Hash": "{09E1C666-038D-9364-54FF-87B6BB79CE6E}",
     "ObjectPath": "Play_SFX_Hit",
     "ShortName": "Play_SFX_Hit",
     "Path": "Event/Play_SFX_Hit.bnk",
@@ -76,6 +76,7 @@
       "Name": "Play_SFX_Hit",
       "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_Hit",
       "GUID": "{523D8481-4617-4947-84FB-07B128556FFD}",
+      "Color": "8",
       "DurationType": "OneShot",
       "DurationMin": "1.259308",
       "DurationMax": "1.259308",
@@ -106,11 +107,12 @@
       "Id": "2369427653",
       "Name": "Combat_Pan",
       "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
-      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
      }
     ]
    }
   ],
-  "FileHash": "{2879794C-B798-B172-D315-C28B80CAF51D}"
+  "FileHash": "{5A9F22AA-C23A-B145-9FD6-8F10B34E52B1}"
  }
 }

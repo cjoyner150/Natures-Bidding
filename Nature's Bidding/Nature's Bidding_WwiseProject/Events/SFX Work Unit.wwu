@@ -2,6 +2,10 @@
 <WwiseDocument Type="WorkUnit" ID="{5341106E-017A-4A1B-B37A-794AEC6B0530}" SchemaVersion="133">
 	<Events>
 		<WorkUnit Name="SFX Work Unit" ID="{5341106E-017A-4A1B-B37A-794AEC6B0530}" PersistMode="Standalone">
+			<PropertyList>
+				<Property Name="Color" Type="int16" Value="8"/>
+				<Property Name="OverrideColor" Type="bool" Value="True"/>
+			</PropertyList>
 			<ChildrenList>
 				<Event Name="Play_SFX_ManMask_Explosion" ID="{CF7B40B4-05B4-4E7E-AF5D-19893A335BE9}">
 					<ChildrenList>
@@ -19,7 +23,7 @@
 						<Action Name="" ID="{53608CA5-452D-4F97-B6B6-AA70F371B245}" ShortID="490152283">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="sfx_woosh" ID="{F178F61F-E1F1-4E9F-A82C-C7E454B58B48}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+									<ObjectRef Name="SFX_Woosh" ID="{F178F61F-E1F1-4E9F-A82C-C7E454B58B48}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
@@ -30,7 +34,7 @@
 						<Action Name="" ID="{47BEF767-20CC-4D0C-91E3-5E34E27D91DB}" ShortID="101215747">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="sfx_parry" ID="{1464D94F-D611-47D1-AB77-953CBCEE9FE6}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+									<ObjectRef Name="SFX_Parry" ID="{1464D94F-D611-47D1-AB77-953CBCEE9FE6}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
@@ -41,7 +45,7 @@
 						<Action Name="" ID="{E1FCF280-E3CC-44F3-BA99-C28231220726}" ShortID="398853352">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="Hit" ID="{34ED782E-5143-41EE-8644-8964D9751D37}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+									<ObjectRef Name="SFX_Hit" ID="{34ED782E-5143-41EE-8644-8964D9751D37}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
@@ -52,7 +56,40 @@
 						<Action Name="" ID="{4133D68E-1547-41DA-BC9B-C45A85F5B9CE}" ShortID="308854324">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="sfx_rockslide" ID="{91F3F26E-AE9F-4267-9F57-3FEDD8FFD8AB}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+									<ObjectRef Name="SFX_RockSlide" ID="{91F3F26E-AE9F-4267-9F57-3FEDD8FFD8AB}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_SFX_Jump" ID="{62274A1C-0BD8-4A5F-9074-42B7CC2056F5}">
+					<ChildrenList>
+						<Action Name="" ID="{5DD8833F-A85A-4720-9171-1F6C18552ECC}" ShortID="76567946">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_Jump" ID="{B70E73D8-695C-4FDC-B1D2-332B528C0E7E}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_SFX_Death" ID="{1D4A0908-0C51-480F-90F3-B839978FF706}">
+					<ChildrenList>
+						<Action Name="" ID="{856BAF19-E594-436F-BFA9-4F1BB031D4CB}" ShortID="45721873">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_Death" ID="{58F56393-C204-4CF2-A88A-A6E890B6BAFE}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_SFX_Warp" ID="{322A45A2-4058-4F8F-8E7D-8516BF02B0ED}">
+					<ChildrenList>
+						<Action Name="" ID="{E65D6076-8AC7-4F0C-86BD-57BA81A6EB2E}" ShortID="846383929">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_Warp" ID="{D3632283-ED09-4AE3-B29E-287BCC16CF1E}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

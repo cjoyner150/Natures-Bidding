@@ -160,7 +160,15 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         InitializeGoldAsync();
     }
 
-    public async void OnBiddingPhaseStart()
+    public void OnBiddingPhaseStart()
+    {
+        if (!IsServer) return;
+
+        ShowOpeningInstructionsRpc();
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void ShowOpeningInstructionsRpc()
     {
         PointerNPC.Instance?.CelebrateOne();
         PointerNPC.Instance?.SayOpeningInstructions();

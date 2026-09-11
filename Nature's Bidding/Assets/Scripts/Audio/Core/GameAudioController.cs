@@ -33,6 +33,8 @@ public sealed class GameAudioController : MonoBehaviour
     [Header("Ambience Events")]
     [SerializeField] private AK.Wwise.Event playForestAmbience;
     [SerializeField] private AK.Wwise.Event stopForestAmbience;
+    [SerializeField] private AK.Wwise.Event playLavaAmbience;
+    [SerializeField] private AK.Wwise.Event stopLavaAmbience;
 
     [Header("Game_Phase States")]
     [SerializeField] private AK.Wwise.State phaseMenu;
@@ -52,6 +54,7 @@ public sealed class GameAudioController : MonoBehaviour
 
     private bool musicSystemIsPlaying;
     private bool forestAmbienceIsPlaying;
+    private bool lavaAmbienceIsPlaying;
     private PersistentGameStateManager.GameState currentGameState;
     private NetworkManager networkManager;
     private int currentPlayersStateCount = -1;
@@ -59,9 +62,13 @@ public sealed class GameAudioController : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
+        instance = this;
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -143,7 +150,7 @@ public sealed class GameAudioController : MonoBehaviour
         }
 
         StartMusic();
-        RefreshForestAmbience(SceneManager.GetActiveScene());
+        RefreshAmbience(SceneManager.GetActiveScene());
     }
 
     private void SetPlayerCountState(int playerCount)
@@ -187,7 +194,7 @@ public sealed class GameAudioController : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode _)
     {
         SetMapForScene(scene);
-        RefreshForestAmbience(scene);
+        RefreshAmbience(scene);
 
         if (IsCombatScene(scene))
             nextCombatPlayerStatePollTime = 0f;
@@ -259,17 +266,32 @@ public sealed class GameAudioController : MonoBehaviour
         return scene.name == CliffSceneName || scene.name == LavaSceneName;
     }
 
-    private void RefreshForestAmbience(Scene scene)
+    private void RefreshAmbience(Scene scene)
     {
-        bool shouldPlay =
+        bool shouldPlayForest =
             currentGameState == PersistentGameStateManager.GameState.Lobby ||
             (currentGameState == PersistentGameStateManager.GameState.Combat &&
              scene.name == CliffSceneName);
+        bool shouldPlayLava =
+            currentGameState == PersistentGameStateManager.GameState.Combat &&
+            scene.name == LavaSceneName;
 
-        if (shouldPlay)
+        if (shouldPlayForest)
+        {
+            StopLavaAmbience();
             StartForestAmbience();
-        else
+            return;
+        }
+
+        if (shouldPlayLava)
+        {
             StopForestAmbience();
+            StartLavaAmbience();
+            return;
+        }
+
+        StopForestAmbience();
+        StopLavaAmbience();
     }
 
     private void StartForestAmbience()
@@ -293,6 +315,29 @@ public sealed class GameAudioController : MonoBehaviour
             stopForestAmbience.Post(gameObject);
 
         forestAmbienceIsPlaying = false;
+    }
+
+    private void StartLavaAmbience()
+    {
+        if (lavaAmbienceIsPlaying)
+            return;
+
+        if (!IsAssigned(playLavaAmbience, "Play_AMB_Lava"))
+            return;
+
+        uint playingId = playLavaAmbience.Post(gameObject);
+        lavaAmbienceIsPlaying = playingId != AkUnitySoundEngine.AK_INVALID_PLAYING_ID;
+    }
+
+    private void StopLavaAmbience()
+    {
+        if (!lavaAmbienceIsPlaying)
+            return;
+
+        if (IsAssigned(stopLavaAmbience, "Stop_AMB_Lava"))
+            stopLavaAmbience.Post(gameObject);
+
+        lavaAmbienceIsPlaying = false;
     }
 
     private void SetMapForScene(Scene scene)

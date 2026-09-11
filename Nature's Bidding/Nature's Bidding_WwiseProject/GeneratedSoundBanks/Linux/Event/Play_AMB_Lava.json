@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{293B6982-FBBF-4CAD-9DDB-6D34E0FC70EA}",
     "Language": "SFX",
-    "Hash": "{7C313001-1CFA-2389-F263-4B37C3CC0668}",
+    "Hash": "{F94E309F-0E45-33FC-D523-88A3DED1A01F}",
     "ObjectPath": "Play_AMB_Lava",
     "ShortName": "Play_AMB_Lava",
     "Path": "Event/Play_AMB_Lava.bnk",
@@ -18,7 +18,7 @@
      {
       "Id": "26409865",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Bed\\amb_lava_bed_04.wav",
       "Path": "Media/26409865.wem",
@@ -27,7 +27,7 @@
      {
       "Id": "42949266",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Bed\\amb_lava_loop_05.wav",
       "Path": "Media/42949266.wem",
@@ -36,7 +36,7 @@
      {
       "Id": "111197269",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Bed\\amb_lava_loop_04.wav",
       "Path": "Media/111197269.wem",
@@ -45,7 +45,7 @@
      {
       "Id": "189369468",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Gurgle\\amb_lava_gurgle_04.wav",
       "Path": "Media/189369468.wem",
@@ -54,7 +54,7 @@
      {
       "Id": "439149965",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Bed\\amb_lava_bed_02.wav",
       "Path": "Media/439149965.wem",
@@ -63,7 +63,7 @@
      {
       "Id": "454247332",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Bed\\amb_lava_loop_01.wav",
       "Path": "Media/454247332.wem",
@@ -72,7 +72,7 @@
      {
       "Id": "660958347",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Gurgle\\amb_lava_gurgle_03.wav",
       "Path": "Media/660958347.wem",
@@ -81,7 +81,7 @@
      {
       "Id": "664327660",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Bed\\amb_lava_bed_03.wav",
       "Path": "Media/664327660.wem",
@@ -90,7 +90,7 @@
      {
       "Id": "831130637",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Bed\\amb_lava_bed_01.wav",
       "Path": "Media/831130637.wem",
@@ -99,7 +99,7 @@
      {
       "Id": "893786493",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Bed\\amb_lava_loop_02.wav",
       "Path": "Media/893786493.wem",
@@ -108,7 +108,7 @@
      {
       "Id": "994985155",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Gurgle\\amb_lava_gurgle_01.wav",
       "Path": "Media/994985155.wem",
@@ -117,7 +117,7 @@
      {
       "Id": "1002895580",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Bed\\amb_lava_loop_03.wav",
       "Path": "Media/1002895580.wem",
@@ -126,7 +126,7 @@
      {
       "Id": "1053737788",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Gurgle\\amb_lava_gurgle_02.wav",
       "Path": "Media/1053737788.wem",
@@ -151,6 +151,7 @@
       "Name": "Play_AMB_Lava",
       "ObjectPath": "\\Events\\Ambience Work Unit\\Play_AMB_Lava",
       "GUID": "{293B6982-FBBF-4CAD-9DDB-6D34E0FC70EA}",
+      "Color": "19",
       "DurationType": "Infinite",
       "MediaRefs": [
        {
@@ -204,6 +205,6 @@
     ]
    }
   ],
-  "FileHash": "{6517716E-0039-38A4-DEC7-241C335CFE58}"
+  "FileHash": "{FB7CA6CD-8C07-71BF-8063-89F30639A189}"
  }
 }

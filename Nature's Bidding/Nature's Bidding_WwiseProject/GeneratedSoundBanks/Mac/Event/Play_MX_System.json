@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{3E7521AF-2CB6-4065-BE54-9B9CCD3A9716}",
     "Language": "SFX",
-    "Hash": "{31141D89-D69F-3FAF-4EB8-665EA57E0507}",
+    "Hash": "{2E74D8FC-0CA9-D42C-4C3E-9A063268A8E8}",
     "ObjectPath": "Play_MX_System",
     "ShortName": "Play_MX_System",
     "Path": "Event/Play_MX_System.bnk",
@@ -143,6 +143,7 @@
       "Name": "Play_MX_System",
       "ObjectPath": "\\Events\\Music Work Unit\\Play_MX_System",
       "GUID": "{3E7521AF-2CB6-4065-BE54-9B9CCD3A9716}",
+      "Color": "1",
       "DurationType": "Infinite",
       "SwitchContainers": [
        {
@@ -150,7 +151,8 @@
          "GroupType": "State",
          "GroupId": "3211383847",
          "Id": "290285391",
-         "GUID": "{D7C918A9-A591-46E8-9FD8-6093433816E7}"
+         "GUID": "{D7C918A9-A591-46E8-9FD8-6093433816E7}",
+         "Color": "3"
         },
         "MediaRefs": [
          {
@@ -166,7 +168,8 @@
          "GroupType": "State",
          "GroupId": "3211383847",
          "Id": "2764240573",
-         "GUID": "{AF2EE265-C86B-40BD-97FE-DE5FEE14D9AC}"
+         "GUID": "{AF2EE265-C86B-40BD-97FE-DE5FEE14D9AC}",
+         "Color": "3"
         },
         "Children": [
          {
@@ -174,7 +177,8 @@
            "GroupType": "State",
            "GroupId": "1048449605",
            "Id": "540301611",
-           "GUID": "{D5BA4557-9946-47D0-B9A0-7045CF947424}"
+           "GUID": "{D5BA4557-9946-47D0-B9A0-7045CF947424}",
+           "Color": "3"
           },
           "MediaRefs": [
            {
@@ -193,7 +197,8 @@
            "GroupType": "State",
            "GroupId": "1048449605",
            "Id": "1668395945",
-           "GUID": "{93B52BF6-F969-483A-A7EA-3C9E82A44F89}"
+           "GUID": "{93B52BF6-F969-483A-A7EA-3C9E82A44F89}",
+           "Color": "3"
           },
           "MediaRefs": [
            {
@@ -217,7 +222,8 @@
          "GroupType": "State",
          "GroupId": "3211383847",
          "Id": "2607556080",
-         "GUID": "{F1E0877A-485F-4551-99E4-762926D35072}"
+         "GUID": "{F1E0877A-485F-4551-99E4-762926D35072}",
+         "Color": "3"
         },
         "MediaRefs": [
          {
@@ -230,7 +236,8 @@
          "GroupType": "State",
          "GroupId": "3211383847",
          "Id": "500842706",
-         "GUID": "{2F9BA0E6-E155-4A4D-869A-FD6D6D6BF5A3}"
+         "GUID": "{2F9BA0E6-E155-4A4D-869A-FD6D6D6BF5A3}",
+         "Color": "3"
         },
         "MediaRefs": [
          {
@@ -247,24 +254,28 @@
       "Name": "Map",
       "ObjectPath": "\\States\\Default Work Unit\\Map",
       "GUID": "{34ADBFF0-DAEF-4ED8-BA8A-3FA9901AB826}",
+      "Color": "3",
       "States": [
        {
         "Id": "540301611",
         "Name": "Lava",
         "ObjectPath": "\\States\\Default Work Unit\\Map\\Lava",
-        "GUID": "{D5BA4557-9946-47D0-B9A0-7045CF947424}"
+        "GUID": "{D5BA4557-9946-47D0-B9A0-7045CF947424}",
+        "Color": "3"
        },
        {
         "Id": "748895195",
         "Name": "None",
         "ObjectPath": "\\States\\Default Work Unit\\Map\\None",
-        "GUID": "{B582B5AA-26BC-420A-A1B4-62606537B8F3}"
+        "GUID": "{B582B5AA-26BC-420A-A1B4-62606537B8F3}",
+        "Color": "3"
        },
        {
         "Id": "1668395945",
         "Name": "Cliff",
         "ObjectPath": "\\States\\Default Work Unit\\Map\\Cliff",
-        "GUID": "{93B52BF6-F969-483A-A7EA-3C9E82A44F89}"
+        "GUID": "{93B52BF6-F969-483A-A7EA-3C9E82A44F89}",
+        "Color": "3"
        }
       ]
      },
@@ -273,30 +284,35 @@
       "Name": "Players",
       "ObjectPath": "\\States\\Default Work Unit\\Players",
       "GUID": "{63D51DCF-9267-496B-ACC4-74FEF4F018B8}",
+      "Color": "3",
       "States": [
        {
         "Id": "678209053",
         "Name": "Two",
         "ObjectPath": "\\States\\Default Work Unit\\Players\\Two",
-        "GUID": "{CED468E2-4C46-43A6-B63C-D30CE5A84F69}"
+        "GUID": "{CED468E2-4C46-43A6-B63C-D30CE5A84F69}",
+        "Color": "3"
        },
        {
         "Id": "748895195",
         "Name": "None",
         "ObjectPath": "\\States\\Default Work Unit\\Players\\None",
-        "GUID": "{56E396D1-2538-40B6-AD3B-B3986F903F3C}"
+        "GUID": "{56E396D1-2538-40B6-AD3B-B3986F903F3C}",
+        "Color": "3"
        },
        {
         "Id": "912956111",
         "Name": "Three",
         "ObjectPath": "\\States\\Default Work Unit\\Players\\Three",
-        "GUID": "{0FE37B61-91DD-4580-86F5-795762D5C8CC}"
+        "GUID": "{0FE37B61-91DD-4580-86F5-795762D5C8CC}",
+        "Color": "3"
        },
        {
         "Id": "2863728729",
         "Name": "Four",
         "ObjectPath": "\\States\\Default Work Unit\\Players\\Four",
-        "GUID": "{F74A0D10-4777-446F-9FFA-B2E7BF50B9FD}"
+        "GUID": "{F74A0D10-4777-446F-9FFA-B2E7BF50B9FD}",
+        "Color": "3"
        }
       ]
      },
@@ -305,42 +321,48 @@
       "Name": "Game_Phase",
       "ObjectPath": "\\States\\Default Work Unit\\Game_Phase",
       "GUID": "{75357766-F5A1-4703-BC5A-F7BC4CF3FCB7}",
+      "Color": "3",
       "States": [
        {
         "Id": "290285391",
         "Name": "Lobby",
         "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Lobby",
-        "GUID": "{D7C918A9-A591-46E8-9FD8-6093433816E7}"
+        "GUID": "{D7C918A9-A591-46E8-9FD8-6093433816E7}",
+        "Color": "3"
        },
        {
         "Id": "500842706",
         "Name": "Bidding",
         "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Bidding",
-        "GUID": "{2F9BA0E6-E155-4A4D-869A-FD6D6D6BF5A3}"
+        "GUID": "{2F9BA0E6-E155-4A4D-869A-FD6D6D6BF5A3}",
+        "Color": "3"
        },
        {
         "Id": "748895195",
         "Name": "None",
         "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\None",
-        "GUID": "{F19062E5-3F11-47B2-A1A0-85036279551B}"
+        "GUID": "{F19062E5-3F11-47B2-A1A0-85036279551B}",
+        "Color": "3"
        },
        {
         "Id": "2607556080",
         "Name": "Menu",
         "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Menu",
-        "GUID": "{F1E0877A-485F-4551-99E4-762926D35072}"
+        "GUID": "{F1E0877A-485F-4551-99E4-762926D35072}",
+        "Color": "3"
        },
        {
         "Id": "2764240573",
         "Name": "Combat",
         "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Combat",
-        "GUID": "{AF2EE265-C86B-40BD-97FE-DE5FEE14D9AC}"
+        "GUID": "{AF2EE265-C86B-40BD-97FE-DE5FEE14D9AC}",
+        "Color": "3"
        }
       ]
      }
     ]
    }
   ],
-  "FileHash": "{814284D5-1BCD-C684-80DA-6B92A75350E2}"
+  "FileHash": "{73BB2961-5C82-DFC0-DCCF-F15964290FDF}"
  }
 }

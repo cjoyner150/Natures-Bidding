@@ -2,6 +2,10 @@
 <WwiseDocument Type="WorkUnit" ID="{D7A54580-5643-4753-B8AE-9C8206331B6E}" SchemaVersion="133">
 	<Events>
 		<WorkUnit Name="Music Work Unit" ID="{D7A54580-5643-4753-B8AE-9C8206331B6E}" PersistMode="Standalone">
+			<PropertyList>
+				<Property Name="Color" Type="int16" Value="1"/>
+				<Property Name="OverrideColor" Type="bool" Value="True"/>
+			</PropertyList>
 			<ChildrenList>
 				<Event Name="Play_MX_System" ID="{3E7521AF-2CB6-4065-BE54-9B9CCD3A9716}">
 					<PropertyList>

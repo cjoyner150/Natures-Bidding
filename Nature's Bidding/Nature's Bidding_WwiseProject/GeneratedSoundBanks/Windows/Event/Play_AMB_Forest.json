@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{E6111105-4B67-4AF0-B526-83D7003FAD60}",
     "Language": "SFX",
-    "Hash": "{9FEA694E-70B6-89E4-200A-8B50396E60F8}",
+    "Hash": "{37F07EE1-71F3-55D4-999C-3B60C7B73112}",
     "ObjectPath": "Play_AMB_Forest",
     "ShortName": "Play_AMB_Forest",
     "Path": "Event/Play_AMB_Forest.bnk",
@@ -18,7 +18,7 @@
      {
       "Id": "35306303",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "amb_forest_bed_03.wav",
       "Path": "Media/35306303.wem",
@@ -27,7 +27,7 @@
      {
       "Id": "271994692",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Rumble\\amb_forest_rumble_04.wav",
       "Path": "Media/271994692.wem",
@@ -36,7 +36,7 @@
      {
       "Id": "317005902",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Wind\\amb_forest_wind_02.wav",
       "Path": "Media/317005902.wem",
@@ -45,7 +45,7 @@
      {
       "Id": "337994838",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Rumble\\amb_forest_rumble_01.wav",
       "Path": "Media/337994838.wem",
@@ -54,7 +54,7 @@
      {
       "Id": "358460421",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Rumble\\amb_forest_rumble_03.wav",
       "Path": "Media/358460421.wem",
@@ -63,7 +63,7 @@
      {
       "Id": "361946497",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Wind\\amb_forest_wind_03.wav",
       "Path": "Media/361946497.wem",
@@ -72,7 +72,7 @@
      {
       "Id": "445858667",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "amb_forest_bed_02.wav",
       "Path": "Media/445858667.wem",
@@ -81,7 +81,7 @@
      {
       "Id": "542962287",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Wind\\amb_forest_wind_01.wav",
       "Path": "Media/542962287.wem",
@@ -90,7 +90,7 @@
      {
       "Id": "868682208",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "Rumble\\amb_forest_rumble_02.wav",
       "Path": "Media/868682208.wem",
@@ -99,7 +99,7 @@
      {
       "Id": "881390669",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "amb_forest_bed_04.wav",
       "Path": "Media/881390669.wem",
@@ -108,7 +108,7 @@
      {
       "Id": "1036629975",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "amb_forest_bed_01.wav",
       "Path": "Media/1036629975.wem",
@@ -117,7 +117,7 @@
      {
       "Id": "1040805943",
       "Language": "SFX",
-      "Streaming": "false",
+      "Streaming": "true",
       "Location": "Loose",
       "ShortName": "amb_forest_bed_05.wav",
       "Path": "Media/1040805943.wem",
@@ -129,7 +129,7 @@
       {
        "Id": "662780474",
        "Name": "Silence",
-       "ObjectPath": "\\Containers\\Ambience Work Unit\\AMB_Forest\\Wind\\amb_forest_silence\\Silence",
+       "ObjectPath": "\\Containers\\Ambience Work Unit\\AMB_Forest\\AMB_Forest_Wind\\amb_forest_silence\\Silence",
        "GUID": "{2B87AB2B-83E5-4F90-B7DD-9F3A14333C85}",
        "Color": "19",
        "LibName": "Wwise Silence",
@@ -138,7 +138,7 @@
       {
        "Id": "858329902",
        "Name": "Low_Pass_20KHz (Custom)",
-       "ObjectPath": "\\Containers\\Ambience Work Unit\\AMB_Forest\\Forest_Bed\\[Effect Slot [0]: (Parametric EQ)]\\Low_Pass_20KHz (Custom)",
+       "ObjectPath": "\\Containers\\Ambience Work Unit\\AMB_Forest\\AMB_Forest_Bed\\[Effect Slot [0]: (Parametric EQ)]\\Low_Pass_20KHz (Custom)",
        "GUID": "{EE410C99-4DFD-4C32-97F8-35B3D62DF829}",
        "LibName": "Wwise Parametric EQ",
        "LibId": "6881283"
@@ -151,6 +151,7 @@
       "Name": "Play_AMB_Forest",
       "ObjectPath": "\\Events\\Ambience Work Unit\\Play_AMB_Forest",
       "GUID": "{E6111105-4B67-4AF0-B526-83D7003FAD60}",
+      "Color": "19",
       "DurationType": "Infinite",
       "MediaRefs": [
        {
@@ -204,6 +205,6 @@
     ]
    }
   ],
-  "FileHash": "{F93BB193-B96E-9368-F0F1-F4BE11C6DBEF}"
+  "FileHash": "{5CC84023-6949-8ADF-08C0-79CA6F0CFF49}"
  }
 }

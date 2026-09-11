@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{36E6308A-11AE-45B4-9188-B735237F920C}",
     "Language": "SFX",
-    "Hash": "{BEFDCD96-11D7-2163-0ADF-EFCE27DD6307}",
+    "Hash": "{CB89515C-C051-84A9-3230-647EAA482FA8}",
     "ObjectPath": "Play_SFX_Woosh",
     "ShortName": "Play_SFX_Woosh",
     "Path": "Event/Play_SFX_Woosh.bnk",
@@ -76,6 +76,7 @@
       "Name": "Play_SFX_Woosh",
       "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_Woosh",
       "GUID": "{36E6308A-11AE-45B4-9188-B735237F920C}",
+      "Color": "8",
       "DurationType": "OneShot",
       "DurationMin": "0.22451934",
       "DurationMax": "0.31751826",
@@ -106,11 +107,12 @@
       "Id": "2369427653",
       "Name": "Combat_Pan",
       "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
-      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
      }
     ]
    }
   ],
-  "FileHash": "{0BD525B4-F9ED-A422-B0E8-44031C70658D}"
+  "FileHash": "{DAAD50A9-3F21-9C37-681A-75B12E3C4468}"
  }
 }

@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{70FC38F5-5881-4468-A0ED-87520397CA12}",
     "Language": "SFX",
-    "Hash": "{EC0E277B-74D1-FAF2-1E1A-A4E77A6251A9}",
+    "Hash": "{445878F7-395D-7426-513C-1E1F4E30F5DA}",
     "ObjectPath": "Play_SFX_Parry",
     "ShortName": "Play_SFX_Parry",
     "Path": "Event/Play_SFX_Parry.bnk",
@@ -70,6 +70,7 @@
       "Name": "Play_SFX_Parry",
       "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_Parry",
       "GUID": "{70FC38F5-5881-4468-A0ED-87520397CA12}",
+      "Color": "8",
       "DurationType": "OneShot",
       "DurationMin": "0.39870834",
       "DurationMax": "0.5823398",
@@ -101,11 +102,12 @@
       "Id": "2369427653",
       "Name": "Combat_Pan",
       "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
-      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
      }
     ]
    }
   ],
-  "FileHash": "{2EE7042E-3778-C9F6-452A-B4741FBAA332}"
+  "FileHash": "{D431BA48-4C86-A3AA-B8A8-94221F766BC9}"
  }
 }

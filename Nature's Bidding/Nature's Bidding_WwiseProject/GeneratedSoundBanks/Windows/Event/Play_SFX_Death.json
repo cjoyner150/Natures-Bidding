@@ -1,0 +1,94 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "729422592",
+    "Type": "Event",
+    "GUID": "{1D4A0908-0C51-480F-90F3-B839978FF706}",
+    "Language": "SFX",
+    "Hash": "{4646C521-3277-0688-D53A-0A5DB52E3E6E}",
+    "ObjectPath": "Play_SFX_Death",
+    "ShortName": "Play_SFX_Death",
+    "Path": "Event/Play_SFX_Death.bnk",
+    "Media": [
+     {
+      "Id": "396398659",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_death_04.wav",
+      "Path": "Media/396398659.wem",
+      "CachePath": "EC/{ECDF25D3-0BD2-5210-F360-A6ED16BE7FB5}.wem"
+     },
+     {
+      "Id": "419413905",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_death_02.wav",
+      "Path": "Media/419413905.wem",
+      "CachePath": "62/{623B824F-8B12-88BB-08DE-718A7AB8DB20}.wem"
+     },
+     {
+      "Id": "733161514",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_death_01.wav",
+      "Path": "Media/733161514.wem",
+      "CachePath": "A5/{A5B02B9B-E4FF-9F94-3F7C-FE5E7B77E08D}.wem"
+     },
+     {
+      "Id": "889638189",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_death_03.wav",
+      "Path": "Media/889638189.wem",
+      "CachePath": "95/{953DD272-D211-2656-A050-C6D23863E0F6}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "729422592",
+      "Name": "Play_SFX_Death",
+      "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_Death",
+      "GUID": "{1D4A0908-0C51-480F-90F3-B839978FF706}",
+      "Color": "8",
+      "DurationType": "OneShot",
+      "DurationMin": "1.3647083",
+      "DurationMax": "1.3647083",
+      "MediaRefs": [
+       {
+        "Id": "396398659"
+       },
+       {
+        "Id": "419413905"
+       },
+       {
+        "Id": "733161514"
+       },
+       {
+        "Id": "889638189"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{7AD83400-387E-4E14-6E8F-BA96F7267C9A}"
+ }
+}

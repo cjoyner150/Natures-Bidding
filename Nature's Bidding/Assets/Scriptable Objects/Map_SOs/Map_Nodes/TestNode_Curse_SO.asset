@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 666439d58f69fa045aebad6566b4c27b, type: 3}
+  m_Name: TestNode_Curse_SO
+  m_EditorClassIdentifier: Assembly-CSharp::NodeBlueprintSO
+  nodeName: Bidding_Scene
+  type: 4
+  spawnWeight: 10
+  nodeIcon: {fileID: 21300000, guid: 4397174e2a637f249985487b65ced51d, type: 3}
+  debugColor: {r: 1, g: 1, b: 1, a: 1}
+  decoratorSprites:
+  - {fileID: 21300000, guid: 2d85e31dbe0a8894ca7d4c72fb2a6e42, type: 3}
+  decoratorCountMinMax: {x: 2, y: 5}
+  decoratorRadius: 1.5

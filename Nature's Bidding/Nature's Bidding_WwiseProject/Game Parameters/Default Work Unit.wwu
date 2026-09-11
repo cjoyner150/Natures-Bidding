@@ -2,6 +2,10 @@
 <WwiseDocument Type="WorkUnit" ID="{B6944527-D057-47A5-932F-995FF1BDA1F0}" SchemaVersion="133">
 	<GameParameters>
 		<WorkUnit Name="Default Work Unit" ID="{B6944527-D057-47A5-932F-995FF1BDA1F0}" PersistMode="Standalone">
+			<PropertyList>
+				<Property Name="Color" Type="int16" Value="3"/>
+				<Property Name="OverrideColor" Type="bool" Value="True"/>
+			</PropertyList>
 			<ChildrenList>
 				<GameParameter Name="Combat_Pan" ID="{1227142A-5FEB-462E-92E5-2D17A955B80D}">
 					<PropertyList>

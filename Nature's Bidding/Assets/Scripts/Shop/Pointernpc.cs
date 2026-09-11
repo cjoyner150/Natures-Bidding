@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -41,6 +42,7 @@ public class PointerNPC : MonoBehaviour
     public float bubbleScaleSpeed = 10f;
 
     private Coroutine _speechCoroutine;
+    private readonly Queue<string[]> _speechQueue = new Queue<string[]>();
     private bool _speechInitialized;
     private AuctioneerAudioFeedback _audioFeedback;
 
@@ -129,17 +131,23 @@ public class PointerNPC : MonoBehaviour
     {
         EnsureSpeechBubbleExists();
 
-        if (_speechCoroutine != null)
-            StopCoroutine(_speechCoroutine);
+        if (lines == null || lines.Length == 0)
+            return;
 
-        _speechCoroutine = StartCoroutine(PlaySpeechSequence(lines));
+        _speechQueue.Enqueue(lines);
+        if (_speechCoroutine == null)
+            _speechCoroutine = StartCoroutine(ProcessSpeechQueue());
     }
 
     public void HideSpeechBubble()
     {
         if (_speechCoroutine != null)
+        {
             StopCoroutine(_speechCoroutine);
+            _speechCoroutine = null;
+        }
 
+        _speechQueue.Clear();
         HideSpeechBubbleImmediate();
     }
 
@@ -229,6 +237,20 @@ public class PointerNPC : MonoBehaviour
         }
     }
 
+    IEnumerator ProcessSpeechQueue()
+    {
+        while (_speechQueue.Count > 0)
+        {
+            string[] lines = _speechQueue.Dequeue();
+            yield return PlaySpeechSequence(lines);
+
+            if (_speechQueue.Count > 0)
+                yield return new WaitForSeconds(linePauseSeconds);
+        }
+
+        _speechCoroutine = null;
+    }
+
     IEnumerator PlaySpeechSequence(string[] lines)
     {
         if (speechBubbleCanvasGroup != null)
@@ -261,8 +283,6 @@ public class PointerNPC : MonoBehaviour
             if (lineIndex < lines.Length - 1)
                 yield return new WaitForSeconds(linePauseSeconds);
         }
-
-        _speechCoroutine = null;
     }
 
     void PlayAuctioneerAudio()

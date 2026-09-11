@@ -25,6 +25,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
     [Header("References")]
     [SerializeField] Transform weaponHolderTransform;
     [SerializeField] MMF_Player hitReactFeedback;
+    [SerializeField] PlayerAudioFeedback audioFeedback;
     
 
     GameObject batConfusionEffectCache;
@@ -33,6 +34,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     private void Start()
     {
+        audioFeedback ??= GetComponent<PlayerAudioFeedback>();
         InitializeColorWhenReady().Forget();
     }
 
@@ -100,6 +102,8 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnTeleportParticles()
     {
+        audioFeedback?.PlayWarp();
+
         GameObject go = Instantiate(teleportParticle, gameObject.transform, false);
         go.transform.localPosition = Vector3.zero;
         go.transform.SetParent(null, true);
@@ -128,6 +132,8 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnJumpParticles()
     {
+        audioFeedback?.PlayJump();
+
         GameObject go = Instantiate(jumpParticle, gameObject.transform, false);
         GameLogger.Log(LogSeverity.Debug, $"SpawnJumpParticles called. Instantiated: {go != null}, activeInHierarchy: {go?.activeInHierarchy}");
         go.transform.localPosition = Vector3.zero;
@@ -178,4 +184,3 @@ public class PlayerVisualEffectManager : MonoBehaviour
         if (obj != null && !obj.IsDestroyed()) Destroy(obj);
     }
 }
-

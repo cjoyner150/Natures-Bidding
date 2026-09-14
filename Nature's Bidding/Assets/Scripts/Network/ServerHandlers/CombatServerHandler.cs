@@ -60,26 +60,14 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
     List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
     {
         NetworkManager.SceneManager.OnLoadEventCompleted -= OnSceneLoadCompleted;
+        SpawnPlayers();
+        LogPlayerData();
 
-        alivePlayers.Clear();
+        CombatBeginClientRpc();
+    }
 
-        var allPlayers = PersistentPlayerRegistry.Instance.GetAllPlayers();
-        GameLogger.Log(LogSeverity.Debug, $"Registry has {allPlayers.Count} entries: " +
-            string.Join(" | ", allPlayers.Select(p => $"clientId={p.clientId}, authId={p.authenticationId}, name={p.playerName}")));
-
-        foreach (var data in allPlayers)
-        {
-            if (NetworkManager.Singleton.ConnectedClients.ContainsKey(data.clientId))
-            {
-                alivePlayers.Add(data.clientId);
-                GameplaySpawnManager.Instance.SpawnPlayer(data.clientId);
-            }
-            else
-            {
-                GameLogger.Log(LogSeverity.Debug, $"Player {data.playerName} in registry but not connected — skipping spawn, they may rejoin.");
-            }
-        }
-
+    private static void LogPlayerData()
+    {
         foreach (var data in PersistentPlayerRegistry.Instance.GetAllPlayers())
         {
             string maskIds = data.masks.Count > 0 ? string.Join(", ", data.masks) : "none";
@@ -100,8 +88,28 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
             GameLogger.Log(LogSeverity.Debug, $"Player {data.clientId} ({data.playerName}) state after combat scene load | gold:{data.gold} wins:{data.combatWins} | masks:[{maskIds}] | tarot:[{tarotIds}] | artifacts:[{artifactIds}] | effectors:[{effectors}]");
         }
+    }
 
-        CombatBeginClientRpc();
+    public void SpawnPlayers()
+    {
+        alivePlayers.Clear();
+
+        var allPlayers = PersistentPlayerRegistry.Instance.GetAllPlayers();
+        GameLogger.Log(LogSeverity.Debug, $"Registry has {allPlayers.Count} entries: " +
+            string.Join(" | ", allPlayers.Select(p => $"clientId={p.clientId}, authId={p.authenticationId}, name={p.playerName}")));
+
+        foreach (var data in allPlayers)
+        {
+            if (NetworkManager.Singleton.ConnectedClients.ContainsKey(data.clientId))
+            {
+                alivePlayers.Add(data.clientId);
+                GameplaySpawnManager.Instance.SpawnPlayer(data.clientId);
+            }
+            else
+            {
+                GameLogger.Log(LogSeverity.Debug, $"Player {data.playerName} in registry but not connected — skipping spawn, they may rejoin.");
+            }
+        }
     }
 
     protected override void RegisterCallbacks()

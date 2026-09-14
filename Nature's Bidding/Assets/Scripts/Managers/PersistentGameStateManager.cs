@@ -54,7 +54,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         set
         {
             _isLoading = value;
-            loadingPanel.SetActive(value);
+            loadingPanel?.SetActive(value);
         }
     }
 
@@ -90,7 +90,8 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     protected override void Awake()
     {
-        if (HasInstance) Destroy(gameObject);
+        Debug.Log($"HasInstance={HasInstance}, Instance={Instance?.gameObject?.name}");
+        if (HasInstance && Instance != this) Destroy(gameObject);
         else
         {
             base.Awake();
@@ -466,6 +467,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         {
             IGameServerHandler handler = FindAnyObjectByType<LobbyServerHandler>();
             handler ??= FindAnyObjectByType<CombatServerHandler>();
+            handler ??= FindAnyObjectByType<GymnasiumServerHandler>();
             return handler != null;
         });
 
@@ -484,6 +486,8 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
             LobbyServerHandler.Instance.SendAuthToServerRpc(playerId, playerName);
         else if (CombatServerHandler.Instance != null)
             CombatServerHandler.Instance.SendAuthToServerRpc(playerId, playerName);
+        else
+            GymnasiumServerHandler.Instance?.SendAuthToServerRpc(playerId, playerName);
     }
 
     private void OnAllPlayersReadied()

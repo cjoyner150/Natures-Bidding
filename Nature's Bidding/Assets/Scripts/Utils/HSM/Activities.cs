@@ -66,7 +66,9 @@ namespace HSM
 
         public override async Task DeactivateAsync(CancellationToken ct)
         {
+            GameLogger.Log(LogSeverity.Debug, $"Delaying deactivation of {GetType().Name} for {milliseconds} ms");
             await base.DeactivateAsync(ct);
+            GameLogger.Log(LogSeverity.Debug, $"Finished delaying deactivation of {GetType().Name}!");
             await UniTask.Delay(milliseconds, false, PlayerLoopTiming.Update, ct);
         }
     }
@@ -81,7 +83,9 @@ namespace HSM
 
         public override async Task ActivateAsync(CancellationToken ct)
         {
+            GameLogger.Log(LogSeverity.Debug, $"Delaying activation of {GetType().Name} for {milliseconds} ms");
             await UniTask.Delay(milliseconds, false, PlayerLoopTiming.Update, ct);
+            GameLogger.Log(LogSeverity.Debug, $"Finished delaying activation of {GetType().Name}!");
             await base.ActivateAsync(ct);
         }
     }

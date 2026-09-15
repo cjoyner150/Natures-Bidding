@@ -4,10 +4,11 @@ using MoreMountains.Tools;
 using OneLine;
 using System;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class EnemyDummy : MonoBehaviour, IDamageable
+public class EnemyDummy : MonoBehaviour, IDamageable, IEffectable
 {
     [SerializeField] Animator anim;
     [SerializeField] SkinnedMeshRenderer skinnedMeshRenderer;
@@ -30,7 +31,7 @@ public class EnemyDummy : MonoBehaviour, IDamageable
     public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context, bool critical = false)
     {
         SpawnDamageNumbers(damage, critical);
-        anim.SetTrigger("Hit");
+        //anim.SetTrigger("Hit");
         outlineBlink.StartBlinking();
 
         context = IDamageable.HitCallbackContext.success;
@@ -74,5 +75,11 @@ public class EnemyDummy : MonoBehaviour, IDamageable
     public void TickHealth(float damage, ulong fromPlayerId)
     {
         Hit(damage, fromPlayerId, out var _ctx);
+    }
+
+    public void StealFrom(ulong thiefId, ulong targetId, int amount)
+    {
+        GameLogger.Log(LogSeverity.Debug, $"EnemyDummy lost {amount} gold");
+        PersistentPlayerRegistry.Instance.AddGold(thiefId, amount);
     }
 }

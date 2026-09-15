@@ -7,7 +7,7 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerHealth : NetworkBehaviour, IDamageable
+public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
 {
     public NetworkVariable<float> health =  new(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<float> maxHealth = new(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
@@ -315,5 +315,20 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     }
 
     public PlayerContext GetPlayerContext() => ctx;
-    
+
+    public void StealFrom(ulong thiefId, ulong targetId, int amount)
+    {
+        RequestStealServerRpc(thiefId, targetId, amount);
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void RequestStealServerRpc(ulong thiefId, ulong targetId, int amount)
+    {
+        var target = PersistentPlayerRegistry.Instance.GetByClientId(targetId);
+        if (target == null) return;
+
+        int stolen = Mathf.Min(amount, target.gold);
+        PersistentPlayerRegistry.Instance.TrySpendGold(targetId, stolen);
+        PersistentPlayerRegistry.Instance.AddGold(thiefId, stolen);
+    }
 }

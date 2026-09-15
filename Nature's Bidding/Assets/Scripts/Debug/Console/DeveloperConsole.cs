@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class DeveloperConsole : MonoBehaviour
 {
+    [SerializeField] private bool doNotDestroyOnLoad;
     [SerializeField] private GameObject console;
     [SerializeField] private VerticalLayoutGroup logContainer;
     [SerializeField] private GameObject logEntryPrefab;
@@ -20,6 +21,11 @@ public class DeveloperConsole : MonoBehaviour
 
     private void Start()
     {
+        if (doNotDestroyOnLoad)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
         console.SetActive(false);
         consoleToggleInput.Enable();
 

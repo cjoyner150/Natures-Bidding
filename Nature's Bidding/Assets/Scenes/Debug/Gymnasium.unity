@@ -342,11 +342,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2136595636}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &237311919 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2390304910235464399, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
-  m_PrefabInstance: {fileID: 3547461223070395948}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &272230414
 GameObject:
   m_ObjectHideFlags: 0
@@ -2945,6 +2940,7 @@ Transform:
   m_Children:
   - {fileID: 890664419}
   - {fileID: 206057744}
+  - {fileID: 1487141396}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3547461223070395948
@@ -3039,61 +3035,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Developer Console
       objectReference: {fileID: 0}
-    - target: {fileID: 2718337474615307538, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2718337474615307538, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2718337474615307538, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292513726184719904, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
-      propertyPath: console
-      value: 
-      objectReference: {fileID: 237311919}
-    - target: {fileID: 3292513726184719904, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
-      propertyPath: consoleToggleInput.m_Name
-      value: Console Toggle Input
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292513726184719904, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
-      propertyPath: consoleToggleInput.m_SingletonActionBindings.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292513726184719904, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
-      propertyPath: consoleToggleInput.m_SingletonActionBindings.Array.data[0].m_Id
-      value: 74bba4e7-aa04-4a2d-9df9-e1882bacdd96
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292513726184719904, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
-      propertyPath: consoleToggleInput.m_SingletonActionBindings.Array.data[1].m_Id
-      value: fd6256a5-52a6-46cf-a61b-699d52014ada
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292513726184719904, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
-      propertyPath: consoleToggleInput.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Keyboard>/backquote
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292513726184719904, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
-      propertyPath: consoleToggleInput.m_SingletonActionBindings.Array.data[1].m_Path
-      value: <Gamepad>/select
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292513726184719904, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
-      propertyPath: consoleToggleInput.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Console Toggle Input
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292513726184719904, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
-      propertyPath: consoleToggleInput.m_SingletonActionBindings.Array.data[1].m_Action
-      value: Console Toggle Input
-      objectReference: {fileID: 0}
     - target: {fileID: 3943150374949575526, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3943150374949575526, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00026944853
+      value: 0.00020399418
       objectReference: {fileID: 0}
     - target: {fileID: 4329507445591374664, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3109,7 +3057,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4787498815163913633, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
       propertyPath: m_Value
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5516609093611901172, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3146,7 +3094,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 2136595636}
     m_Modifications:
     - target: {fileID: 1395421766436806667, guid: 01b57c6fe251fdf4f9d013c360e6a6ac, type: 3}
       propertyPath: m_Name
@@ -3170,7 +3118,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6848029443236899593, guid: 01b57c6fe251fdf4f9d013c360e6a6ac, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6848029443236899593, guid: 01b57c6fe251fdf4f9d013c360e6a6ac, type: 3}
       propertyPath: m_LocalRotation.y
@@ -3178,7 +3126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6848029443236899593, guid: 01b57c6fe251fdf4f9d013c360e6a6ac, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6848029443236899593, guid: 01b57c6fe251fdf4f9d013c360e6a6ac, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3194,7 +3142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8676777750401739866, guid: 01b57c6fe251fdf4f9d013c360e6a6ac, type: 3}
       propertyPath: baseDirection.x
-      value: -1
+      value: -0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3211,7 +3159,6 @@ SceneRoots:
   - {fileID: 2136595636}
   - {fileID: 13196124}
   - {fileID: 1487352816}
-  - {fileID: 4945767144014680813}
   - {fileID: 745781602}
   - {fileID: 932223445}
   - {fileID: 1015495481}

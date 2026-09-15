@@ -30,7 +30,7 @@ public class PlayerInputManager : MonoBehaviour
     public bool allowPause = true;
 
     private bool paused = false;
-
+    private bool consoleOpen = false;
     private StateMachine sm;
     private State root;
 
@@ -73,6 +73,8 @@ public class PlayerInputManager : MonoBehaviour
         pause.performed += OnPausePressed;
         PlayerPauseManager.OnPaused += OnPaused;
         PlayerPauseManager.OnResumed += OnResumed;
+        DeveloperConsole.OnConsoleOpened += OnConsoleOpened;
+        DeveloperConsole.OnConsoleClosed += OnConsoleClosed;
 
         allowInputs = true;
         
@@ -113,6 +115,9 @@ public class PlayerInputManager : MonoBehaviour
             PlayerPauseManager.OnPaused -= OnPaused;
             PlayerPauseManager.OnResumed -= OnResumed;
         }
+
+        DeveloperConsole.OnConsoleOpened -= OnConsoleOpened;
+        DeveloperConsole.OnConsoleClosed -= OnConsoleClosed;
     }
 
     private float _knockbackStuckTimer;
@@ -293,16 +298,35 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    void OnConsoleOpened()
+    {
+        consoleOpen = true;
+        UpdateAllowInputs();
+    }
+
+    void OnConsoleClosed()
+    {
+        consoleOpen = false;
+        UpdateAllowInputs();
+    }
+
     void OnPaused()
     {
-        allowInputs = !PlayerPauseManager.Instance.Paused;
-        DisableInput();
+        paused = PlayerPauseManager.Instance.Paused;
+        UpdateAllowInputs();
     }
 
     void OnResumed()
     {
-        allowInputs = !PlayerPauseManager.Instance.Paused;
-        EnableInput();
+        paused = PlayerPauseManager.Instance.Paused;
+        UpdateAllowInputs();
+    }
+
+    void UpdateAllowInputs() 
+    {
+        allowInputs = !paused && !consoleOpen;
+        if (allowInputs) EnableInput();
+        else DisableInput();
     }
 
 }

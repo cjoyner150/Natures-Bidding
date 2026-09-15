@@ -195,7 +195,24 @@ public class PlayerAttackManager : NetworkBehaviour
             
             if (PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Combat)
             {
-                if (ctx.playerStats.Stealing > 0) RequestStealServerRpc(OwnerClientId, damagedObject.GetComponent<NetworkObject>().OwnerClientId, (int)(ctx.playerStats.Stealing));
+                if (ctx.playerStats.Stealing > 0) 
+                {
+                    var damagedEffectable = damagedObject.GetComponent<IEffectable>();
+
+                    int retries = 10;
+                    while (retries >= 0 && damagedEffectable == null && damagedObject.transform.parent != null)
+                    {
+                        damagedObject = damagedObject.transform.parent.gameObject;
+                        damagedEffectable = damagedObject.GetComponent<IEffectable>();
+                        retries--;
+                    }
+
+                    var damagedNetworkObject = damagedObject.GetComponent<NetworkObject>();
+
+                    ulong stealTarget = damagedNetworkObject != null ? damagedNetworkObject.OwnerClientId : 0;
+
+                    if (damagedEffectable != null) damagedEffectable.StealFrom(OwnerClientId, stealTarget, (int)(ctx.playerStats.Stealing));
+                }
                 if (ctx.playerStats.Lifesteal > 0) selfPlayerHealth.Heal(ctx.playerStats.Lifesteal);
             }
         }
@@ -212,14 +229,4 @@ public class PlayerAttackManager : NetworkBehaviour
         Gizmos.DrawLine(attackTransform.position, attackTransform.position + (transform.forward * attackLength));
     }
 
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    private void RequestStealServerRpc(ulong thiefId, ulong targetId, int amount)
-    {
-        var target = PersistentPlayerRegistry.Instance.GetByClientId(targetId);
-        if (target == null) return;
-
-        int stolen = Mathf.Min(amount, target.gold);
-        PersistentPlayerRegistry.Instance.TrySpendGold(targetId, stolen);
-        PersistentPlayerRegistry.Instance.AddGold(thiefId, stolen);
-    }
 }

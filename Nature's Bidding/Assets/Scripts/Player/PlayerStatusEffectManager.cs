@@ -122,6 +122,8 @@ public class PlayerStatusEffectManager : MonoBehaviour
         playerHealth.SendMaxHealthToServerRpc(playerStats.MaxHealth, playerHealth.OwnerClientId);
         transform.localScale = initialLocalScale * playerStats.Size;
         ctx.maxJumps = ctx.playerStats.Jumps;
+
+        GameLogger.Log(LogSeverity.Debug, "[Player Stats] Modifiers have been changed. Stats are now:  " + playerStats?.ToString());
     }
 
     private void OnItemAdded(string itemId)
@@ -145,8 +147,6 @@ public class PlayerStatusEffectManager : MonoBehaviour
             effect.OnTick(Time.deltaTime);
         }
         
-
-        print("[Player Stats] Modifiers Initialized. "+playerStats?.ToString());
     }
 
     private void OnDestroy()

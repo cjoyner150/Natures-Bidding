@@ -27,7 +27,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         cameraTargetGroup = FindAnyObjectByType<CinemachineTargetGroup>();
         cameraTargetGroup?.AddMember(transform, 1, 4);
 
-        bool isCombatScene = CombatServerHandler.Instance != null;
+        bool isCombatScene = CombatServerHandler.Instance != null || GymnasiumServerHandler.Instance != null;
 
         if (isCombatScene)
         {
@@ -49,7 +49,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
                 playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
                 playerWeaponManager = GetComponent<PlayerWeaponManager>();
                 playerWeaponManager.Initialize(playerStatusEffectManager);
-                playerStatusEffectManager.Initialize(ctx.playerStats, OwnerClientId);
+                playerStatusEffectManager.Initialize(ctx, ctx.playerStats, OwnerClientId);
             }
 
             playerInput.InitializePlayer(ctx);

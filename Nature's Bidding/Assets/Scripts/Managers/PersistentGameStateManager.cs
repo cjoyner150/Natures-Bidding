@@ -178,12 +178,17 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private void OnSessionHosted()
     {
+        SpawnNetworkSingletons();
+        LoadLobbyLevel();
+    }
+
+    public void SpawnNetworkSingletons()
+    {
         foreach (var prefab in spawnableNetworkSingletons)
         {
             var go = Instantiate(prefab);
             go.GetComponent<NetworkObject>().Spawn();
         }
-        LoadLobbyLevel();
     }
 
     public async void LoadLobbyLevel()

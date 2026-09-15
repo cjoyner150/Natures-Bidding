@@ -16,8 +16,7 @@ public class SlamRecovery : State
     public SlamRecovery(StateMachine machine, PlayerContext ctx, State parent = null) : base(machine, parent)
     {
         this.ctx = ctx;
-        Add(new DelayActivationActivity(1f));
-        Add(new DelayDeactivationActivity(.5f));
+        Add(new DelayActivationActivity(.85f));
     }
 
     protected override void OnEnter()
@@ -31,7 +30,7 @@ public class SlamRecovery : State
 
     private async void AnimateGetUp()
     {
-        await UniTask.Delay(1250);
+        await UniTask.Delay(600);
         ctx.anim.SetTrigger("SlamGetUp");
     }
 

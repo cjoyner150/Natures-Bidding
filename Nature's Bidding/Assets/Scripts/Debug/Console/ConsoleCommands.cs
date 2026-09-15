@@ -105,8 +105,7 @@ public static class CommandRegistry
 
         string[] args = tokens.Skip(1).ToArray();
 
-        // Try each overload in specificity order; first one whose parameters
-        // all parse successfully wins.
+        // Try each overload in specificity order; first one whose parameters all parse successfully wins.
         foreach (var cmd in candidates)
         {
             if (TryBindArguments(cmd, args, out object[] parsed))
@@ -139,7 +138,7 @@ public static class CommandRegistry
                 else if (_parsers.TryGetValue(t, out var parser)) parsed[i] = parser(args[i]);
                 else return false;
             }
-            catch { return false; }   // this overload can't take these args — try the next one
+            catch { return false; } 
         }
         return true;
     }

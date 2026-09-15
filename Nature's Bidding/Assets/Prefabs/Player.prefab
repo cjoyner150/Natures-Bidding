@@ -1999,21 +1999,7 @@ MonoBehaviour:
   NetworkAnimatorExpanded: 0
   AuthorityMode: 1
   m_Animator: {fileID: 4433744703831192002}
-  TransitionStateInfoList:
-  - IsCrossFadeExit: 0
-    Layer: 1
-    OriginatingState: 529447298
-    DestinationState: 1116214822
-    TransitionDuration: 0.1
-    TriggerNameHash: 1400230708
-    TransitionIndex: 0
-  - IsCrossFadeExit: 0
-    Layer: 1
-    OriginatingState: 529447298
-    DestinationState: 753088835
-    TransitionDuration: 0.1
-    TriggerNameHash: 1054507946
-    TransitionIndex: 2
+  TransitionStateInfoList: []
   AnimatorParameterEntries:
     ParameterEntries:
     - name: Attack
@@ -2070,6 +2056,10 @@ MonoBehaviour:
       ParameterType: 9
     - name: FallAttackCancel
       NameHash: 1054507946
+      Synchronize: 1
+      ParameterType: 9
+    - name: SlamGetUp
+      NameHash: -1859969803
       Synchronize: 1
       ParameterType: 9
   AnimatorParametersExpanded: 0

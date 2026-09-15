@@ -73,6 +73,6 @@ public class EnemyDummy : MonoBehaviour, IDamageable
 
     public void TickHealth(float damage, ulong fromPlayerId)
     {
-        throw new System.NotImplementedException();
+        Hit(damage, fromPlayerId, out var _ctx);
     }
 }

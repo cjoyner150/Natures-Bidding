@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class GymnasiumServerHandler : BaseGameServerHandler<GymnasiumServerHandl
 
         PersistentGameStateManager.Instance.RegisterAuthData();
         PersistentGameStateManager.Instance.ClearLoadingState();
+        PersistentGameStateManager.Instance.State = PersistentGameStateManager.GameState.Combat;
     }
 
     private void OnDestroy()
@@ -69,7 +71,11 @@ public class GymnasiumServerHandler : BaseGameServerHandler<GymnasiumServerHandl
 
     void OnSessionHosted()
     {
-        //CombatServerHandler.Instance.SpawnPlayers();
+        _ = UniTask.WaitUntil(() => PersistentGameStateManager.Instance != null).ContinueWith(() =>
+        {
+            GameLogger.Log(LogSeverity.Debug, "Gymnasium session hosted, spawning network singletons.");
+            PersistentGameStateManager.Instance.SpawnNetworkSingletons();
+        });
     }
     public void HandleInstantKill(PlayerHealth playerHealth)
     {

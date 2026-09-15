@@ -310,12 +310,14 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
         switch (type)
         {
             case ItemType.Mask:
-                if (!data.masks.Contains(itemId)) data.masks.Add(itemId); break;
+                data.masks.Add(itemId); break;
             case ItemType.TarotCard:
-                if (!data.tarotCards.Contains(itemId)) data.tarotCards.Add(itemId); break;
+                data.tarotCards.Add(itemId); break;
             case ItemType.Artifact:
-                if (!data.artifacts.Contains(itemId)) data.artifacts.Add(itemId); break;
+                data.artifacts.Add(itemId); break;
         }
+
+        PlayerCombatHooks.TriggerOnItemAdded(itemId);
     }
 
     public IEnumerable<PlayerData> GetSnapshot() => _playerData.Values;

@@ -1045,6 +1045,94 @@
 								</Sound>
 							</ChildrenList>
 						</RandomSequenceContainer>
+<<<<<<< Updated upstream
+=======
+						<RandomSequenceContainer Name="SFX_Warp" ID="{D3632283-ED09-4AE3-B29E-287BCC16CF1E}" ShortID="794838151">
+							<PropertyList>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>-4</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="sfx_warp_01" ID="{ACED7C01-8858-4CE6-A0E2-DA36CEA93A65}" ShortID="684154418">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sfx_warp_01" ID="{D3858F4F-8976-45B9-8900-FECADE9FFE23}">
+											<Language>SFX</Language>
+											<AudioFile>sfx_warp_01.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="731812737"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sfx_warp_01" ID="{D3858F4F-8976-45B9-8900-FECADE9FFE23}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sfx_warp_02" ID="{7D4E4F56-0848-4AF9-B1E0-949D20558135}" ShortID="94616451">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sfx_warp_02" ID="{7D59C525-C203-4914-9231-B79541EC7C21}">
+											<Language>SFX</Language>
+											<AudioFile>sfx_warp_02.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="585802345"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sfx_warp_02" ID="{7D59C525-C203-4914-9231-B79541EC7C21}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sfx_warp_03" ID="{13AAACE4-EB58-4829-BEAF-0A905DA5A46F}" ShortID="340483416">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sfx_warp_03" ID="{F41D4FE7-D8FB-44E7-87F9-C77371E085EB}">
+											<Language>SFX</Language>
+											<AudioFile>sfx_warp_03.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="528292289"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sfx_warp_03" ID="{F41D4FE7-D8FB-44E7-87F9-C77371E085EB}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+						</RandomSequenceContainer>
+>>>>>>> Stashed changes
 					</ChildrenList>
 					<PositioningInfo>
 						<Panner Name="" ID="{AB4EB316-D5C3-47DC-BB4F-2CAB419029AA}">

@@ -6,14 +6,14 @@
   "SoundBankVersion": "172",
   "SoundBanks": [
    {
-    "Id": "4115709719",
+    "Id": "3605236953",
     "Type": "Event",
     "GUID": "{FC51EB7E-F371-4821-9E7A-9D7406953CA1}",
     "Language": "SFX",
-    "Hash": "{DB722F4A-9CA1-980B-0CC7-AE391497C1C3}",
-    "ObjectPath": "Play_Auctioneer",
-    "ShortName": "Play_Auctioneer",
-    "Path": "Event/Play_Auctioneer.bnk",
+    "Hash": "{2850C4BA-3E6E-1656-7A8B-634B0A8D43DA}",
+    "ObjectPath": "Play_DLG_Auctioneer",
+    "ShortName": "Play_DLG_Auctioneer",
+    "Path": "Event/Play_DLG_Auctioneer.bnk",
     "Media": [
      {
       "Id": "286959462",
@@ -81,10 +81,11 @@
     ],
     "Events": [
      {
-      "Id": "4115709719",
-      "Name": "Play_Auctioneer",
-      "ObjectPath": "\\Events\\Dialogue Work Unit\\Play_Auctioneer",
+      "Id": "3605236953",
+      "Name": "Play_DLG_Auctioneer",
+      "ObjectPath": "\\Events\\Dialogue Work Unit\\Play_DLG_Auctioneer",
       "GUID": "{FC51EB7E-F371-4821-9E7A-9D7406953CA1}",
+      "Color": "24",
       "DurationType": "OneShot",
       "DurationMin": "0.69122916",
       "DurationMax": "1.346125",
@@ -115,6 +116,6 @@
     ]
    }
   ],
-  "FileHash": "{4849E0DD-B08C-E224-A064-E653E7F4238D}"
+  "FileHash": "{6283EB64-8F41-8FDC-0F8B-34AF757C8BCC}"
  }
 }

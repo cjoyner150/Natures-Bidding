@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{1D4A0908-0C51-480F-90F3-B839978FF706}",
     "Language": "SFX",
-    "Hash": "{7472327A-430E-9A2D-6AC3-BB82B8D05A2B}",
+    "Hash": "{4646C521-3277-0688-D53A-0A5DB52E3E6E}",
     "ObjectPath": "Play_SFX_Death",
     "ShortName": "Play_SFX_Death",
     "Path": "Event/Play_SFX_Death.bnk",
@@ -56,8 +56,9 @@
      {
       "Id": "729422592",
       "Name": "Play_SFX_Death",
-      "ObjectPath": "\\Events\\Default Work Unit\\Play_SFX_Death",
+      "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_Death",
       "GUID": "{1D4A0908-0C51-480F-90F3-B839978FF706}",
+      "Color": "8",
       "DurationType": "OneShot",
       "DurationMin": "1.3647083",
       "DurationMax": "1.3647083",
@@ -82,11 +83,12 @@
       "Id": "2369427653",
       "Name": "Combat_Pan",
       "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
-      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
      }
     ]
    }
   ],
-  "FileHash": "{91CC5098-594C-FA6C-0A9D-61E7B9FCF9D5}"
+  "FileHash": "{7AD83400-387E-4E14-6E8F-BA96F7267C9A}"
  }
 }

@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{AA4FEBB9-D96F-4973-B31E-EF7C291E5439}",
     "Language": "SFX",
-    "Hash": "{1F6145B4-CE80-74B2-E96E-5C0AC5F2AC96}",
+    "Hash": "{D91FD639-A05D-1906-E37C-7353BB8C9DFC}",
     "ObjectPath": "Play_SFX_RockSlide",
     "ShortName": "Play_SFX_RockSlide",
     "Path": "Event/Play_SFX_RockSlide.bnk",
@@ -58,6 +58,7 @@
       "Name": "Play_SFX_RockSlide",
       "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_RockSlide",
       "GUID": "{AA4FEBB9-D96F-4973-B31E-EF7C291E5439}",
+      "Color": "8",
       "DurationType": "OneShot",
       "DurationMin": "5.01",
       "DurationMax": "5.01",
@@ -82,11 +83,12 @@
       "Id": "2369427653",
       "Name": "Combat_Pan",
       "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
-      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
      }
     ]
    }
   ],
-  "FileHash": "{C93A28CD-03DE-6480-EE2C-37D45F2CB85D}"
+  "FileHash": "{CAF3457A-4D09-6BE8-0F03-BA5C025DB22D}"
  }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3048a983b0df63e4281883aaddd5ff1d, type: 3}
   m_Name: FC51EB7E-F371-4821-9E7A-9D7406953CA1
   m_EditorClassIdentifier: AK.Wwise.Unity.API.WwiseTypes::WwiseEventReference
-  objectName: Play_Auctioneer
-  id: 4115709719
+  objectName: Play_DLG_Auctioneer
+  id: 3605236953
   guid: FC51EB7E-F371-4821-9E7A-9D7406953CA1
   IsInUserDefinedSoundBank: 0

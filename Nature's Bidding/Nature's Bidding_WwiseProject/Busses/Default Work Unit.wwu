@@ -10,10 +10,30 @@
 						</Reference>
 					</ReferenceList>
 					<ChildrenList>
-						<Bus Name="Music" ID="{899FB7A5-9F49-4C90-AB8B-67097E3D5629}"/>
-						<Bus Name="SFX" ID="{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}"/>
-						<Bus Name="UI" ID="{ADF1903D-2C27-4D5C-8A60-52061641C33E}"/>
-						<Bus Name="Ambience" ID="{E3FF9C71-34A7-47B6-A750-804FE4397322}"/>
+						<Bus Name="Music" ID="{899FB7A5-9F49-4C90-AB8B-67097E3D5629}">
+							<PropertyList>
+								<Property Name="Color" Type="int16" Value="1"/>
+								<Property Name="OverrideColor" Type="bool" Value="True"/>
+							</PropertyList>
+						</Bus>
+						<Bus Name="SFX" ID="{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}">
+							<PropertyList>
+								<Property Name="Color" Type="int16" Value="8"/>
+								<Property Name="OverrideColor" Type="bool" Value="True"/>
+							</PropertyList>
+						</Bus>
+						<Bus Name="UI" ID="{ADF1903D-2C27-4D5C-8A60-52061641C33E}">
+							<PropertyList>
+								<Property Name="Color" Type="int16" Value="2"/>
+								<Property Name="OverrideColor" Type="bool" Value="True"/>
+							</PropertyList>
+						</Bus>
+						<Bus Name="Ambience" ID="{E3FF9C71-34A7-47B6-A750-804FE4397322}">
+							<PropertyList>
+								<Property Name="Color" Type="int16" Value="19"/>
+								<Property Name="OverrideColor" Type="bool" Value="True"/>
+							</PropertyList>
+						</Bus>
 					</ChildrenList>
 				</Bus>
 			</ChildrenList>

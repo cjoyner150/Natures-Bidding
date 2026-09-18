@@ -8,17 +8,22 @@ using UnityUtils;
 public class PlayerAttackManager : NetworkBehaviour
 {
     [SerializeField] private Transform attackTransform;
-    [SerializeField] private PlayerHealth selfPlayerHealth;
     [SerializeField] private LayerMask attackableLayers;
 
     private bool isAttacking;
 
     private HashSet<IDamageable> damagedObjectsOnThisAttack = new HashSet<IDamageable>();
-
+    
+    [Header("Basic Attack Settings")]
     [SerializeField] private float attackRadius;
     [SerializeField] private float attackLength;
 
-    PlayerContext ctx;
+    [Header("Falling Slam Settings")]
+    [SerializeField] private float fallingSlamRadius;
+    [SerializeField] private float fallingSlamLength;
+
+    private PlayerHealth selfPlayerHealth;
+    private PlayerContext ctx;
 
     public override void OnNetworkSpawn()
     {
@@ -55,6 +60,30 @@ public class PlayerAttackManager : NetworkBehaviour
         isAttacking = false;
     }
 
+    public void FallingSlamAttack()
+    {
+        RaycastHit[] hits = Physics.SphereCastAll(
+            transform.position + (ctx.modelHolder.forward * fallingSlamRadius / 2f), 
+            fallingSlamRadius, 
+            ctx.modelHolder.forward, 
+            fallingSlamLength, 
+            attackableLayers
+            );
+
+        if (debugAttackCast)
+            DrawSphereCastDebug(transform.position, fallingSlamRadius, ctx.modelHolder.forward, fallingSlamLength, hits);
+
+        foreach (RaycastHit hit in hits)
+        {
+            GameObject go = hit.collider.gameObject;
+            UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
+            if (damageable != null)
+            {
+                HandleHitDamageableTarget(damageable, go);
+            }
+        }
+    }
+
     void FixedUpdate()
     {
         if (!IsOwner) return;
@@ -89,7 +118,7 @@ public class PlayerAttackManager : NetworkBehaviour
     {
         bool didHit = hits.Length > 0;
         Color color = didHit ? Color.red : Color.green;
-        float duration = 0.15f;
+        float duration = 1f;
 
         Vector3 endPos = origin + direction.normalized * distance;
 
@@ -166,7 +195,24 @@ public class PlayerAttackManager : NetworkBehaviour
             
             if (PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Combat)
             {
-                if (ctx.playerStats.Stealing > 0) RequestStealServerRpc(OwnerClientId, damagedObject.GetComponent<NetworkObject>().OwnerClientId, (int)(ctx.playerStats.Stealing));
+                if (ctx.playerStats.Stealing > 0) 
+                {
+                    var damagedEffectable = damagedObject.GetComponent<IEffectable>();
+
+                    int retries = 10;
+                    while (retries >= 0 && damagedEffectable == null && damagedObject.transform.parent != null)
+                    {
+                        damagedObject = damagedObject.transform.parent.gameObject;
+                        damagedEffectable = damagedObject.GetComponent<IEffectable>();
+                        retries--;
+                    }
+
+                    var damagedNetworkObject = damagedObject.GetComponent<NetworkObject>();
+
+                    ulong stealTarget = damagedNetworkObject != null ? damagedNetworkObject.OwnerClientId : 0;
+
+                    if (damagedEffectable != null) damagedEffectable.StealFrom(OwnerClientId, stealTarget, (int)(ctx.playerStats.Stealing));
+                }
                 if (ctx.playerStats.Lifesteal > 0) selfPlayerHealth.Heal(ctx.playerStats.Lifesteal);
             }
         }
@@ -183,14 +229,4 @@ public class PlayerAttackManager : NetworkBehaviour
         Gizmos.DrawLine(attackTransform.position, attackTransform.position + (transform.forward * attackLength));
     }
 
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    private void RequestStealServerRpc(ulong thiefId, ulong targetId, int amount)
-    {
-        var target = PersistentPlayerRegistry.Instance.GetByClientId(targetId);
-        if (target == null) return;
-
-        int stolen = Mathf.Min(amount, target.gold);
-        PersistentPlayerRegistry.Instance.TrySpendGold(targetId, stolen);
-        PersistentPlayerRegistry.Instance.AddGold(thiefId, stolen);
-    }
 }

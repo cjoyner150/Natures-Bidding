@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{E0384640-9D76-42B9-82F2-B4AB94528BAB}",
     "Language": "SFX",
-    "Hash": "{A87D453B-7A4D-E787-1357-89D3E3B6A023}",
+    "Hash": "{898066E8-5A96-EDD7-57A8-27B45A987F62}",
     "ObjectPath": "Play_UI_Bid_Reject",
     "ShortName": "Play_UI_Bid_Reject",
     "Path": "Event/Play_UI_Bid_Reject.bnk",
@@ -68,6 +68,6 @@
     ]
    }
   ],
-  "FileHash": "{326C96BE-F7F8-5CBE-7D23-E40C2A30DA18}"
+  "FileHash": "{339E6A13-C8EA-C2CB-D624-7F52CFC98EBB}"
  }
 }

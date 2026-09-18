@@ -19,7 +19,7 @@ public class GameplaySpawnManager : Singleton<GameplaySpawnManager>
 
     protected override void Awake()
     {
-        if (HasInstance)
+        if (HasInstance && Instance != this)
         {
             Destroy(gameObject);
             return;

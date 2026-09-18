@@ -56,6 +56,7 @@ public class JumpLocomotion : State
 
         transition ??= (ctx.attackPressed && !ctx.attackOnCooldown) ? GetParentOfType<Jump>().jumpAttack : null;
         transition ??= (ctx.dashPressed && !ctx.dashOnCooldown) ? GetParentOfType<Airborne>().airDash : null;
+        transition ??= (ctx.jumpPressed && ctx.currentJumps > 0 && !spaceHeld) ? GetParentOfType<Airborne>() : null;
 
         return transition;
     }

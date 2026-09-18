@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{907320F1-3226-DBF5-0093-CBE02C047D55}",
+    "Hash": "{6EAC6366-3DE4-4F3E-56E9-E740C28A1C5A}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -39,19 +39,22 @@
       "Id": "85412153",
       "Name": "Ambience",
       "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\Ambience",
-      "GUID": "{E3FF9C71-34A7-47B6-A750-804FE4397322}"
+      "GUID": "{E3FF9C71-34A7-47B6-A750-804FE4397322}",
+      "Color": "19"
      },
      {
       "Id": "393239870",
       "Name": "SFX",
       "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\SFX",
-      "GUID": "{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}"
+      "GUID": "{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}",
+      "Color": "8"
      },
      {
       "Id": "1551306167",
       "Name": "UI",
       "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\UI",
-      "GUID": "{ADF1903D-2C27-4D5C-8A60-52061641C33E}"
+      "GUID": "{ADF1903D-2C27-4D5C-8A60-52061641C33E}",
+      "Color": "2"
      },
      {
       "Id": "2246998526",
@@ -63,7 +66,8 @@
       "Id": "3991942870",
       "Name": "Music",
       "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\Music",
-      "GUID": "{899FB7A5-9F49-4C90-AB8B-67097E3D5629}"
+      "GUID": "{899FB7A5-9F49-4C90-AB8B-67097E3D5629}",
+      "Color": "1"
      }
     ],
     "GameParameters": [
@@ -71,7 +75,8 @@
       "Id": "2369427653",
       "Name": "Combat_Pan",
       "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
-      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}"
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
      }
     ],
     "StateGroups": [
@@ -80,24 +85,28 @@
       "Name": "Map",
       "ObjectPath": "\\States\\Default Work Unit\\Map",
       "GUID": "{34ADBFF0-DAEF-4ED8-BA8A-3FA9901AB826}",
+      "Color": "3",
       "States": [
        {
         "Id": "540301611",
         "Name": "Lava",
         "ObjectPath": "\\States\\Default Work Unit\\Map\\Lava",
-        "GUID": "{D5BA4557-9946-47D0-B9A0-7045CF947424}"
+        "GUID": "{D5BA4557-9946-47D0-B9A0-7045CF947424}",
+        "Color": "3"
        },
        {
         "Id": "748895195",
         "Name": "None",
         "ObjectPath": "\\States\\Default Work Unit\\Map\\None",
-        "GUID": "{B582B5AA-26BC-420A-A1B4-62606537B8F3}"
+        "GUID": "{B582B5AA-26BC-420A-A1B4-62606537B8F3}",
+        "Color": "3"
        },
        {
         "Id": "1668395945",
         "Name": "Cliff",
         "ObjectPath": "\\States\\Default Work Unit\\Map\\Cliff",
-        "GUID": "{93B52BF6-F969-483A-A7EA-3C9E82A44F89}"
+        "GUID": "{93B52BF6-F969-483A-A7EA-3C9E82A44F89}",
+        "Color": "3"
        }
       ]
      },
@@ -106,30 +115,35 @@
       "Name": "Players",
       "ObjectPath": "\\States\\Default Work Unit\\Players",
       "GUID": "{63D51DCF-9267-496B-ACC4-74FEF4F018B8}",
+      "Color": "3",
       "States": [
        {
         "Id": "678209053",
         "Name": "Two",
         "ObjectPath": "\\States\\Default Work Unit\\Players\\Two",
-        "GUID": "{CED468E2-4C46-43A6-B63C-D30CE5A84F69}"
+        "GUID": "{CED468E2-4C46-43A6-B63C-D30CE5A84F69}",
+        "Color": "3"
        },
        {
         "Id": "748895195",
         "Name": "None",
         "ObjectPath": "\\States\\Default Work Unit\\Players\\None",
-        "GUID": "{56E396D1-2538-40B6-AD3B-B3986F903F3C}"
+        "GUID": "{56E396D1-2538-40B6-AD3B-B3986F903F3C}",
+        "Color": "3"
        },
        {
         "Id": "912956111",
         "Name": "Three",
         "ObjectPath": "\\States\\Default Work Unit\\Players\\Three",
-        "GUID": "{0FE37B61-91DD-4580-86F5-795762D5C8CC}"
+        "GUID": "{0FE37B61-91DD-4580-86F5-795762D5C8CC}",
+        "Color": "3"
        },
        {
         "Id": "2863728729",
         "Name": "Four",
         "ObjectPath": "\\States\\Default Work Unit\\Players\\Four",
-        "GUID": "{F74A0D10-4777-446F-9FFA-B2E7BF50B9FD}"
+        "GUID": "{F74A0D10-4777-446F-9FFA-B2E7BF50B9FD}",
+        "Color": "3"
        }
       ]
      },
@@ -138,36 +152,42 @@
       "Name": "Game_Phase",
       "ObjectPath": "\\States\\Default Work Unit\\Game_Phase",
       "GUID": "{75357766-F5A1-4703-BC5A-F7BC4CF3FCB7}",
+      "Color": "3",
       "States": [
        {
         "Id": "290285391",
         "Name": "Lobby",
         "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Lobby",
-        "GUID": "{D7C918A9-A591-46E8-9FD8-6093433816E7}"
+        "GUID": "{D7C918A9-A591-46E8-9FD8-6093433816E7}",
+        "Color": "3"
        },
        {
         "Id": "500842706",
         "Name": "Bidding",
         "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Bidding",
-        "GUID": "{2F9BA0E6-E155-4A4D-869A-FD6D6D6BF5A3}"
+        "GUID": "{2F9BA0E6-E155-4A4D-869A-FD6D6D6BF5A3}",
+        "Color": "3"
        },
        {
         "Id": "748895195",
         "Name": "None",
         "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\None",
-        "GUID": "{F19062E5-3F11-47B2-A1A0-85036279551B}"
+        "GUID": "{F19062E5-3F11-47B2-A1A0-85036279551B}",
+        "Color": "3"
        },
        {
         "Id": "2607556080",
         "Name": "Menu",
         "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Menu",
-        "GUID": "{F1E0877A-485F-4551-99E4-762926D35072}"
+        "GUID": "{F1E0877A-485F-4551-99E4-762926D35072}",
+        "Color": "3"
        },
        {
         "Id": "2764240573",
         "Name": "Combat",
         "ObjectPath": "\\States\\Default Work Unit\\Game_Phase\\Combat",
-        "GUID": "{AF2EE265-C86B-40BD-97FE-DE5FEE14D9AC}"
+        "GUID": "{AF2EE265-C86B-40BD-97FE-DE5FEE14D9AC}",
+        "Color": "3"
        }
       ]
      },
@@ -176,24 +196,28 @@
       "Name": "Combat_Result",
       "ObjectPath": "\\States\\Default Work Unit\\Combat_Result",
       "GUID": "{1139FE66-A674-4BC0-8D57-C8980C748FE5}",
+      "Color": "3",
       "States": [
        {
         "Id": "748895195",
         "Name": "None",
         "ObjectPath": "\\States\\Default Work Unit\\Combat_Result\\None",
-        "GUID": "{CF322A44-4FBD-48A0-8702-65FDD9525566}"
+        "GUID": "{CF322A44-4FBD-48A0-8702-65FDD9525566}",
+        "Color": "3"
        },
        {
         "Id": "1593864692",
         "Name": "Defeat",
         "ObjectPath": "\\States\\Default Work Unit\\Combat_Result\\Defeat",
-        "GUID": "{713197F5-AA40-4CBC-9276-FAFC95329ED6}"
+        "GUID": "{713197F5-AA40-4CBC-9276-FAFC95329ED6}",
+        "Color": "3"
        },
        {
         "Id": "2716678721",
         "Name": "Victory",
         "ObjectPath": "\\States\\Default Work Unit\\Combat_Result\\Victory",
-        "GUID": "{8FB979FF-C118-4F55-BB2A-4374ADF88A28}"
+        "GUID": "{8FB979FF-C118-4F55-BB2A-4374ADF88A28}",
+        "Color": "3"
        }
       ]
      }
@@ -204,6 +228,7 @@
       "Name": "Surface",
       "ObjectPath": "\\Switches\\Default Work Unit\\Surface",
       "GUID": "{4FE79508-617A-400F-A34B-FC69B5D6A8CD}",
+      "Color": "3",
       "Switches": []
      },
      {
@@ -211,6 +236,7 @@
       "Name": "Impact_Type",
       "ObjectPath": "\\Switches\\Default Work Unit\\Impact_Type",
       "GUID": "{545C5835-1A65-4586-BF6B-7B227F9220F9}",
+      "Color": "3",
       "Switches": []
      },
      {
@@ -218,6 +244,7 @@
       "Name": "Mask_Type",
       "ObjectPath": "\\Switches\\Default Work Unit\\Mask_Type",
       "GUID": "{28A79DA8-AF82-4D6B-8E02-3461CE3597C5}",
+      "Color": "3",
       "Switches": []
      },
      {
@@ -225,6 +252,7 @@
       "Name": "Weapon_Type",
       "ObjectPath": "\\Switches\\Default Work Unit\\Weapon_Type",
       "GUID": "{FEFEA370-03C2-450F-BE1B-219032BFEB86}",
+      "Color": "3",
       "Switches": []
      },
      {
@@ -232,24 +260,27 @@
       "Name": "Bid_Direction",
       "ObjectPath": "\\Switches\\Default Work Unit\\Bid_Direction",
       "GUID": "{796B2E9E-6B23-44A6-94CF-AAFA97E4DB38}",
+      "Color": "3",
       "Switches": [
        {
         "Id": "1551306158",
         "Name": "Up",
         "ObjectPath": "\\Switches\\Default Work Unit\\Bid_Direction\\Up",
-        "GUID": "{4A570298-AF13-4468-8D95-002DCFC71E96}"
+        "GUID": "{4A570298-AF13-4468-8D95-002DCFC71E96}",
+        "Color": "3"
        },
        {
         "Id": "2280510569",
         "Name": "Down",
         "ObjectPath": "\\Switches\\Default Work Unit\\Bid_Direction\\Down",
-        "GUID": "{6D589AD8-8279-45C6-8882-D8D66C367B8A}"
+        "GUID": "{6D589AD8-8279-45C6-8882-D8D66C367B8A}",
+        "Color": "3"
        }
       ]
      }
     ]
    }
   ],
-  "FileHash": "{DE90322F-6888-DCF6-4352-6B5B9D509A4A}"
+  "FileHash": "{5FF80BAB-A36A-795A-B424-42DEEFBC03F0}"
  }
 }

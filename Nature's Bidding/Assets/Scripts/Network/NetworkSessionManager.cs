@@ -15,7 +15,6 @@ using Unity.Collections;
 using System.Threading;
 using Steamworks;
 using Steamworks.Data;
-using Debug = UnityEngine.Debug;
 
 public class NetworkSessionManager : Singleton<NetworkSessionManager>
 {
@@ -31,6 +30,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         }
     }
 
+    public static Action OnGymnasiumSessionHosted;
     public static Action OnSessionHosted;
 
     public bool HasActiveSession => ActiveSession != null;
@@ -43,7 +43,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
     protected override void Awake()
     {
-        if (HasInstance) Destroy(gameObject);
+        if (HasInstance && Instance != this) Destroy(gameObject);
         else
         {
             base.Awake();
@@ -133,7 +133,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
     #region Handle Session Events
 
-    private void OnSessionConnected(ISession session)
+    private void OnSessionConnected(ISession session, Action sessionHostedCallback)
     {
         if (NetworkManager.Singleton?.SceneManager == null)
             throw new InvalidOperationException("NetworkManager not ready during HookSessionEvents.");
@@ -147,7 +147,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         if (session.IsHost)
         {
             StartLobbyHeartbeat();
-            OnSessionHosted?.Invoke();
+            sessionHostedCallback?.Invoke();
         }
     }
 
@@ -237,7 +237,54 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
             {
                 ActiveSession = await MultiplayerService.Instance.CreateSessionAsync(options);
                 GameLogger.Log(LogSeverity.Info, $"[StartSessionAsHost] Session created. Id: {ActiveSession.Id}, Code: {ActiveSession.Code}");
-                OnSessionConnected(ActiveSession);
+                OnSessionConnected(ActiveSession, OnSessionHosted);
+                GameLogger.Log(LogSeverity.Debug, "[StartSessionAsHost] OnSessionConnected complete, returning");
+                return;
+            }
+            catch (SessionException e) when (e.Message.Contains("fetch relay join code") || e.Message.Contains("timeout"))
+            {
+                GameLogger.Log(LogSeverity.Warning, $"[StartSessionAsHost] Retry-worthy exception: {e.Message}");
+                if (i < maxRetries - 1)
+                {
+                    GameLogger.Log(LogSeverity.Warning, $"[StartSessionAsHost] retrying attempt {i + 1}/{maxRetries}");
+                    await UniTask.Delay(1000);
+                }
+                else throw;
+            }
+        }
+    }
+
+    public async UniTask StartGymnasiumSession(int maxRetries = 3)
+    {
+        GameLogger.Log(LogSeverity.Debug, "[StartGymnasiumSession] START");
+
+        await UniTask.WaitUntil(() => NetworkManager.Singleton != null);
+
+        NetworkManager.Singleton.NetworkConfig.ConnectionApproval = true;
+        NetworkManager.Singleton.ConnectionApprovalCallback = (request, response) =>
+        {
+            response.Approved = true;
+            response.CreatePlayerObject = false;
+        };
+
+        var options = new SessionOptions
+        {
+            MaxPlayers = 4,
+            IsPrivate = false,
+            IsLocked = false,
+            SessionProperties = new Dictionary<string, SessionProperty>
+            {
+                { "gymnasium_version", new SessionProperty(Application.version, VisibilityPropertyOptions.Public, PropertyIndex.String1) }
+            }
+        }.WithRelayNetwork();
+
+        for (int i = 0; i < maxRetries; i++)
+        {
+            try
+            {
+                ActiveSession = await MultiplayerService.Instance.CreateSessionAsync(options);
+                GameLogger.Log(LogSeverity.Info, $"[StartSessionAsHost] Session created. Id: {ActiveSession.Id}, Code: {ActiveSession.Code}");
+                OnSessionConnected(ActiveSession, OnGymnasiumSessionHosted);
                 GameLogger.Log(LogSeverity.Debug, "[StartSessionAsHost] OnSessionConnected complete, returning");
                 return;
             }
@@ -268,7 +315,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
         if (ActiveSession != null)
         {
-            OnSessionConnected(ActiveSession);
+            OnSessionConnected(ActiveSession, null);
             GameLogger.Log(LogSeverity.Info, $"Session with id: {sessionCode} joined!");
             return true;
         }
@@ -313,7 +360,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
                 {
                     ActiveSession = await JoinSessionWithRetry(sessions[0].Id, 3);
                     GameLogger.Log(LogSeverity.Debug, "[QuickJoin] JoinSessionWithRetry SUCCESS");
-                    OnSessionConnected(ActiveSession);
+                    OnSessionConnected(ActiveSession, OnSessionHosted);
                     GameLogger.Log(LogSeverity.Info, $"[QuickJoin] Joined. Code: {ActiveSession.Code}");
                 }
                 catch (InvalidOperationException e)

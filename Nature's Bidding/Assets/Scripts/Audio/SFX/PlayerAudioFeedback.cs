@@ -9,6 +9,7 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
     [Header("Wwise")]
     [SerializeField] private AK.Wwise.Event jumpEvent;
     [SerializeField] private AK.Wwise.Event deathEvent;
+    [SerializeField] private AK.Wwise.Event warpEvent;
 
     [Header("Screen-Space Panning")]
     [SerializeField] private AK.Wwise.RTPC combatPan;
@@ -28,6 +29,18 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
         ApplyScreenSpacePan(gameObject, transform.position);
 
         jumpEvent.Post(gameObject);
+    }
+
+    public void PlayWarp()
+    {
+        if (warpEvent == null || !warpEvent.IsValid())
+        {
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_SFX_Warp Event is assigned.", this);
+            return;
+        }
+
+        ApplyScreenSpacePan(gameObject, transform.position);
+        warpEvent.Post(gameObject);
     }
 
     public void PlayDeath()

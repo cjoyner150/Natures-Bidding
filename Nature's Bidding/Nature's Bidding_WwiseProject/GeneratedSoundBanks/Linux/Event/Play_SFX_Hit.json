@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{523D8481-4617-4947-84FB-07B128556FFD}",
     "Language": "SFX",
-    "Hash": "{86A1C977-D230-9054-BF25-605A480F398D}",
+    "Hash": "{E6562D99-9B1C-A345-DD1B-B3D693606C9E}",
     "ObjectPath": "Play_SFX_Hit",
     "ShortName": "Play_SFX_Hit",
     "Path": "Event/Play_SFX_Hit.bnk",
@@ -52,6 +52,18 @@
       "CachePath": "88/{88735F8E-8756-D4BC-8A1B-9C00A7ED55AD}.wem"
      }
     ],
+    "Plugins": {
+     "Custom": [
+      {
+       "Id": "260839487",
+       "Name": "Parametric EQ",
+       "ObjectPath": "\\Containers\\SFX Work Unit\\Combat_2D\\SFX_Hit\\[Effect Slot [0]: (Parametric EQ)]\\Parametric EQ",
+       "GUID": "{BBEDBB21-2325-40EC-972B-8E711E2962EB}",
+       "LibName": "Wwise Parametric EQ",
+       "LibId": "6881283"
+      }
+     ]
+    },
     "Events": [
      {
       "Id": "1376640657",
@@ -75,7 +87,14 @@
        {
         "Id": "899394233"
        }
-      ]
+      ],
+      "PluginRefs": {
+       "Custom": [
+        {
+         "Id": "260839487"
+        }
+       ]
+      }
      }
     ],
     "GameParameters": [
@@ -89,6 +108,6 @@
     ]
    }
   ],
-  "FileHash": "{269F3A53-43AB-7F36-3D38-825D5C61FEEA}"
+  "FileHash": "{19865ED0-308E-FB13-95D9-FB79F55A7B47}"
  }
 }

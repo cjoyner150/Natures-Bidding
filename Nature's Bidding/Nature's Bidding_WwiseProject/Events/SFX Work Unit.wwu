@@ -106,6 +106,22 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Stop_SFX_Rockslide" ID="{0E4F02D5-5657-4261-866D-C5AB24645067}">
+					<ChildrenList>
+						<Action Name="" ID="{EDE19CA7-ABE2-4874-902F-E9D171888860}" ShortID="602792042">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.1"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_RockSlide" ID="{91F3F26E-AE9F-4267-9F57-3FEDD8FFD8AB}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

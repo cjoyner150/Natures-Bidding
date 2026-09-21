@@ -68,7 +68,7 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
 
     public void PlayFall()
     {
-        if (fallEvent != null && fallEvent.IsValid())
+        if (fallEvent == null || !fallEvent.IsValid())
             return;
         
         var emitter = new GameObject("Fall Sound");

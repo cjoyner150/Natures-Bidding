@@ -36,6 +36,9 @@ public sealed class GameAudioController : MonoBehaviour
     [SerializeField] private AK.Wwise.Event playLavaAmbience;
     [SerializeField] private AK.Wwise.Event stopLavaAmbience;
 
+    [Header("Scene Cleanup Events")]
+    [SerializeField] private AK.Wwise.Event stopRockSlide;
+
     [Header("Game_Phase States")]
     [SerializeField] private AK.Wwise.State phaseMenu;
     [SerializeField] private AK.Wwise.State phaseLobby;
@@ -70,6 +73,7 @@ public sealed class GameAudioController : MonoBehaviour
 
         instance = this;
         SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
 
     private void Start()
@@ -89,6 +93,7 @@ public sealed class GameAudioController : MonoBehaviour
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
 
         if (networkManager != null)
             networkManager.OnConnectionEvent -= OnConnectionEvent;
@@ -189,6 +194,15 @@ public sealed class GameAudioController : MonoBehaviour
     public void PlayUIHover()
     {
         PostEvent(playUIHover, "Play_UI_Hover");
+    }
+
+    private void OnSceneUnloaded(Scene scene)
+    {
+        if (scene.name != LavaSceneName || !AkUnitySoundEngine.IsInitialized())
+            return;
+
+        // The global Stop action also reaches sounds whose platforms were destroyed.
+        PostEvent(stopRockSlide, "Stop_SFX_Rockslide");
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode _)

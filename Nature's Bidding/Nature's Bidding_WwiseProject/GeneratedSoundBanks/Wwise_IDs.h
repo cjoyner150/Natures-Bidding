@@ -35,6 +35,7 @@ namespace AK
         static const AkUniqueID STOP_AMB_FOREST = 3443576024U;
         static const AkUniqueID STOP_AMB_LAVA = 3566511473U;
         static const AkUniqueID STOP_MX_SYSTEM = 3534127541U;
+        static const AkUniqueID STOP_SFX_ROCKSLIDE = 1298362486U;
     } // namespace EVENTS
 
     namespace STATES

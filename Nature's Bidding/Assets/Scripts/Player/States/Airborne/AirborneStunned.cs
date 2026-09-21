@@ -59,7 +59,8 @@ public class AirborneStunned: State
             ctx.isStunned = false;
             exitStunned = false;
             ctx.anim.SetBool("Stunned", false);
-            ctx.playerHealth.isStunned.Value = false;
+
+            ctx.playerEffectable.Recover();
         }
     }
 

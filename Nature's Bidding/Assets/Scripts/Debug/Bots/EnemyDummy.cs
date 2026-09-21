@@ -30,12 +30,11 @@ public class EnemyDummy : NetworkBehaviour, IDamageable, IEffectable
     [SerializeField] private float minDistance = 40f;
     [SerializeField] private float maxDistance = 80f;
 
-    private State root;
-    private StateMachine sm;
-    private bool initialized = false;
-
     public override void OnNetworkSpawn()
     {
+        dummyCtx.playerEffectable = this;
+        dummyCtx.playerDamageable = this;
+
         var statsMediator = new StatsMediator();
         dummyCtx.playerStats = new Stats(statsMediator, dummyCtx.BaseStats, PersistentPlayerRegistry.Instance.GetByClientId(0));
         dummyCtx.maxJumps = dummyCtx.playerStats.Jumps;
@@ -44,53 +43,19 @@ public class EnemyDummy : NetworkBehaviour, IDamageable, IEffectable
         dummyCtx.playerAttackManager = attackManager;
         attackManager.Initialize(dummyCtx);
 
-        root = new PlayerRoot(null, dummyCtx);
-        var builder = new StateMachineBuilder(root);
-
-        sm = builder.Build();
-
-        initialized = true;
+        var inputManager = GetComponent<DummyInputManager>();
+        inputManager.InitializePlayer(dummyCtx);
     }
 
-    void Update()
-    {
-        if (!initialized) return;
-
-        HandleOrientation();
-        dummyCtx.isGrounded = CheckGrounded();
-
-        sm.Tick(Time.deltaTime);
-    }
-
-    private void FixedUpdate() => HandlePhysicsMove();
-    
-    
-    private void HandlePhysicsMove()
-    {
-        if (!initialized) return;
-        dummyCtx.rb.AddForce(dummyCtx.forceToAdd * Time.fixedDeltaTime, dummyCtx.forceMode);
-    }
-
-    private void HandleOrientation()
-    {
-        Vector3 cameraRelativeOrientation = dummyCtx.cam.transform.forward;
-        cameraRelativeOrientation.y = 0;
-        cameraRelativeOrientation = cameraRelativeOrientation.normalized;
-
-        dummyCtx.orientation.forward = cameraRelativeOrientation;
-    }
-
-    private bool CheckGrounded()
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position + (transform.up * .125f), .25f, dummyCtx.isGroundLayers);
-        return colliders.Length > 0;
-    }
-
-    public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context, bool critical = false)
+    public void Hit(float damage, PlayerContext fromPlayerCtx, out IDamageable.HitCallbackContext context, bool critical = false)
     {
         SpawnDamageNumbers(damage, critical ? Color.gold : Color.white);
         //anim.SetTrigger("Hit");
         outlineBlink.StartBlinking();
+
+        NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(dummyCtx, critical, fromPlayerCtx.rb.position, damage);
+        dummyCtx.lastHitFromPosition = fromPlayerCtx.rb.position;
+        dummyCtx.shouldTakeKnockback = true;
 
         context = IDamageable.HitCallbackContext.success;
     }
@@ -130,15 +95,17 @@ public class EnemyDummy : NetworkBehaviour, IDamageable, IEffectable
         return UniTask.Delay(msDelay).ContinueWith(() => { if (obj != null) Destroy(obj); });
     }
 
-    public void TickHealth(float damage, ulong fromPlayerId)
+    public void TickHealth(float damage, PlayerContext fromContext)
     {
-        Hit(damage, fromPlayerId, out var _ctx);
+        Hit(damage, fromContext, out var _ctx);
     }
 
-    public void StealFrom(ulong thiefId, ulong targetId, int amount)
+    public void StealFrom(long thiefId, long targetId, int amount)
     {
         GameLogger.Log(LogSeverity.Debug, $"EnemyDummy lost {amount} gold");
-        PersistentPlayerRegistry.Instance.AddGold(thiefId, amount);
+
+        if (thiefId >= 0)
+            PersistentPlayerRegistry.Instance.AddGold((ulong)thiefId, amount);
     }
 
     public void Heal(float amount)
@@ -152,4 +119,30 @@ public class EnemyDummy : NetworkBehaviour, IDamageable, IEffectable
         GameLogger.Log(LogSeverity.Debug, $"EnemyDummy is stunned");
         dummyCtx.shouldStunSelf = true;
     }
+
+    public void Recover()
+    {
+        GameLogger.Log(LogSeverity.Debug, $"EnemyDummy is no longer stunned");
+    }
+
+    public void BeginParry()
+    {
+        GameLogger.Log(LogSeverity.Debug, $"EnemyDummy is parrying");
+    }
+
+    public void EndParry()
+    {
+        GameLogger.Log(LogSeverity.Debug, $"EnemyDummy is no longer parrying");
+    }
+}
+
+public enum DummyState
+{
+    idle,
+    attacking,
+    fallAttacking,
+    jumpAttacking,
+    walking,
+    dashing,
+    jumping
 }

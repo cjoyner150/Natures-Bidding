@@ -16,12 +16,14 @@ public class ApplyStunOnActionStatusEffect : ApplyXOnActionStatusEffect
         stunTime = additionalStunTime;
     }
 
-    protected override void OnApplyEffectTo(ulong targetId) {
-        var targetPlayer = NetworkManager.Singleton.ConnectedClients[targetId]?.PlayerObject;
+    protected override void OnApplyEffectTo(long targetId) {
+        if (targetId < 0) return; // Todo - Implement effects for bots
+
+        var targetPlayer = NetworkManager.Singleton.ConnectedClients[(ulong)targetId]?.PlayerObject;
 
         if (targetPlayer != null)
         {
-            targetPlayer.GetComponent<IDamageable>().Stun(stunTime);
+            targetPlayer.GetComponent<IEffectable>().Stun(stunTime);
         }
         else GameLogger.Log(LogSeverity.Error, $"No player object with clientId: {targetId}");
     }

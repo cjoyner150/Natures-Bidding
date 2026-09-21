@@ -2,26 +2,27 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Linq;
 using Unity.Netcode;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectManager>
 {
 
     // Locally call event from anywhere in normal code with the clientId
-    public static Action<ulong> SpawnDashEffectsOnPlayer;
-    public static Action<ulong> SpawnTeleportEffectsOnPlayer;
-    public static Action<ulong> SpawnJumpEffectsOnPlayer;
-    public static Action<ulong> SpawnParrySuccessReactEffectsOnPlayer;
-    public static Action<ulong> SpawnConfettiEffectsOnPlayer;
-    public static Action<ulong> SpawnBatConfusionEffectsOnPlayer;
-    public static Action<ulong> RemoveBatConfusionEffectsOnPlayer;
+    public static Action<PlayerContext> SpawnDashEffectsOnPlayer;
+    public static Action<PlayerContext> SpawnTeleportEffectsOnPlayer;
+    public static Action<PlayerContext> SpawnJumpEffectsOnPlayer;
+    public static Action<PlayerContext> SpawnParrySuccessReactEffectsOnPlayer;
+    public static Action<PlayerContext> SpawnConfettiEffectsOnPlayer;
+    public static Action<PlayerContext> SpawnBatConfusionEffectsOnPlayer;
+    public static Action<PlayerContext> RemoveBatConfusionEffectsOnPlayer;
 
-    public static Action<ulong, int> SpawnSlashEffectsOnPlayer;
-    public static Action<ulong, int> SpawnParryEffectsOnPlayer;
-    public static Action<ulong, int> SpawnStunEffectsOnPlayer;
+    public static Action<PlayerContext, int> SpawnSlashEffectsOnPlayer;
+    public static Action<PlayerContext, int> SpawnParryEffectsOnPlayer;
+    public static Action<PlayerContext, int> SpawnStunEffectsOnPlayer;
 
-    public static Action<ulong, bool> ToggleStarEffectsOnPlayer;
-    public static Action<ulong, bool, Vector3, float> SpawnHitReactionEffectsOnPlayer;
+    public static Action<PlayerContext, bool> ToggleStarEffectsOnPlayer;
+    public static Action<PlayerContext, bool, Vector3, float> SpawnHitReactionEffectsOnPlayer;
     public static Action<Vector3> SpawnExplosionAtPosition;
 
 
@@ -70,102 +71,115 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
         SpawnExplosionAtPositionClientRpc(spawnPos);
     }
-    public void OnSpawnHitReactionEffectsOnPlayer(ulong clientId, bool critical, Vector3 fromPos, float damage)
+    public void OnSpawnHitReactionEffectsOnPlayer(PlayerContext clientCtx, bool critical, Vector3 fromPos, float damage)
     {
-        GameLogger.Log(LogSeverity.Debug, $"OnSpawnHitReaction received for client {clientId}");
-        var localVFXManager = GetPlayerEffectManagerById(clientId);
+        var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
         if (localVFXManager != null) localVFXManager.SpawnHitReactParticles(critical, fromPos, damage);
-
-        SpawnHitReactionEffectsClientRpc(clientId, critical, fromPos, damage);
+        
+        
+        if (TryGetClientId(clientCtx, out var clientId))
+        {
+            SpawnHitReactionEffectsClientRpc(clientId, critical, fromPos, damage);
+            GameLogger.Log(LogSeverity.Debug, $"OnSpawnHitReaction received for client {clientId}");
+        }
     }
 
-    public void OnSpawnSlashEffectOnPlayer(ulong clientId, int milliseconds)
+    public void OnSpawnSlashEffectOnPlayer(PlayerContext clientCtx, int milliseconds)
     {
-        var localVFXManager = GetPlayerEffectManagerById(clientId);
+        var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
         if (localVFXManager != null) localVFXManager.SpawnSlashEffectParticles(milliseconds);
 
-        SpawnSlashEffectClientRpc(clientId, milliseconds);
+        if (TryGetClientId(clientCtx, out var clientId))
+            SpawnSlashEffectClientRpc(clientId, milliseconds);
     }
 
-    public void OnSpawnParryEffectOnPlayer(ulong clientId, int milliseconds)
+    public void OnSpawnParryEffectOnPlayer(PlayerContext clientCtx, int milliseconds)
     {
-        var localVFXManager = GetPlayerEffectManagerById(clientId);
+        var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
         if (localVFXManager != null) localVFXManager.SpawnParryEffectParticles(milliseconds);
 
-        SpawnParryEffectClientRpc(clientId, milliseconds);
+        if (TryGetClientId(clientCtx, out var clientId))
+            SpawnParryEffectClientRpc(clientId, milliseconds);
     }
 
-    public void OnSpawnParrySuccessReactEffectsOnPlayer(ulong clientId)
+    public void OnSpawnParrySuccessReactEffectsOnPlayer(PlayerContext clientCtx)
     {
-        var localVFXManager = GetPlayerEffectManagerById(clientId);
+        var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
         if (localVFXManager != null) localVFXManager.SpawnParrySuccessReactionParticles();
 
-        SpawnParrySuccessReactEffectsClientRpc(clientId);
+        if (TryGetClientId(clientCtx, out var clientId))
+            SpawnParrySuccessReactEffectsClientRpc(clientId);
     }
 
-    public void OnSpawnDashEffectsOnPlayer(ulong clientId)
+    public void OnSpawnDashEffectsOnPlayer(PlayerContext clientCtx)
     {
-        var localVFXManager = GetPlayerEffectManagerById(clientId);
+        var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
         if (localVFXManager != null) localVFXManager.SpawnDashParticles();
 
-        SpawnDashEffectsClientRpc(clientId);
+        if (TryGetClientId(clientCtx, out var clientId))
+            SpawnDashEffectsClientRpc(clientId);
     }
 
-    public void OnSpawnTeleportEffectsOnPlayer(ulong clientId)
+    public void OnSpawnTeleportEffectsOnPlayer(PlayerContext clientCtx)
     {
-        var localVFXManager = GetPlayerEffectManagerById(clientId);
+        var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
         if (localVFXManager != null) localVFXManager.SpawnTeleportParticles();
 
-        SpawnTeleportEffectsClientRpc(clientId);
+        if (TryGetClientId(clientCtx, out var clientId))
+            SpawnTeleportEffectsClientRpc(clientId);
     }
 
-    public void OnToggleStarEffectsOnPlayer(ulong clientId, bool enabled)
+    public void OnToggleStarEffectsOnPlayer(PlayerContext clientCtx, bool enabled)
     {
-        var localVFXManager = GetPlayerEffectManagerById(clientId);
+        var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
         if (localVFXManager != null) localVFXManager.ToggleStarParticles(enabled);
 
-        ToggleStarEffectsClientRpc(clientId, enabled);
+        if (TryGetClientId(clientCtx, out var clientId))
+            ToggleStarEffectsClientRpc(clientId, enabled);
     }
 
-    public void OnSpawnJumpEffectsOnPlayer(ulong clientId)
+    public void OnSpawnJumpEffectsOnPlayer(PlayerContext clientCtx)
     {
-        var localVFXManager = GetPlayerEffectManagerById(clientId);
-        GameLogger.Log(LogSeverity.Debug, $"OnSpawnJumpEffectsOnPlayer clientId={clientId}, localVFXManager found={localVFXManager != null}");
+        var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
         if (localVFXManager != null) localVFXManager.SpawnJumpParticles();
 
-        SpawnJumpEffectsClientRpc(clientId);
+        if (TryGetClientId(clientCtx, out var clientId))
+            SpawnJumpEffectsClientRpc(clientId);
     }
 
-    public void OnSpawnStunEffectsOnPlayer(ulong clientId, int milliseconds)
+    public void OnSpawnStunEffectsOnPlayer(PlayerContext clientCtx, int milliseconds)
     {
-        var localVFXManager = GetPlayerEffectManagerById(clientId);
+        var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
         if (localVFXManager != null) localVFXManager.SpawnStunParticles(milliseconds);
 
-        SpawnStunEffectsClientRpc(clientId, milliseconds);
+        if (TryGetClientId(clientCtx, out var clientId))
+            SpawnStunEffectsClientRpc(clientId, milliseconds);
     }
 
-    public void OnSpawnConfettiEffectsOnPlayer(ulong clientId)
+    public void OnSpawnConfettiEffectsOnPlayer(PlayerContext clientCtx)
     {
-        var localVFXManager = GetPlayerEffectManagerById(clientId);
-        //if (localVFXManager != null) localVFXManager.SpawnConfettiParticles();
+        var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
 
-        SpawnConfettiEffectsClientRpc(clientId);
+        if (TryGetClientId(clientCtx, out var clientId))
+            SpawnConfettiEffectsClientRpc(clientId);
     }
 
-    public void OnSpawnBatConfusionEffectsOnPlayer(ulong clientId)
+    public void OnSpawnBatConfusionEffectsOnPlayer(PlayerContext clientCtx)
     {
-        var localVFXManager = GetPlayerEffectManagerById(clientId);
+        var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
         if (localVFXManager != null) localVFXManager.SpawnBatConfusionParticles();
 
-        SpawnBatConfusionEffectsClientRpc(clientId);
+        if (TryGetClientId(clientCtx, out var clientId))
+            SpawnBatConfusionEffectsClientRpc(clientId);
     }
 
-    public void OnRemoveBatConfusionEffectsOnPlayer(ulong clientId)
+    public void OnRemoveBatConfusionEffectsOnPlayer(PlayerContext clientCtx)
     {
-        var localVFXManager = GetPlayerEffectManagerById(clientId);
+        var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
         if (localVFXManager != null) localVFXManager.RemoveBatConfusionParticles();
 
-        RemoveBatConfusionEffectsClientRpc(clientId);
+        if (TryGetClientId(clientCtx, out var clientId))
+            RemoveBatConfusionEffectsClientRpc(clientId);
     }
 
     [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
@@ -363,7 +377,23 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         }
     }
 
+
+    private bool TryGetClientId(PlayerContext clientCtx, out ulong clientId)
+    {
+        if (clientCtx.playerDamageable is NetworkBehaviour)
+        {
+            clientId = (clientCtx.playerDamageable as NetworkBehaviour).OwnerClientId;
+            return true;
+        }
+        else
+        {
+            clientId = 0;
+            return false;
+        }
+    }
+
     private PlayerVisualEffectManager GetPlayerEffectManagerById(ulong id) => NetworkManager.Singleton.ConnectedClients[id]?.PlayerObject?.GetComponent<PlayerVisualEffectManager>();
+    private PlayerVisualEffectManager GetLocalEffectManagerByCtx(PlayerContext ctx) => ctx.playerAttackManager?.gameObject.GetComponent<PlayerVisualEffectManager>();
     private PlayerVisualEffectManager GetFirstValidEffectManager() => NetworkManager.Singleton.ConnectedClients.Values.First(p => p.PlayerObject != null).PlayerObject.GetComponent<PlayerVisualEffectManager>();
     
 }

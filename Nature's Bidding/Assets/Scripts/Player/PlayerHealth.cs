@@ -1,10 +1,7 @@
 using Cysharp.Threading.Tasks;
 using MoreMountains.Tools;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
@@ -38,7 +35,8 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
         selfNetworkObject = GetComponent<NetworkObject>();
         ctx = GetComponent<PlayerNetworkBehavior>()?.ctx;
         CombatServerHandler.OnCombatBegin.AddListener(OnCombatBegin);
-        ctx.playerHealth = this;
+        ctx.playerDamageable = this;
+        ctx.playerEffectable = this;
     }
 
     public void OnCombatBegin()
@@ -120,8 +118,14 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
 
     }
 
-    public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context, bool critical = false)
+    public void Hit(float damage, PlayerContext fromPlayerCtx, out IDamageable.HitCallbackContext context, bool critical = false)
     {
+        ulong fromPlayerId = 0;
+        if (fromPlayerCtx.playerDamageable is NetworkBehaviour)
+        {
+            fromPlayerId = (fromPlayerCtx.playerDamageable as NetworkBehaviour).OwnerClientId;
+        }
+
         if (!isInvulnerable.Value && !isParrying.Value)
         {
             context = IDamageable.HitCallbackContext.success;
@@ -132,7 +136,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
         {
             GameLogger.Log(LogSeverity.Debug, $"{OwnerClientId} parried a hit!");
 
-            NotifyParrySuccessClientRpc(fromPlayerId);
+            NotifyParrySuccessClientRpc((long)fromPlayerId);
 
             context = IDamageable.HitCallbackContext.parried;
         }
@@ -142,23 +146,25 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
         }
     }
 
-    public void TickHealth(float damage, ulong damageCreditId)
+    public void TickHealth(float damage, PlayerContext fromPlayerCtx)
     {
         if (!isInvulnerable.Value)
         {
             var combatHandler = _serverHandler as CombatServerHandler;
+
             if (combatHandler == null)
             {
                 GameLogger.Log(LogSeverity.Error, "TickHealth: _serverHandler is not a CombatServerHandler!");
                 return;
             }
 
-            combatHandler.RequestTickPlayerHealthServerRpc(selfNetworkObject.OwnerClientId, damageCreditId, damage);
+            long fromId = (long)fromPlayerCtx.playerAttackManager?.gameObject.GetComponent<NetworkBehaviour>().OwnerClientId;
+            combatHandler.RequestTickPlayerHealthServerRpc((long)selfNetworkObject.OwnerClientId, fromId, damage);
         }
     }
 
     [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Everyone)]
-    public void NotifyParrySuccessClientRpc(ulong attackerId)
+    public void NotifyParrySuccessClientRpc(long attackerId)
     {
 
         PlayerCombatHooks.TriggerOnParry(attackerId);
@@ -174,7 +180,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
         else
         {
             if (!isStunned.Value)
-                NetworkVisualEffectManager.SpawnParrySuccessReactEffectsOnPlayer?.Invoke(OwnerClientId);
+                NetworkVisualEffectManager.SpawnParrySuccessReactEffectsOnPlayer?.Invoke(ctx);
 
             ctx.additionalStunTime += additionalStunTime;
 
@@ -183,6 +189,11 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
             isStunned.Value = true;
         }
         
+    }
+
+    public void Recover()
+    {
+        isStunned.Value = false;
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -220,7 +231,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
         CombatServerHandler combatHandler = _serverHandler as CombatServerHandler;
         if (combatHandler == null) return;
 
-        combatHandler.RequestPlayerBoomServerRpc(OwnerClientId, damage, radius);
+        combatHandler.RequestPlayerBoomServerRpc((long)OwnerClientId, damage, radius);
     }
 
     private void OnHealthChanged(float from, float to)
@@ -231,7 +242,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
     private UniTaskCompletionSource _deathAckTcs;
     private UniTaskCompletionSource _killAckTcs;
 
-    public UniTask NotifyDeathAndAwaitAck(ulong killCreditId)
+    public UniTask NotifyDeathAndAwaitAck(long killCreditId)
     {
         _deathAckTcs = new UniTaskCompletionSource();
         PlayDeathFeedbackClientRpc();
@@ -239,7 +250,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
         return _deathAckTcs.Task;
     }
 
-    public UniTask NotifyKillCreditAndAwaitAck(ulong victimId)
+    public UniTask NotifyKillCreditAndAwaitAck(long victimId)
     {
         _killAckTcs = new UniTaskCompletionSource();
         NotifyPlayerKillCreditClientRpc(victimId);
@@ -248,7 +259,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
 
 
     [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
-    public void NotifyPlayerDeadClientRpc(ulong killCreditId)
+    public void NotifyPlayerDeadClientRpc(long killCreditId)
     {
         PlayerCombatHooks.TriggerOnDeath(killCreditId);
         AckDeathProcessedServerRpc();
@@ -261,7 +272,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
     }
 
     [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
-    public void NotifyPlayerKillCreditClientRpc(ulong victimId)
+    public void NotifyPlayerKillCreditClientRpc(long victimId)
     {
         PlayerCombatHooks.TriggerOnKill(victimId);
         AckKillCreditProcessedServerRpc();
@@ -287,11 +298,11 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
     }
 
     [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
-    public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition, ulong fromAttackerId, float damage, bool critical = false)
+    public void PlayerDamagedFeedbackClientRpc(Vector3 fromPosition, long fromAttackerId, float damage, bool critical = false)
     {
         if (!IsOwner) return;
         GameLogger.Log(LogSeverity.Debug, $"Calling spawn hit effects event on player {OwnerClientId}");
-        NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(OwnerClientId, critical, fromPosition, damage);
+        NetworkVisualEffectManager.SpawnHitReactionEffectsOnPlayer?.Invoke(ctx, critical, fromPosition, damage);
         ctx.lastHitFromPosition = fromPosition;
         ctx.shouldTakeKnockback = true;
         PlayerCombatHooks.TriggerOnHit(fromAttackerId);
@@ -316,19 +327,21 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
             ctx.allowInputs = false;
     }
 
-    public void StealFrom(ulong thiefId, ulong targetId, int amount)
+    public void StealFrom(long thiefId, long targetId, int amount)
     {
         RequestStealServerRpc(thiefId, targetId, amount);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    private void RequestStealServerRpc(ulong thiefId, ulong targetId, int amount)
+    private void RequestStealServerRpc(long thiefId, long targetId, int amount)
     {
-        var target = PersistentPlayerRegistry.Instance.GetByClientId(targetId);
+        var target = PersistentPlayerRegistry.Instance.GetByClientId((ulong)targetId);
         if (target == null) return;
 
         int stolen = Mathf.Min(amount, target.gold);
-        PersistentPlayerRegistry.Instance.TrySpendGold(targetId, stolen);
-        PersistentPlayerRegistry.Instance.AddGold(thiefId, stolen);
+        PersistentPlayerRegistry.Instance.TrySpendGold((ulong)targetId, stolen);
+
+        if (thiefId >= 0)
+            PersistentPlayerRegistry.Instance.AddGold((ulong)thiefId, stolen);
     }
 }

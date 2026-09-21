@@ -21,7 +21,7 @@ public class GymnasiumServerHandler : BaseGameServerHandler<GymnasiumServerHandl
         PersistentGameStateManager.Instance.State = PersistentGameStateManager.GameState.Combat;
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         base.OnDestroy();
         NetworkSessionManager.OnGymnasiumSessionHosted -= OnSessionHosted;

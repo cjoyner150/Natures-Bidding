@@ -71,6 +71,6 @@ public class ApplyXToTargetPlayersStatusEffect : StatusEffect
     {
         string[] effectIds = effects.Select(x => x.Id).ToArray();
         GameLogger.Log(LogSeverity.Debug, $"Sending effects ({string.Join(", ", effectIds)}) to {targetClientId}");
-        StatusEffectNetworkManager.Instance.ApplyToPlayerServerRpc(targetClientId, string.Join(",", effectIds));
+        StatusEffectNetworkManager.Instance.ApplyToPlayerServerRpc((long)targetClientId, string.Join(",", effectIds));
     }
 }

@@ -16,14 +16,18 @@ public class ApplyDamageOnActionStatusEffect : ApplyXOnActionStatusEffect
         this.damage = damage;
     }
 
-    protected override void OnApplyEffectTo(ulong targetId) {
-        var targetPlayer = NetworkManager.Singleton.ConnectedClients[targetId]?.PlayerObject;
+    protected override void OnApplyEffectTo(long targetId) {
 
-        if (targetPlayer != null)
+        if (targetId < 0) return; // To-do - implement bot effect application
+
+        var targetPlayer = NetworkManager.Singleton.ConnectedClients[(ulong)targetId]?.PlayerObject;
+        var fromPlayer = StatusEffectManager.gameObject.GetComponent<PlayerInputManager>()?.GetPlayerContext();
+
+        if (targetPlayer != null && fromPlayer != null)
         {
-            targetPlayer.GetComponent<PlayerHealth>().TickHealth(damage, NetworkManager.Singleton.LocalClientId);
+            targetPlayer.GetComponent<PlayerHealth>().TickHealth(damage, fromPlayer);
         }
-        else GameLogger.Log(LogSeverity.Error, $"No player object with clientId: {targetId}");
+        else GameLogger.Log(LogSeverity.Error, $"Target or from player is null");
     }
 
 }

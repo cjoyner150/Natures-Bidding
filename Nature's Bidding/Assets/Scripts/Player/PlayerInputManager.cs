@@ -7,7 +7,7 @@ using UnityUtils;
 
 public class PlayerInputManager : MonoBehaviour
 {
-    private PlayerContext ctx;
+    protected PlayerContext ctx;
 
     [Header("Player Controls")]
     private PlayerControls controls;
@@ -21,7 +21,7 @@ public class PlayerInputManager : MonoBehaviour
     private InputAction pause;
     private InputAction ready;
 
-    private bool allowInputs = false;
+    protected bool allowInputs = false;
     public bool allowSprint = true;
     public bool allowDash = true;
     public bool allowJump = true;
@@ -29,12 +29,14 @@ public class PlayerInputManager : MonoBehaviour
     public bool allowParry = true;
     public bool allowPause = true;
 
-    private bool paused = false;
-    private bool consoleOpen = false;
-    private StateMachine sm;
-    private State root;
+    protected bool paused = false;
+    protected bool consoleOpen = false;
+    protected StateMachine sm;
+    protected State root;
 
-    public void InitializePlayer(PlayerContext context)
+    private bool initialized = false;
+
+    public virtual void InitializePlayer(PlayerContext context)
     {
         ctx = context;
 
@@ -79,9 +81,11 @@ public class PlayerInputManager : MonoBehaviour
         allowInputs = true;
         
         SetOwnedPlayerLayers();
+
+        initialized = true;
     }
 
-    private void SetOwnedPlayerLayers()
+    protected virtual void SetOwnedPlayerLayers()
     {
         Transform[] transforms = GetComponentsInChildren<Transform>();
         
@@ -90,6 +94,8 @@ public class PlayerInputManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (!initialized) return;
+
         reversedControls?.Dispose();
         controls?.Dispose();
 
@@ -120,10 +126,11 @@ public class PlayerInputManager : MonoBehaviour
         DeveloperConsole.OnConsoleClosed -= OnConsoleClosed;
     }
 
-    private float _knockbackStuckTimer;
+    protected float _knockbackStuckTimer;
 
-    void Update()
+    protected void Update()
     {
+        if (!initialized) return;
 
         HandleOrientation();
         ctx.isGrounded = CheckGrounded();
@@ -149,6 +156,8 @@ public class PlayerInputManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!initialized) return;
+
         HandlePhysicsMove();
     }
 
@@ -179,7 +188,7 @@ public class PlayerInputManager : MonoBehaviour
         return string.Join(" > ", s.AncestorPath().Reverse().Select(n => n.GetType().Name));
     }
 
-    void PlayerInput()
+    protected virtual void PlayerInput()
     {
         if (!allowInputs || !ctx.allowInputs) 
         {
@@ -290,7 +299,7 @@ public class PlayerInputManager : MonoBehaviour
         ready?.Enable();
     }
 
-    void OnPausePressed(InputAction.CallbackContext callback)
+    protected void OnPausePressed(InputAction.CallbackContext callback)
     {
         if (allowPause)
         {
@@ -298,31 +307,31 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    void OnConsoleOpened()
+    protected void OnConsoleOpened()
     {
         consoleOpen = true;
         UpdateAllowInputs();
     }
 
-    void OnConsoleClosed()
+    protected void OnConsoleClosed()
     {
         consoleOpen = false;
         UpdateAllowInputs();
     }
 
-    void OnPaused()
+    protected void OnPaused()
     {
         paused = PlayerPauseManager.Instance.Paused;
         UpdateAllowInputs();
     }
 
-    void OnResumed()
+    protected void OnResumed()
     {
         paused = PlayerPauseManager.Instance.Paused;
         UpdateAllowInputs();
     }
 
-    void UpdateAllowInputs() 
+    protected void UpdateAllowInputs() 
     {
         allowInputs = !paused && !consoleOpen;
         if (allowInputs) EnableInput();

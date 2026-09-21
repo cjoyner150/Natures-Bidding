@@ -89,7 +89,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
         GameObject go = Instantiate(hitReactParticle, pTrans, false);
         go.transform.localPosition = Vector3.zero;
         SafeDispose(go, 1000).Forget();
-        hitReactFeedback.PlayFeedbacks();
+        hitReactFeedback?.PlayFeedbacks();
         
     }
 

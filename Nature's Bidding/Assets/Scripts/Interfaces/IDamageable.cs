@@ -9,10 +9,12 @@ public interface IDamageable
         failed
     }
 
-    public void Hit(float damage, ulong fromPlayerId, out HitCallbackContext context, bool critical = false);
+    public void Hit(float damage, PlayerContext fromPlayerCtx, out HitCallbackContext context, bool critical = false);
 
-    public void TickHealth(float damage, ulong fromPlayerId);
+    public void TickHealth(float damage, PlayerContext fromPlayerCtx);
 
     public void Heal(float amount);
-    public void Stun(float additionalStunTime);
+
+    public void BeginParry();
+    public void EndParry();
 }

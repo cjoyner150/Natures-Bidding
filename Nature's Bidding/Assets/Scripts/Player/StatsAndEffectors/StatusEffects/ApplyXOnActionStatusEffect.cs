@@ -48,7 +48,7 @@ public class ApplyXOnActionStatusEffect : StatusEffect
         applied = false;
     }
 
-    protected virtual void OnApplyEffectTo(ulong targetId) { }
+    protected virtual void OnApplyEffectTo(long targetId) { }
 
     protected void InitHooks()
     {
@@ -94,12 +94,12 @@ public class ApplyXOnActionStatusEffect : StatusEffect
         }
     }
 
-    protected void ApplyEffectsToPlayer(ulong targetClientId)
+    protected void ApplyEffectsToPlayer(long targetClientId)
     {
         if (applied && applyOnce) return;
         applied = true;
 
-        ulong applyToPlayerId = applyToSelf ? selfClientId : targetClientId;
+        long applyToPlayerId = applyToSelf ? (long)selfClientId : targetClientId;
 
         string[] effectIds = effects.Select(x => x.Id).ToArray();
         GameLogger.Log(LogSeverity.Debug, $"Sending effects ({string.Join(", ", effectIds)}) to {applyToPlayerId}");

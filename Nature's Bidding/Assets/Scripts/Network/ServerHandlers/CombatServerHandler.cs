@@ -136,15 +136,25 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void RequestTickPlayerHealthServerRpc(ulong targetPlayerId, ulong fromPlayerId, float damage)
+    public void RequestTickPlayerHealthServerRpc(long targetPlayerId, long fromPlayerId, float damage)
     {
         if (!IsServer) return;
 
-        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(targetPlayerId, out var hitClient)) return;
-        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(fromPlayerId, out var fromClient)) return;
+        NetworkClient hitClient = null;
+        NetworkClient fromClient = null;
 
-        var hitNetObj = hitClient.PlayerObject;
-        var fromNetObj = fromClient.PlayerObject;
+        if (targetPlayerId >= 0)
+        {
+            NetworkManager.Singleton.ConnectedClients.TryGetValue((ulong)targetPlayerId, out hitClient);
+        }
+
+        if (fromPlayerId >= 0)
+        {
+            NetworkManager.Singleton.ConnectedClients.TryGetValue((ulong)fromPlayerId, out fromClient);
+        }
+
+        var hitNetObj = hitClient?.PlayerObject;
+        var fromNetObj = fromClient?.PlayerObject;
 
         if (hitNetObj == null || fromNetObj == null) return;
 
@@ -173,7 +183,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         if (targetHealth == null) return;
 
         targetHealth.health.Value -= damage;
-        targetHealth.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, attackingPlayer.OwnerClientId, damage, critical);
+        targetHealth.PlayerDamagedFeedbackClientRpc(attackingPlayer.transform.position, (long)attackingPlayer.OwnerClientId, damage, critical);
 
         if (targetHealth.health.Value <= 0)
         {
@@ -192,8 +202,8 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
     private async UniTaskVoid DeathSequence(PlayerHealth deadPlayer, PlayerHealth fromPlayer)
     {
-        ulong victimId = deadPlayer.OwnerClientId;
-        ulong killerId = fromPlayer.OwnerClientId;
+        long victimId = (long)deadPlayer.OwnerClientId;
+        long killerId = (long)fromPlayer.OwnerClientId;
 
         UniTask deathTask = deadPlayer.NotifyDeathAndAwaitAck(killerId);
         UniTask killTask = fromPlayer.NotifyKillCreditAndAwaitAck(victimId);
@@ -231,10 +241,20 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void RequestPlayerBoomServerRpc(ulong explodingPlayerId, float damage, float radius)
+    public void RequestPlayerBoomServerRpc(long explodingPlayerId, float damage, float radius)
     {
         if (!IsServer) return;
-        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(explodingPlayerId, out var playerClient)) return;
+
+        NetworkClient playerClient = null;
+        if (explodingPlayerId >= 0)
+        {
+            if (!NetworkManager.Singleton.ConnectedClients.TryGetValue((ulong)explodingPlayerId, out playerClient)) return;
+        }
+        else
+        {
+            // Handle future implementation of bots here
+            return;
+        }
 
         var playerObject = playerClient.PlayerObject;
         var playerHealth = playerObject?.GetComponent<PlayerHealth>();
@@ -253,7 +273,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         {
             GameObject go = hit.gameObject;
             var hitNetObj = go.GetComponentInParent<NetworkObject>();
-            bool isSelf = hitNetObj != null && hitNetObj.OwnerClientId == explodingPlayerId;
+            bool isSelf = hitNetObj != null && hitNetObj.OwnerClientId == (ulong)explodingPlayerId;
 
             if (isSelf) continue;
 
@@ -274,7 +294,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
                     if (targetHealth.health.Value <= 0)
                     {
                         OnPlayerDeath(targetHealth.OwnerClientId);
-                        var explodingPlayerHealth = NetworkManager.Singleton.ConnectedClients[explodingPlayerId].PlayerObject.GetComponent<PlayerHealth>();
+                        var explodingPlayerHealth = NetworkManager.Singleton.ConnectedClients[(ulong)explodingPlayerId].PlayerObject.GetComponent<PlayerHealth>();
                         NotifyPlayersOfDeath(targetHealth, explodingPlayerHealth);
                     }
                 }
@@ -308,8 +328,12 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
     async void RoundEndSequence(ulong winningPlayer)
     {
-        NetworkManager.ConnectedClients[winningPlayer].PlayerObject.GetComponent<PlayerHealth>()?.OnWinRound(victoryLapDelay);
-        await WinSequence(winningPlayer);
+        var playerHealth = NetworkManager.ConnectedClients[winningPlayer].PlayerObject.GetComponent<PlayerHealth>();
+        playerHealth?.OnWinRound(victoryLapDelay);
+
+        PlayerContext winningPlayerCtx = playerHealth?.gameObject.GetComponent<PlayerInputManager>()?.GetPlayerContext();
+
+        await WinSequence(winningPlayerCtx, winningPlayer);
 
         if (this == null) return;
 
@@ -323,10 +347,10 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
         }
     }
 
-    private async UniTask WinSequence(ulong winningPlayer)
+    private async UniTask WinSequence(PlayerContext winningPlayerCtx, ulong winningPlayerId)
     {
-        NetworkVisualEffectManager.SpawnConfettiEffectsOnPlayer?.Invoke(winningPlayer);
-        Transform winningPlayerTransform = NetworkManager.ConnectedClients[winningPlayer]
+        NetworkVisualEffectManager.SpawnConfettiEffectsOnPlayer?.Invoke(winningPlayerCtx);
+        Transform winningPlayerTransform = NetworkManager.ConnectedClients[winningPlayerId]
             .PlayerObject.transform;
 
         winCamera.Follow = winningPlayerTransform;
@@ -335,7 +359,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
         roundWinUI.SetActive(true);
 
-        PlayerData playerData = PersistentPlayerRegistry.Instance.GetByClientId(winningPlayer);
+        PlayerData playerData = PersistentPlayerRegistry.Instance.GetByClientId(winningPlayerId);
 
         if (playerData == null)
         {
@@ -389,7 +413,7 @@ public class CombatServerHandler : BaseGameServerHandler<CombatServerHandler>, I
 
     private async UniTaskVoid EnvironmentalDeathSequence(PlayerHealth deadPlayer)
     {
-        await deadPlayer.NotifyDeathAndAwaitAck(deadPlayer.OwnerClientId);
+        await deadPlayer.NotifyDeathAndAwaitAck((long)deadPlayer.OwnerClientId);
 
         if (deadPlayer != null && deadPlayer.NetworkObject != null && deadPlayer.NetworkObject.IsSpawned)
             deadPlayer.NetworkObject.Despawn();

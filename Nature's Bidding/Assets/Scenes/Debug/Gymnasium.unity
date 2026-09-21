@@ -3035,6 +3035,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Developer Console
       objectReference: {fileID: 0}
+    - target: {fileID: 2718337474615307538, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2718337474615307538, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2718337474615307538, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3943150374949575526, guid: 133e17fef9dd69744973b3470432ac29, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -3144,6 +3156,14 @@ PrefabInstance:
       propertyPath: baseDirection.x
       value: -0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 8676777750401739866, guid: 01b57c6fe251fdf4f9d013c360e6a6ac, type: 3}
+      propertyPath: hitEvent.WwiseObjectReference
+      value: 
+      objectReference: {fileID: 11400000, guid: 97954d23dc2b4d7e88d82ef1a378d4de, type: 2}
+    - target: {fileID: 8676777750401739866, guid: 01b57c6fe251fdf4f9d013c360e6a6ac, type: 3}
+      propertyPath: combatPan.WwiseObjectReference
+      value: 
+      objectReference: {fileID: 11400000, guid: d3789b5d1dcc4b77835432f774ddfae0, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

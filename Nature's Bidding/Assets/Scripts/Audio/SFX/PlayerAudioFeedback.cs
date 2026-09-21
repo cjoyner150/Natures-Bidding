@@ -10,6 +10,7 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
     [SerializeField] private AK.Wwise.Event jumpEvent;
     [SerializeField] private AK.Wwise.Event deathEvent;
     [SerializeField] private AK.Wwise.Event warpEvent;
+    [SerializeField] private AK.Wwise.Event fallEvent;
 
     [Header("Screen-Space Panning")]
     [SerializeField] private AK.Wwise.RTPC combatPan;
@@ -63,6 +64,19 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
         ApplyScreenSpacePan(emitter, emitter.transform.position);
         deathEvent.Post(emitter);
         Destroy(emitter, DeathEmitterLifetimeSeconds);
+    }
+
+    public void PlayFall()
+    {
+        if (fallEvent != null && fallEvent.IsValid())
+            return;
+        
+        var emitter = new GameObject("Fall Sound");
+        emitter.transform.position = transform.position;
+        emitter.AddComponent<AkGameObj>();
+
+        fallEvent.Post(emitter);
+        Destroy(emitter, 5f);
     }
 
     private void ApplyScreenSpacePan(GameObject emitter, Vector3 worldPosition)

@@ -5,17 +5,17 @@ Effect plug-ins	ID	Name	Type				Notes
 	3604890626	High_Pass_60Hz	Wwise Parametric EQ			
 
 Streamed Audio	ID	Name	Audio source file	Generated audio file	Wwise Object Path	Notes
-	26409865	amb_lava_bed_04	.cache\29\{29089D6A-72DB-5D10-4A2D-03A07C871AD2}.wem	26409865.wem	\Containers\Ambience Work Unit\AMB_Lava\Bed\amb_lava_bed_04	
-	42949266	amb_lava_loop_05	.cache\55\{55A63B0A-508F-028A-E33A-DCD27B487BCB}.wem	42949266.wem	\Containers\Ambience Work Unit\AMB_Lava\Bed2\amb_lava_loop_05	
-	111197269	amb_lava_loop_04	.cache\10\{106108DE-B7C0-076A-5BD2-DEBA7D3DC4FB}.wem	111197269.wem	\Containers\Ambience Work Unit\AMB_Lava\Bed2\amb_lava_loop_04	
-	189369468	amb_lava_gurgle_04	.cache\D4\{D40B2C2E-0331-9567-6E82-99856375F108}.wem	189369468.wem	\Containers\Ambience Work Unit\AMB_Lava\Gurgle\amb_lava_gurgle_04	
-	439149965	amb_lava_bed_02	.cache\40\{40786D7C-D3AE-05C5-7C83-BA1698B60858}.wem	439149965.wem	\Containers\Ambience Work Unit\AMB_Lava\Bed\amb_lava_bed_02	
-	454247332	amb_lava_loop_01	.cache\D0\{D031356E-329F-0967-9DE2-139CCEE19C1D}.wem	454247332.wem	\Containers\Ambience Work Unit\AMB_Lava\Bed2\amb_lava_loop_01	
-	660958347	amb_lava_gurgle_03	.cache\E6\{E65B60AA-E6F9-3340-336C-04903B532D87}.wem	660958347.wem	\Containers\Ambience Work Unit\AMB_Lava\Gurgle\amb_lava_gurgle_03	
-	664327660	amb_lava_bed_03	.cache\47\{474B1974-37D4-A076-CA48-F52667C2DF47}.wem	664327660.wem	\Containers\Ambience Work Unit\AMB_Lava\Bed\amb_lava_bed_03	
-	831130637	amb_lava_bed_01	.cache\AF\{AF349B6A-2D62-676E-5008-D814AF63E708}.wem	831130637.wem	\Containers\Ambience Work Unit\AMB_Lava\Bed\amb_lava_bed_01	
-	893786493	amb_lava_loop_02	.cache\BB\{BBBAC3EA-53D2-7D80-8107-78EE87706389}.wem	893786493.wem	\Containers\Ambience Work Unit\AMB_Lava\Bed2\amb_lava_loop_02	
-	994985155	amb_lava_gurgle_01	.cache\EF\{EF554D09-6630-6C5C-B805-E6CA95495C46}.wem	994985155.wem	\Containers\Ambience Work Unit\AMB_Lava\Gurgle\amb_lava_gurgle_01	
-	1002895580	amb_lava_loop_03	.cache\F5\{F548B468-F53F-B847-28DB-0B5D3CBE7031}.wem	1002895580.wem	\Containers\Ambience Work Unit\AMB_Lava\Bed2\amb_lava_loop_03	
-	1053737788	amb_lava_gurgle_02	.cache\53\{53819800-BCE1-7617-DE04-173994FDE0F1}.wem	1053737788.wem	\Containers\Ambience Work Unit\AMB_Lava\Gurgle\amb_lava_gurgle_02	
+	26409865	amb_lava_bed_04	.cache\29\{29089D6A-72DB-5D10-4A2D-03A07C871AD2}.wem	26409865.wem	\Containers\Ambience Work Unit\AMB_Lava\AMB_Lava_Bed\amb_lava_bed_04	
+	42949266	amb_lava_loop_05	.cache\55\{55A63B0A-508F-028A-E33A-DCD27B487BCB}.wem	42949266.wem	\Containers\Ambience Work Unit\AMB_Lava\AMB_Lava_Loop\amb_lava_loop_05	
+	111197269	amb_lava_loop_04	.cache\10\{106108DE-B7C0-076A-5BD2-DEBA7D3DC4FB}.wem	111197269.wem	\Containers\Ambience Work Unit\AMB_Lava\AMB_Lava_Loop\amb_lava_loop_04	
+	189369468	amb_lava_gurgle_04	.cache\D4\{D40B2C2E-0331-9567-6E82-99856375F108}.wem	189369468.wem	\Containers\Ambience Work Unit\AMB_Lava\AMB_Lava_Gurgle\amb_lava_gurgle_04	
+	439149965	amb_lava_bed_02	.cache\40\{40786D7C-D3AE-05C5-7C83-BA1698B60858}.wem	439149965.wem	\Containers\Ambience Work Unit\AMB_Lava\AMB_Lava_Bed\amb_lava_bed_02	
+	454247332	amb_lava_loop_01	.cache\D0\{D031356E-329F-0967-9DE2-139CCEE19C1D}.wem	454247332.wem	\Containers\Ambience Work Unit\AMB_Lava\AMB_Lava_Loop\amb_lava_loop_01	
+	660958347	amb_lava_gurgle_03	.cache\E6\{E65B60AA-E6F9-3340-336C-04903B532D87}.wem	660958347.wem	\Containers\Ambience Work Unit\AMB_Lava\AMB_Lava_Gurgle\amb_lava_gurgle_03	
+	664327660	amb_lava_bed_03	.cache\47\{474B1974-37D4-A076-CA48-F52667C2DF47}.wem	664327660.wem	\Containers\Ambience Work Unit\AMB_Lava\AMB_Lava_Bed\amb_lava_bed_03	
+	831130637	amb_lava_bed_01	.cache\AF\{AF349B6A-2D62-676E-5008-D814AF63E708}.wem	831130637.wem	\Containers\Ambience Work Unit\AMB_Lava\AMB_Lava_Bed\amb_lava_bed_01	
+	893786493	amb_lava_loop_02	.cache\BB\{BBBAC3EA-53D2-7D80-8107-78EE87706389}.wem	893786493.wem	\Containers\Ambience Work Unit\AMB_Lava\AMB_Lava_Loop\amb_lava_loop_02	
+	994985155	amb_lava_gurgle_01	.cache\EF\{EF554D09-6630-6C5C-B805-E6CA95495C46}.wem	994985155.wem	\Containers\Ambience Work Unit\AMB_Lava\AMB_Lava_Gurgle\amb_lava_gurgle_01	
+	1002895580	amb_lava_loop_03	.cache\F5\{F548B468-F53F-B847-28DB-0B5D3CBE7031}.wem	1002895580.wem	\Containers\Ambience Work Unit\AMB_Lava\AMB_Lava_Loop\amb_lava_loop_03	
+	1053737788	amb_lava_gurgle_02	.cache\53\{53819800-BCE1-7617-DE04-173994FDE0F1}.wem	1053737788.wem	\Containers\Ambience Work Unit\AMB_Lava\AMB_Lava_Gurgle\amb_lava_gurgle_02	
 

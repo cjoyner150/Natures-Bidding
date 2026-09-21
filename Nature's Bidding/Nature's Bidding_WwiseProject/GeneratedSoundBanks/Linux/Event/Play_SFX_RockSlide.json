@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{AA4FEBB9-D96F-4973-B31E-EF7C291E5439}",
     "Language": "SFX",
-    "Hash": "{D91FD639-A05D-1906-E37C-7353BB8C9DFC}",
+    "Hash": "{34811919-3C45-7D20-997D-4111F3F378C4}",
     "ObjectPath": "Play_SFX_RockSlide",
     "ShortName": "Play_SFX_RockSlide",
     "Path": "Event/Play_SFX_RockSlide.bnk",
@@ -89,6 +89,6 @@
     ]
    }
   ],
-  "FileHash": "{58E8D8A7-40FB-48A0-D479-3C16CDD7D079}"
+  "FileHash": "{851F90C4-FC3E-350B-2DEC-7BA9221FB9AD}"
  }
 }

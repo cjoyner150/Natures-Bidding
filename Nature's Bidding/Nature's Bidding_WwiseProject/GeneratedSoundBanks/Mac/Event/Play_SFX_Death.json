@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{1D4A0908-0C51-480F-90F3-B839978FF706}",
     "Language": "SFX",
-    "Hash": "{4646C521-3277-0688-D53A-0A5DB52E3E6E}",
+    "Hash": "{3254E91A-8622-4DE0-129E-472926E2586D}",
     "ObjectPath": "Play_SFX_Death",
     "ShortName": "Play_SFX_Death",
     "Path": "Event/Play_SFX_Death.bnk",
@@ -89,6 +89,6 @@
     ]
    }
   ],
-  "FileHash": "{516A3255-79F1-B35F-CDEE-5F46340EDF37}"
+  "FileHash": "{D8A4681A-C2E9-1B86-CE1F-A03058426B14}"
  }
 }

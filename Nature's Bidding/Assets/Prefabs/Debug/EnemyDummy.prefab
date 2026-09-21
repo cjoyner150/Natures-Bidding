@@ -55,6 +55,14 @@ MonoBehaviour:
   maxAngleSpread: 35
   minDistance: 0.5
   maxDistance: 1.5
+  hitEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 97954d23dc2b4d7e88d82ef1a378d4de, type: 2}
+  combatPan:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: d3789b5d1dcc4b77835432f774ddfae0, type: 2}
 --- !u!1 &2439975194876700760
 GameObject:
   m_ObjectHideFlags: 0

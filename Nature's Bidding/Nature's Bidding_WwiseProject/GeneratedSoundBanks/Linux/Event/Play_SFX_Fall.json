@@ -1,0 +1,70 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "729947933",
+    "Type": "Event",
+    "GUID": "{465C95EC-AD21-47BF-AFC3-D56DDBCC882B}",
+    "Language": "SFX",
+    "Hash": "{4E4CA838-E919-ECC7-B37C-9EB1D14B139D}",
+    "ObjectPath": "Play_SFX_Fall",
+    "ShortName": "Play_SFX_Fall",
+    "Path": "Event/Play_SFX_Fall.bnk",
+    "Media": [
+     {
+      "Id": "738650072",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "sfx_fall_cliff_01.wav",
+      "Path": "Media/738650072.wem",
+      "CachePath": "E4/{E442DACF-A4A6-C630-B7D9-F647FC15B59C}.wem"
+     },
+     {
+      "Id": "1052431788",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "sfx_fall_cliff_02.wav",
+      "Path": "Media/1052431788.wem",
+      "CachePath": "97/{97281662-4AAC-0202-335A-418215CDCCC4}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "729947933",
+      "Name": "Play_SFX_Fall",
+      "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_Fall",
+      "GUID": "{465C95EC-AD21-47BF-AFC3-D56DDBCC882B}",
+      "Color": "8",
+      "DurationType": "OneShot",
+      "DurationMin": "1.3739662",
+      "DurationMax": "1.7209214",
+      "MediaRefs": [
+       {
+        "Id": "738650072"
+       },
+       {
+        "Id": "1052431788"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{40EA865E-AD70-A353-BBD4-AC584F5A2C4F}"
+ }
+}

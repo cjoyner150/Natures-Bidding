@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{293B6982-FBBF-4CAD-9DDB-6D34E0FC70EA}",
     "Language": "SFX",
-    "Hash": "{F94E309F-0E45-33FC-D523-88A3DED1A01F}",
+    "Hash": "{0C75FDE4-4543-63C8-EF70-5BBB4B5C8D1D}",
     "ObjectPath": "Play_AMB_Lava",
     "ShortName": "Play_AMB_Lava",
     "Path": "Event/Play_AMB_Lava.bnk",
@@ -205,6 +205,6 @@
     ]
    }
   ],
-  "FileHash": "{7DA8616D-98F8-A3E4-79C2-987AA3EA1B89}"
+  "FileHash": "{FF73B464-6AA3-DA39-BECA-A9CC4FCA835C}"
  }
 }

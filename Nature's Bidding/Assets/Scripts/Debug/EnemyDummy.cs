@@ -28,11 +28,24 @@ public class EnemyDummy : MonoBehaviour, IDamageable, IEffectable
     [SerializeField] private float minDistance = 40f;
     [SerializeField] private float maxDistance = 80f;
 
+    [Header("Audio")]
+    [SerializeField] private AK.Wwise.Event hitEvent;
+    [SerializeField] private AK.Wwise.RTPC combatPan;
+
     public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context, bool critical = false)
     {
         SpawnDamageNumbers(damage, critical);
         //anim.SetTrigger("Hit");
         outlineBlink.StartBlinking();
+
+        if (hitEvent != null && hitEvent.IsValid())
+        {
+            WwiseAudioUtility.TryApplyScreenSpacePan(
+                combatPan, gameObject, transform.position, 50f
+            );
+
+            hitEvent.Post(gameObject);
+        }
 
         context = IDamageable.HitCallbackContext.success;
     }

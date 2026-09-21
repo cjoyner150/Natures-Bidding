@@ -14,6 +14,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     public PlayerContext ctx;
     private PlayerInputManager playerInput;
     private PlayerWeaponManager playerWeaponManager;
+    private PlayerAttackManager playerAttackManager;
     private PlayerStatusEffectManager playerStatusEffectManager;
     private PlayerMaskVisualManager playerMaskVisualManager;
     private CinemachineTargetGroup cameraTargetGroup;
@@ -51,6 +52,9 @@ public class PlayerNetworkBehavior : NetworkBehaviour
                 playerWeaponManager.Initialize(playerStatusEffectManager);
                 playerStatusEffectManager.Initialize(ctx, ctx.playerStats, OwnerClientId);
             }
+
+            playerAttackManager = GetComponent<PlayerAttackManager>();
+            playerAttackManager.Initialize(ctx);
 
             playerInput.InitializePlayer(ctx);
             ctx.maxJumps = ctx.playerStats.Jumps;

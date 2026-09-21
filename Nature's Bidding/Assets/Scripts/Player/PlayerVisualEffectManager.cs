@@ -9,36 +9,36 @@ using UnityEngine;
 public class PlayerVisualEffectManager : MonoBehaviour
 {
     [Header("Particle Prefabs")]
-    [SerializeField] GameObject hitReactParticle;
-    [SerializeField] GameObject slashParticle;
-    [SerializeField] GameObject starParticle;
-    [SerializeField] GameObject confusionParticle;
-    [SerializeField] GameObject parryParticle;
-    [SerializeField] GameObject parrySuccessParticle;
-    [SerializeField] GameObject stunParticle;
-    [SerializeField] GameObject explosionParticle;
-    [SerializeField] GameObject jumpParticle;
-    [SerializeField] GameObject dashParticle;
-    [SerializeField] GameObject teleportParticle;
+    [SerializeField] protected GameObject hitReactParticle;
+    [SerializeField] protected GameObject slashParticle;
+    [SerializeField] protected GameObject starParticle;
+    [SerializeField] protected GameObject confusionParticle;
+    [SerializeField] protected GameObject parryParticle;
+    [SerializeField] protected GameObject parrySuccessParticle;
+    [SerializeField] protected GameObject stunParticle;
+    [SerializeField] protected GameObject explosionParticle;
+    [SerializeField] protected GameObject jumpParticle;
+    [SerializeField] protected GameObject dashParticle;
+    [SerializeField] protected GameObject teleportParticle;
 
 
     [Header("References")]
-    [SerializeField] Transform weaponHolderTransform;
-    [SerializeField] MMF_Player hitReactFeedback;
-    [SerializeField] PlayerAudioFeedback audioFeedback;
-    
+    [SerializeField] protected Transform weaponHolderTransform;
+    [SerializeField] protected MMF_Player hitReactFeedback;
+    [SerializeField] protected PlayerAudioFeedback audioFeedback;
 
-    GameObject batConfusionEffectCache;
-    GameObject starEffectCache;
+
+    protected GameObject batConfusionEffectCache;
+    protected GameObject starEffectCache;
     Color playerColor = Color.white;
 
-    private void Start()
+    protected virtual void Start()
     {
         audioFeedback ??= GetComponent<PlayerAudioFeedback>();
         InitializeColorWhenReady().Forget();
     }
 
-    private async UniTaskVoid InitializeColorWhenReady()
+    protected async UniTaskVoid InitializeColorWhenReady()
     {
         var playerNetworkBehavior = GetComponent<PlayerNetworkBehavior>();
         await UniTask.WaitUntil(() => PersistentPlayerRegistry.Instance.GetByClientId(playerNetworkBehavior.OwnerClientId) != null);
@@ -177,7 +177,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
         SafeDispose(batConfusionEffectCache, 0).Forget();
     }
 
-    private static async UniTask SafeDispose(GameObject obj, int milliseconds)
+    protected static async UniTask SafeDispose(GameObject obj, int milliseconds)
     {
         await UniTask.Delay(milliseconds);
 

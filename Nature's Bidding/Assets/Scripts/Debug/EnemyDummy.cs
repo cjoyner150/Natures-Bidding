@@ -1,15 +1,17 @@
 using Cysharp.Threading.Tasks;
+using HSM;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
-using OneLine;
-using System;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class EnemyDummy : MonoBehaviour, IDamageable, IEffectable
+public class EnemyDummy : NetworkBehaviour, IDamageable, IEffectable
 {
+    [SerializeField] PlayerContext dummyCtx;
+
+    [Header("References")]
     [SerializeField] Animator anim;
     [SerializeField] SkinnedMeshRenderer skinnedMeshRenderer;
     [SerializeField] MMBlink outlineBlink;
@@ -28,23 +30,79 @@ public class EnemyDummy : MonoBehaviour, IDamageable, IEffectable
     [SerializeField] private float minDistance = 40f;
     [SerializeField] private float maxDistance = 80f;
 
+    private State root;
+    private StateMachine sm;
+    private bool initialized = false;
+
+    public override void OnNetworkSpawn()
+    {
+        var statsMediator = new StatsMediator();
+        dummyCtx.playerStats = new Stats(statsMediator, dummyCtx.BaseStats, PersistentPlayerRegistry.Instance.GetByClientId(0));
+        dummyCtx.maxJumps = dummyCtx.playerStats.Jumps;
+
+        PlayerAttackManager attackManager = GetComponent<PlayerAttackManager>();
+        dummyCtx.playerAttackManager = attackManager;
+        attackManager.Initialize(dummyCtx);
+
+        root = new PlayerRoot(null, dummyCtx);
+        var builder = new StateMachineBuilder(root);
+
+        sm = builder.Build();
+
+        initialized = true;
+    }
+
+    void Update()
+    {
+        if (!initialized) return;
+
+        HandleOrientation();
+        dummyCtx.isGrounded = CheckGrounded();
+
+        sm.Tick(Time.deltaTime);
+    }
+
+    private void FixedUpdate() => HandlePhysicsMove();
+    
+    
+    private void HandlePhysicsMove()
+    {
+        if (!initialized) return;
+        dummyCtx.rb.AddForce(dummyCtx.forceToAdd * Time.fixedDeltaTime, dummyCtx.forceMode);
+    }
+
+    private void HandleOrientation()
+    {
+        Vector3 cameraRelativeOrientation = dummyCtx.cam.transform.forward;
+        cameraRelativeOrientation.y = 0;
+        cameraRelativeOrientation = cameraRelativeOrientation.normalized;
+
+        dummyCtx.orientation.forward = cameraRelativeOrientation;
+    }
+
+    private bool CheckGrounded()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position + (transform.up * .125f), .25f, dummyCtx.isGroundLayers);
+        return colliders.Length > 0;
+    }
+
     public void Hit(float damage, ulong fromPlayerId, out IDamageable.HitCallbackContext context, bool critical = false)
     {
-        SpawnDamageNumbers(damage, critical);
+        SpawnDamageNumbers(damage, critical ? Color.gold : Color.white);
         //anim.SetTrigger("Hit");
         outlineBlink.StartBlinking();
 
         context = IDamageable.HitCallbackContext.success;
     }
 
-    private void SpawnDamageNumbers(float damage, bool critical)
+    private void SpawnDamageNumbers(float damage, Color color)
     {
         GameObject damageNumbersObj = Instantiate(damageNumbersPrefab, damageNumbersSpawnTransform.position, Quaternion.identity);
         RectTransform rectTransform = damageNumbersObj.GetComponent<RectTransform>();
         TextMeshProUGUI damageText = damageNumbersObj.GetComponentInChildren<TextMeshProUGUI>();
 
         damageText.text = damage.ToString("F0");
-        damageText.color = critical ? Color.gold : Color.white;
+        damageText.color = color;
 
         Transform cam = Camera.main.transform;
         MMFaceDirection faceDirection = damageNumbersObj.GetComponent<MMFaceDirection>();
@@ -81,5 +139,17 @@ public class EnemyDummy : MonoBehaviour, IDamageable, IEffectable
     {
         GameLogger.Log(LogSeverity.Debug, $"EnemyDummy lost {amount} gold");
         PersistentPlayerRegistry.Instance.AddGold(thiefId, amount);
+    }
+
+    public void Heal(float amount)
+    {
+        GameLogger.Log(LogSeverity.Debug, $"EnemyDummy healed {amount}");
+        SpawnDamageNumbers(amount, Color.green);
+    }
+
+    public void Stun(float additionalStunTime)
+    {
+        GameLogger.Log(LogSeverity.Debug, $"EnemyDummy is stunned");
+        dummyCtx.shouldStunSelf = true;
     }
 }

@@ -33,6 +33,8 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
         base.OnNetworkSpawn();
         _serverHandler = FindAnyObjectByType<LobbyServerHandler>();
         _serverHandler ??= FindAnyObjectByType<CombatServerHandler>();
+        _serverHandler ??= FindAnyObjectByType<GymnasiumServerHandler>();
+
         selfNetworkObject = GetComponent<NetworkObject>();
         ctx = GetComponent<PlayerNetworkBehavior>()?.ctx;
         CombatServerHandler.OnCombatBegin.AddListener(OnCombatBegin);
@@ -163,7 +165,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
         ctx.parryResponse = true;
     }
 
-    public void StunPlayer(float additionalStunTime)
+    public void Stun(float additionalStunTime)
     {
         if (!IsOwner)
         {
@@ -192,7 +194,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
     [Rpc(SendTo.SpecifiedInParams, InvokePermission = RpcInvokePermission.Server)]
     public void NotifyStunPlayerClientRpc(float additionalStunTime, RpcParams _params)
     {
-        StunPlayer(additionalStunTime);
+        Stun(additionalStunTime);
     }
 
     public void Heal(float amount)
@@ -313,8 +315,6 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
         if (ctx != null)
             ctx.allowInputs = false;
     }
-
-    public PlayerContext GetPlayerContext() => ctx;
 
     public void StealFrom(ulong thiefId, ulong targetId, int amount)
     {

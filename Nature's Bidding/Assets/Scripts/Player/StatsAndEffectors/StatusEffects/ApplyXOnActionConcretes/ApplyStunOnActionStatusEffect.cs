@@ -21,7 +21,7 @@ public class ApplyStunOnActionStatusEffect : ApplyXOnActionStatusEffect
 
         if (targetPlayer != null)
         {
-            targetPlayer.GetComponent<PlayerHealth>().StunPlayer(stunTime);
+            targetPlayer.GetComponent<IDamageable>().Stun(stunTime);
         }
         else GameLogger.Log(LogSeverity.Error, $"No player object with clientId: {targetId}");
     }

@@ -329,4 +329,6 @@ public class PlayerInputManager : MonoBehaviour
         else DisableInput();
     }
 
+    public PlayerContext GetPlayerContext() => ctx;
+
 }

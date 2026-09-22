@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{465C95EC-AD21-47BF-AFC3-D56DDBCC882B}",
     "Language": "SFX",
-    "Hash": "{4E4CA838-E919-ECC7-B37C-9EB1D14B139D}",
+    "Hash": "{10840E23-B76F-8DBB-2D4E-D5CE20D4A4B1}",
     "ObjectPath": "Play_SFX_Fall",
     "ShortName": "Play_SFX_Fall",
     "Path": "Event/Play_SFX_Fall.bnk",
@@ -22,7 +22,7 @@
       "Location": "Loose",
       "ShortName": "sfx_fall_cliff_01.wav",
       "Path": "Media/738650072.wem",
-      "CachePath": "E4/{E442DACF-A4A6-C630-B7D9-F647FC15B59C}.wem"
+      "CachePath": "3A/{3ACDC53C-96B4-9B65-A220-5BF2C4B07053}.wem"
      },
      {
       "Id": "1052431788",
@@ -31,7 +31,7 @@
       "Location": "Loose",
       "ShortName": "sfx_fall_cliff_02.wav",
       "Path": "Media/1052431788.wem",
-      "CachePath": "97/{97281662-4AAC-0202-335A-418215CDCCC4}.wem"
+      "CachePath": "FA/{FA684865-41A9-6B1D-71E3-07C4D784ACD2}.wem"
      }
     ],
     "Events": [
@@ -42,8 +42,8 @@
       "GUID": "{465C95EC-AD21-47BF-AFC3-D56DDBCC882B}",
       "Color": "8",
       "DurationType": "OneShot",
-      "DurationMin": "1.3739662",
-      "DurationMax": "1.7209214",
+      "DurationMin": "0.9303257",
+      "DurationMax": "1.1551018",
       "MediaRefs": [
        {
         "Id": "738650072"
@@ -65,6 +65,6 @@
     ]
    }
   ],
-  "FileHash": "{40EA865E-AD70-A353-BBD4-AC584F5A2C4F}"
+  "FileHash": "{E573FF96-CA43-5F22-1702-083827EC0E33}"
  }
 }

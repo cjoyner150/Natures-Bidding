@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{523D8481-4617-4947-84FB-07B128556FFD}",
     "Language": "SFX",
-    "Hash": "{E6562D99-9B1C-A345-DD1B-B3D693606C9E}",
+    "Hash": "{980A0C5B-BBD7-2BDC-5A4D-8330527E459C}",
     "ObjectPath": "Play_SFX_Hit",
     "ShortName": "Play_SFX_Hit",
     "Path": "Event/Play_SFX_Hit.bnk",
@@ -22,7 +22,7 @@
       "Location": "Loose",
       "ShortName": "sfx_hit_01.wav",
       "Path": "Media/179884071.wem",
-      "CachePath": "49/{497086C8-2C50-DC36-0648-3F390270BBC9}.wem"
+      "CachePath": "49/{495A2C0E-83CA-3EB7-052C-BEAF0C70072C}.wem"
      },
      {
       "Id": "398798995",
@@ -31,7 +31,7 @@
       "Location": "Loose",
       "ShortName": "sfx_hit_03.wav",
       "Path": "Media/398798995.wem",
-      "CachePath": "25/{25BD9E7A-41B5-8540-CC87-6AADA626C261}.wem"
+      "CachePath": "EE/{EEF9D94C-CBEC-D281-8567-8769F923A0FB}.wem"
      },
      {
       "Id": "750683578",
@@ -40,7 +40,7 @@
       "Location": "Loose",
       "ShortName": "sfx_hit_04.wav",
       "Path": "Media/750683578.wem",
-      "CachePath": "81/{819085D0-3895-AAC3-DAFD-C2C57D877AD9}.wem"
+      "CachePath": "45/{458A8306-9007-2FBF-F7A9-A1B7D9C5C8F9}.wem"
      },
      {
       "Id": "899394233",
@@ -49,7 +49,7 @@
       "Location": "Loose",
       "ShortName": "sfx_hit_02.wav",
       "Path": "Media/899394233.wem",
-      "CachePath": "88/{88735F8E-8756-D4BC-8A1B-9C00A7ED55AD}.wem"
+      "CachePath": "59/{594558F8-E0BA-94B7-4643-59F363D3B05E}.wem"
      }
     ],
     "Plugins": {
@@ -108,6 +108,6 @@
     ]
    }
   ],
-  "FileHash": "{75D2A6E6-C844-D864-5672-D6484021E92E}"
+  "FileHash": "{876CFAEE-6CE3-C024-7636-9AB0A79FFAEB}"
  }
 }

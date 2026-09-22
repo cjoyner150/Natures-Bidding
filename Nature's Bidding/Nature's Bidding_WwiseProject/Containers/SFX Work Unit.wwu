@@ -350,6 +350,7 @@
 						</RandomSequenceContainer>
 						<RandomSequenceContainer Name="SFX_Hit" ID="{34ED782E-5143-41EE-8644-8964D9751D37}" ShortID="214376491">
 							<PropertyList>
+								<Property Name="OverrideEffect" Type="bool" Value="True"/>
 								<Property Name="Pitch" Type="int32">
 									<ValueList>
 										<Value>320</Value>
@@ -368,7 +369,7 @@
 								</Property>
 								<Property Name="Volume" Type="Real64">
 									<ValueList>
-										<Value>-5</Value>
+										<Value>-7</Value>
 									</ValueList>
 								</Property>
 							</PropertyList>
@@ -398,9 +399,16 @@
 												<MediaID ID="179884071"/>
 											</MediaIDList>
 										</AudioFileSource>
+										<AudioFileSource Name="sfx_hit_01" ID="{FE380EC2-0CF6-46A1-BEC5-4C20C932D516}">
+											<Language>SFX</Language>
+											<AudioFile>sfx_hit_01.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="179884071"/>
+											</MediaIDList>
+										</AudioFileSource>
 									</ChildrenList>
 									<ActiveSourceList>
-										<ActiveSource Name="sfx_hit_01" ID="{A6EA1637-8050-4095-9C2D-24ED1A254F17}" Platform="Linked"/>
+										<ActiveSource Name="sfx_hit_01" ID="{FE380EC2-0CF6-46A1-BEC5-4C20C932D516}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 								<Sound Name="sfx_hit_02" ID="{4EBC11F5-61F8-4603-A9D1-BE50FE61E299}" ShortID="935200733">
@@ -420,9 +428,16 @@
 												<MediaID ID="899394233"/>
 											</MediaIDList>
 										</AudioFileSource>
+										<AudioFileSource Name="sfx_hit_02" ID="{464B4EB7-8350-4E32-97EF-C694C7282BA6}">
+											<Language>SFX</Language>
+											<AudioFile>sfx_hit_02.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="899394233"/>
+											</MediaIDList>
+										</AudioFileSource>
 									</ChildrenList>
 									<ActiveSourceList>
-										<ActiveSource Name="sfx_hit_02" ID="{9CCC06BF-923B-48C0-962A-6B49EFC72226}" Platform="Linked"/>
+										<ActiveSource Name="sfx_hit_02" ID="{464B4EB7-8350-4E32-97EF-C694C7282BA6}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 								<Sound Name="sfx_hit_03" ID="{5C024363-6A56-4346-8538-03D572E2183A}" ShortID="516830893">
@@ -442,9 +457,16 @@
 												<MediaID ID="398798995"/>
 											</MediaIDList>
 										</AudioFileSource>
+										<AudioFileSource Name="sfx_hit_03" ID="{1FB467DA-1777-45C5-8B1D-6FC93345D3D4}">
+											<Language>SFX</Language>
+											<AudioFile>sfx_hit_03.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="398798995"/>
+											</MediaIDList>
+										</AudioFileSource>
 									</ChildrenList>
 									<ActiveSourceList>
-										<ActiveSource Name="sfx_hit_03" ID="{C4814FA2-CCB4-4233-913F-DB552958A218}" Platform="Linked"/>
+										<ActiveSource Name="sfx_hit_03" ID="{1FB467DA-1777-45C5-8B1D-6FC93345D3D4}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 								<Sound Name="sfx_hit_04" ID="{010DFF40-B5C0-47C7-A299-759103338BE2}" ShortID="1001131476">
@@ -464,12 +486,40 @@
 												<MediaID ID="750683578"/>
 											</MediaIDList>
 										</AudioFileSource>
+										<AudioFileSource Name="sfx_hit_04" ID="{0E48B7EF-5A7D-45AE-BC03-9E95619696B3}">
+											<Language>SFX</Language>
+											<AudioFile>sfx_hit_04.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="750683578"/>
+											</MediaIDList>
+										</AudioFileSource>
 									</ChildrenList>
 									<ActiveSourceList>
-										<ActiveSource Name="sfx_hit_04" ID="{2D075C36-0A77-49B8-8C6B-571F4963878D}" Platform="Linked"/>
+										<ActiveSource Name="sfx_hit_04" ID="{0E48B7EF-5A7D-45AE-BC03-9E95619696B3}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="Effects">
+									<EffectSlot Name="" ID="{190F28F0-138E-4015-8E36-419E9C74EE16}" ShortID="41399112">
+										<ReferenceList>
+											<Reference Name="Effect">
+												<Custom>
+													<Effect Name="Parametric EQ" ID="{BBEDBB21-2325-40EC-972B-8E711E2962EB}" ShortID="260839487" PluginName="Wwise Parametric EQ" CompanyID="0" PluginID="105" PluginType="3">
+														<PropertyList>
+															<Property Name="FilterTypeBand3" Type="int32" Value="5"/>
+															<Property Name="FrequencyBand3" Type="Real32" Value="11790.22"/>
+															<Property Name="GainBand3" Type="Real32" Value="-7.762376"/>
+															<Property Name="OnOffBand3" Type="bool" Value="True"/>
+															<Property Name="QFactorBand3" Type="Real32" Value="1.202744"/>
+														</PropertyList>
+													</Effect>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</EffectSlot>
+								</ObjectList>
+							</ObjectLists>
 						</RandomSequenceContainer>
 						<RandomSequenceContainer Name="SFX_RockSlide" ID="{91F3F26E-AE9F-4267-9F57-3FEDD8FFD8AB}" ShortID="214510248">
 							<PropertyList>

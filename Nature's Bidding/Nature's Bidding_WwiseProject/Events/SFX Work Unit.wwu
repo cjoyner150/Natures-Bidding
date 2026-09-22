@@ -122,6 +122,32 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Stop_AMB_Forest_01" ID="{FF05C7D0-0F5A-4B91-AC90-91D4B49CF154}">
+					<ChildrenList>
+						<Action Name="" ID="{3970F9E0-DC41-4369-9446-910B00D22D38}" ShortID="926489144">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="AMB_Forest" ID="{EECDB04F-8316-4FE4-8828-A3EA5866884D}" WorkUnitID="{B9190133-2ADD-4907-9F1E-71803388E4A6}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_SFX_Jump_Grunt" ID="{2E1450BD-2672-4438-9635-E9F504D060B7}">
+					<ChildrenList>
+						<Action Name="" ID="{FC4BC453-33BA-4B58-8BA1-93CCE1F04148}" ShortID="600723115">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_Jump_Grunt" ID="{003C3AF3-C5EF-4876-8AE8-1E06F713D7D6}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

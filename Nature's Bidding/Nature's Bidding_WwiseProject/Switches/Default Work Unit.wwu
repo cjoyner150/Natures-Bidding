@@ -17,6 +17,14 @@
 						<Switch Name="Down" ID="{6D589AD8-8279-45C6-8882-D8D66C367B8A}"/>
 					</ChildrenList>
 				</SwitchGroup>
+				<SwitchGroup Name="Player" ID="{FF4111B7-5A06-492B-AC5D-8EC08D6A22D5}">
+					<ChildrenList>
+						<Switch Name="One" ID="{424C6D99-D3F6-4CF3-B8DF-FFEEE889DE4C}"/>
+						<Switch Name="Two" ID="{4DE675BC-F091-46B6-9532-39A39553F8EF}"/>
+						<Switch Name="Three" ID="{EDAB8324-9AA9-4EB8-8ED9-1FC680E0C8B7}"/>
+						<Switch Name="Four" ID="{DC26AFD1-9A82-48F1-9173-2147F7AC61FE}"/>
+					</ChildrenList>
+				</SwitchGroup>
 			</ChildrenList>
 		</WorkUnit>
 	</Switches>

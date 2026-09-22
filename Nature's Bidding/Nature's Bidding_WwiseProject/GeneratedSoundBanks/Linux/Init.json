@@ -224,6 +224,43 @@
     ],
     "SwitchGroups": [
      {
+      "Id": "1069431850",
+      "Name": "Player",
+      "ObjectPath": "\\Switches\\Default Work Unit\\Player",
+      "GUID": "{FF4111B7-5A06-492B-AC5D-8EC08D6A22D5}",
+      "Color": "3",
+      "Switches": [
+       {
+        "Id": "678209053",
+        "Name": "Two",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Player\\Two",
+        "GUID": "{4DE675BC-F091-46B6-9532-39A39553F8EF}",
+        "Color": "3"
+       },
+       {
+        "Id": "912956111",
+        "Name": "Three",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Player\\Three",
+        "GUID": "{EDAB8324-9AA9-4EB8-8ED9-1FC680E0C8B7}",
+        "Color": "3"
+       },
+       {
+        "Id": "1064933119",
+        "Name": "One",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Player\\One",
+        "GUID": "{424C6D99-D3F6-4CF3-B8DF-FFEEE889DE4C}",
+        "Color": "3"
+       },
+       {
+        "Id": "2863728729",
+        "Name": "Four",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Player\\Four",
+        "GUID": "{DC26AFD1-9A82-48F1-9173-2147F7AC61FE}",
+        "Color": "3"
+       }
+      ]
+     },
+     {
       "Id": "1834394558",
       "Name": "Surface",
       "ObjectPath": "\\Switches\\Default Work Unit\\Surface",
@@ -281,6 +318,6 @@
     ]
    }
   ],
-  "FileHash": "{8B37C3B4-0FDB-BB5C-23ED-A9F89C92BBFF}"
+  "FileHash": "{344FCE2F-7C2C-CD7E-1DED-BCDC462A0953}"
  }
 }

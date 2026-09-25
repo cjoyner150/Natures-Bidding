@@ -344,4 +344,10 @@ public class PlayerHealth : NetworkBehaviour, IDamageable, IEffectable
         if (thiefId >= 0)
             PersistentPlayerRegistry.Instance.AddGold((ulong)thiefId, stolen);
     }
+    [Rpc(SendTo.ClientsAndHost,
+    InvokePermission = RpcInvokePermission.Server)]
+    public void PlayFallFeedbackClientRpc()
+    {
+        GetComponent<PlayerAudioFeedback>()?.PlayFall();
+    }
 }

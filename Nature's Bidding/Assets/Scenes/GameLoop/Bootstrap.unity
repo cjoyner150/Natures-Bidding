@@ -1229,6 +1229,10 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: bc021be59eb34c738bb82f031783e912, type: 2}
+  stopRockSlide:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 936ec0bdee404facb72c0bf77eb04f72, type: 2}
   phaseMenu:
     idInternal: 0
     valueGuidInternal: 

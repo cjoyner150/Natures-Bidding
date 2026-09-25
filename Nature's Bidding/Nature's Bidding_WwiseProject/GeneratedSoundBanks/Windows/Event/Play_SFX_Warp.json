@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{322A45A2-4058-4F8F-8E7D-8516BF02B0ED}",
     "Language": "SFX",
-    "Hash": "{AC3B7BD4-73A2-1C77-1F24-FF307FCBBF5F}",
+    "Hash": "{3800B48B-375C-3BDD-7421-FD7757C8D5A0}",
     "ObjectPath": "Play_SFX_Warp",
     "ShortName": "Play_SFX_Warp",
     "Path": "Event/Play_SFX_Warp.bnk",
@@ -43,6 +43,18 @@
       "CachePath": "62/{6228296A-7E32-5C4B-EC03-D9D1F31F75C3}.wem"
      }
     ],
+    "Plugins": {
+     "ShareSets": [
+      {
+       "Id": "3604890626",
+       "Name": "High_Pass_60Hz",
+       "ObjectPath": "\\Effects\\Factory Effects\\Parametric EQ\\High Pass Filters\\High_Pass_60Hz",
+       "GUID": "{F9627628-0B10-4272-BC30-D4C20423CB38}",
+       "LibName": "Wwise Parametric EQ",
+       "LibId": "6881283"
+      }
+     ]
+    },
     "Events": [
      {
       "Id": "3667260136",
@@ -63,7 +75,14 @@
        {
         "Id": "731812737"
        }
-      ]
+      ],
+      "PluginRefs": {
+       "ShareSets": [
+        {
+         "Id": "3604890626"
+        }
+       ]
+      }
      }
     ],
     "GameParameters": [
@@ -77,6 +96,6 @@
     ]
    }
   ],
-  "FileHash": "{6F7FC88E-18B3-0F5B-0E6A-4387C8483079}"
+  "FileHash": "{635330CA-0D01-FD41-9387-9496E7619CEA}"
  }
 }

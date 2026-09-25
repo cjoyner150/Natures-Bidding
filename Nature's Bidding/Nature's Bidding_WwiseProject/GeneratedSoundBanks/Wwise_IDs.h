@@ -18,8 +18,10 @@ namespace AK
         static const AkUniqueID PLAY_DLG_AUCTIONEER = 3605236953U;
         static const AkUniqueID PLAY_MX_SYSTEM = 3580595815U;
         static const AkUniqueID PLAY_SFX_DEATH = 729422592U;
+        static const AkUniqueID PLAY_SFX_FALL = 729947933U;
         static const AkUniqueID PLAY_SFX_HIT = 1376640657U;
         static const AkUniqueID PLAY_SFX_JUMP = 3740002126U;
+        static const AkUniqueID PLAY_SFX_JUMP_GRUNT = 2321666137U;
         static const AkUniqueID PLAY_SFX_MANMASK_EXPLOSION = 735357806U;
         static const AkUniqueID PLAY_SFX_PARRY = 3835174908U;
         static const AkUniqueID PLAY_SFX_ROCKSLIDE = 3230763644U;
@@ -32,8 +34,10 @@ namespace AK
         static const AkUniqueID PLAY_UI_HOVER = 1339559671U;
         static const AkUniqueID PLAY_UI_SHOP_PURCHASE = 2035278795U;
         static const AkUniqueID STOP_AMB_FOREST = 3443576024U;
+        static const AkUniqueID STOP_AMB_FOREST_01 = 1443530286U;
         static const AkUniqueID STOP_AMB_LAVA = 3566511473U;
         static const AkUniqueID STOP_MX_SYSTEM = 3534127541U;
+        static const AkUniqueID STOP_SFX_ROCKSLIDE = 1298362486U;
     } // namespace EVENTS
 
     namespace STATES
@@ -121,6 +125,19 @@ namespace AK
             {
             } // namespace SWITCH
         } // namespace MASK_TYPE
+
+        namespace PLAYER
+        {
+            static const AkUniqueID GROUP = 1069431850U;
+
+            namespace SWITCH
+            {
+                static const AkUniqueID FOUR = 2863728729U;
+                static const AkUniqueID ONE = 1064933119U;
+                static const AkUniqueID THREE = 912956111U;
+                static const AkUniqueID TWO = 678209053U;
+            } // namespace SWITCH
+        } // namespace PLAYER
 
         namespace SURFACE
         {

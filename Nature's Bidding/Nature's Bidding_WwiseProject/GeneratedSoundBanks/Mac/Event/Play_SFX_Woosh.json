@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{36E6308A-11AE-45B4-9188-B735237F920C}",
     "Language": "SFX",
-    "Hash": "{CB89515C-C051-84A9-3230-647EAA482FA8}",
+    "Hash": "{C8AC7971-D70D-BDC9-BCA4-2F8F0BEFB168}",
     "ObjectPath": "Play_SFX_Woosh",
     "ShortName": "Play_SFX_Woosh",
     "Path": "Event/Play_SFX_Woosh.bnk",
@@ -113,6 +113,6 @@
     ]
    }
   ],
-  "FileHash": "{7C0624A2-0961-01C4-45D4-8E9B3511A9E5}"
+  "FileHash": "{11BCC385-7E13-D1F7-D71B-DBF20CCA33D7}"
  }
 }

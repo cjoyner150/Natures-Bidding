@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MapRenderer : MonoBehaviour
@@ -24,8 +25,13 @@ public class MapRenderer : MonoBehaviour
 
     private void Start()
     {
+        GameLogger.Log(LogSeverity.Debug, $"MapRenderer.Start: subscribing to mapGenerator (null={mapGenerator == null})");
         // Subscribe to the generator's completion event
         mapGenerator.OnMapDataGenerated += DrawMap;
+
+        // The generator's NetworkObject can spawn (and generate) before this Start() runs, so pull any already-generated data.
+        if (mapGenerator.HasGeneratedData)
+            DrawMap(mapGenerator.CurrentGraph);
     }
 
     private void OnDestroy()
@@ -38,6 +44,7 @@ public class MapRenderer : MonoBehaviour
 
     private void DrawMap(List<List<NodeData>> graph)
     {
+        GameLogger.Log(LogSeverity.Debug, $"MapRenderer.DrawMap called with {graph.Count} floors, {graph.Sum(f => f.Count)} total nodes.");
         ClearMap();
 
         foreach (var floor in graph)
@@ -93,6 +100,9 @@ public class MapRenderer : MonoBehaviour
                 float scaleFactor = targetNodeSize / maxOriginalSize;
                 
                 nodeObj.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+
+                // Assign the node id and snapshot the normalized scale now that it's final (Awake ran before this scale was applied).
+                nodeObj.GetComponent<NodeVisual>().Setup(node);
 
                 // 5. Spawn Decorators
                 SpawnDecorators(node, nodeObj.transform);

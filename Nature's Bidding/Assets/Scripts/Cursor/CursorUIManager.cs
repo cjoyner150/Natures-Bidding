@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 using UnityUtils;
 
@@ -102,4 +103,61 @@ public class CursorUIManager : Singleton<CursorUIManager>
         return go.GetComponent<RectTransform>();
     }
 
+    #region Local (non-networked) cursor for phases without a live player object (e.g. Map)
+
+    private Image _localCursorImage;
+    private VirtualMouseInput _localVirtualMouseInput;
+    private bool _localCursorEnabled;
+
+    /// <summary>Shows/hides the fancy local-player cursor for scenes that have no spawned player object (e.g. Map).</summary>
+    public async void SetLocalCursorEnabled(bool enable)
+    {
+        if (!enable && _localCursorImage == null) return; // nothing spawned yet, nothing to disable
+
+        if (_localCursorImage == null)
+        {
+            EnsureLocalCursorSpawned();
+            await UniTask.WaitUntil(() => _localCursorImage != null);
+        }
+
+        _localCursorEnabled = enable;
+
+        if (enable)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            var mousePos = new Vector2(Screen.width / 2f, Screen.height / 2f);
+            if (_localVirtualMouseInput != null && _localVirtualMouseInput.virtualMouse != null)
+                UnityEngine.InputSystem.LowLevel.InputState.Change(_localVirtualMouseInput.virtualMouse.position, mousePos);
+
+            _localCursorImage.rectTransform.anchoredPosition = mousePos;
+            _localCursorImage.enabled = true;
+        }
+        else
+        {
+            _localCursorImage.enabled = false;
+        }
+    }
+
+    private async void EnsureLocalCursorSpawned()
+    {
+        if (_localCursorImage != null) return;
+
+        RectTransform rt = SpawnCursor(syncCursorPosition: false, out Image image);
+        if (image == null) return;
+
+        _localCursorImage = image;
+        _localVirtualMouseInput = rt.GetComponent<VirtualMouseInput>();
+
+        Color playerColor = await GetColorForPlayer(Unity.Netcode.NetworkManager.Singleton.LocalClientId);
+        _localCursorImage.color = playerColor;
+
+        rt.pivot = new Vector2(0, 1);
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.zero;
+        rt.anchoredPosition = Vector2.zero;
+
+        _localCursorImage.enabled = _localCursorEnabled;
+    }
+
+    #endregion
 }

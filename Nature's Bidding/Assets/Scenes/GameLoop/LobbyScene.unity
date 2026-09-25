@@ -2812,9 +2812,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LobbyServerHandler
   ShowTopMostFoldoutHeaderGroup: 1
   acceptableAttackRange: 100
-  otherPlayersLayer:
+  playersLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   PlayersRequiredBeforeStart: 2
 --- !u!4 &1894731453 stripped
 Transform:
@@ -4023,6 +4023,10 @@ PrefabInstance:
     - target: {fileID: 8284688454692141082, guid: 52d083785ff752644921f473380db4c1, type: 3}
       propertyPath: m_Name
       value: Pause Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284688454692141082, guid: 52d083785ff752644921f473380db4c1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

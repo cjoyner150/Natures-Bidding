@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class NodeVisual : MonoBehaviour
+public class NodeVisual : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     // The mathematical ID of this node, assigned by the MapRenderer
     public int nodeId; 
@@ -16,20 +17,27 @@ public class NodeVisual : MonoBehaviour
         originalScale = transform.localScale;
     }
 
-    private void OnMouseEnter()
+    // Uses EventSystem pointer events (not legacy OnMouseX) so clicks register correctly with the Input System package.
+    public void OnPointerEnter(PointerEventData eventData)
     {
+        if (!IsReachable()) return;
+
         spriteRenderer.color = Color.yellow; // Highlight color
         transform.localScale = originalScale * 1.1f;
     }
 
-    private void OnMouseExit()
+    public void OnPointerExit(PointerEventData eventData)
     {
         spriteRenderer.color = originalColor;
         transform.localScale = originalScale;
     }
 
-    private void OnMouseDown()
+    public void OnPointerDown(PointerEventData eventData)
     {
+        bool reachable = IsReachable();
+        GameLogger.Log(LogSeverity.Debug, $"NodeVisual.OnPointerDown: nodeId={nodeId}, reachable={reachable}");
+        if (!reachable) return;
+
         // Find the Network Voting Manager
         MapVotingManager votingManager = FindFirstObjectByType<MapVotingManager>();
         
@@ -40,9 +48,16 @@ public class NodeVisual : MonoBehaviour
         }
     }
 
-    // A helper method called by MapRenderer to link this visual to the math data
+    private bool IsReachable()
+    {
+        MapVotingManager votingManager = FindFirstObjectByType<MapVotingManager>();
+        return votingManager == null || votingManager.IsNodeReachable(nodeId);
+    }
+
+    // A helper method called by MapRenderer to link this visual to the math data, once its final display scale is set.
     public void Setup(NodeData data)
     {
         nodeId = data.id;
+        originalScale = transform.localScale;
     }
 }

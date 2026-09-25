@@ -13,6 +13,11 @@ public class MapGenerator : NetworkBehaviour
     // An event we will trigger when the math is done, so the MapRenderer knows to start drawing
     public event Action<List<List<NodeData>>> OnMapDataGenerated;
 
+    // In-scene NetworkObjects spawn (and can generate) before other scene MonoBehaviours run Start(),
+    // so late subscribers need to be able to pull the already-generated graph instead of missing the event.
+    public bool HasGeneratedData { get; private set; }
+    public List<List<NodeData>> CurrentGraph => generatedGraph;
+
     // The final generated graph
     private List<List<NodeData>> generatedGraph = new List<List<NodeData>>();
     private int nextAvailableNodeId = 0;
@@ -24,16 +29,21 @@ public class MapGenerator : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        GameLogger.Log(LogSeverity.Debug, $"MapGenerator.OnNetworkSpawn called. IsServer={IsServer}, IsClient={IsClient}");
         if (IsServer)
         {
-            int seed = 0;
+            int seed;
 
             // ====================================================================
             // EXTERNAL HOOK
             // Set External seed on scene load.
             // ====================================================================
-            
-            if (useExternalSeed)
+
+            if (PersistentGameStateManager.Instance != null)
+            {
+                seed = PersistentGameStateManager.Instance.RequestMapSeed();
+            }
+            else if (useExternalSeed)
             {
                 seed = externalSeed;
             }
@@ -58,6 +68,7 @@ public class MapGenerator : NetworkBehaviour
 
     private void GenerateMapData(int seed)
     {
+        GameLogger.Log(LogSeverity.Debug, $"MapGenerator.GenerateMapData called with seed={seed}, mapSettings null={mapSettings == null}, availableBlueprints count={availableBlueprints?.Count ?? -1}");
         // Lock the random number generator so all clients get the exact same result
         UnityEngine.Random.InitState(seed);
 
@@ -70,6 +81,8 @@ public class MapGenerator : NetworkBehaviour
         CullUnreachableNodes();
 
         // Fire the event so the visual renderer knows it can start spawning sprites
+        HasGeneratedData = true;
+        GameLogger.Log(LogSeverity.Debug, $"MapGenerator.GenerateMapData: generated {generatedGraph.Count} floors ({generatedGraph.Sum(f => f.Count)} nodes). Invoking OnMapDataGenerated (has listeners={OnMapDataGenerated != null}).");
         OnMapDataGenerated?.Invoke(generatedGraph);
     }
 
@@ -228,5 +241,23 @@ public class MapGenerator : NetworkBehaviour
 
         // Fallback in case of floating point rounding errors
         return availableBlueprints[0]; 
+    }
+
+    public NodeData GetNodeById(int id)
+    {
+        foreach (var floor in generatedGraph)
+        {
+            foreach (var node in floor)
+            {
+                if (node.id == id) return node;
+            }
+        }
+
+        return null;
+    }
+
+    public bool IsFloorZeroNode(int id)
+    {
+        return generatedGraph.Count > 0 && generatedGraph[0].Any(node => node.id == id);
     }
 }

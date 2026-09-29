@@ -130,9 +130,9 @@ public class PlayerVisualEffectManager : MonoBehaviour
         }
     }
 
-    public void SpawnJumpParticles()
+    public void SpawnJumpParticles(bool isDoubleJump)
     {
-        audioFeedback?.PlayJump();
+        audioFeedback?.PlayJump(isDoubleJump);
 
         GameObject go = Instantiate(jumpParticle, gameObject.transform, false);
         GameLogger.Log(LogSeverity.Debug, $"SpawnJumpParticles called. Instantiated: {go != null}, activeInHierarchy: {go?.activeInHierarchy}");

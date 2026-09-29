@@ -1,3 +1,4 @@
+using UnityEngine.Serialization;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -7,10 +8,14 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
     private const float DeathEmitterLifetimeSeconds = 2f;
 
     [Header("Wwise")]
-    [SerializeField] private AK.Wwise.Event jumpEvent;
+    [FormerlySerializedAs("jumpEvent")]
+    [SerializeField] private AK.Wwise.Event doubleJumpEvent;
     [SerializeField] private AK.Wwise.Event deathEvent;
     [SerializeField] private AK.Wwise.Event warpEvent;
     [SerializeField] private AK.Wwise.Event fallEvent;
+    [FormerlySerializedAs("jumpGruntEvent")]
+    [SerializeField] private AK.Wwise.Event firstJumpGruntEvent;
+    [SerializeField] private AK.Wwise.Switch[] playerVoiceSwitches;
 
     [Header("Screen-Space Panning")]
     [SerializeField] private AK.Wwise.RTPC combatPan;
@@ -19,17 +24,25 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
 
     private bool deathSoundPlayed;
 
-    public void PlayJump()
+    public void PlayJump(bool isDoubleJump)
     {
-        if (jumpEvent == null || !jumpEvent.IsValid())
+        if (isDoubleJump)
+            PlayDoubleJump();
+        else
+            PlayFirstJumpGrunt();
+    }
+
+    private void PlayDoubleJump()
+    {
+        if (doubleJumpEvent == null || !doubleJumpEvent.IsValid())
         {
-            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_SFX_Jump Event is assigned.", this);
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_SFX_DoubleJump Event is assigned.", this);
             return;
         }
 
         ApplyScreenSpacePan(gameObject, transform.position);
 
-        jumpEvent.Post(gameObject);
+        doubleJumpEvent.Post(gameObject);
     }
 
     public void PlayWarp()
@@ -77,6 +90,34 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
 
         fallEvent.Post(emitter);
         Destroy(emitter, 5f);
+    }
+
+    private void PlayFirstJumpGrunt()
+    {
+        if (firstJumpGruntEvent == null || !firstJumpGruntEvent.IsValid())
+            return;
+
+        var player = GetComponent<PlayerNetworkBehavior>();
+        var registry = PersistentPlayerRegistry.Instance;
+
+        if (player == null || registry == null)
+            return;
+
+        var data = registry.GetByClientId(player.OwnerClientId);
+        if (data == null)
+            return;
+
+        int index = data.playerIndex;
+        if (playerVoiceSwitches == null || index < 0 || index >= playerVoiceSwitches.Length)
+            return;
+
+        var voice = playerVoiceSwitches[index];
+        if (voice == null || !voice.IsValid())
+            return;
+
+        voice.SetValue(gameObject);
+        ApplyScreenSpacePan(gameObject, transform.position);
+        firstJumpGruntEvent.Post(gameObject);
     }
 
     private void ApplyScreenSpacePan(GameObject emitter, Vector3 worldPosition)

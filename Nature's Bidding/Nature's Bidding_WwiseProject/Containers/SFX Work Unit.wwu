@@ -881,7 +881,7 @@
 								</Panner>
 							</PositioningInfo>
 						</RandomSequenceContainer>
-						<RandomSequenceContainer Name="SFX_Jump" ID="{B70E73D8-695C-4FDC-B1D2-332B528C0E7E}" ShortID="598569052">
+						<RandomSequenceContainer Name="SFX_DoubleJump" ID="{B70E73D8-695C-4FDC-B1D2-332B528C0E7E}" ShortID="598569052">
 							<PropertyList>
 								<Property Name="Pitch" Type="int32">
 									<ModifierList>

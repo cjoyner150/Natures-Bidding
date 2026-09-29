@@ -16,10 +16,11 @@ public class Jump : State
 
     protected override void OnEnter()
     {
+        bool isDoubleJump = ctx.currentJumps < ctx.maxJumps;
         ctx.currentJumps--;
         GameLogger.Log(LogSeverity.Debug, $"Jumping! Jumps now {ctx.currentJumps}");
         ctx.anim.SetTrigger("Jump");
-        NetworkVisualEffectManager.SpawnJumpEffectsOnPlayer?.Invoke(ctx.playerHealth.OwnerClientId);
+        NetworkVisualEffectManager.SpawnJumpEffectsOnPlayer?.Invoke(ctx.playerHealth.OwnerClientId, isDoubleJump);
 
         Vector3 vel = ctx.rb.linearVelocity;
         vel.y = Mathf.Sqrt(2f * Physics.gravity.magnitude * ctx.jumpHeight);

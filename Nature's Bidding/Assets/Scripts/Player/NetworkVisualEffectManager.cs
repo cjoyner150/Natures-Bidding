@@ -10,7 +10,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     // Locally call event from anywhere in normal code with the clientId
     public static Action<ulong> SpawnDashEffectsOnPlayer;
     public static Action<ulong> SpawnTeleportEffectsOnPlayer;
-    public static Action<ulong> SpawnJumpEffectsOnPlayer;
+    public static Action<ulong, bool> SpawnJumpEffectsOnPlayer;
     public static Action<ulong> SpawnParrySuccessReactEffectsOnPlayer;
     public static Action<ulong> SpawnConfettiEffectsOnPlayer;
     public static Action<ulong> SpawnBatConfusionEffectsOnPlayer;
@@ -127,13 +127,13 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         ToggleStarEffectsClientRpc(clientId, enabled);
     }
 
-    public void OnSpawnJumpEffectsOnPlayer(ulong clientId)
+    public void OnSpawnJumpEffectsOnPlayer(ulong clientId, bool isDoubleJump)
     {
         var localVFXManager = GetPlayerEffectManagerById(clientId);
         GameLogger.Log(LogSeverity.Debug, $"OnSpawnJumpEffectsOnPlayer clientId={clientId}, localVFXManager found={localVFXManager != null}");
-        if (localVFXManager != null) localVFXManager.SpawnJumpParticles();
+        if (localVFXManager != null) localVFXManager.SpawnJumpParticles(isDoubleJump);
 
-        SpawnJumpEffectsClientRpc(clientId);
+        SpawnJumpEffectsClientRpc(clientId, isDoubleJump);
     }
 
     public void OnSpawnStunEffectsOnPlayer(ulong clientId, int milliseconds)
@@ -289,13 +289,13 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     }
 
     [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
-    public void SpawnJumpEffectsClientRpc(ulong clientId)
+    public void SpawnJumpEffectsClientRpc(ulong clientId, bool isDoubleJump)
     {
         var playerEffectManager = GetPlayerEffectManagerById(clientId);
 
         if (playerEffectManager != null)
         {
-            playerEffectManager.SpawnJumpParticles();
+            playerEffectManager.SpawnJumpParticles(isDoubleJump);
         }
         else
         {

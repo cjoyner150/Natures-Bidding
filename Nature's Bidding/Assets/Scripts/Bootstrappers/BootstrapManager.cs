@@ -15,6 +15,9 @@ public class BootstrapManager : MonoBehaviour
 
     async void Start()
     {
+#if UNITY_EDITOR
+        GameLogger.CurrentLevel = LogSeverity.Debug; // TEMP: surface scene-load trace logs while debugging the Map transition
+#endif
         PersistentGameStateManager.Instance.SetLoadingState("Initializing...");
 #if !UNITY_EDITOR
         PersistentSteamManager.Instance.InitializeSteam();

@@ -17,64 +17,97 @@ MonoBehaviour:
   floors:
   - inspectorName: Floor 0
     maxWidth: 1
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 1
     maxWidth: 6
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 2
     maxWidth: 4
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 3
     maxWidth: 6
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 4
-    maxWidth: 4
+    maxWidth: 10
+    minNodesOverride: 10
+    maxNodesOverride: 10
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 5
     maxWidth: 5
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 6
     maxWidth: 4
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 7
     maxWidth: 6
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 8
     maxWidth: 3
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 9
     maxWidth: 4
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 10
     maxWidth: 5
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 11
     maxWidth: 4
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 12
     maxWidth: 6
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 13
     maxWidth: 3
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 14
     maxWidth: 6
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
+  minNodesPerFloor: 1
+  maxNodesPerFloor: 6
   pathsPerNodeMin: 1
   pathsPerNodeMax: 3
   maxConnectionDrift: 0.4
+  skipFloorConnectionChance: 0.2

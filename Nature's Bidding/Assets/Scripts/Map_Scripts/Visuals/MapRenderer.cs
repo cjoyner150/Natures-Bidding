@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MapRenderer : MonoBehaviour
@@ -15,17 +16,33 @@ public class MapRenderer : MonoBehaviour
     [Tooltip("Vertical distance between floors.")]
     public float floorSpacingY = 2.5f;
     public float targetNodeSize = 1.5f;
+    [Tooltip("Minimum world-space radius of each node's click target.")]
+    public float minimumNodeClickRadius = 1f;
+    [Tooltip("Duration of the return-to-node camera movement.")]
+    [SerializeField] private float returnFocusDuration = 0.7f;
 
     [Header("Organic Jitter")]
     public Vector2 maxJitter = new Vector2(0.3f, 0.3f);
 
     // Keep track of spawned objects to clean up if we reroll the map
     private List<GameObject> spawnedVisuals = new List<GameObject>();
+    private MapVotingManager votingManager;
+    private MapCameraController mapCameraController;
+    private int focusedNodeId = int.MinValue;
 
     private void Start()
     {
+        GameLogger.Log(LogSeverity.Debug, $"MapRenderer.Start: subscribing to mapGenerator (null={mapGenerator == null})");
         // Subscribe to the generator's completion event
         mapGenerator.OnMapDataGenerated += DrawMap;
+        votingManager = FindFirstObjectByType<MapVotingManager>();
+        mapCameraController = FindFirstObjectByType<MapCameraController>();
+        if (votingManager != null)
+            votingManager.CurrentNodeId.OnValueChanged += OnCurrentNodeChanged;
+
+        // The generator's NetworkObject can spawn (and generate) before this Start() runs, so pull any already-generated data.
+        if (mapGenerator.HasGeneratedData)
+            DrawMap(mapGenerator.CurrentGraph);
     }
 
     private void OnDestroy()
@@ -34,10 +51,14 @@ public class MapRenderer : MonoBehaviour
         {
             mapGenerator.OnMapDataGenerated -= DrawMap;
         }
+
+        if (votingManager != null)
+            votingManager.CurrentNodeId.OnValueChanged -= OnCurrentNodeChanged;
     }
 
     private void DrawMap(List<List<NodeData>> graph)
     {
+        GameLogger.Log(LogSeverity.Debug, $"MapRenderer.DrawMap called with {graph.Count} floors, {graph.Sum(f => f.Count)} total nodes.");
         ClearMap();
 
         foreach (var floor in graph)
@@ -94,6 +115,9 @@ public class MapRenderer : MonoBehaviour
                 
                 nodeObj.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
 
+                // Assign the node id and snapshot the normalized scale now that it's final (Awake ran before this scale was applied).
+                nodeObj.GetComponent<NodeVisual>().Setup(node, minimumNodeClickRadius);
+
                 // 5. Spawn Decorators
                 SpawnDecorators(node, nodeObj.transform);
             }
@@ -101,6 +125,38 @@ public class MapRenderer : MonoBehaviour
         if (lineDrawer != null)
         {
             lineDrawer.DrawLines(graph);
+        }
+
+        FocusOnCurrentNode();
+    }
+
+    private void OnCurrentNodeChanged(int previousNodeId, int currentNodeId)
+    {
+        FocusOnCurrentNode();
+    }
+
+    private void FocusOnCurrentNode()
+    {
+        if (votingManager == null)
+            votingManager = FindFirstObjectByType<MapVotingManager>();
+        if (mapCameraController == null)
+            mapCameraController = FindFirstObjectByType<MapCameraController>();
+        if (votingManager == null || mapCameraController == null)
+            return;
+
+        int currentNodeId = votingManager.CurrentNodeId.Value;
+        if (currentNodeId < 0 || currentNodeId == focusedNodeId)
+            return;
+
+        NodeVisual[] nodes = FindObjectsByType<NodeVisual>(FindObjectsSortMode.None);
+        foreach (NodeVisual node in nodes)
+        {
+            if (node.nodeId != currentNodeId)
+                continue;
+
+            focusedNodeId = currentNodeId;
+            mapCameraController.FocusOnMapPosition(node.transform.position, returnFocusDuration);
+            return;
         }
     }
 

@@ -90,7 +90,7 @@ public class ReadyManager : BaseGameServerHandler<ReadyManager>
 
         int totalPlayers = NetworkManager.Singleton.ConnectedClients.Count;
         if (_readyPlayers.Count >= totalPlayers)
-            PersistentGameStateManager.Instance?.RequestStartCombatPhase();
+            PersistentGameStateManager.Instance?.RequestReturnToMap();
     }
 
     [Rpc(SendTo.Server)]
@@ -99,6 +99,14 @@ public class ReadyManager : BaseGameServerHandler<ReadyManager>
         if (!IsServer) return;
 
         PersistentGameStateManager.Instance?.RequestStartCombatPhase();
+    }
+
+    [Rpc(SendTo.Server)]
+    public void ReturnToMapRpc()
+    {
+        if (!IsServer) return;
+
+        PersistentGameStateManager.Instance?.RequestReturnToMap();
     }
 
     [Rpc(SendTo.NotServer)]

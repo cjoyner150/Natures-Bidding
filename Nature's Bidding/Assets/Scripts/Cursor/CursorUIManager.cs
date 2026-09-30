@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 using UnityUtils;
 
@@ -102,4 +103,159 @@ public class CursorUIManager : Singleton<CursorUIManager>
         return go.GetComponent<RectTransform>();
     }
 
+    #region Local (non-networked) cursor for phases without a live player object (e.g. Map)
+
+    private Image _localCursorImage;
+    private VirtualMouseInput _localVirtualMouseInput;
+    private bool _localCursorEnabled;
+    private readonly Dictionary<ulong, Image> _remoteMapCursors = new Dictionary<ulong, Image>();
+    private readonly Dictionary<ulong, GameObject> _remoteMapCursorObjects = new Dictionary<ulong, GameObject>();
+    private readonly Dictionary<ulong, Vector2> _remoteMapCursorPositions = new Dictionary<ulong, Vector2>();
+    private MapCameraController _mapCameraController;
+
+    private void LateUpdate()
+    {
+        if (_mapCameraController == null)
+            _mapCameraController = FindFirstObjectByType<MapCameraController>();
+        if (_mapCameraController == null)
+            return;
+
+        foreach (var cursor in _remoteMapCursors)
+        {
+            if (cursor.Value == null || !_remoteMapCursorPositions.TryGetValue(cursor.Key, out Vector2 mapPosition))
+                continue;
+
+            cursor.Value.rectTransform.anchoredPosition = _mapCameraController.MapToScreenPosition(mapPosition);
+        }
+    }
+
+    public bool TryGetLocalMapCursorPosition(out Vector2 normalizedPosition)
+    {
+        if (!_localCursorEnabled || _localCursorImage == null || !_localCursorImage.enabled || Screen.width <= 0 || Screen.height <= 0)
+        {
+            normalizedPosition = Vector2.zero;
+            return false;
+        }
+
+        Vector2 screenPosition = _localCursorImage.rectTransform.anchoredPosition;
+        normalizedPosition = new Vector2(screenPosition.x / Screen.width, screenPosition.y / Screen.height);
+        return true;
+    }
+
+    public void UpdateRemoteMapCursor(ulong clientId, Vector2 mapPosition)
+    {
+        if (!_remoteMapCursors.TryGetValue(clientId, out Image cursorImage) || cursorImage == null)
+        {
+            RectTransform cursorTransform = SpawnCursor(syncCursorPosition: false, out cursorImage);
+            if (cursorTransform == null || cursorImage == null)
+                return;
+
+            cursorTransform.pivot = new Vector2(0, 1);
+            cursorTransform.anchorMin = Vector2.zero;
+            cursorTransform.anchorMax = Vector2.zero;
+            cursorTransform.anchoredPosition = Vector2.zero;
+
+            VirtualMouseInput virtualMouse = cursorTransform.GetComponentInChildren<VirtualMouseInput>();
+            if (virtualMouse != null) virtualMouse.enabled = false;
+
+            CursorInputHandler inputHandler = cursorTransform.GetComponentInChildren<CursorInputHandler>();
+            if (inputHandler != null) inputHandler.enabled = false;
+
+            cursorImage.raycastTarget = false;
+            _remoteMapCursors[clientId] = cursorImage;
+            _remoteMapCursorObjects[clientId] = cursorTransform.gameObject;
+            SetRemoteMapCursorColor(clientId, cursorImage);
+        }
+
+        _remoteMapCursorPositions[clientId] = mapPosition;
+        if (_mapCameraController == null)
+            _mapCameraController = FindFirstObjectByType<MapCameraController>();
+        if (_mapCameraController != null)
+            cursorImage.rectTransform.anchoredPosition = _mapCameraController.MapToScreenPosition(mapPosition);
+    }
+
+    private async void SetRemoteMapCursorColor(ulong clientId, Image cursorImage)
+    {
+        await UniTask.WaitUntil(() => PersistentPlayerRegistry.Instance != null);
+        Color playerColor = await GetColorForPlayer(clientId);
+        if (cursorImage != null)
+            cursorImage.color = playerColor;
+    }
+
+    public void RemoveRemoteMapCursor(ulong clientId)
+    {
+        if (!_remoteMapCursorObjects.TryGetValue(clientId, out GameObject cursorObject))
+            return;
+
+        if (cursorObject != null) Destroy(cursorObject);
+        _remoteMapCursors.Remove(clientId);
+        _remoteMapCursorObjects.Remove(clientId);
+        _remoteMapCursorPositions.Remove(clientId);
+    }
+
+    public void ClearRemoteMapCursors()
+    {
+        foreach (GameObject cursorObject in _remoteMapCursorObjects.Values)
+        {
+            if (cursorObject != null)
+                Destroy(cursorObject);
+        }
+
+        _remoteMapCursors.Clear();
+        _remoteMapCursorObjects.Clear();
+        _remoteMapCursorPositions.Clear();
+        _mapCameraController = null;
+    }
+
+    /// <summary>Shows/hides the fancy local-player cursor for scenes that have no spawned player object (e.g. Map).</summary>
+    public async void SetLocalCursorEnabled(bool enable)
+    {
+        if (!enable && _localCursorImage == null) return; // nothing spawned yet, nothing to disable
+
+        if (_localCursorImage == null)
+        {
+            EnsureLocalCursorSpawned();
+            await UniTask.WaitUntil(() => _localCursorImage != null);
+        }
+
+        _localCursorEnabled = enable;
+
+        if (enable)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            var mousePos = new Vector2(Screen.width / 2f, Screen.height / 2f);
+            if (_localVirtualMouseInput != null && _localVirtualMouseInput.virtualMouse != null)
+                UnityEngine.InputSystem.LowLevel.InputState.Change(_localVirtualMouseInput.virtualMouse.position, mousePos);
+
+            _localCursorImage.rectTransform.anchoredPosition = mousePos;
+            _localCursorImage.enabled = true;
+        }
+        else
+        {
+            _localCursorImage.enabled = false;
+        }
+    }
+
+    private async void EnsureLocalCursorSpawned()
+    {
+        if (_localCursorImage != null) return;
+
+        RectTransform rt = SpawnCursor(syncCursorPosition: false, out Image image);
+        if (image == null) return;
+
+        _localCursorImage = image;
+        _localVirtualMouseInput = rt.GetComponent<VirtualMouseInput>();
+
+        Color playerColor = await GetColorForPlayer(Unity.Netcode.NetworkManager.Singleton.LocalClientId);
+        _localCursorImage.color = playerColor;
+
+        rt.pivot = new Vector2(0, 1);
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.zero;
+        rt.anchoredPosition = Vector2.zero;
+
+        _localCursorImage.enabled = _localCursorEnabled;
+    }
+
+    #endregion
 }

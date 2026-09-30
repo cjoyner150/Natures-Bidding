@@ -11,6 +11,10 @@ using UnityEngine.UI;
 public class PlayerCursorNetworkBehavior : NetworkBehaviour
 {
     [SerializeField] private bool syncCursorPosition = true;
+    [SerializeField] private bool mapCursorRelay;
+
+    private const float MapCursorSyncInterval = 0.05f;
+    private float _nextMapCursorSyncTime;
 
     private NetworkVariable<Vector2> _normalizedCursorPos = new NetworkVariable<Vector2>(
         Vector2.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -22,12 +26,22 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
     private CursorInputHandler cursorInput;
     private VirtualMouseInput virtualMouseInput;
     private Image cursorImage;
+    private MapCameraController mapCameraController;
 
     private static List<PlayerCursorNetworkBehavior> _allInstances = new List<PlayerCursorNetworkBehavior>();
     private Vector2 interpTarget;
 
     public override void OnNetworkSpawn()
     {
+        if (mapCursorRelay)
+        {
+            mapCameraController = FindFirstObjectByType<MapCameraController>();
+            if (IsServer)
+                NetworkManager.Singleton.OnClientDisconnectCallback += OnMapCursorClientDisconnected;
+
+            return;
+        }
+
         GameLogger.Log(LogSeverity.Debug, $"OnNetworkSpawn for client {OwnerClientId}, IsLocal={IsOwner}");
 
         if (IsServer)
@@ -92,6 +106,16 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
+        if (mapCursorRelay)
+        {
+            if (IsServer && NetworkManager.Singleton != null)
+                NetworkManager.Singleton.OnClientDisconnectCallback -= OnMapCursorClientDisconnected;
+
+            CursorUIManager.Instance?.ClearRemoteMapCursors();
+            base.OnNetworkDespawn();
+            return;
+        }
+
         if (IsServer)
         {
             _allInstances.Remove(this);
@@ -202,11 +226,63 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
 
     private void Update()
     {
+        if (mapCursorRelay)
+        {
+            Vector2 normalizedScreenPosition = Vector2.zero;
+            if (IsClient && Time.unscaledTime >= _nextMapCursorSyncTime &&
+                CursorUIManager.Instance != null &&
+                CursorUIManager.Instance.TryGetLocalMapCursorPosition(out normalizedScreenPosition))
+            {
+                _nextMapCursorSyncTime = Time.unscaledTime + MapCursorSyncInterval;
+                if (mapCameraController == null)
+                    mapCameraController = FindFirstObjectByType<MapCameraController>();
+
+                Vector2 screenPosition = new Vector2(
+                    normalizedScreenPosition.x * Screen.width,
+                    normalizedScreenPosition.y * Screen.height);
+                if (mapCameraController != null &&
+                    mapCameraController.TryScreenToMapPosition(screenPosition, out Vector2 mapPosition))
+                    SyncMapCursorServerRpc(mapPosition);
+            }
+
+            return;
+        }
+
         if (!IsOwner && syncCursorPosition)
         {
             if (cursorImage.IsDestroyed() || cursorImage == null) return;
             cursorImage.rectTransform.anchoredPosition = Vector2.Lerp(cursorImage.rectTransform.anchoredPosition, interpTarget, Time.deltaTime * 10f);
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SyncMapCursorServerRpc(Vector2 mapPosition, ServerRpcParams rpcParams = default)
+    {
+        ulong clientId = rpcParams.Receive.SenderClientId;
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.ConnectedClients.ContainsKey(clientId))
+            return;
+
+        UpdateMapCursorClientRpc(clientId, mapPosition);
+    }
+
+    [ClientRpc]
+    private void UpdateMapCursorClientRpc(ulong clientId, Vector2 mapPosition)
+    {
+        if (NetworkManager.Singleton == null || clientId == NetworkManager.Singleton.LocalClientId)
+            return;
+
+        CursorUIManager.Instance?.UpdateRemoteMapCursor(clientId, mapPosition);
+    }
+
+    private void OnMapCursorClientDisconnected(ulong clientId)
+    {
+        RemoveMapCursorClientRpc(clientId);
+    }
+
+    [ClientRpc]
+    private void RemoveMapCursorClientRpc(ulong clientId)
+    {
+        CursorUIManager.Instance?.RemoveRemoteMapCursor(clientId);
     }
 
     public void DisableCursor()
@@ -271,7 +347,7 @@ public class PlayerCursorNetworkBehavior : NetworkBehaviour
         _normalizedCursorPos.OnValueChanged = null;
 
         if (cursorImage != null) Destroy(cursorImage.gameObject);
-        if (IsOwner && CursorUIManager.Instance != null && CursorUIManager.Instance.cursorEnabled)
+        if (!mapCursorRelay && IsOwner && CursorUIManager.Instance != null && CursorUIManager.Instance.cursorEnabled)
             Cursor.visible = true;
     }
 }

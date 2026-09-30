@@ -22,6 +22,14 @@ public class MapSettingsSO : ScriptableObject
         
         [Tooltip("Max capacity of nodes on this floor")]
         public int maxWidth;
+
+        [Tooltip("Overrides the shared minimum for this floor. Set to 0 to inherit the shared value.")]
+        [Min(0)]
+        public int minNodesOverride;
+
+        [Tooltip("Overrides the shared maximum for this floor. Set to 0 to inherit the shared value.")]
+        [Min(0)]
+        public int maxNodesOverride;
         
         [Tooltip("Chance (0.0 - 1.0) for a valid slot to actually spawn a node")]
         [Range(0f, 1f)] 
@@ -34,6 +42,24 @@ public class MapSettingsSO : ScriptableObject
     [Header("Floor Details")]
     public List<FloorConfig> floors = new List<FloorConfig>();
 
+    [Header("Node Count Per Floor")]
+    [Min(1)]
+    public int minNodesPerFloor = 1;
+    [Min(1)]
+    public int maxNodesPerFloor = 6;
+
+    public int GetMinimumNodesForFloor(int floorIndex)
+    {
+        FloorConfig floor = floors[floorIndex];
+        return floor.minNodesOverride > 0 ? floor.minNodesOverride : minNodesPerFloor;
+    }
+
+    public int GetMaximumNodesForFloor(int floorIndex)
+    {
+        FloorConfig floor = floors[floorIndex];
+        return floor.maxNodesOverride > 0 ? floor.maxNodesOverride : maxNodesPerFloor;
+    }
+
     [Header("Pathing Rules")]
     public int pathsPerNodeMin = 1;
     public int pathsPerNodeMax = 3;
@@ -42,9 +68,16 @@ public class MapSettingsSO : ScriptableObject
     [Range(0.1f, 1f)]
     public float maxConnectionDrift = 0.4f;
 
+    [Tooltip("Chance for each node to create one extra connection that skips the next floor.")]
+    [Range(0f, 1f)]
+    public float skipFloorConnectionChance = 0.2f;
+
     
     private void OnValidate()
     {
+        minNodesPerFloor = Mathf.Max(1, minNodesPerFloor);
+        maxNodesPerFloor = Mathf.Max(minNodesPerFloor, maxNodesPerFloor);
+
         if (floors == null) floors = new List<FloorConfig>();
 
         // Add new floors if the total increased
@@ -69,6 +102,8 @@ public class MapSettingsSO : ScriptableObject
         for (int i = 0; i < floors.Count; i++)
         {
             floors[i].inspectorName = "Floor " + i;
+            floors[i].minNodesOverride = Mathf.Max(0, floors[i].minNodesOverride);
+            floors[i].maxNodesOverride = Mathf.Max(0, floors[i].maxNodesOverride);
         }
     }
 }

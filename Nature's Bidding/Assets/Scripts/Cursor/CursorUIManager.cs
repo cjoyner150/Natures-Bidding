@@ -108,6 +108,104 @@ public class CursorUIManager : Singleton<CursorUIManager>
     private Image _localCursorImage;
     private VirtualMouseInput _localVirtualMouseInput;
     private bool _localCursorEnabled;
+    private readonly Dictionary<ulong, Image> _remoteMapCursors = new Dictionary<ulong, Image>();
+    private readonly Dictionary<ulong, GameObject> _remoteMapCursorObjects = new Dictionary<ulong, GameObject>();
+    private readonly Dictionary<ulong, Vector2> _remoteMapCursorPositions = new Dictionary<ulong, Vector2>();
+    private MapCameraController _mapCameraController;
+
+    private void LateUpdate()
+    {
+        if (_mapCameraController == null)
+            _mapCameraController = FindFirstObjectByType<MapCameraController>();
+        if (_mapCameraController == null)
+            return;
+
+        foreach (var cursor in _remoteMapCursors)
+        {
+            if (cursor.Value == null || !_remoteMapCursorPositions.TryGetValue(cursor.Key, out Vector2 mapPosition))
+                continue;
+
+            cursor.Value.rectTransform.anchoredPosition = _mapCameraController.MapToScreenPosition(mapPosition);
+        }
+    }
+
+    public bool TryGetLocalMapCursorPosition(out Vector2 normalizedPosition)
+    {
+        if (!_localCursorEnabled || _localCursorImage == null || !_localCursorImage.enabled || Screen.width <= 0 || Screen.height <= 0)
+        {
+            normalizedPosition = Vector2.zero;
+            return false;
+        }
+
+        Vector2 screenPosition = _localCursorImage.rectTransform.anchoredPosition;
+        normalizedPosition = new Vector2(screenPosition.x / Screen.width, screenPosition.y / Screen.height);
+        return true;
+    }
+
+    public void UpdateRemoteMapCursor(ulong clientId, Vector2 mapPosition)
+    {
+        if (!_remoteMapCursors.TryGetValue(clientId, out Image cursorImage) || cursorImage == null)
+        {
+            RectTransform cursorTransform = SpawnCursor(syncCursorPosition: false, out cursorImage);
+            if (cursorTransform == null || cursorImage == null)
+                return;
+
+            cursorTransform.pivot = new Vector2(0, 1);
+            cursorTransform.anchorMin = Vector2.zero;
+            cursorTransform.anchorMax = Vector2.zero;
+            cursorTransform.anchoredPosition = Vector2.zero;
+
+            VirtualMouseInput virtualMouse = cursorTransform.GetComponentInChildren<VirtualMouseInput>();
+            if (virtualMouse != null) virtualMouse.enabled = false;
+
+            CursorInputHandler inputHandler = cursorTransform.GetComponentInChildren<CursorInputHandler>();
+            if (inputHandler != null) inputHandler.enabled = false;
+
+            cursorImage.raycastTarget = false;
+            _remoteMapCursors[clientId] = cursorImage;
+            _remoteMapCursorObjects[clientId] = cursorTransform.gameObject;
+            SetRemoteMapCursorColor(clientId, cursorImage);
+        }
+
+        _remoteMapCursorPositions[clientId] = mapPosition;
+        if (_mapCameraController == null)
+            _mapCameraController = FindFirstObjectByType<MapCameraController>();
+        if (_mapCameraController != null)
+            cursorImage.rectTransform.anchoredPosition = _mapCameraController.MapToScreenPosition(mapPosition);
+    }
+
+    private async void SetRemoteMapCursorColor(ulong clientId, Image cursorImage)
+    {
+        await UniTask.WaitUntil(() => PersistentPlayerRegistry.Instance != null);
+        Color playerColor = await GetColorForPlayer(clientId);
+        if (cursorImage != null)
+            cursorImage.color = playerColor;
+    }
+
+    public void RemoveRemoteMapCursor(ulong clientId)
+    {
+        if (!_remoteMapCursorObjects.TryGetValue(clientId, out GameObject cursorObject))
+            return;
+
+        if (cursorObject != null) Destroy(cursorObject);
+        _remoteMapCursors.Remove(clientId);
+        _remoteMapCursorObjects.Remove(clientId);
+        _remoteMapCursorPositions.Remove(clientId);
+    }
+
+    public void ClearRemoteMapCursors()
+    {
+        foreach (GameObject cursorObject in _remoteMapCursorObjects.Values)
+        {
+            if (cursorObject != null)
+                Destroy(cursorObject);
+        }
+
+        _remoteMapCursors.Clear();
+        _remoteMapCursorObjects.Clear();
+        _remoteMapCursorPositions.Clear();
+        _mapCameraController = null;
+    }
 
     /// <summary>Shows/hides the fancy local-player cursor for scenes that have no spawned player object (e.g. Map).</summary>
     public async void SetLocalCursorEnabled(bool enable)

@@ -354,7 +354,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
                 BeginCombatPhaseServer();
                 break;
             case NodeType.Shop:
-                BeginBiddingPhaseServer();
+                LoadBiddingLevel();
                 break;
             default:
                 // Tarot/Clense/Curse nodes have no implementation yet — stub back to the map so the loop doesn't stall.

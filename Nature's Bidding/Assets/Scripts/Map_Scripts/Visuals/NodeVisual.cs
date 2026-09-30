@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using MoreMountains.Feedbacks;
 
 public class NodeVisual : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
@@ -8,7 +9,12 @@ public class NodeVisual : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
-    private Vector3 originalScale; 
+    private Vector3 originalScale;
+    private MapVotingManager votingManager;
+
+    [Header("Feel Feedbacks")]
+    [SerializeField] private MMF_Player hoverFeedback;
+    [SerializeField] private MMF_Player clickFeedback;
 
     private void Awake()
     {
@@ -17,19 +23,40 @@ public class NodeVisual : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         originalScale = transform.localScale;
     }
 
+    private void Start()
+    {
+        votingManager = FindFirstObjectByType<MapVotingManager>();
+        if (votingManager != null)
+            votingManager.CurrentNodeId.OnValueChanged += OnCurrentNodeChanged;
+
+        RefreshReachabilityVisual();
+    }
+
+    private void OnDestroy()
+    {
+        if (votingManager != null)
+            votingManager.CurrentNodeId.OnValueChanged -= OnCurrentNodeChanged;
+    }
+
     // Uses EventSystem pointer events (not legacy OnMouseX) so clicks register correctly with the Input System package.
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!IsReachable()) return;
 
         spriteRenderer.color = Color.yellow; // Highlight color
-        transform.localScale = originalScale * 1.1f;
+        if (hoverFeedback != null)
+            hoverFeedback.PlayFeedbacks();
+        else
+            transform.localScale = originalScale * 1.1f;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        spriteRenderer.color = originalColor;
-        transform.localScale = originalScale;
+        if (hoverFeedback != null)
+            hoverFeedback.PlayFeedbacksInReverse();
+        else
+            transform.localScale = originalScale;
+        RefreshReachabilityVisual();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -37,6 +64,8 @@ public class NodeVisual : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         bool reachable = IsReachable();
         GameLogger.Log(LogSeverity.Debug, $"NodeVisual.OnPointerDown: nodeId={nodeId}, reachable={reachable}");
         if (!reachable) return;
+
+        clickFeedback?.PlayFeedbacks();
 
         // Find the Network Voting Manager
         MapVotingManager votingManager = FindFirstObjectByType<MapVotingManager>();
@@ -50,14 +79,33 @@ public class NodeVisual : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private bool IsReachable()
     {
-        MapVotingManager votingManager = FindFirstObjectByType<MapVotingManager>();
+        if (votingManager == null)
+            votingManager = FindFirstObjectByType<MapVotingManager>();
+
         return votingManager == null || votingManager.IsNodeReachable(nodeId);
     }
 
+    private void OnCurrentNodeChanged(int previousNodeId, int currentNodeId)
+    {
+        RefreshReachabilityVisual();
+    }
+
+    private void RefreshReachabilityVisual()
+    {
+        spriteRenderer.color = IsReachable() ? originalColor : Color.gray;
+    }
+
     // A helper method called by MapRenderer to link this visual to the math data, once its final display scale is set.
-    public void Setup(NodeData data)
+    public void Setup(NodeData data, float minimumClickRadius)
     {
         nodeId = data.id;
         originalScale = transform.localScale;
+
+        CircleCollider2D clickCollider = GetComponent<CircleCollider2D>();
+        if (clickCollider != null)
+        {
+            float scale = Mathf.Max(Mathf.Abs(transform.lossyScale.x), 0.0001f);
+            clickCollider.radius = Mathf.Max(clickCollider.radius, minimumClickRadius / scale);
+        }
     }
 }

@@ -11,7 +11,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     // Locally call event from anywhere in normal code with the clientId
     public static Action<PlayerContext> SpawnDashEffectsOnPlayer;
     public static Action<PlayerContext> SpawnTeleportEffectsOnPlayer;
-    public static Action<PlayerContext> SpawnJumpEffectsOnPlayer;
+    public static Action<PlayerContext, bool> SpawnJumpEffectsOnPlayer;
     public static Action<PlayerContext> SpawnParrySuccessReactEffectsOnPlayer;
     public static Action<PlayerContext> SpawnConfettiEffectsOnPlayer;
     public static Action<PlayerContext> SpawnBatConfusionEffectsOnPlayer;
@@ -138,13 +138,13 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
             ToggleStarEffectsClientRpc(clientId, enabled);
     }
 
-    public void OnSpawnJumpEffectsOnPlayer(PlayerContext clientCtx)
+    public void OnSpawnJumpEffectsOnPlayer(PlayerContext clientCtx, bool isDoubleJump)
     {
         var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
-        if (localVFXManager != null) localVFXManager.SpawnJumpParticles();
+        if (localVFXManager != null) localVFXManager.SpawnJumpParticles(isDoubleJump);
 
         if (TryGetClientId(clientCtx, out var clientId))
-            SpawnJumpEffectsClientRpc(clientId);
+            SpawnJumpEffectsClientRpc(clientId, isDoubleJump);
     }
 
     public void OnSpawnStunEffectsOnPlayer(PlayerContext clientCtx, int milliseconds)
@@ -303,13 +303,13 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     }
 
     [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
-    public void SpawnJumpEffectsClientRpc(ulong clientId)
+    public void SpawnJumpEffectsClientRpc(ulong clientId, bool isDoubleJump)
     {
         var playerEffectManager = GetPlayerEffectManagerById(clientId);
 
         if (playerEffectManager != null)
         {
-            playerEffectManager.SpawnJumpParticles();
+            playerEffectManager.SpawnJumpParticles(isDoubleJump);
         }
         else
         {

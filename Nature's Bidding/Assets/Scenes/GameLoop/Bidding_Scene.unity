@@ -4674,28 +4674,28 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   upgradePool:
-  - {fileID: 11400000, guid: f85ea190fe4daf145a278a39318d213f, type: 2}
-  - {fileID: 11400000, guid: fa505c0e77f86a04f828160998ebd500, type: 2}
-  - {fileID: 11400000, guid: 34cd94c67f98f96419a81990abaf910b, type: 2}
-  - {fileID: 11400000, guid: e60f1cfec7dadec41bbd1291d3e31fa2, type: 2}
-  - {fileID: 11400000, guid: d9d50579f5f6be14b9f3959303462c56, type: 2}
+  - {fileID: 11400000, guid: 99f506a93a88c3e4782dca9a520d8441, type: 2}
+  - {fileID: 11400000, guid: 1de00d3bd67b8cf478931b1be7adaa60, type: 2}
+  - {fileID: 11400000, guid: a2ad81717b185044ab8d4b3914970337, type: 2}
+  - {fileID: 11400000, guid: 9d81410af0c247b45aec57092f714b44, type: 2}
+  - {fileID: 11400000, guid: 0a409884bfe6d7e498775b4673ab570e, type: 2}
+  - {fileID: 11400000, guid: 88950a5b3fc6a7d44bcd47e75e6545c9, type: 2}
+  - {fileID: 11400000, guid: 6dfa58655d7d9804bacd39410cf9d87a, type: 2}
   - {fileID: 11400000, guid: b730c02777d41b441bb9600ac90fae34, type: 2}
   - {fileID: 11400000, guid: de6e513214dba8047aeb8441aaad4a56, type: 2}
   - {fileID: 11400000, guid: bc03baa0d73bf924996ddb6f47644168, type: 2}
   - {fileID: 11400000, guid: 5720e77d3a15b3340b1e16c0363402a0, type: 2}
   - {fileID: 11400000, guid: d2e31dbc5df011a42b9dcb28f3814a92, type: 2}
-  - {fileID: 11400000, guid: 99f506a93a88c3e4782dca9a520d8441, type: 2}
-  - {fileID: 11400000, guid: 1de00d3bd67b8cf478931b1be7adaa60, type: 2}
-  - {fileID: 11400000, guid: d2c975c17955b824e8853e87a938a4b6, type: 2}
-  - {fileID: 11400000, guid: fd6dd2899a86f2c4396975f869ddb122, type: 2}
-  - {fileID: 11400000, guid: 0e49e4c9dcb8904408aac00578a8143e, type: 2}
-  - {fileID: 11400000, guid: 8922d096f9b1c07418ec9f36c851db9f, type: 2}
-  - {fileID: 11400000, guid: 38ca2721ee63f1b42821d0eadd517165, type: 2}
-  - {fileID: 11400000, guid: 008491dd8aeda5a4a9988aaee21fae2c, type: 2}
-  - {fileID: 11400000, guid: 7189a587dbdb0a049a5c2882cfc3fac9, type: 2}
-  - {fileID: 11400000, guid: 15a823fb60eca0041b1d7aaa1f706a08, type: 2}
-  - {fileID: 11400000, guid: b2c90b93f1e33ef4da391ae129d4e4f7, type: 2}
-  - {fileID: 11400000, guid: 6f020b4f74df24943959aef72de28fae, type: 2}
+  - {fileID: 11400000, guid: 4af1052f2db4c4e40a9e9a2dfcc2414e, type: 2}
+  - {fileID: 11400000, guid: fc0c78229caa1df4b880363befa2a37a, type: 2}
+  - {fileID: 11400000, guid: be208463901932246aa04f765ee62b4e, type: 2}
+  - {fileID: 11400000, guid: dbfc4bd0101142441923aa7868007ac2, type: 2}
+  - {fileID: 11400000, guid: 2d058aa94bb230845b6fd6358778cd6f, type: 2}
+  - {fileID: 11400000, guid: c182988f8a5b0344b8b0c4df5125d68a, type: 2}
+  - {fileID: 11400000, guid: dfe972373acd3f04e8a287c0a40de848, type: 2}
+  - {fileID: 11400000, guid: b7e0999a739632e4a854e68643666780, type: 2}
+  - {fileID: 11400000, guid: 6588d60f258181e4fa454d5afc9b351c, type: 2}
+  - {fileID: 11400000, guid: 7783ff921ad72a346bcd2dc1eb3559a3, type: 2}
   shopPanelsContainer: {fileID: 1172933857}
   playerShopPanelPrefab: {fileID: 7786274424010861874, guid: 1fdebb8aba146d143b750da5f9ee1511, type: 3}
   smallPotCost: 100

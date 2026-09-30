@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{94D91E83-BF0F-B10A-9C9E-BED8CD5C1913}",
+    "Hash": "{5E7DBC01-E191-3ED3-8FCC-4C3A860889CB}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -72,10 +72,45 @@
     ],
     "GameParameters": [
      {
+      "Id": "1006694123",
+      "Name": "Music_Volume",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Music_Volume",
+      "GUID": "{450CA114-61C2-454D-B618-14824FE3AC2E}",
+      "Color": "3"
+     },
+     {
+      "Id": "1564184899",
+      "Name": "SFX_Volume",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\SFX_Volume",
+      "GUID": "{D00AF880-C149-46F7-BB98-B222FF4DEEFE}",
+      "Color": "3"
+     },
+     {
+      "Id": "1719345792",
+      "Name": "UI_Volume",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\UI_Volume",
+      "GUID": "{8BBCB12F-7467-4482-A699-23AC78AC2A48}",
+      "Color": "3"
+     },
+     {
       "Id": "2369427653",
       "Name": "Combat_Pan",
       "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
       "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
+     },
+     {
+      "Id": "2901143258",
+      "Name": "Ambience_Volume",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Ambience_Volume",
+      "GUID": "{C5C86D6B-0722-4D1A-8CAE-B66D8DCF527A}",
+      "Color": "3"
+     },
+     {
+      "Id": "4179668880",
+      "Name": "Master_Volume",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Master_Volume",
+      "GUID": "{DD363741-F720-47AF-B71F-B060BDAF9B6F}",
       "Color": "3"
      }
     ],
@@ -318,6 +353,6 @@
     ]
    }
   ],
-  "FileHash": "{DF5CC041-6073-18A4-6222-460E87732905}"
+  "FileHash": "{C95752F6-4A79-3268-49A8-C7ABC8468330}"
  }
 }

@@ -21,6 +21,13 @@ State	ID	Name	State Group			Notes
 	1593864692	Defeat	Combat_Result			
 	2716678721	Victory	Combat_Result			
 
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	1006694123	Music_Volume			\Default Work Unit\Music_Volume	
+	1564184899	SFX_Volume			\Default Work Unit\SFX_Volume	
+	1719345792	UI_Volume			\Default Work Unit\UI_Volume	
+	2901143258	Ambience_Volume			\Default Work Unit\Ambience_Volume	
+	4179668880	Master_Volume			\Default Work Unit\Master_Volume	
+
 Audio Bus	ID	Name			Wwise Object Path	Notes
 	85412153	Ambience			\Default Work Unit\Main Audio Bus\Ambience	
 	393239870	SFX			\Default Work Unit\Main Audio Bus\SFX	

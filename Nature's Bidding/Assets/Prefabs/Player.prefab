@@ -862,7 +862,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c0bac34f78422bb08c39bfcc3a3a98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAudioFeedback
-  jumpEvent:
+  doubleJumpEvent:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: e4ed77791e1f4034aa2eac2d12badef5, type: 2}
@@ -874,6 +874,23 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: cee7765acb594cefb8fed4d92395aa41, type: 2}
+  firstJumpGruntEvent:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: c23a2cadad434d43aa5e0362ddab714f, type: 2}
+  playerVoiceSwitches:
+  - idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: c8330a336302460082badf9be10eabcb, type: 2}
+  - idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 412f6ccdb521429980278a4d312afcd5, type: 2}
+  - idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 80e6898edec04800898e239571996e98, type: 2}
+  - idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: e0d83cbe202547a1bf74140737c75492, type: 2}
   combatPan:
     idInternal: 0
     valueGuidInternal: 

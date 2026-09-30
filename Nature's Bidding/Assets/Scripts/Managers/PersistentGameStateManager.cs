@@ -12,9 +12,8 @@ using Steamworks;
 
 public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 {
-    public enum GameFlowPhase { Lobby, Bidding, ShopReview, Combat }
-
     private const string BiddingSceneName = "Bidding_Scene";
+    private const string ShoppingSceneName = "Shop_Scene";
     private const string VolcanoCombatSceneName = "LavaGameplay";
     private const string CliffsCombatSceneName = "CliffGameplay";
 
@@ -29,10 +28,6 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     [Header("Debug")]
     [SerializeField] bool skipToCombat;
-
-    [Header("Game Flow")]
-    [SerializeField] private GameObject biddingCanvas;
-    [SerializeField] private GameObject shopCanvas;
 
     [Header("Flow Managers")]
     [SerializeField] private BiddingManager biddingManager;
@@ -202,7 +197,9 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     {
         SetLoadingState("Loading bidding...", true);
 
-        State = GameState.Bidding;
+        //State = GameState.Bidding;
+        //await LoadNetworkedSceneAsync(BiddingSceneName);
+
         await LoadNetworkedSceneAsync(BiddingSceneName);
     }
 
@@ -235,19 +232,21 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         ClearLoadingState();
     }
 
+    public void OnShopSceneReady()
+    {
+        State = GameState.Shopping;
+        ClearLoadingState();
+    }
+
     public void ConfigureGameFlowReferences(
-        GameObject newBiddingCanvas,
-        GameObject newShopCanvas,
         BiddingManager newBiddingManager,
         ShopManager newShopManager,
         ReadyManager newReadyManager)
     {
         GameLogger.Log(LogSeverity.Debug, "Configuring game flow references...");
-        biddingCanvas = newBiddingCanvas;
-        shopCanvas = newShopCanvas;
-        biddingManager = newBiddingManager;
-        shopManager = newShopManager;
-        readyManager = newReadyManager;
+        biddingManager ??= newBiddingManager;
+        shopManager ??= newShopManager;
+        readyManager ??= newReadyManager;
     }
 
     public async UniTask InitializeBiddingFlowIfServer()
@@ -255,26 +254,6 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         await UniTask.Yield();
         if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
             BeginBiddingPhaseServer();
-    }
-
-    public void SyncFlowPhase(GameFlowPhase phase)
-    {
-        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
-            return;
-
-        ApplyFlowPhase(phase);
-    }
-
-    public void RequestStartShopPhase()
-    {
-
-        if (NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)
-        {
-            ShopManager.Instance?.StartShopPhaseRpc();
-            return;
-        }
-
-        BeginShopPhaseServer();
     }
 
     public void RequestStartBiddingPhase()
@@ -304,7 +283,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
         readyManager?.ResetForNewPhase();
-        ApplyFlowPhase(GameFlowPhase.Bidding);
+        ApplyFlowPhase(GameState.Bidding);
         biddingManager?.BeginBiddingPhase();
     }
 
@@ -313,14 +292,14 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
         readyManager?.ResetForNewPhase();
-        ApplyFlowPhase(GameFlowPhase.ShopReview);
+        ApplyFlowPhase(GameState.Shopping);
     }
 
     public void BeginCombatPhaseServer()
     {
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
-        ApplyFlowPhase(GameFlowPhase.Combat);
+        ApplyFlowPhase(GameState.Combat);
         readyManager?.SyncCombatStateRpc();
         LoadCombatLevel();
     }
@@ -512,51 +491,19 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         }
     }
 
-    private void ApplyFlowPhase(GameFlowPhase phase)
+    private void ApplyFlowPhase(GameState state)
     {
-        if (biddingCanvas == null || shopCanvas == null)
+        State = state;
+
+        switch (state)
         {
-            GameLogger.Log(LogSeverity.Warning, $"ApplyFlowPhase({phase}) called before canvases were configured. Deferring.");
-            WaitForCanvasesThenApply(phase).Forget();
-            return;
-        }
-
-        ApplyFlowPhaseInternal(phase);
-    }
-
-    private async UniTaskVoid WaitForCanvasesThenApply(GameFlowPhase phase)
-    {
-        await UniTask.WaitUntil(() => biddingCanvas != null && shopCanvas != null);
-        ApplyFlowPhaseInternal(phase);
-    }
-
-    private void ApplyFlowPhaseInternal(GameFlowPhase phase)
-    {
-        switch (phase)
-        {
-            case GameFlowPhase.Lobby: State = GameState.Lobby; break;
-            case GameFlowPhase.Bidding: State = GameState.Bidding; break;
-            case GameFlowPhase.ShopReview: State = GameState.Shopping; break;
-            case GameFlowPhase.Combat: State = GameState.Combat; break;
-        }
-
-        biddingCanvas.SetActive(phase == GameFlowPhase.Bidding);
-        shopCanvas.SetActive(phase == GameFlowPhase.ShopReview);
-
-        if (phase == GameFlowPhase.ShopReview)
-            PointerNPC.Instance?.HideSpeechBubble();
-
-        switch (phase)
-        {
-            case GameFlowPhase.Bidding:
+            case GameState.Bidding:
                 biddingManager?.OnBiddingPhaseStart();
                 break;
-            case GameFlowPhase.ShopReview:
+            case GameState.Shopping:
                 shopManager?.OnShopPhaseStart();
                 break;
-            case GameFlowPhase.Combat:
-                biddingCanvas.SetActive(false);
-                shopCanvas.SetActive(false);
+            case GameState.Combat:
                 break;
         }
     }

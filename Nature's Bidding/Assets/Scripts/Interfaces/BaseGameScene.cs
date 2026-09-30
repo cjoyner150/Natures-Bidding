@@ -9,7 +9,8 @@ public abstract class BaseGameScene
         gameSceneConfig = so;
     }
 
-    public void OnLoadScene() { }
+    public void OnClientLoadScene() { }
+    public void OnHostLoadScene() { }
 }
 
 [CreateAssetMenu(menuName = "Configs/Game Scene Config")]

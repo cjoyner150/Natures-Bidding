@@ -43,13 +43,11 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
     public int rerollCost   = 15;
 
     [Header("Navigation")]
-    public Button   backToBiddingButton;        // Host only
     public TMP_Text phaseLabel;
 
     [Header("Shop Visuals")]
     public GameObject shopCanvasRoot;
     public GameObject playerCrosshairPrefab;
-    public GameObject biddingCanvas;
 
     #endregion
 
@@ -72,14 +70,25 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
 
     void Awake() { }
 
-    public override void OnNetworkSpawn()
+    public async override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        backToBiddingButton?.gameObject.SetActive(IsHost);
         BuildUpgradeLookup();
-        SetShopBackgroundVisible(false);
 
-        PersistentGameStateManager.Instance?.OnBiddingSceneReady();
+        var flowManager = PersistentGameStateManager.Instance;
+        if (flowManager != null)
+        {
+            var shopManager = ShopManager.Instance != null ? ShopManager.Instance : FindAnyObjectByType<ShopManager>();
+            var readyManager = ReadyManager.Instance != null ? ReadyManager.Instance : FindAnyObjectByType<ReadyManager>();
+
+            await SceneReadiness.WaitForAllPlayersLoaded();
+
+            flowManager.ConfigureGameFlowReferences(null, this, readyManager);
+            flowManager.OnShopSceneReady();
+
+            if (IsServer)
+                flowManager.BeginShopPhaseServer();
+        }
     }
 
     public void OnShopPhaseStart()
@@ -101,15 +110,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
     [Rpc(SendTo.Everyone)]
     public void OnShopPhaseStartEveryoneRpc()
     {
-        biddingCanvas.SetActive(false);
-    }
-
-    [Rpc(SendTo.Server)]
-    public void StartShopPhaseRpc()
-    {
-        if (!IsServer) return;
-
-        PersistentGameStateManager.Instance?.BeginShopPhaseServer();
+        // stubbed for now
     }
 
     public void SpawnAllPlayerCrosshairs()

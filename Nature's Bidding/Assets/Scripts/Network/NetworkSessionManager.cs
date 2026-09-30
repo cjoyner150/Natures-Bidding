@@ -143,6 +143,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
         NetworkManager.Singleton.SceneManager.OnSceneEvent += OnNetworkSceneEvent;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnDisconnectedFromHost;
         NetworkManager.Singleton.OnTransportFailure += OnTransportFailure;
+        SceneReadiness.Attach();
 
         if (session.IsHost)
         {
@@ -157,6 +158,7 @@ public class NetworkSessionManager : Singleton<NetworkSessionManager>
 
         session.Deleted -= OnSessionDeleted;
         session.RemovedFromSession -= OnRemovedFromSession;
+        SceneReadiness.Detach();
 
         if (NetworkManager.Singleton?.SceneManager != null)
         {

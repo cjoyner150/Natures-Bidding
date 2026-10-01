@@ -229,8 +229,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         ShowTransitionMessageRpc("Bidding over! Heading to the shop...");
         yield return new WaitForSeconds(2f);
         
-
-        // TODO - Return to map
+        PersistentGameStateManager.Instance?.RequestReturnToMap();
     }
 
     IEnumerator RunSingleRound()

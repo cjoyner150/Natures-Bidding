@@ -40,9 +40,9 @@ MonoBehaviour:
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 4
-    maxWidth: 10
-    minNodesOverride: 10
-    maxNodesOverride: 10
+    maxWidth: 6
+    minNodesOverride: 0
+    maxNodesOverride: 0
     nodeDensity: 0.8
     forcedBlueprint: {fileID: 0}
   - inspectorName: Floor 5

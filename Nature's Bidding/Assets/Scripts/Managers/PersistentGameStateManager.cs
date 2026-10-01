@@ -204,11 +204,13 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     public async void LoadBiddingLevel()
     {
         SetLoadingState("Loading bidding...", true);
-
-        //State = GameState.Bidding;
-        //await LoadNetworkedSceneAsync(BiddingSceneName);
-
         await LoadNetworkedSceneAsync(BiddingSceneName);
+    }
+
+    public async void LoadShopLevel()
+    {
+        SetLoadingState("Loading shop...", true);
+        await LoadNetworkedSceneAsync(ShoppingSceneName);
     }
 
     public async void LoadMapLevel()
@@ -339,6 +341,9 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
                 BeginCombatPhaseServer();
                 break;
             case NodeType.Shop:
+                LoadShopLevel();
+                break;
+            case NodeType.Bidding:
                 LoadBiddingLevel();
                 break;
             default:

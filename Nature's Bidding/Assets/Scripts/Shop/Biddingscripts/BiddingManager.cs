@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using TMPro;
 using Cysharp.Threading.Tasks;
+using UnityEngine.Playables;
+using System.Linq;
 
 /// <summary>
 /// BiddingManager — Simultaneous reverse auction.
@@ -23,17 +25,22 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
 {
     #region Inspector Fields
 
+    [SerializeField] PlayableDirector openingCutsceneDirector;
+
     [Header("2D HUD")]
+    [SerializeField] private BiddingControlPanel biddingControlPanelPrefab;
+    [SerializeField] private RectTransform biddingControlPanelParent;
     [SerializeField] private GameObject serializedBiddingCanvas;
     [SerializeField] private GameObject serializedShopCanvas;
     public GameObject     bidHUDPanel;
     public RectTransform   bidDisplayCard;     // Card/sprite root to flip when the bid changes
-    public TMP_Text       bidAmountDisplay;   // Number shown on the card/sprite
     public TMP_Text       statusText;
     public TMP_Text       timerText;
-    public TMP_Text       goldText;
     public TMP_Text       roundCounterText;   // "Round 2 / 4"
     public TMP_Text       waitingCountText;   // "2 / 4 bids submitted"
+    private TextMeshProUGUI       bidAmountDisplay;   // Number shown on the card/sprite
+    private TextMeshProUGUI goldText;
+    private BiddingControlPanel[] biddingControlPanels;
 
     [Header("Results Panel")]
     public GameObject resultsPanel;
@@ -121,7 +128,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         bidSubmitAction.performed -= OnSubmitBid;
     }
 
-    public override void OnNetworkSpawn()
+    public async override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
 
@@ -129,6 +136,10 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         if (flowManager != null)
         {
             var readyManager = ReadyManager.Instance != null ? ReadyManager.Instance : FindAnyObjectByType<ReadyManager>();
+
+            await SceneReadiness.WaitForAllPlayersLoaded();
+
+            InitializePlayerUI();
 
             flowManager.ConfigureGameFlowReferences(this, null, readyManager);
             flowManager.OnBiddingSceneReady();
@@ -168,7 +179,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     private void ShowOpeningInstructionsRpc()
     {
         PointerNPC.Instance?.CelebrateOne();
-        PointerNPC.Instance?.SayOpeningInstructions();
+        openingCutsceneDirector?.Play();
     }
 
     private async void InitializeGoldAsync()
@@ -182,6 +193,29 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         }
 
         goldText.text = localPlayer.gold.ToString();
+    }
+
+    private void InitializePlayerUI()
+    {
+        List<PlayerData> players = PersistentPlayerRegistry.Instance.GetAllPlayers().OrderBy(p => p.playerIndex).ToList();
+
+        biddingControlPanels = new BiddingControlPanel[players.Count];
+
+        foreach (var player in players)
+        {
+            bool isLocalPlayer = player.clientId == NetworkManager.Singleton.LocalClientId;
+            var controlPanel = Instantiate(biddingControlPanelPrefab, biddingControlPanelParent);
+            biddingControlPanels[player.playerIndex] = controlPanel;
+
+            if (isLocalPlayer)
+            {
+                controlPanel.InitializeAsLocalPlayer(player.playerIndex, out bidAmountDisplay, out goldText);
+            }
+            else
+            {
+                controlPanel.InitializeAsEnemyPlayer(player.playerIndex);
+            }
+        }
     }
 
     #endregion
@@ -203,11 +237,13 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         TotalRounds.Value    = playerCount;   // One round per player
         CurrentRound.Value   = 0;
 
-        StartCoroutine(BeginRoundsWhenPlayersReady());
+        // Run the opening cutscene, then start the rounds after it finishes.
+        openingCutsceneDirector.stopped += (pd) =>
+        {
+            GameLogger.Log(LogSeverity.Debug, "Cutscene finished.");
+            StartCoroutine(RunAllRounds());
+        };
     }
-
-    [Rpc(SendTo.Server)]
-    public void StartBiddingPhaseRpc() => BeginBiddingPhase();
 
     public void OnPlayerDeath(ulong clientId) { }
 
@@ -227,7 +263,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
 
         // All rounds complete
         ShowTransitionMessageRpc("Bidding over! Heading to the shop...");
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4.5f);
         
         PersistentGameStateManager.Instance?.RequestReturnToMap();
     }
@@ -289,47 +325,47 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         yield return new WaitForSeconds(resultsDisplayTime);
     }
 
-    IEnumerator BeginRoundsWhenPlayersReady()
-    {
-        int waitedFrames = 0;
+    //IEnumerator BeginRoundsWhenPlayersReady()
+    //{
+    //    int waitedFrames = 0;
 
-        while (true)
-        {
-            bool allReady = true;
-            var registry = PersistentPlayerRegistry.Instance;
-            if (registry == null)
-            {
-                allReady = false;
-            }
-            else if (registry.GetAllPlayers().Count < _allPlayers.Count)
-            {
-                allReady = false;
-            }
-            else
-            {
-                foreach (ulong clientId in _allPlayers)
-                {
-                    if (registry.GetByClientId(clientId) == null)
-                    {
-                        allReady = false;
-                        break;
-                    }
-                }
-            }
+    //    while (true)
+    //    {
+    //        bool allReady = true;
+    //        var registry = PersistentPlayerRegistry.Instance;
+    //        if (registry == null)
+    //        {
+    //            allReady = false;
+    //        }
+    //        else if (registry.GetAllPlayers().Count < _allPlayers.Count)
+    //        {
+    //            allReady = false;
+    //        }
+    //        else
+    //        {
+    //            foreach (ulong clientId in _allPlayers)
+    //            {
+    //                if (registry.GetByClientId(clientId) == null)
+    //                {
+    //                    allReady = false;
+    //                    break;
+    //                }
+    //            }
+    //        }
 
-            if (allReady)
-                break;
+    //        if (allReady)
+    //            break;
 
-            waitedFrames++;
-            if (waitedFrames % 300 == 0)
-                GameLogger.Log(LogSeverity.Warning, $"Waiting for persistent player registry... frame {waitedFrames}");
+    //        waitedFrames++;
+    //        if (waitedFrames % 300 == 0)
+    //            GameLogger.Log(LogSeverity.Warning, $"Waiting for persistent player registry... frame {waitedFrames}");
 
-            yield return null;
-        }
+    //        yield return null;
+    //    }
 
-        BiddingArenaManager.Instance?.AssignPlayersToSeats();
-        StartCoroutine(RunAllRounds());
-    }
+    //    BiddingArenaManager.Instance?.AssignPlayersToSeats();
+    //    StartCoroutine(RunAllRounds());
+    //}
 
     IEnumerator RoundTimer()
     {
@@ -397,6 +433,9 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
     [Rpc(SendTo.Everyone)]
     void RevealResultsRpc(string packedBids, string winnerIdStr, int winningBid, string winnerName, string itemName)
     {
+        foreach (var panel in biddingControlPanels)
+            panel?.UpdateGold(); 
+
         if (resultsPanel != null) resultsPanel.SetActive(true);
 
         PointerNPC.Instance?.CelebrateTwo();

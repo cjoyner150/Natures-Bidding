@@ -238,7 +238,6 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
         if (phaseLabel) phaseLabel.text = "Shop Phase";
 
         SetShopBackgroundVisible(true);
-        PointerNPC.Instance?.HideSpeechBubble();
 
         foreach (Transform child in shopPanelsContainer)
             if (child != null) Destroy(child.gameObject);
@@ -484,8 +483,6 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
     #endregion
 
     #region Navigation
-
-    public void OnBackToBidding() => BiddingManager.Instance?.StartBiddingPhaseRpc();
 
     public void OnPlayerDeath(ulong clientId) { }
 

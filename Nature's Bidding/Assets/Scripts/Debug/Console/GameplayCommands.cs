@@ -154,6 +154,31 @@ public static class GameplayCommands
     }
     #endregion
 
+    #region scene transition commands
+    [ConsoleCommand("scene", "loads a scene based on the node type")]
+    public static string LoadScene(NodeType nodeType)
+    {
+        if (PersistentGameStateManager.Instance == null) return "Game state manager not available";
+
+        switch (nodeType)
+        {
+            case NodeType.Bidding:
+                PersistentGameStateManager.Instance.LoadBiddingLevel();
+                break;
+            case NodeType.Shop:
+                PersistentGameStateManager.Instance.LoadShopLevel();
+                break;
+            case NodeType.Fight:
+                PersistentGameStateManager.Instance.BeginCombatPhaseServer();
+                break;
+            default:
+                return $"No scene transition defined for node type: {nodeType}";
+        }
+
+        return $"Loading scene for node type: {nodeType}";
+    }
+    #endregion
+
     #region utility commands
     [ConsoleCommand("timescale", "Sets Time.timeScale")]
     static void SetTimeScale(float scale = 1f) => Time.timeScale = scale;

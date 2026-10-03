@@ -20,6 +20,7 @@ public class BiddingArenaManager : NetworkBehaviour
 
     [Header("Item Display")]
     public Transform itemDisplayAnchor;
+    public GameObject itemVFX;
     public float     itemBobSpeed  = 1f;
     public float     itemBobHeight = 0.15f;
     public float     itemSpinSpeed = 30f;
@@ -27,7 +28,8 @@ public class BiddingArenaManager : NetworkBehaviour
     [Header("Item Pool — drag BiddableItem SOs here")]
     public List<BiddableItem> itemPool = new List<BiddableItem>();
 
-    [Header("2D Overlay UI")]
+    [Header("UI")]
+
     public TMP_Text                  itemNameText;
     public TMP_Text                  itemDescText;
     public UnityEngine.UI.Image      itemIconImage;
@@ -52,6 +54,8 @@ public class BiddingArenaManager : NetworkBehaviour
         Instance = this;
 
         currentPool = itemPool.ToList(); // Make a copy
+
+        ClearItemDisplay();
     }
 
     #endregion
@@ -127,7 +131,7 @@ public class BiddingArenaManager : NetworkBehaviour
             _spawnedItemDisplay.transform.localScale = Vector3.one * item.displayScale;
         }
 
-        if (itemNameText)  { itemNameText.text  = item.itemName; }
+        if (itemNameText)  { itemNameText.text  = "The " + item.itemName; }
         if (itemDescText)    itemDescText.text   = item.description;
         if (itemIconImage)   itemIconImage.sprite = item.icon;
         if (itemRarityText)
@@ -138,14 +142,23 @@ public class BiddingArenaManager : NetworkBehaviour
             itemRarityText.color = item.RarityColor();
         }
 
+        if (itemVFX != null) itemVFX.SetActive(true);
+
         PointerNPC.Instance?.CelebrateOne();
-        PointerNPC.Instance?.SayItemReveal(item.itemName, item.description);
+        PointerNPC.Instance?.SayItemReveal(item.itemName);
     }
 
     public void ClearItemDisplay()
     {
         if (_spawnedItemDisplay != null) Destroy(_spawnedItemDisplay);
         _spawnedItemDisplay = null;
+
+        if (itemVFX != null) itemVFX.SetActive(false);
+
+        if (itemNameText) { itemNameText.text = ""; }
+        if (itemDescText) { itemDescText.text = ""; }
+        if (itemRarityText) { itemRarityText.text = ""; }
+        if (itemIconImage) { itemIconImage.sprite = null; }
     }
 
     #endregion

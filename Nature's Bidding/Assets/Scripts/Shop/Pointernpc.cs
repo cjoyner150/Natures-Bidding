@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Playables;
 
 /// <summary>
 /// PointerNPC — A 3D character (host/auctioneer) that speaks in world space.
@@ -24,21 +25,24 @@ public class PointerNPC : MonoBehaviour
     public Camera speechBubbleCamera;
     public Canvas speechBubbleCanvas;
     public CanvasGroup speechBubbleCanvasGroup;
-    public Image speechBubbleBackground;
+    //public Image speechBubbleBackground;
     public TMP_Text speechBubbleText;
 
     [Header("Dialogue")]
-    [TextArea(2, 4)] public string openingInstruction = "Use the arrow keys to raise or lower your bid, then press Enter to submit.";
+    [TextArea(2, 4)] public string greeting = "Welcome travelers.";
+    [TextArea(2, 4)] public string  curseMention = "On the table you will find a terrible curse.";
+    [TextArea(2, 4)] public string goldMention = "Each of you will sacrifice a secret amount of gold.";
+    [TextArea(2, 4)] public string punishmentMention = "The punishment for the least sufficient sacrifice is severe.";
     [TextArea(2, 4)] public string itemRevealLine = "This is the {0}.";
-    [TextArea(2, 4)] public string itemDescriptionLine = "{0}";
-    [TextArea(2, 4)] public string biddingFinishedLine = "All players are done bidding.";
+    [TextArea(2, 4)] public string biddingFinishedLine = "Your sacrifices have been counted.";
     [TextArea(2, 4)] public string winnerLine = "Player {0} won the {1}.";
-    [TextArea(2, 4)] public string noWinnerLine = "No one won the {0}.";
-    [TextArea(2, 4)] public string transitionLine = "Bidding is over. Head to the shop.";
+    [TextArea(2, 4)] public string noWinnerLine = "No one was cursed with the {0}.";
+    [TextArea(2, 4)] public string transitionLine = "The goddess is satisfied. You may proceed.";
 
     [Header("Speech Timing")]
     public float characterDelay = 0.02f;
     public float linePauseSeconds = 0.9f;
+    public float holdAfterLastLineSeconds = 3f;
     public float bubbleScaleSpeed = 10f;
 
     private Coroutine _speechCoroutine;
@@ -57,7 +61,7 @@ public class PointerNPC : MonoBehaviour
 
     void LateUpdate()
     {
-        UpdateSpeechBubbleTransform();
+        //UpdateSpeechBubbleTransform();
     }
 
     // ── Public API ─────────────────────────────────────────────────────────────
@@ -95,16 +99,20 @@ public class PointerNPC : MonoBehaviour
             CelebrateTwo();
     }
 
-    public void SayOpeningInstructions()
-    {
-        SpeakSequence(openingInstruction);
-    }
+    #region Cutscene Dialogue Hooks
 
-    public void SayItemReveal(string itemName, string itemDescription)
+    // These are referenced by signals on the timeline
+    public void SayGreeting() => SpeakSequence(greeting);
+    public void SayCurseMention() => SpeakSequence(curseMention);
+    public void SayGoldMention() => SpeakSequence(goldMention);
+    public void SayPunishmentMention() => SpeakSequence(punishmentMention);
+
+    #endregion
+
+    public void SayItemReveal(string itemName)
     {
         string revealLine = string.Format(itemRevealLine, itemName);
-        string description = string.Format(itemDescriptionLine, itemDescription);
-        SpeakSequence(revealLine, description);
+        SpeakSequence(revealLine);
     }
 
     public void SayBiddingFinished()
@@ -185,8 +193,8 @@ public class PointerNPC : MonoBehaviour
 
             GameObject backgroundObject = new GameObject("Background");
             backgroundObject.transform.SetParent(canvasObject.transform, false);
-            speechBubbleBackground = backgroundObject.AddComponent<Image>();
-            speechBubbleBackground.color = new Color(0f, 0f, 0f, 0.8f);
+            //speechBubbleBackground = backgroundObject.AddComponent<Image>();
+            //speechBubbleBackground.color = new Color(0f, 0f, 0f, 0.8f);
 
             RectTransform backgroundRect = backgroundObject.GetComponent<RectTransform>();
             backgroundRect.anchorMin = Vector2.zero;
@@ -215,8 +223,8 @@ public class PointerNPC : MonoBehaviour
         if (speechBubbleText == null)
             speechBubbleText = speechBubbleCanvas.GetComponentInChildren<TextMeshProUGUI>(true);
 
-        if (speechBubbleBackground == null)
-            speechBubbleBackground = speechBubbleCanvas.GetComponentInChildren<Image>(true);
+        //if (speechBubbleBackground == null)
+        //    speechBubbleBackground = speechBubbleCanvas.GetComponentInChildren<Image>(true);
 
         HideSpeechBubbleImmediate();
     }
@@ -225,8 +233,8 @@ public class PointerNPC : MonoBehaviour
     {
         if (speechBubbleCanvas == null) return;
 
-        Transform anchor = speechBubbleAnchor != null ? speechBubbleAnchor : transform;
-        speechBubbleCanvas.transform.position = anchor.position;
+        //Transform anchor = speechBubbleAnchor != null ? speechBubbleAnchor : transform;
+        //speechBubbleCanvas.transform.position = anchor.position;
 
         Camera faceCamera = speechBubbleCamera != null ? speechBubbleCamera : Camera.main;
         if (faceCamera != null)
@@ -244,11 +252,21 @@ public class PointerNPC : MonoBehaviour
             string[] lines = _speechQueue.Dequeue();
             yield return PlaySpeechSequence(lines);
 
+            // Hold the finished text on screen. If another sequence arrives during the
+            // hold, move on to it immediately instead of blanking the bubble first.
+            float held = 0f;
+            while (held < holdAfterLastLineSeconds && _speechQueue.Count == 0)
+            {
+                held += Time.deltaTime;
+                yield return null;
+            }
+
             if (_speechQueue.Count > 0)
                 yield return new WaitForSeconds(linePauseSeconds);
         }
 
         _speechCoroutine = null;
+        HideSpeechBubbleImmediate();
     }
 
     IEnumerator PlaySpeechSequence(string[] lines)
@@ -281,7 +299,12 @@ public class PointerNPC : MonoBehaviour
             }
 
             if (lineIndex < lines.Length - 1)
+            {
+                GameLogger.Log(LogSeverity.Debug, $"Finished playing lines.");
                 yield return new WaitForSeconds(linePauseSeconds);
+                GameLogger.Log(LogSeverity.Debug, $"Finished waiting after playing lines.");
+            }
+
         }
     }
 

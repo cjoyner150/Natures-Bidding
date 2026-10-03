@@ -295,17 +295,6 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
             BeginBiddingPhaseServer();
     }
 
-    public void RequestStartBiddingPhase()
-    {
-        if (NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)
-        {
-            BiddingManager.Instance?.StartBiddingPhaseRpc();
-            return;
-        }
-
-        BeginBiddingPhaseServer();
-    }
-
     public void RequestStartCombatPhase()
     {
         if (NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)

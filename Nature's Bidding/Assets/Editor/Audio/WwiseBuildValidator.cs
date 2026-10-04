@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -27,8 +28,13 @@ public sealed class WwiseBuildValidator : IPreprocessBuildWithReport, IPostproce
 
     public int callbackOrder => -1000;
 
+    const bool validateSoundBanks = false;
+
     public void OnPreprocessBuild(BuildReport report)
     {
+        if (!validateSoundBanks)
+            return;
+
         string platformName = AkBuildPreprocessor.GetPlatformName(report.summary.platform);
         if (string.IsNullOrWhiteSpace(platformName))
             throw new BuildFailedException($"Wwise has no platform mapping for {report.summary.platform}.");

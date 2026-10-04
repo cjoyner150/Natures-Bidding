@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using TMPro;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +27,9 @@ using UnityEngine.UI;
 public class PotManager : NetworkBehaviour
 {
     public static PotManager Instance { get; private set; }
+    public static int SmallPotCost => Instance?.smallPot.cost ?? 20;
+    public static int GrandPotCost => Instance?.grandPot.cost ?? 50;
+    public static int PotCost => SmallPotCost; // legacy fallback
 
     #region Inspector Fields
 
@@ -40,6 +44,9 @@ public class PotManager : NetworkBehaviour
     [Header("Overlay")]
     public GameObject  potOverlay;
     public CanvasGroup overlayCanvasGroup;
+    public Transform smallPotCardSlot;     // Parent for the small pot card
+    public Transform grandPotCardSlot;     // Parent for the grand pot card
+    public GameObject potCardPrefab;
     public float       fadeInDuration  = 0.35f;
 
     [Header("Pot Graphic")]
@@ -72,6 +79,8 @@ public class PotManager : NetworkBehaviour
     private PotType              _currentPotType;
     private bool                 _potUsedSmall;
     private bool                 _potUsedGrand;
+    private UpgradeCardUI _smallPotCard;
+    private UpgradeCardUI _grandPotCard;
 
     private int                  _clicksRemaining;
     private bool                 _waitingForClicks;
@@ -86,6 +95,8 @@ public class PotManager : NetworkBehaviour
     private CardTooltip           _activeTooltip;
     [SerializeField] private Canvas                _rootCanvas;
 
+    private object _activeHoverTarget;
+
     #endregion
 
     #region Lifecycle
@@ -96,11 +107,171 @@ public class PotManager : NetworkBehaviour
         Instance = this;
     }
 
-    public override void OnNetworkSpawn()
+    public async override void OnNetworkSpawn()
     {
         potOverlay?.SetActive(false);
         confirmButton?.gameObject.SetActive(false);
         closeButton?.gameObject.SetActive(false);
+
+        var flowManager = PersistentGameStateManager.Instance;
+        if (flowManager != null)
+        {
+            var readyManager = ReadyManager.Instance != null ? ReadyManager.Instance : FindAnyObjectByType<ReadyManager>();
+
+            await SceneReadiness.WaitForAllPlayersLoaded();
+
+            flowManager.OnTarotSceneReady();
+
+            if (IsServer)
+                flowManager.BeginTarotPhaseServer();
+        }
+    }
+
+    public void OnTarotPhaseStart()
+    {
+        GameLogger.Log(LogSeverity.Info, "Tarot phase is starting...");
+
+        ResetForNewPhase();
+    }
+
+    #endregion
+
+    #region Card Pointer Hooks
+
+    void OnSmallPotClicked()
+    {
+        if (_potUsedSmall) return;
+
+        GameLogger.Log(LogSeverity.Debug, "Small Pot clicked, requesting purchase/open.");
+        LocalPlayerBuyPot(false);
+    }
+
+    void OnGrandPotClicked()
+    {
+        if (_potUsedGrand) return;
+
+        GameLogger.Log(LogSeverity.Debug, "Grand Pot clicked, requesting purchase/open.");
+        LocalPlayerBuyPot(true);
+    }
+
+    void OnSmallPotHovered()
+    {
+        _hideTooltipCts?.Cancel();
+        _hideTooltipCts?.Dispose();
+        _hideTooltipCts = null;
+
+        if (_activeTooltip != null && _activeHoverTarget as string == "SmallPot")
+            return;
+
+        EnsureTooltip();
+        _activeTooltip?.PopulatePot(SmallPotCost, _potUsedSmall);
+        _activeHoverTarget = "SmallPot";
+        ShowTooltipNextFrameAsync(_smallPotCard?.GetComponent<RectTransform>()).Forget();
+    }
+
+    void OnGrandPotHovered()
+    {
+        _hideTooltipCts?.Cancel();
+        _hideTooltipCts?.Dispose();
+        _hideTooltipCts = null;
+
+        if (_activeTooltip != null && _activeHoverTarget as string == "GrandPot")
+            return;
+
+        EnsureTooltip();
+        _activeTooltip?.PopulatePot(GrandPotCost, _potUsedGrand);
+        _activeHoverTarget = "GrandPot";
+        ShowTooltipNextFrameAsync(_grandPotCard?.GetComponent<RectTransform>()).Forget();
+    }
+
+    #endregion
+
+    #region Economy
+
+    /// <summary>Called by the local player's panel when Buy is clicked on the pot card.</summary>
+    public void LocalPlayerBuyPot(bool isGrand)
+    {
+        GameLogger.Log(LogSeverity.Info, $"LocalPlayerBuyPot requested. isGrand:{isGrand} localClient:{NetworkManager.Singleton?.LocalClientId}");
+        BuyPotServerRpc(isGrand);
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    void BuyPotServerRpc(bool isGrand, RpcParams rpcParams = default)
+    {
+        ulong buyer = rpcParams.Receive.SenderClientId;
+        var registry = PersistentPlayerRegistry.Instance;
+        var playerState = registry?.GetByClientId(buyer);
+        if (registry == null || playerState == null)
+        {
+            GameLogger.Log(LogSeverity.Warning, $"BuyPotRpc rejected for client {buyer}: persistent registry data not found.");
+            return;
+        }
+
+        int cost = isGrand ? grandPot.cost : smallPot.cost;
+        if (playerState.gold < cost)
+        {
+            GameLogger.Log(LogSeverity.Warning, $"BuyPotRpc rejected for client {buyer}: not enough coins ({playerState.gold}/{cost}).");
+            return;
+        }
+
+        GameLogger.Log(LogSeverity.Debug, $"BuyPotRpc accepted for client {buyer}. Deducting {cost} and opening {(isGrand ? "Grand" : "Small")} pot.");
+
+        if (!registry.TrySpendGold(buyer, cost))
+            return;
+
+        NotifyPotUsedClientRpc(buyer, isGrand);
+        NotifyPurchaseSuccessClientRpc(isGrand, RpcTarget.Single(buyer, RpcTargetUse.Temp));
+    }
+
+    /// <summary>Broadcast so all panels showing this player mark pot as used.</summary>
+    [Rpc(SendTo.Everyone)]
+    void NotifyPotUsedClientRpc(ulong buyer, bool isGrand)
+    {
+        // TODO: Sync pot usage
+    }
+
+    [Rpc(SendTo.SpecifiedInParams)]
+    void NotifyPurchaseSuccessClientRpc(bool isGrand, RpcParams rpcParams = default)
+    {
+        GameLogger.Log(LogSeverity.Debug, $"Opening pot UI sequence on client. isGrand:{isGrand}");
+        OpenSequence(isGrand);
+    }
+
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Server)]
+    public void BuildPotsClientRpc()
+    {
+        BuildPots();
+    }
+
+    private void BuildPots()
+    {
+        if (smallPotCardSlot != null && potCardPrefab != null)
+        {
+            var go = Instantiate(potCardPrefab, smallPotCardSlot);
+            _smallPotCard = go.GetComponent<UpgradeCardUI>();
+            _smallPotCard?.SetPotCard(
+                smallPot?.potName ?? "Small Pot",
+                smallPot?.description ?? "Draw 3, pick 1",
+                $"{SmallPotCost}",
+                _potUsedSmall,
+                onClick: () => OnSmallPotClicked(),
+                onHover: () => OnSmallPotHovered(),
+                onHoverExit: () => OnCardHoverExit());
+        }
+
+        if (grandPotCardSlot != null && potCardPrefab != null)
+        {
+            var go = Instantiate(potCardPrefab, grandPotCardSlot);
+            _grandPotCard = go.GetComponent<UpgradeCardUI>();
+            _grandPotCard?.SetPotCard(
+                grandPot?.potName ?? "Grand Pot",
+                grandPot?.description ?? "Draw 5, pick 2",
+                $"{GrandPotCost}",
+                _potUsedGrand,
+                onClick: () => OnGrandPotClicked(),
+                onHover: () => OnGrandPotHovered(),
+                onHoverExit: () => OnCardHoverExit());
+        }
     }
 
     #endregion
@@ -111,6 +282,8 @@ public class PotManager : NetworkBehaviour
     {
         _potUsedSmall = false;
         _potUsedGrand = false;
+
+        BuildPotsClientRpc();
     }
 
     public bool IsSmallPotUsed => _potUsedSmall;
@@ -501,6 +674,53 @@ public class PotManager : NetworkBehaviour
 
     private CancellationTokenSource _hideTooltipCts;
 
+    /// <summary>Creates the tooltip once and reuses it — avoids flash from destroy/recreate.</summary>
+    void EnsureTooltip()
+    {
+        if (_activeTooltip != null) return;
+        if (tooltipPrefab == null) return;
+
+        // Re-find canvas here in case it was null during Initialize
+        if (_rootCanvas == null)
+        {
+            _rootCanvas = GetComponentInParent<Canvas>();
+            // Walk up to root
+            Canvas c = _rootCanvas;
+            while (c != null && !c.isRootCanvas)
+            {
+                Canvas parent = c.transform.parent?.GetComponentInParent<Canvas>();
+                if (parent == null) break;
+                c = parent;
+            }
+            _rootCanvas = c;
+        }
+
+        // Last resort — find any root canvas in the scene
+        if (_rootCanvas == null)
+        {
+            foreach (var c in FindObjectsByType<Canvas>(FindObjectsSortMode.None))
+            {
+                if (c.isRootCanvas) { _rootCanvas = c; break; }
+            }
+        }
+
+        if (_rootCanvas == null) { GameLogger.Log(LogSeverity.Error, "Cannot find any Canvas!"); return; }
+
+        var go = Instantiate(tooltipPrefab, _rootCanvas.transform);
+        go.SetActive(false);
+        _activeTooltip = go.GetComponent<CardTooltip>();
+        if (_activeTooltip != null) _activeTooltip.SetCanvas(_rootCanvas);
+    }
+
+    private async UniTaskVoid ShowTooltipNextFrameAsync(RectTransform cardRect, float extraOffsetX = 20f)
+    {
+        await UniTask.Yield();
+        if (this == null || _activeTooltip == null || cardRect == null) return;
+
+        _activeTooltip.PositionBesideCard(cardRect, extraOffsetX);
+        _activeTooltip.gameObject.SetActive(true);
+    }
+
     void OnCardHover(TarotCardReward reward, bool enter)
     {
         if (enter)
@@ -544,6 +764,16 @@ public class PotManager : NetworkBehaviour
             _hideTooltipCts = new CancellationTokenSource();
             HideTooltipAfterDelay(_hideTooltipCts.Token).Forget();
         }
+    }
+
+    void OnCardHoverExit()
+    {
+        if (_activeTooltip == null) return;
+
+        _hideTooltipCts?.Cancel();
+        _hideTooltipCts?.Dispose();
+        _hideTooltipCts = new CancellationTokenSource();
+        HideTooltipAfterDelay(_hideTooltipCts.Token).Forget();
     }
 
     private async UniTaskVoid HideTooltipAfterDelay(CancellationToken token)

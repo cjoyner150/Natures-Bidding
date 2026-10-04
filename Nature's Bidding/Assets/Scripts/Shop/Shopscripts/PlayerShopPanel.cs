@@ -40,10 +40,7 @@ public class PlayerShopPanel : MonoBehaviour
 
     [Header("Cards — assign these in the prefab")]
     public Transform  cardsRow;             // Parent for the 3 upgrade cards
-    public Transform  smallPotCardSlot;     // Parent for the small pot card
-    public Transform  grandPotCardSlot;     // Parent for the grand pot card
     public GameObject upgradeCardPrefab;
-    public GameObject potCardPrefab;
 
     [Header("Action Row")]
     public Button   rerollButton;
@@ -106,7 +103,7 @@ public class PlayerShopPanel : MonoBehaviour
         _audioFeedback = GetComponent<ShopAudioFeedback>();
     }
 
-    public void Initialise(ulong clientId, List<ShopUpgrade> offerings, bool isLocal)
+    public void Initialize(ulong clientId, List<ShopUpgrade> offerings, bool isLocal)
     {
         // Must be active before anything else — panel is spawned into an inactive canvas
         gameObject.SetActive(true);
@@ -170,7 +167,7 @@ public class PlayerShopPanel : MonoBehaviour
         
     }
 
-    public void InitialisePlaceholder(string slotLabel, List<ShopUpgrade> offerings)
+    public void InitializePlaceholder(string slotLabel, List<ShopUpgrade> offerings)
     {
         gameObject.SetActive(true);
 
@@ -313,8 +310,6 @@ public class PlayerShopPanel : MonoBehaviour
         // Destroy old cards
         foreach (var c in _upgradeCards) { if (c) Destroy(c.gameObject); }
         _upgradeCards.Clear();
-        if (_smallPotCard != null) { Destroy(_smallPotCard.gameObject); _smallPotCard = null; }
-        if (_grandPotCard != null) { Destroy(_grandPotCard.gameObject); _grandPotCard = null; }
 
         if (_isPlaceholder)
             return;
@@ -359,33 +354,6 @@ public class PlayerShopPanel : MonoBehaviour
             _upgradeCards.Add(card);
         }
 
-        if (smallPotCardSlot != null && potCardPrefab != null)
-        {
-            var go = Instantiate(potCardPrefab, smallPotCardSlot);
-            _smallPotCard = go.GetComponent<UpgradeCardUI>();
-            _smallPotCard?.SetPotCard(
-                PotManager.Instance?.smallPot?.potName ?? "Small Pot",
-                PotManager.Instance?.smallPot?.description ?? "Draw 3, pick 1",
-                $"{ShopManager.SmallPotCost}",
-                _smallPotUsed,
-                onClick:     () => OnSmallPotClicked(),
-                onHover:     () => OnSmallPotHovered(),
-                onHoverExit: () => OnCardHoverExit());
-        }
-
-        if (grandPotCardSlot != null && potCardPrefab != null)
-        {
-            var go = Instantiate(potCardPrefab, grandPotCardSlot);
-            _grandPotCard = go.GetComponent<UpgradeCardUI>();
-            _grandPotCard?.SetPotCard(
-                PotManager.Instance?.grandPot?.potName ?? "Grand Pot",
-                PotManager.Instance?.grandPot?.description ?? "Draw 5, pick 2",
-                $"{ShopManager.GrandPotCost}",
-                _grandPotUsed,
-                onClick:     () => OnGrandPotClicked(),
-                onHover:     () => OnGrandPotHovered(),
-                onHoverExit: () => OnCardHoverExit());
-        }
     }
 
     public void ApplyNewOfferings(List<ShopUpgrade> newOfferings)
@@ -431,40 +399,6 @@ public class PlayerShopPanel : MonoBehaviour
         ShowTooltipNextFrameAsync(card.GetComponent<RectTransform>(), extraOffset).Forget();
     }
 
-    void OnSmallPotHovered()
-    {
-        if (!_isLocal) return;
-
-        _hideTooltipCts?.Cancel();
-        _hideTooltipCts?.Dispose();
-        _hideTooltipCts = null;
-
-        if (_activeTooltip != null && _activeHoverTarget as string == "SmallPot")
-            return;
-
-        EnsureTooltip();
-        _activeTooltip?.PopulatePot(ShopManager.SmallPotCost, _smallPotUsed);
-        _activeHoverTarget = "SmallPot";
-        ShowTooltipNextFrameAsync(_smallPotCard?.GetComponent<RectTransform>()).Forget();
-    }
-
-    void OnGrandPotHovered()
-    {
-        if (!_isLocal) return;
-
-        _hideTooltipCts?.Cancel();
-        _hideTooltipCts?.Dispose();
-        _hideTooltipCts = null;
-
-        if (_activeTooltip != null && _activeHoverTarget as string == "GrandPot")
-            return;
-
-        EnsureTooltip();
-        _activeTooltip?.PopulatePot(ShopManager.GrandPotCost, _grandPotUsed);
-        _activeHoverTarget = "GrandPot";
-        ShowTooltipNextFrameAsync(_grandPotCard?.GetComponent<RectTransform>()).Forget();
-    }
-
     private async UniTaskVoid ShowTooltipNextFrameAsync(RectTransform cardRect, float extraOffsetX = 20f)
     {
         await UniTask.Yield();
@@ -501,7 +435,7 @@ public class PlayerShopPanel : MonoBehaviour
         if (_activeTooltip != null) return;
         if (tooltipPrefab == null)  return;
 
-        // Re-find canvas here in case it was null during Initialise
+        // Re-find canvas here in case it was null during Initialize
         if (_canvas == null)
         {
             _canvas = GetComponentInParent<Canvas>();
@@ -568,7 +502,7 @@ public class PlayerShopPanel : MonoBehaviour
         if (!_isLocal || _smallPotUsed) return;
 
         GameLogger.Log(LogSeverity.Debug, "Small Pot clicked, requesting purchase/open.");
-        ShopManager.Instance?.LocalPlayerBuyPot(this, false);
+        PotManager.Instance?.LocalPlayerBuyPot(false);
     }
 
     void OnGrandPotClicked()
@@ -576,109 +510,12 @@ public class PlayerShopPanel : MonoBehaviour
         if (!_isLocal || _grandPotUsed) return;
 
         GameLogger.Log(LogSeverity.Debug, "Grand Pot clicked, requesting purchase/open.");
-        ShopManager.Instance?.LocalPlayerBuyPot(this, true);
+        PotManager.Instance?.LocalPlayerBuyPot(true);
     }
 
     void ClearAllSelections()
     {
-        _smallPotSelected = false;
-        _grandPotSelected = false;
-        _smallPotCard?.SetSelected(false);
-        _grandPotCard?.SetSelected(false);
         foreach (var c in _upgradeCards) c?.SetSelected(false);
-    }
-
-    #endregion
-
-    #region Buy Button Refresh
-
-    /// <summary>Updates the buy button based on what is currently selected.</summary>
-    void RefreshBuyButton()
-    {
-        if (_isPlaceholder) return;
-        if (buyButton == null) return;
-
-        if (_smallPotSelected)
-        {
-            int  cost      = ShopManager.SmallPotCost;
-            bool canAfford = GetCoins() >= cost;
-            buyButton.gameObject.SetActive(true);
-            buyButton.interactable = canAfford && !_smallPotUsed;
-            buyButton.onClick.RemoveAllListeners();
-            buyButton.onClick.AddListener(OnBuyClicked);
-            if (buyButtonText)
-                buyButtonText.text = _smallPotUsed ? "Already Used"
-                    : !canAfford    ? "Can't Afford"
-                    :                 $"Open  {cost} coins";
-            return;
-        }
-        if (_grandPotSelected)
-        {
-            int  cost      = ShopManager.GrandPotCost;
-            bool canAfford = GetCoins() >= cost;
-            buyButton.gameObject.SetActive(true);
-            buyButton.interactable = canAfford && !_grandPotUsed;
-            buyButton.onClick.RemoveAllListeners();
-            buyButton.onClick.AddListener(OnBuyClicked);
-            if (buyButtonText)
-                buyButtonText.text = _grandPotUsed ? "Already Used"
-                    : !canAfford    ? "Can't Afford"
-                    :                 $"Open  {cost} coins";
-            return;
-        }
-
-        if (_selectedUpgrades.Count == 0)
-        {
-            buyButton.gameObject.SetActive(false);
-            return;
-        }
-
-        // Calculate total cost of all selected upgrades
-        int total     = 0;
-        bool anyValid = false;
-        foreach (var u in _selectedUpgrades)
-        {
-            int owned = GetOwned(u);
-            if (owned < u.maxPurchases) { total += u.cost; anyValid = true; }
-        }
-
-        bool canAffordAll = GetCoins() >= total;
-
-        buyButton.gameObject.SetActive(true);
-        buyButton.interactable = canAffordAll && anyValid;
-        buyButton.onClick.RemoveAllListeners();
-        buyButton.onClick.AddListener(OnBuyClicked);
-
-        if (buyButtonText)
-        {
-            string label = _selectedUpgrades.Count == 1
-                ? $"Buy  {total} coins"
-                : $"Buy {_selectedUpgrades.Count} items  {total} coins";
-            buyButtonText.text = canAffordAll ? label : "Can't Afford";
-        }
-    }
-
-    #endregion
-
-    #region Buy
-
-    void OnBuyClicked()
-    {
-        if (_smallPotSelected && !_smallPotUsed)
-        {
-            ShopManager.Instance?.LocalPlayerBuyPot(this, false);
-            return;
-        }
-        if (_grandPotSelected && !_grandPotUsed)
-        {
-            ShopManager.Instance?.LocalPlayerBuyPot(this, true);
-            return;
-        }
-
-        // Buy every selected upgrade
-        var toBuy = new List<ShopUpgrade>(_selectedUpgrades);
-        foreach (var upgrade in toBuy)
-            ShopManager.Instance?.LocalPlayerBuyUpgrade(upgrade, this);
     }
 
     #endregion
@@ -718,40 +555,6 @@ public class PlayerShopPanel : MonoBehaviour
             _selectedUpgrades.Remove(purchasedUpgrade);
 
         ClearAllSelections();
-        RefreshBuyButton();
-        RefreshStats();
-    }
-
-    public void OnPotUsed(bool isGrand)
-    {
-        DestroyTooltip();
-
-        if (_isLocal)
-            _audioFeedback?.PlayPurchase();
-
-        if (isGrand)
-        {
-            _grandPotUsed = true;
-            if (_grandPotCard != null)
-            {
-                Destroy(_grandPotCard.gameObject);
-                _grandPotCard = null;
-            }
-        }
-        else
-        {
-            _smallPotUsed = true;
-            if (_smallPotCard != null)
-            {
-                Destroy(_smallPotCard.gameObject);
-                _smallPotCard = null;
-            }
-        }
-
-        ClearAllSelections();
-        if (detailPanel) detailPanel.SetActive(false);
-        if (buyButton)   buyButton.gameObject.SetActive(false);
-
         RefreshStats();
     }
 

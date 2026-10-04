@@ -168,6 +168,9 @@ public static class GameplayCommands
             case NodeType.Shop:
                 PersistentGameStateManager.Instance.LoadShopLevel();
                 break;
+            case NodeType.Tarot:
+                PersistentGameStateManager.Instance.LoadTarotLevel();
+                break;
             case NodeType.Fight:
                 PersistentGameStateManager.Instance.BeginCombatPhaseServer();
                 break;

@@ -24,9 +24,6 @@ using TMPro;
 /// </summary>
 public class ShopManager : BaseGameServerHandler<ShopManager>
 {
-    public static int SmallPotCost => Instance?.smallPotCost ?? 20;
-    public static int GrandPotCost => Instance?.grandPotCost ?? 50;
-    public static int PotCost      => SmallPotCost; // legacy fallback
 
     #region Inspector Fields
 
@@ -38,8 +35,6 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
     public GameObject playerShopPanelPrefab;    // PlayerShopPanel prefab
 
     [Header("Shop Settings")]
-    public int smallPotCost = 20;
-    public int grandPotCost = 50;
     public int rerollCost   = 15;
 
     [Header("Navigation")]
@@ -278,7 +273,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
             }
 
             GameLogger.Log(LogSeverity.Info, $"Building panel for client {clientId} isLocal:{isLocal} offerings:{offerings.Count}");
-            panel.Initialise(clientId, offerings, isLocal);
+            panel.Initialize(clientId, offerings, isLocal);
             _panels[clientId] = panel;
             createdPanels++;
         }
@@ -294,7 +289,7 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
                 break;
             }
 
-            panel.InitialisePlaceholder($"Open Slot {createdPanels + 1}", new List<ShopUpgrade>());
+            panel.InitializePlaceholder($"Open Slot {createdPanels + 1}", new List<ShopUpgrade>());
             createdPanels++;
         }
     }
@@ -364,70 +359,6 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
             // Panel's buy button text is updated internally — just refresh it
             GameLogger.Log(LogSeverity.Warning, $"Purchase failed: {reason}");
         }
-    }
-
-    #endregion
-
-    #region Purchase — Pot
-
-    /// <summary>Called by the local player's panel when Buy is clicked on the pot card.</summary>
-    public void LocalPlayerBuyPot(PlayerShopPanel sourcePanel, bool isGrand)
-    {
-        GameLogger.Log(LogSeverity.Info, $"LocalPlayerBuyPot requested. isGrand:{isGrand} localClient:{NetworkManager.Singleton?.LocalClientId}");
-        BuyPotRpc(isGrand);
-    }
-
-    [Rpc(SendTo.Server)]
-    void BuyPotRpc(bool isGrand, RpcParams rpcParams = default)
-    {
-        ulong buyer  = rpcParams.Receive.SenderClientId;
-        var registry = PersistentPlayerRegistry.Instance;
-        var playerState = registry?.GetByClientId(buyer);
-        if (registry == null || playerState == null)
-        {
-            GameLogger.Log(LogSeverity.Warning, $"BuyPotRpc rejected for client {buyer}: persistent registry data not found.");
-            return;
-        }
-
-        int cost = isGrand ? grandPotCost : smallPotCost;
-        if (playerState.gold < cost)
-        {
-            GameLogger.Log(LogSeverity.Warning, $"BuyPotRpc rejected for client {buyer}: not enough coins ({playerState.gold}/{cost}).");
-            return;
-        }
-
-        GameLogger.Log(LogSeverity.Debug, $"BuyPotRpc accepted for client {buyer}. Deducting {cost} and opening {(isGrand ? "Grand" : "Small")} pot.");
-
-        if (!registry.TrySpendGold(buyer, cost))
-            return;
-
-        PotUsedRpc(buyer, isGrand);
-        OpenPotSequenceRpc(isGrand, RpcTarget.Single(buyer, RpcTargetUse.Temp));
-    }
-
-    /// <summary>Broadcast so all panels showing this player mark pot as used.</summary>
-    [Rpc(SendTo.Everyone)]
-    void PotUsedRpc(ulong buyer, bool isGrand)
-    {
-        if (_panels.TryGetValue(buyer, out var panel))
-            panel.OnPotUsed(isGrand);
-    }
-
-    [Rpc(SendTo.SpecifiedInParams)]
-    void OpenPotSequenceRpc(bool isGrand, RpcParams rpcParams = default)
-    {
-        var potManager = PotManager.Instance;
-        if (potManager == null)
-            potManager = FindFirstObjectByType<PotManager>();
-
-        if (potManager == null)
-        {
-            GameLogger.Log(LogSeverity.Error, "[ShopManager] Could not find PotManager to open the pot UI.");
-            return;
-        }
-
-        GameLogger.Log(LogSeverity.Debug, $"[ShopManager] Opening pot UI sequence on client. isGrand:{isGrand}");
-        potManager.OpenSequence(isGrand);
     }
 
     #endregion

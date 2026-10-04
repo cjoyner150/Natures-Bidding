@@ -14,6 +14,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 {
     private const string BiddingSceneName = "Bidding_Scene";
     private const string ShoppingSceneName = "Shop_Scene";
+    private const string TarotSceneName = "Tarot_Scene";
     private const string VolcanoCombatSceneName = "LavaGameplay";
     private const string CliffsCombatSceneName = "CliffGameplay";
     private const string MapSceneName = "MapScene";
@@ -59,6 +60,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         Lobby,
         Map,
         Bidding,
+        Tarot,
         Shopping,
         Combat
     }
@@ -201,6 +203,12 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         await LoadNetworkedSceneAsync("LobbyScene");
     }
 
+    public async void LoadTarotLevel()
+    {
+        SetLoadingState("Loading tarot...", true);
+        await LoadNetworkedSceneAsync(TarotSceneName);
+    }
+
     public async void LoadBiddingLevel()
     {
         SetLoadingState("Loading bidding...", true);
@@ -277,6 +285,12 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         ClearLoadingState();
     }
 
+    public void OnTarotSceneReady()
+    {
+        State = GameState.Tarot;
+        ClearLoadingState();
+    }
+
     public void ConfigureGameFlowReferences(
         BiddingManager newBiddingManager,
         ShopManager newShopManager,
@@ -335,6 +349,9 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
             case NodeType.Bidding:
                 LoadBiddingLevel();
                 break;
+            case NodeType.Tarot:
+                LoadTarotLevel();
+                break;
             default:
                 // Tarot/Clense/Curse nodes have no implementation yet — stub back to the map so the loop doesn't stall.
                 GameLogger.Log(LogSeverity.Warning, $"Map node type {nodeType} is not implemented yet; returning to map.");
@@ -358,6 +375,14 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
         readyManager?.ResetForNewPhase();
         ApplyFlowPhase(GameState.Shopping);
+    }
+
+    public void BeginTarotPhaseServer()
+    {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
+
+        readyManager?.ResetForNewPhase();
+        ApplyFlowPhase(GameState.Tarot);
     }
 
     public void BeginCombatPhaseServer()
@@ -569,6 +594,9 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
                 break;
             case GameState.Shopping:
                 shopManager?.OnShopPhaseStart();
+                break;
+            case GameState.Tarot:
+                PotManager.Instance?.OnTarotPhaseStart();
                 break;
             case GameState.Combat:
                 break;

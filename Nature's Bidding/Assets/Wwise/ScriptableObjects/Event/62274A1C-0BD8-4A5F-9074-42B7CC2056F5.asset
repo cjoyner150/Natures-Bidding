@@ -15,4 +15,4 @@ MonoBehaviour:
   objectName: Play_SFX_DoubleJump
   id: 2998890729
   guid: 62274A1C-0BD8-4A5F-9074-42B7CC2056F5
-  IsInUserDefinedSoundBank: 1
+  IsInUserDefinedSoundBank: 0

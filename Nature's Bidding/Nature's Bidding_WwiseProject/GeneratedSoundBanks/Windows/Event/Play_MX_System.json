@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{3E7521AF-2CB6-4065-BE54-9B9CCD3A9716}",
     "Language": "SFX",
-    "Hash": "{F2E4AB1A-BFFD-6ACE-1590-E8EED9EE6912}",
+    "Hash": "{12E3C8A7-3F04-FC68-985F-6ADB479B9514}",
     "ObjectPath": "Play_MX_System",
     "ShortName": "Play_MX_System",
     "Path": "Event/Play_MX_System.bnk",
@@ -66,9 +66,7 @@
       "Location": "Loose",
       "ShortName": "Nature's Bidding_MainMenu_v2.wav",
       "Path": "Media/476834380.wem",
-      "CachePath": "40/{409319AA-1834-0F4F-E9E4-8E3F065DC4CC}.wem",
-      "PrefetchSize": "3166",
-      "ContainsPrefetch": "true"
+      "CachePath": "40/{409319AA-1834-0F4F-E9E4-8E3F065DC4CC}.wem"
      },
      {
       "Id": "713782309",
@@ -363,6 +361,6 @@
     ]
    }
   ],
-  "FileHash": "{4DD61346-4925-D5DA-BBDC-7A29878637DA}"
+  "FileHash": "{9630E611-41DE-F8F6-4384-C5A11CD0A154}"
  }
 }

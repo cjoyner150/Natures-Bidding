@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/GameLoop/Events/Bidding_Scene.unity
     guid: 9532fe7bc952d4e4aae1ec1fa3fbb207
   - enabled: 1
+    path: Assets/Scenes/GameLoop/Events/Tarot_Scene.unity
+    guid: 1b3d9e8019ef3b54eb8abfe65fedacdb
+  - enabled: 1
     path: Assets/Scenes/GameLoop/CliffGameplay.unity
     guid: d086b4925344f8e40830e2ff85b056a8
   - enabled: 1

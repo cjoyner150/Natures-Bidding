@@ -71,6 +71,8 @@ public class PotManager : NetworkBehaviour
 
     [Header("Tooltip")]
     public GameObject  tooltipPrefab;      // Same CardTooltip prefab used in shop
+    public GameObject playerCrosshairPrefab;
+
 
     #endregion
 
@@ -132,6 +134,19 @@ public class PotManager : NetworkBehaviour
         GameLogger.Log(LogSeverity.Info, "Tarot phase is starting...");
 
         ResetForNewPhase();
+        SpawnAllPlayerCrosshairs();
+    }
+
+    public void SpawnAllPlayerCrosshairs()
+    {
+        if (!IsServer) return;
+
+        foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            GameObject crosshairGO = Instantiate(playerCrosshairPrefab);
+            NetworkObject netObj = crosshairGO.GetComponent<NetworkObject>();
+            netObj.SpawnWithOwnership(clientId);
+        }
     }
 
     #endregion

@@ -2445,10 +2445,7 @@ MonoBehaviour:
   positiveColor: {r: 0, g: 1, b: 0, a: 1}
   negativeColor: {r: 1, g: 0, b: 0, a: 1}
   cardsRow: {fileID: 2413666202198306222}
-  smallPotCardSlot: {fileID: 6648580963320467347}
-  grandPotCardSlot: {fileID: 1109661833204890763}
   upgradeCardPrefab: {fileID: 6809773045088817838, guid: 6dc78477aa27b1c40921022d72e71324, type: 3}
-  potCardPrefab: {fileID: 6809773045088817838, guid: ffeea5b17945e7f4399f1399f251e204, type: 3}
   rerollButton: {fileID: 7164511435138528179}
   rerollButtonText: {fileID: 1561489245345683098}
   rerollPullDistance: 36
@@ -2487,11 +2484,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94def51dbe8e34df89b0e3b6734f54d2, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopAudioFeedback
   purchaseEvent:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 3a9194da914046038615f17207e183f7, type: 2}
 --- !u!1 &7916606797284276216
 GameObject:

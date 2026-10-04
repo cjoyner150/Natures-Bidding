@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <WwiseSettings>
-    <CopySoundBanksAsPreBuildStep>false</CopySoundBanksAsPreBuildStep>
+    <CopySoundBanksAsPreBuildStep>true</CopySoundBanksAsPreBuildStep>
     <GenerateSoundBanksAsPreBuildStep>false</GenerateSoundBanksAsPreBuildStep>
     <WwiseStreamingAssetsPath>Audio\GeneratedSoundBanks</WwiseStreamingAssetsPath>
     <RootOutputPath>../Nature's Bidding_WwiseProject/GeneratedSoundBanks/</RootOutputPath>

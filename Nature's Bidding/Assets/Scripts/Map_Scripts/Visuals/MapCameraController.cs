@@ -6,18 +6,27 @@ public class MapCameraController : MonoBehaviour
 {
     [Header("Scrolling Settings")]
     [Tooltip("Keep this low. The new Input System scroll wheel outputs much larger numbers (like 120) than the old system.")]
-    public float scrollSpeed = 0.5f; 
+    public float scrollSpeed = 0.5f;
     public float dragSpeed = 15f;
+
+    [Header("Gamepad Scrolling")]
+    [Tooltip("World units per second at full stick deflection.")]
+    public float gamepadScrollSpeed = 12f;
+    [Range(0f, 0.9f)] public float gamepadDeadzone = 0.2f;
+    public bool invertGamepadScroll = false;
 
     [Header("Map Boundaries")]
     public float minY = -2f;
-    public float maxY = 30f; 
+    public float maxY = 30f;
 
     private Camera cam;
     private Vector2 dragOrigin;
     private Coroutine focusCoroutine;
     private bool isFocusing;
     public MapSettingsSO mapSettings;
+
+    private bool IsBottomToTop =>
+        mapSettings != null && mapSettings.orientation == MapSettingsSO.MapOrientation.BottomToTop;
 
     private void Awake()
     {
@@ -26,18 +35,22 @@ public class MapCameraController : MonoBehaviour
 
     private void Update()
     {
-        
-        if (Mouse.current == null) return;
         if (isFocusing) return;
 
-        HandleMouseDrag();
-        HandleScrollWheel();
+        if (Mouse.current != null)
+        {
+            HandleMouseDrag();
+            HandleScrollWheel();
+        }
+
+        if (Gamepad.current != null)
+            HandleGamepadScroll();
+
         ClampCameraPosition();
     }
 
     private void HandleMouseDrag()
     {
-        // Check if Right Click or Middle Click was pressed THIS FRAME
         bool rightPressed = Mouse.current.rightButton.wasPressedThisFrame;
         bool middlePressed = Mouse.current.middleButton.wasPressedThisFrame;
 
@@ -47,7 +60,6 @@ public class MapCameraController : MonoBehaviour
             return;
         }
 
-        // Check if Right Click or Middle Click is CURRENTLY HELD DOWN
         bool rightHeld = Mouse.current.rightButton.isPressed;
         bool middleHeld = Mouse.current.middleButton.isPressed;
 
@@ -55,49 +67,56 @@ public class MapCameraController : MonoBehaviour
         {
             Vector2 currentMousePos = Mouse.current.position.ReadValue();
             Vector3 difference = cam.ScreenToViewportPoint(currentMousePos - dragOrigin);
-            
-            // Move up/down based on vertical drag
-            Vector3 move = Vector3.zero;
-            if (mapSettings != null && mapSettings.orientation == MapSettingsSO.MapOrientation.BottomToTop)
-                move = new Vector3(0, -difference.y * dragSpeed, 0); // Pan Vertical
-            else
-                move = new Vector3(-difference.x * dragSpeed, 0, 0);
-            
+
+            Vector3 move = IsBottomToTop
+                ? new Vector3(0, -difference.y * dragSpeed, 0)
+                : new Vector3(-difference.x * dragSpeed, 0, 0);
+
             transform.Translate(move, Space.World);
-            
             dragOrigin = currentMousePos;
         }
     }
 
     private void HandleScrollWheel()
     {
-        // The new Input System returns a Vector2 for scroll. We only care about Y 
         float scroll = Mouse.current.scroll.ReadValue().y;
-        
-        if (Mathf.Abs(scroll) > 0.01f)
-        {
-            if (mapSettings != null && mapSettings.orientation == MapSettingsSO.MapOrientation.BottomToTop)
-                transform.Translate(Vector3.up * scroll * scrollSpeed * Time.deltaTime, Space.World);
-            else
-                transform.Translate(Vector3.right * scroll * scrollSpeed * Time.deltaTime, Space.World);
-        }
+        if (Mathf.Abs(scroll) <= 0.01f) return;
+
+        Vector3 axis = IsBottomToTop ? Vector3.up : Vector3.right;
+        transform.Translate(axis * scroll * scrollSpeed * Time.deltaTime, Space.World);
+    }
+
+    private void HandleGamepadScroll()
+    {
+        Vector2 stick = Gamepad.current.rightStick.ReadValue();
+
+        // Use the stick axis that matches the map's scroll direction.
+        float input = IsBottomToTop ? stick.y : stick.x;
+        if (Mathf.Abs(input) < gamepadDeadzone) return;
+
+        // Rescale so motion starts at zero just past the deadzone instead of jumping.
+        float scaled = Mathf.Sign(input) * Mathf.InverseLerp(gamepadDeadzone, 1f, Mathf.Abs(input));
+        if (invertGamepadScroll) scaled = -scaled;
+
+        Vector3 axis = IsBottomToTop ? Vector3.up : Vector3.right;
+        transform.Translate(axis * scaled * gamepadScrollSpeed * Time.unscaledDeltaTime, Space.World);
     }
 
     private void ClampCameraPosition()
     {
         Vector3 clampedPos = transform.position;
 
-        if (mapSettings != null && mapSettings.orientation == MapSettingsSO.MapOrientation.BottomToTop)
+        if (IsBottomToTop)
         {
             clampedPos.y = Mathf.Clamp(clampedPos.y, minY, maxY);
             clampedPos.x = 0f;
         }
-        else // LeftToRight
+        else
         {
             clampedPos.x = Mathf.Clamp(clampedPos.x, minY, maxY);
             clampedPos.y = 0f;
         }
-        
+
         transform.position = clampedPos;
     }
 
@@ -136,7 +155,7 @@ public class MapCameraController : MonoBehaviour
         Vector3 startPosition = transform.position;
         Vector3 targetPosition = startPosition;
 
-        if (mapSettings != null && mapSettings.orientation == MapSettingsSO.MapOrientation.BottomToTop)
+        if (IsBottomToTop)
         {
             targetPosition.x = 0f;
             targetPosition.y = Mathf.Clamp(mapPosition.y, minY, maxY);

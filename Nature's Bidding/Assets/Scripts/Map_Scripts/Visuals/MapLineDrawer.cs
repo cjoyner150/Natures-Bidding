@@ -44,7 +44,11 @@ public class MapLineDrawer : MonoBehaviour
         LineRenderer lr = lineObj.GetComponent<LineRenderer>();
         lr.positionCount = resolution;
         lr.useWorldSpace = true;
-        lr.sortingLayerName = "MapLines"; 
+        lr.sortingLayerName = "MapLines";
+        lr.sortingOrder = 1;
+
+        // Repeat the texture along the line instead of stretching it end to end.
+        lr.textureMode = LineTextureMode.Tile;
 
         Vector2 control1 = Vector2.zero;
         Vector2 control2 = Vector2.zero;

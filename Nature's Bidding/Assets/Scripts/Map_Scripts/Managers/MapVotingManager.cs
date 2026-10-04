@@ -26,6 +26,9 @@ public class MapVotingManager : NetworkBehaviour
     public NetworkVariable<int> CurrentNodeId = new NetworkVariable<int>(
         -1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+    public NetworkList<int> VisitedNodeIds = new NetworkList<int>();
+    public bool IsNodeVisited(int nodeId) => VisitedNodeIds.Contains(nodeId);
+
     public override void OnNetworkSpawn()
     {
         // Each visit to the map is a fresh vote, even if this object was already spawned before.
@@ -38,6 +41,13 @@ public class MapVotingManager : NetworkBehaviour
         }
         clientAvatars.Clear();
         clientVoteNodes.Clear();
+
+        if (IsServer)
+        {
+            VisitedNodeIds.Clear();
+            foreach (int id in PersistentGameStateManager.Instance.VisitedMapNodeIds)
+                VisitedNodeIds.Add(id);
+        }
 
         if (IsServer && PersistentGameStateManager.Instance != null)
             CurrentNodeId.Value = PersistentGameStateManager.Instance.CurrentMapNodeId;

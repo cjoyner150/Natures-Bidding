@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: TestNode_Curse_SO
   m_EditorClassIdentifier: Assembly-CSharp::NodeBlueprintSO
   nodeName: Bidding_Scene
-  type: 4
+  type: 2
   spawnWeight: 10
-  nodeIcon: {fileID: 21300000, guid: 4397174e2a637f249985487b65ced51d, type: 3}
+  nodeIcon: {fileID: 21300000, guid: 665346197107c1a42afb4b9ef5b50887, type: 3}
   debugColor: {r: 1, g: 1, b: 1, a: 1}
-  decoratorSprites:
-  - {fileID: 21300000, guid: 2d85e31dbe0a8894ca7d4c72fb2a6e42, type: 3}
-  decoratorCountMinMax: {x: 2, y: 5}
+  decoratorSprites: []
+  decoratorCountMinMax: {x: 0, y: 0}
   decoratorRadius: 1.5

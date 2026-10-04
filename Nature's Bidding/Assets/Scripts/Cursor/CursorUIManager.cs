@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 using UnityUtils;
@@ -107,11 +108,22 @@ public class CursorUIManager : Singleton<CursorUIManager>
 
     private Image _localCursorImage;
     private VirtualMouseInput _localVirtualMouseInput;
+    private RectTransform _localCursorRoot;
     private bool _localCursorEnabled;
     private readonly Dictionary<ulong, Image> _remoteMapCursors = new Dictionary<ulong, Image>();
     private readonly Dictionary<ulong, GameObject> _remoteMapCursorObjects = new Dictionary<ulong, GameObject>();
     private readonly Dictionary<ulong, Vector2> _remoteMapCursorPositions = new Dictionary<ulong, Vector2>();
     private MapCameraController _mapCameraController;
+
+    public Vector2 LocalCursorScreenPosition
+    {
+        get
+        {
+            // whatever field holds the local cursor's VirtualMouseInput / root RectTransform
+            if (_localCursorRoot != null) return _localCursorRoot.anchoredPosition;
+            return Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
+        }
+    }
 
     private void LateUpdate()
     {
@@ -137,7 +149,7 @@ public class CursorUIManager : Singleton<CursorUIManager>
             return false;
         }
 
-        Vector2 screenPosition = _localCursorImage.rectTransform.anchoredPosition;
+        Vector2 screenPosition = _localCursorRoot.anchoredPosition;
         normalizedPosition = new Vector2(screenPosition.x / Screen.width, screenPosition.y / Screen.height);
         return true;
     }
@@ -227,7 +239,7 @@ public class CursorUIManager : Singleton<CursorUIManager>
             if (_localVirtualMouseInput != null && _localVirtualMouseInput.virtualMouse != null)
                 UnityEngine.InputSystem.LowLevel.InputState.Change(_localVirtualMouseInput.virtualMouse.position, mousePos);
 
-            _localCursorImage.rectTransform.anchoredPosition = mousePos;
+            _localCursorRoot.anchoredPosition = mousePos;
             _localCursorImage.enabled = true;
         }
         else
@@ -241,13 +253,20 @@ public class CursorUIManager : Singleton<CursorUIManager>
         if (_localCursorImage != null) return;
 
         RectTransform rt = SpawnCursor(syncCursorPosition: false, out Image image);
-        if (image == null) return;
+        if (rt == null || image == null) return;
 
         _localCursorImage = image;
-        _localVirtualMouseInput = rt.GetComponent<VirtualMouseInput>();
+        _localVirtualMouseInput = rt.GetComponentInChildren<VirtualMouseInput>(true);
+        if (_localVirtualMouseInput == null)
+        {
+            GameLogger.Log(LogSeverity.Error, "Cursor prefab has no VirtualMouseInput anywhere in its hierarchy.");
+            return;
+        }
 
-        Color playerColor = await GetColorForPlayer(Unity.Netcode.NetworkManager.Singleton.LocalClientId);
-        _localCursorImage.color = playerColor;
+        // The transform VirtualMouseInput actually drives ("Cursor Visual"); the root stays pinned at origin.
+        _localCursorRoot = _localVirtualMouseInput.cursorTransform != null
+            ? _localVirtualMouseInput.cursorTransform
+            : image.rectTransform;
 
         rt.pivot = new Vector2(0, 1);
         rt.anchorMin = Vector2.zero;
@@ -255,7 +274,25 @@ public class CursorUIManager : Singleton<CursorUIManager>
         rt.anchoredPosition = Vector2.zero;
 
         _localCursorImage.enabled = _localCursorEnabled;
+
+        Color playerColor = await GetColorForPlayer(Unity.Netcode.NetworkManager.Singleton.LocalClientId);
+        if (_localCursorImage != null)          // may have been destroyed during the await
+            _localCursorImage.color = playerColor;
     }
 
     #endregion
+}
+
+public static class MapPointer
+{
+    /// <summary>Screen position of whatever is acting as the cursor — hardware mouse or gamepad-driven virtual cursor.</summary>
+    public static Vector2 ScreenPosition =>
+        CursorUIManager.Instance != null
+            ? CursorUIManager.Instance.LocalCursorScreenPosition
+            : (Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero);
+
+    /// <summary>True on the frame a "select" happens from either device.</summary>
+    public static bool SelectPressedThisFrame =>
+        (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) ||
+        (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame);
 }

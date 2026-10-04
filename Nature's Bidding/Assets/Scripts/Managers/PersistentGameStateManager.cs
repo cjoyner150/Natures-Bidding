@@ -1,5 +1,7 @@
 using Cysharp.Threading.Tasks;
+using Steamworks;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -8,7 +10,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityUtils;
 using Random = UnityEngine.Random;
-using Steamworks;
 
 public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 {
@@ -89,6 +90,11 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     private int currentMapSeed = -1;
     private int currentMapNodeId = -1;
     public int CurrentMapNodeId => currentMapNodeId;
+
+    private bool currentNodeIsFinalFloor = false;
+
+    private readonly List<int> visitedMapNodeIds = new List<int>();
+    public IReadOnlyList<int> VisitedMapNodeIds => visitedMapNodeIds;
 
     protected override void Awake()
     {
@@ -217,6 +223,16 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     {
         SetLoadingState("Loading map...", true);
 
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer && currentNodeIsFinalFloor)
+        {
+            // Party finished the last floor without a winner — start a fresh map from floor 0.
+            GameLogger.Log(LogSeverity.Info, "Final map floor completed with no winner; generating a new map.");
+            currentMapSeed = -1;
+            currentMapNodeId = -1;
+            currentNodeIsFinalFloor = false;
+            visitedMapNodeIds.Clear();
+        }
+
         State = GameState.Map;
         await LoadNetworkedSceneAsync(MapSceneName);
     }
@@ -323,6 +339,8 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
         currentMapNodeId = nodeId;
+        if (!visitedMapNodeIds.Contains(nodeId)) visitedMapNodeIds.Add(nodeId);
+        currentNodeIsFinalFloor = FindFirstObjectByType<MapGenerator>()?.IsFinalFloorNode(nodeId) ?? false;
 
         switch (nodeType)
         {
@@ -376,6 +394,8 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         GameLogger.Log(LogSeverity.Verbose, $"[ReturnToMenu] CALLED. Stack trace:\n{System.Environment.StackTrace}");
         if (IsReturningToMenu) return;
         IsReturningToMenu = true;
+
+        visitedMapNodeIds.Clear();
 
         SetLoadingState("Leaving session...");
 

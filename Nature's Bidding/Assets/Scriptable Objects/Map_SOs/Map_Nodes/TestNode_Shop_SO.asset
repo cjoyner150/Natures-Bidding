@@ -15,7 +15,7 @@ MonoBehaviour:
   nodeName: Bidding_Scene
   type: 1
   spawnWeight: 10
-  nodeIcon: {fileID: 21300000, guid: 30868ebb7b9040e4bb910d75ce43beea, type: 3}
+  nodeIcon: {fileID: 21300000, guid: 90fe7ca4dc3a9e04c982ace4d2299714, type: 3}
   debugColor: {r: 1, g: 1, b: 1, a: 1}
   decoratorSprites:
   - {fileID: 0}

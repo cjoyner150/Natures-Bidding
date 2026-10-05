@@ -1168,8 +1168,6 @@ MonoBehaviour:
   loadingProgress: {fileID: 15051646}
   combatWinsRequiredToEnd: 3
   skipToCombat: 0
-  biddingCanvas: {fileID: 0}
-  shopCanvas: {fileID: 0}
   biddingManager: {fileID: 0}
   shopManager: {fileID: 0}
   readyManager: {fileID: 0}
@@ -1231,7 +1229,7 @@ MonoBehaviour:
     WwiseObjectReference: {fileID: 11400000, guid: bc021be59eb34c738bb82f031783e912, type: 2}
   stopRockSlide:
     idInternal: 0
-    valueGuidInternal:
+    valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 936ec0bdee404facb72c0bf77eb04f72, type: 2}
   phaseMenu:
     idInternal: 0

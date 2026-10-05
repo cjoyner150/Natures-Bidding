@@ -1,8 +1,9 @@
+using MoreMountains.Feedbacks;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using MoreMountains.Feedbacks;
 
-public class NodeVisual : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+public class NodeVisual : MonoBehaviour
 {
     // The mathematical ID of this node, assigned by the MapRenderer
     public int nodeId; 
@@ -16,6 +17,9 @@ public class NodeVisual : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] private MMF_Player hoverFeedback;
     [SerializeField] private MMF_Player clickFeedback;
 
+    [Header("Visited")]
+    [SerializeField] private GameObject visitedMarker;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -27,54 +31,58 @@ public class NodeVisual : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         votingManager = FindFirstObjectByType<MapVotingManager>();
         if (votingManager != null)
+        {
             votingManager.CurrentNodeId.OnValueChanged += OnCurrentNodeChanged;
+            votingManager.VisitedNodeIds.OnListChanged += OnVisitedChanged;
+        }
 
         RefreshReachabilityVisual();
+        RefreshVisitedVisual();
     }
 
     private void OnDestroy()
     {
         if (votingManager != null)
+        {
             votingManager.CurrentNodeId.OnValueChanged -= OnCurrentNodeChanged;
+            votingManager.VisitedNodeIds.OnListChanged -= OnVisitedChanged;
+        }
     }
 
-    // Uses EventSystem pointer events (not legacy OnMouseX) so clicks register correctly with the Input System package.
-    public void OnPointerEnter(PointerEventData eventData)
+    private void OnVisitedChanged(NetworkListEvent<int> _) => RefreshVisitedVisual();
+
+    private void RefreshVisitedVisual()
+    {
+        if (visitedMarker == null) return;
+        bool visited = votingManager != null && votingManager.IsNodeVisited(nodeId);
+        visitedMarker.SetActive(visited);
+    }
+
+    public void HoverEnter()
     {
         if (!IsReachable()) return;
 
-        spriteRenderer.color = Color.yellow; // Highlight color
-        if (hoverFeedback != null)
-            hoverFeedback.PlayFeedbacks();
-        else
-            transform.localScale = originalScale * 1.1f;
+        spriteRenderer.color = Color.yellow;
+        if (hoverFeedback != null) hoverFeedback.PlayFeedbacks();
+        else transform.localScale = originalScale * 1.1f;
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public void HoverExit()
     {
-        if (hoverFeedback != null)
-            hoverFeedback.PlayFeedbacksInReverse();
-        else
-            transform.localScale = originalScale;
+        if (hoverFeedback != null) hoverFeedback.PlayFeedbacksInReverse();
+        else transform.localScale = originalScale;
         RefreshReachabilityVisual();
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void Select()
     {
         bool reachable = IsReachable();
-        GameLogger.Log(LogSeverity.Debug, $"NodeVisual.OnPointerDown: nodeId={nodeId}, reachable={reachable}");
+        GameLogger.Log(LogSeverity.Debug, $"NodeVisual.Select: nodeId={nodeId}, reachable={reachable}");
         if (!reachable) return;
 
         clickFeedback?.PlayFeedbacks();
-
-        // Find the Network Voting Manager
-        MapVotingManager votingManager = FindFirstObjectByType<MapVotingManager>();
-        
-        if (votingManager != null)
-        {
-            // Tell the server we want to vote for this node
-            votingManager.SubmitVoteServerRpc(nodeId);
-        }
+        votingManager ??= FindFirstObjectByType<MapVotingManager>();
+        votingManager?.SubmitVoteServerRpc(nodeId);
     }
 
     private bool IsReachable()

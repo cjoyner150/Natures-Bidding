@@ -72,7 +72,10 @@ public class MapSettingsSO : ScriptableObject
     [Range(0f, 1f)]
     public float skipFloorConnectionChance = 0.2f;
 
-    
+    [Range(0f, 1f)] public float extraConnectionChance = 0.4f;
+
+
+
     private void OnValidate()
     {
         minNodesPerFloor = Mathf.Max(1, minNodesPerFloor);

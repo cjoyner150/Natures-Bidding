@@ -30,6 +30,75 @@ public class MapRenderer : MonoBehaviour
     private MapCameraController mapCameraController;
     private int focusedNodeId = int.MinValue;
 
+    [Header("Layout Relaxation")]
+    [Tooltip("0 = raw slot positions. 1-3 is plenty.")]
+    [Range(0, 5)] public int relaxIterations = 2;
+    [Tooltip("Minimum distance between neighbouring nodes on the same floor, in world units.")]
+    public float minNodeSpacing = 1.4f;
+
+    /// <summary>
+    /// Returns a per-node coordinate along the floor's spread axis. Parents are centred
+    /// between their children so branches fork visibly; children are pulled toward their
+    /// parents so merges look symmetric. Order within a floor is always preserved.
+    /// </summary>
+    private Dictionary<int, float> ComputeRelaxedSpread(List<List<NodeData>> graph)
+    {
+        var spread = new Dictionary<int, float>();
+        var parentsOf = new Dictionary<int, List<int>>();
+
+        foreach (var floor in graph)
+            foreach (var node in floor)
+            {
+                spread[node.id] = (node.percentX - 0.5f) * mapWidthMultiplier;
+                foreach (int childId in node.connectedNodeIds)
+                {
+                    if (!parentsOf.TryGetValue(childId, out var list)) parentsOf[childId] = list = new List<int>();
+                    list.Add(node.id);
+                }
+            }
+
+        for (int iter = 0; iter < relaxIterations; iter++)
+        {
+            // Backward: parent = mean of children. Final floor is the anchor.
+            for (int f = graph.Count - 2; f >= 0; f--)
+            {
+                foreach (var node in graph[f])
+                    if (node.connectedNodeIds.Count > 0)
+                        spread[node.id] = node.connectedNodeIds.Average(id => spread[id]);
+                SeparateFloor(graph[f], spread);
+            }
+
+            // Forward: child eases halfway toward mean of parents (half weight avoids oscillation).
+            for (int f = 1; f < graph.Count; f++)
+            {
+                foreach (var node in graph[f])
+                    if (parentsOf.TryGetValue(node.id, out var parents) && parents.Count > 0)
+                        spread[node.id] = Mathf.Lerp(spread[node.id], parents.Average(id => spread[id]), 0.5f);
+                SeparateFloor(graph[f], spread);
+            }
+        }
+
+        return spread;
+    }
+
+    /// <summary>Enforces minimum spacing left-to-right (floors are stored in slot order), then shifts the floor back inside the map bounds if needed.</summary>
+    private void SeparateFloor(List<NodeData> floor, Dictionary<int, float> spread)
+    {
+        for (int i = 1; i < floor.Count; i++)
+        {
+            float prev = spread[floor[i - 1].id];
+            if (spread[floor[i].id] - prev < minNodeSpacing)
+                spread[floor[i].id] = prev + minNodeSpacing;
+        }
+
+        float half = mapWidthMultiplier * 0.5f;
+        float min = spread[floor[0].id];
+        float max = spread[floor[floor.Count - 1].id];
+        float shift = max > half ? half - max : (min < -half ? -half - min : 0f);
+        if (shift != 0f)
+            foreach (var node in floor) spread[node.id] += shift;
+    }
+
     private void Start()
     {
         GameLogger.Log(LogSeverity.Debug, $"MapRenderer.Start: subscribing to mapGenerator (null={mapGenerator == null})");
@@ -61,12 +130,14 @@ public class MapRenderer : MonoBehaviour
         GameLogger.Log(LogSeverity.Debug, $"MapRenderer.DrawMap called with {graph.Count} floors, {graph.Sum(f => f.Count)} total nodes.");
         ClearMap();
 
+        var relaxedSpread = ComputeRelaxedSpread(graph);
+
         foreach (var floor in graph)
         {
             foreach (var node in floor)
             {
                 // 1. Calculate Base Position
-                float spread = (node.percentX - 0.5f) * mapWidthMultiplier;
+                float spread = relaxedSpread[node.id];
                 float depth = node.floorIndex * floorSpacingY;
 
                 float baseX = 0f;

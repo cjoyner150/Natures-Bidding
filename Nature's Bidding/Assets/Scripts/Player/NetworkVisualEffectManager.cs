@@ -2,7 +2,6 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Linq;
 using Unity.Netcode;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectManager>

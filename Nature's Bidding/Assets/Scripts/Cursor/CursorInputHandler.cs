@@ -46,30 +46,29 @@ public class CursorInputHandler : MonoBehaviour
             return;
         }
 
-        // Detect input type change: sync position and enable/disable the
-        // stick action so VirtualMouseInput's own UpdateMotion doesn't fight
-        // mouse-driven position updates.
-        if (InputDeviceTracker.CurrentInputType != _lastInputType)
-        {
-            GameLogger.Log(LogSeverity.Info, $"Switch detected: {_lastInputType} -> {InputDeviceTracker.CurrentInputType}");
+        bool gamepadNow = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.Gamepad;
+        var stick = virtualMouseInput != null ? virtualMouseInput.stickAction.action : null;
 
-            if (InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.Gamepad)
+        if (stick != null && stick.enabled != gamepadNow)
+        {
+            if (gamepadNow)
             {
-                if (virtualMouseInput != null && virtualMouseInput.virtualMouse != null && cursorRoot != null)
-                {
+                // Entering gamepad control: continue from where the cursor visually is,
+                // so VirtualMouseInput doesn't resume from a stale internal position.
+                if (virtualMouseInput.virtualMouse != null && cursorRoot != null)
                     InputState.Change(virtualMouseInput.virtualMouse.position, cursorRoot.anchoredPosition);
-                }
-                virtualMouseInput.stickAction.action?.Enable();
-                GameLogger.Log(LogSeverity.Verbose, $"stickAction enabled: {virtualMouseInput.stickAction.action?.enabled}");
+
+                stick.Enable();
+                GameLogger.Log(LogSeverity.Verbose, "stickAction enabled (gamepad)");
             }
             else
             {
-                virtualMouseInput.stickAction.action?.Disable();
-                GameLogger.Log(LogSeverity.Verbose, $"stickAction disabled: {virtualMouseInput.stickAction.action?.enabled}");
+                stick.Disable();
+                GameLogger.Log(LogSeverity.Verbose, "stickAction disabled (mouse/keyboard)");
             }
-
-            _lastInputType = InputDeviceTracker.CurrentInputType;
         }
+
+        _lastInputType = InputDeviceTracker.CurrentInputType;
 
         Vector2 normPos;
         if (InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.MouseAndKeyboard)

@@ -497,22 +497,6 @@ public class PlayerShopPanel : MonoBehaviour
         ShopManager.Instance?.LocalPlayerBuyUpgrade(upgrade, this);
     }
 
-    void OnSmallPotClicked()
-    {
-        if (!_isLocal || _smallPotUsed) return;
-
-        GameLogger.Log(LogSeverity.Debug, "Small Pot clicked, requesting purchase/open.");
-        PotManager.Instance?.LocalPlayerBuyPot(false);
-    }
-
-    void OnGrandPotClicked()
-    {
-        if (!_isLocal || _grandPotUsed) return;
-
-        GameLogger.Log(LogSeverity.Debug, "Grand Pot clicked, requesting purchase/open.");
-        PotManager.Instance?.LocalPlayerBuyPot(true);
-    }
-
     void ClearAllSelections()
     {
         foreach (var c in _upgradeCards) c?.SetSelected(false);

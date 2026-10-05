@@ -1,15 +1,17 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using TMPro;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 /// <summary>
-/// PotManager — Full-screen pot opening sequence.
+/// TarotPotManager — Full-screen pot opening sequence.
 ///
 /// Two pot slots exist in each PlayerShopPanel (SmallPot + GrandPot).
 /// Each has its own PotType SO defining cost, clicks, cards drawn, cards to keep.
@@ -24,66 +26,68 @@ using UnityEngine.UI;
 ///   7. Player clicks Confirm — rewards applied server-side.
 ///   8. Overlay closes.
 /// </summary>
-public class PotManager : NetworkBehaviour
+public class TarotPotManager : NetworkBehaviour
 {
-    public static PotManager Instance { get; private set; }
-    public static int SmallPotCost => Instance?.smallPot.cost ?? 20;
-    public static int GrandPotCost => Instance?.grandPot.cost ?? 50;
-    public static int PotCost => SmallPotCost; // legacy fallback
+    public static TarotPotManager Instance { get; private set; }
+
+    public static Action<TarotPotUIBehaviour> OnPotUIHoveredEvent;
+    public static Action<TarotPotUIBehaviour> OnPotUIClickedEvent;
 
     #region Inspector Fields
 
+    [Header("Pot Selection UI")]
+    [SerializeField] private GameObject playerSelectionVisualPrefab;
+
     [Header("Pot Types — drag PotType SOs here")]
-    public PotType smallPot;   // 3 draw, pick 1
-    public PotType grandPot;   // 5 draw, pick 2
+    [SerializeField] private TarotPotUIBehaviour[] potUIBehaviours;
+    private Dictionary<PotSize, TarotPotUIBehaviour> potUILookup = new Dictionary<PotSize, TarotPotUIBehaviour>();
 
     [Header("Tarot Card Pool")]
-    public List<TarotCardReward> cardPool = new List<TarotCardReward>();
-    public Sprite                cardBackSprite;
+    [SerializeField] private List<TarotCardReward> cardPool = new List<TarotCardReward>();
+    [SerializeField] private Sprite cardBackSprite;
 
     [Header("Overlay")]
-    public GameObject  potOverlay;
-    public CanvasGroup overlayCanvasGroup;
-    public Transform smallPotCardSlot;     // Parent for the small pot card
-    public Transform grandPotCardSlot;     // Parent for the grand pot card
-    public GameObject potCardPrefab;
-    public float       fadeInDuration  = 0.35f;
+    [SerializeField] private GameObject  potOverlay;
+    [SerializeField] private CanvasGroup overlayCanvasGroup;
+    [SerializeField] private Transform smallPotCardSlot;     // Parent for the small pot card
+    [SerializeField] private Transform grandPotCardSlot;     // Parent for the grand pot card
+    [SerializeField] private GameObject potCardPrefab;
+    [SerializeField] private float       fadeInDuration  = 0.35f;
 
     [Header("Pot Graphic")]
-    public Image       potImage;           // Shows clickSprites during clicking
-    public GameObject  explodeEffect;      // Instantiated at explosion moment
+    [SerializeField] private Image       potImage;           // Shows clickSprites during clicking
+    [SerializeField] private GameObject  explodeEffect;      // Instantiated at explosion moment
 
     [Header("Pot Click Info")]
-    public TMP_Text    clickHintText;      // "Click the pot to open it! (2 more clicks)"
+    [SerializeField] private TMP_Text    clickHintText;      // "Click the pot to open it! (2 more clicks)"
 
     [Header("Card Area")]
-    public Transform   cardArea;           // Parent for spawned TarotCardUI objects
-    public GameObject  tarotCardPrefab;    // TarotCardUI prefab
-    public float       cardDealInterval   = 0.15f;
+    [SerializeField] private Transform   cardArea;           // Parent for spawned TarotCardUI objects
+    [SerializeField] private GameObject  tarotCardPrefab;    // TarotCardUI prefab
+    [SerializeField] private float       cardDealInterval   = 0.15f;
 
     [Header("Selection UI")]
-    public TMP_Text    selectionHintText;  // "Choose 2 cards"
-    public Button      confirmButton;
-    public TMP_Text    confirmButtonText;
+    [SerializeField] private TMP_Text    selectionHintText;  // "Choose 2 cards"
+    [SerializeField] private Button      confirmButton;
+    [SerializeField] private TMP_Text    confirmButtonText;
 
     [Header("Close")]
-    public Button      closeButton;
+    [SerializeField] private Button      closeButton;
 
     [Header("Tooltip")]
-    public GameObject  tooltipPrefab;      // Same CardTooltip prefab used in shop
-    public GameObject playerCrosshairPrefab;
+    [SerializeField] private GameObject  tooltipPrefab;      // Same CardTooltip prefab used in shop
+    [SerializeField] private GameObject playerCrosshairPrefab;
 
 
     #endregion
 
     #region Private State
 
-    private PotType              _currentPotType;
-    private bool                 _potUsedSmall;
-    private bool                 _potUsedGrand;
-    private UpgradeCardUI _smallPotCard;
-    private UpgradeCardUI _grandPotCard;
+    private Dictionary<ulong, TarotPotUIBehaviour> playerPotSelections = new Dictionary<ulong, TarotPotUIBehaviour>();
+    private Dictionary<ulong, Image> playerSelectionVisuals = new Dictionary<ulong, Image>();
+    private bool allowSelect = true;
 
+    private PotType              _currentPurchasedPotType;
     private int                  _clicksRemaining;
     private bool                 _waitingForClicks;
     private bool                 _cardsDealt;
@@ -107,6 +111,28 @@ public class PotManager : NetworkBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+
+        potUILookup.Clear();
+        foreach (var potUI in potUIBehaviours)
+        {
+            if (potUI == null) continue;
+            if (!potUILookup.ContainsKey(potUI.PotType.potSize))
+                potUILookup.Add(potUI.PotType.potSize, potUI);
+        }
+
+        HookEvents();
+    }
+
+    private void HookEvents()
+    {
+        OnPotUIClickedEvent += OnPotUIClicked;
+        OnPotUIHoveredEvent += OnPotUIHovered;
+    }
+
+    private void UnhookEvents()
+    {
+        OnPotUIClickedEvent -= OnPotUIClicked;
+        OnPotUIHoveredEvent -= OnPotUIHovered;
     }
 
     public async override void OnNetworkSpawn()
@@ -133,7 +159,6 @@ public class PotManager : NetworkBehaviour
     {
         GameLogger.Log(LogSeverity.Info, "Tarot phase is starting...");
 
-        ResetForNewPhase();
         SpawnAllPlayerCrosshairs();
     }
 
@@ -153,23 +178,13 @@ public class PotManager : NetworkBehaviour
 
     #region Card Pointer Hooks
 
-    void OnSmallPotClicked()
+    public void OnPotUIClicked(TarotPotUIBehaviour potBehaviour)
     {
-        if (_potUsedSmall) return;
-
-        GameLogger.Log(LogSeverity.Debug, "Small Pot clicked, requesting purchase/open.");
-        LocalPlayerBuyPot(false);
+        GameLogger.Log(LogSeverity.Debug, $"{potBehaviour.PotType.potSize} clicked, requesting purchase/open.");
+        TrySelectPot(potBehaviour);
     }
 
-    void OnGrandPotClicked()
-    {
-        if (_potUsedGrand) return;
-
-        GameLogger.Log(LogSeverity.Debug, "Grand Pot clicked, requesting purchase/open.");
-        LocalPlayerBuyPot(true);
-    }
-
-    void OnSmallPotHovered()
+    public void OnPotUIHovered(TarotPotUIBehaviour potBehaviour)
     {
         _hideTooltipCts?.Cancel();
         _hideTooltipCts?.Dispose();
@@ -179,39 +194,128 @@ public class PotManager : NetworkBehaviour
             return;
 
         EnsureTooltip();
-        _activeTooltip?.PopulatePot(SmallPotCost, _potUsedSmall);
+        _activeTooltip?.PopulatePot(potBehaviour.PotType.cost);
         _activeHoverTarget = "SmallPot";
-        ShowTooltipNextFrameAsync(_smallPotCard?.GetComponent<RectTransform>()).Forget();
+        ShowTooltipNextFrameAsync(potBehaviour.GetComponent<RectTransform>()).Forget();
     }
 
-    void OnGrandPotHovered()
+    #endregion
+
+    #region Pot Selection Handling
+
+    private void TrySelectPot(TarotPotUIBehaviour potBehaviour)
     {
-        _hideTooltipCts?.Cancel();
-        _hideTooltipCts?.Dispose();
-        _hideTooltipCts = null;
+        if (!allowSelect) return;
 
-        if (_activeTooltip != null && _activeHoverTarget as string == "GrandPot")
+        ulong localClientId = NetworkManager.Singleton.LocalClientId;
+
+        if (potBehaviour == null) return;
+        if (playerPotSelections[localClientId] != null && playerPotSelections[localClientId] == potBehaviour) return;
+
+        PlayerData playerData = PersistentPlayerRegistry.Instance?.GetByClientId(localClientId);
+        if (playerData == null)
+        {
+            GameLogger.Log(LogSeverity.Warning, $"TrySelectPot rejected: player data not found for local client {localClientId}.");
             return;
+        }
 
-        EnsureTooltip();
-        _activeTooltip?.PopulatePot(GrandPotCost, _potUsedGrand);
-        _activeHoverTarget = "GrandPot";
-        ShowTooltipNextFrameAsync(_grandPotCard?.GetComponent<RectTransform>()).Forget();
+        bool canAfford = playerData.gold >= potBehaviour.PotType.cost; // Locally update the selection visual for immediate feedback, server will confirm later
+        if (canAfford)
+        {
+            UpdateLocalPlayerSelection(localClientId, potBehaviour);
+        }
+
+        if (IsServer) // Skip request if we're the server, just broadcast the selection to everyone
+        {
+            NotifyEveryonePlayerSelectionClientRpc(potBehaviour.PotType.potSize, canAfford, localClientId);
+            return;
+        }
+
+        RequestSelectPotServerRpc(potBehaviour.PotType.potSize);
     }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void RequestSelectPotServerRpc(PotSize potSize, RpcParams rpcParams = default)
+    {
+        if (!allowSelect) return;
+
+        PlayerData playerData = PersistentPlayerRegistry.Instance?.GetByClientId(rpcParams.Receive.SenderClientId);
+        if (playerData == null)
+        {
+            GameLogger.Log(LogSeverity.Warning, $"RequestSelectPotServerRpc rejected for client {rpcParams.Receive.SenderClientId}: player data not found.");
+            return;
+        }
+
+        // Server has authority on success
+        var potType = GetPotTypeBySize(potSize);
+        bool success = playerData.gold >= potType.cost;
+
+        // Tell everyone to update their selections
+        NotifyEveryonePlayerSelectionClientRpc(potSize, success, rpcParams.Receive.SenderClientId);
+    }
+
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Server)]
+    public void NotifyEveryonePlayerSelectionClientRpc(PotSize potSize, bool success, ulong playerClientId)
+    {
+        if (!allowSelect) return;
+        TarotPotUIBehaviour tarotPotUIBehaviour = GetPotUIBySize(potSize);
+
+        if (success) UpdateLocalPlayerSelection(playerClientId, tarotPotUIBehaviour);
+        else if (playerPotSelections[playerClientId] == tarotPotUIBehaviour) UpdateLocalPlayerSelection(playerClientId, null);
+
+        if (IsServer)
+        {
+            var players = PersistentPlayerRegistry.Instance?.GetAllPlayers();
+            var selections = playerPotSelections.Values.Where(p => p != null).ToList();
+
+            if (selections.Count == players.Count)
+            {
+                // All players have made their selections
+
+                // Ensure all local players selection state matches their finalized choice
+                foreach (var kvp in playerPotSelections)
+                {
+                    TarotPotUIBehaviour pot = kvp.Value;
+                    ulong clientId = kvp.Key;
+
+                    NotifyFinalizedSelectionClientRpc(pot.PotType.potSize, RpcTarget.Single(clientId, RpcTargetUse.Temp));
+                }
+            }
+        }
+    }
+
+    [Rpc(SendTo.SpecifiedInParams, InvokePermission = RpcInvokePermission.Server)]
+    public void NotifyFinalizedSelectionClientRpc(PotSize potSize, RpcParams rpcParams)
+    {
+        UpdateLocalPlayerSelection(NetworkManager.LocalClientId, GetPotUIBySize(potSize)); // Ensure the local player's selection visual is updated for the finalized selection
+        allowSelect = false; // This needs to be checked wherever a client rpc can land so call timing does not override final selection
+
+        BuyPotServerRpc(potSize);
+    }
+
+    private void UpdateLocalPlayerSelection(ulong playerClientId, TarotPotUIBehaviour potBehaviour)
+    {
+        playerPotSelections.TryGetValue(playerClientId, out TarotPotUIBehaviour currentSelection);
+        
+        if (currentSelection != null && currentSelection == potBehaviour) return;
+
+        if (playerSelectionVisuals.TryGetValue(playerClientId, out Image currentSelectionVisual) && currentSelectionVisual != null)
+        {
+            Destroy(currentSelectionVisual.gameObject);
+            playerSelectionVisuals[playerClientId] = null;
+        }
+
+        playerPotSelections[playerClientId] = potBehaviour;
+        playerSelectionVisuals[playerClientId] = potBehaviour != null ? Instantiate(playerSelectionVisualPrefab, potBehaviour.LayoutGroup.transform).GetComponent<Image>() : null;
+    }
+
 
     #endregion
 
     #region Economy
 
-    /// <summary>Called by the local player's panel when Buy is clicked on the pot card.</summary>
-    public void LocalPlayerBuyPot(bool isGrand)
-    {
-        GameLogger.Log(LogSeverity.Info, $"LocalPlayerBuyPot requested. isGrand:{isGrand} localClient:{NetworkManager.Singleton?.LocalClientId}");
-        BuyPotServerRpc(isGrand);
-    }
-
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    void BuyPotServerRpc(bool isGrand, RpcParams rpcParams = default)
+    void BuyPotServerRpc(PotSize potSize, RpcParams rpcParams = default)
     {
         ulong buyer = rpcParams.Receive.SenderClientId;
         var registry = PersistentPlayerRegistry.Instance;
@@ -222,107 +326,60 @@ public class PotManager : NetworkBehaviour
             return;
         }
 
-        int cost = isGrand ? grandPot.cost : smallPot.cost;
+        var pot = GetPotTypeBySize(potSize);
+        if (pot == null)
+        {
+            GameLogger.Log(LogSeverity.Error, $"BuyPotRpc failed for client {buyer}: pot type not found for size {potSize}.");
+            return;
+        }
+
+        int cost = pot.cost;
+
         if (playerState.gold < cost)
         {
             GameLogger.Log(LogSeverity.Warning, $"BuyPotRpc rejected for client {buyer}: not enough coins ({playerState.gold}/{cost}).");
             return;
         }
 
-        GameLogger.Log(LogSeverity.Debug, $"BuyPotRpc accepted for client {buyer}. Deducting {cost} and opening {(isGrand ? "Grand" : "Small")} pot.");
+        GameLogger.Log(LogSeverity.Debug, $"BuyPotRpc accepted for client {buyer}. Deducting {cost} and opening {(potSize == PotSize.grandPot ? "Grand" : "Small")} pot.");
 
         if (!registry.TrySpendGold(buyer, cost))
             return;
 
-        NotifyPotUsedClientRpc(buyer, isGrand);
-        NotifyPurchaseSuccessClientRpc(isGrand, RpcTarget.Single(buyer, RpcTargetUse.Temp));
+        NotifyPotUsedClientRpc(buyer, potSize);
+        NotifyPurchaseSuccessClientRpc(potSize, RpcTarget.Single(buyer, RpcTargetUse.Temp));
     }
 
     /// <summary>Broadcast so all panels showing this player mark pot as used.</summary>
     [Rpc(SendTo.Everyone)]
-    void NotifyPotUsedClientRpc(ulong buyer, bool isGrand)
+    void NotifyPotUsedClientRpc(ulong buyer, PotSize potSize)
     {
         // TODO: Sync pot usage
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
-    void NotifyPurchaseSuccessClientRpc(bool isGrand, RpcParams rpcParams = default)
+    void NotifyPurchaseSuccessClientRpc(PotSize potSize, RpcParams rpcParams = default)
     {
-        GameLogger.Log(LogSeverity.Debug, $"Opening pot UI sequence on client. isGrand:{isGrand}");
-        OpenSequence(isGrand);
+        GameLogger.Log(LogSeverity.Debug, $"Opening pot UI sequence on client. potSize:{potSize}");
+        OpenSequence(potSize);
     }
-
-    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Server)]
-    public void BuildPotsClientRpc()
-    {
-        BuildPots();
-    }
-
-    private void BuildPots()
-    {
-        if (smallPotCardSlot != null && potCardPrefab != null)
-        {
-            var go = Instantiate(potCardPrefab, smallPotCardSlot);
-            _smallPotCard = go.GetComponent<UpgradeCardUI>();
-            _smallPotCard?.SetPotCard(
-                smallPot?.potName ?? "Small Pot",
-                smallPot?.description ?? "Draw 3, pick 1",
-                $"{SmallPotCost}",
-                _potUsedSmall,
-                onClick: () => OnSmallPotClicked(),
-                onHover: () => OnSmallPotHovered(),
-                onHoverExit: () => OnCardHoverExit());
-        }
-
-        if (grandPotCardSlot != null && potCardPrefab != null)
-        {
-            var go = Instantiate(potCardPrefab, grandPotCardSlot);
-            _grandPotCard = go.GetComponent<UpgradeCardUI>();
-            _grandPotCard?.SetPotCard(
-                grandPot?.potName ?? "Grand Pot",
-                grandPot?.description ?? "Draw 5, pick 2",
-                $"{GrandPotCost}",
-                _potUsedGrand,
-                onClick: () => OnGrandPotClicked(),
-                onHover: () => OnGrandPotHovered(),
-                onHoverExit: () => OnCardHoverExit());
-        }
-    }
-
-    #endregion
-
-    #region Phase Reset
-
-    public void ResetForNewPhase()
-    {
-        _potUsedSmall = false;
-        _potUsedGrand = false;
-
-        BuildPotsClientRpc();
-    }
-
-    public bool IsSmallPotUsed => _potUsedSmall;
-    public bool IsGrandPotUsed => _potUsedGrand;
 
     #endregion
 
     #region Open Entry Point
 
     /// <summary>Called by ShopManager after coins deducted. isGrand = which pot type.</summary>
-    public void OpenSequence(bool isGrand)
+    public void OpenSequence(PotSize potSize)
     {
         if (_sequenceRunning)
             return;
 
-        _currentPotType = isGrand ? grandPot : smallPot;
-        if (_currentPotType == null)
+        _currentPurchasedPotType = GetPotTypeBySize(potSize);
+        if (_currentPurchasedPotType == null)
         {
-            GameLogger.Log(LogSeverity.Error, $"PotType not assigned ({(isGrand ? "grandPot" : "smallPot")})!");
+            GameLogger.Log(LogSeverity.Error, $"PotType not assigned ({potSize})!");
             return;
         }
-
-        if (isGrand) _potUsedGrand = true;
-        else         _potUsedSmall = true;
 
         _sequenceRunning = true;
         StartCoroutine(RunPotSequence());
@@ -364,8 +421,8 @@ public class PotManager : NetworkBehaviour
         }
 
         // Set first sprite
-        if (potImage && _currentPotType.clickSprites != null && _currentPotType.clickSprites.Length > 0)
-            potImage.sprite = _currentPotType.clickSprites[0];
+        if (potImage && _currentPurchasedPotType.clickSprites != null && _currentPurchasedPotType.clickSprites.Length > 0)
+            potImage.sprite = _currentPurchasedPotType.clickSprites[0];
 
         potImage?.gameObject.SetActive(true);
         cardArea?.gameObject.SetActive(false);
@@ -373,9 +430,9 @@ public class PotManager : NetworkBehaviour
         closeButton?.gameObject.SetActive(false);
 
         // Click phase
-        _clicksRemaining = _currentPotType.clicksToOpen;
+        _clicksRemaining = _currentPurchasedPotType.clicksToOpen;
         _waitingForClicks = true;
-        UpdateClickHint();
+        UpdateAnimatedClickHint();
 
         yield return new WaitUntil(() => !_waitingForClicks);
 
@@ -394,31 +451,31 @@ public class PotManager : NetworkBehaviour
 
     #endregion
 
-    #region Pot Click
+    #region Animated Pot Click
 
     /// <summary>Wire this to the pot image's Button component.</summary>
-    public void OnPotClicked()
+    public void OnAnimatedPotClicked()
     {
         if (!_waitingForClicks || _clicksRemaining <= 0) return;
 
         _clicksRemaining--;
 
         // Advance sprite
-        if (potImage && _currentPotType.clickSprites != null)
+        if (potImage && _currentPurchasedPotType.clickSprites != null)
         {
-            int total   = _currentPotType.clickSprites.Length;
-            int clicked = _currentPotType.clicksToOpen - _clicksRemaining;
+            int total   = _currentPurchasedPotType.clickSprites.Length;
+            int clicked = _currentPurchasedPotType.clicksToOpen - _clicksRemaining;
             int idx     = Mathf.Clamp(clicked, 0, total - 1);
-            potImage.sprite = _currentPotType.clickSprites[idx];
+            potImage.sprite = _currentPurchasedPotType.clickSprites[idx];
         }
 
-        UpdateClickHint();
+        UpdateAnimatedClickHint();
 
         if (_clicksRemaining <= 0)
             _waitingForClicks = false;
     }
 
-    void UpdateClickHint()
+    void UpdateAnimatedClickHint()
     {
         if (clickHintText == null) return;
         if (_clicksRemaining > 0)
@@ -436,12 +493,12 @@ public class PotManager : NetworkBehaviour
     IEnumerator PlayExplosion()
     {
         // Swap to explode sprite
-        if (potImage && _currentPotType.explodeSprite)
-            potImage.sprite = _currentPotType.explodeSprite;
+        if (potImage && _currentPurchasedPotType.explodeSprite)
+            potImage.sprite = _currentPurchasedPotType.explodeSprite;
 
         // Spawn effect
-        if (_currentPotType.explodeEffect && potImage != null)
-            Instantiate(_currentPotType.explodeEffect, potImage.transform.position, Quaternion.identity);
+        if (_currentPurchasedPotType.explodeEffect && potImage != null)
+            Instantiate(_currentPurchasedPotType.explodeEffect, potImage.transform.position, Quaternion.identity);
 
         yield return new WaitForSeconds(0.5f);
 
@@ -455,7 +512,7 @@ public class PotManager : NetworkBehaviour
     IEnumerator DealCards()
     {
         ClearCards();
-        _dealtRewards = PickRandomCards(_currentPotType.cardsToDraw);
+        _dealtRewards = PickRandomCards(_currentPurchasedPotType.cardsToDraw);
 
         cardArea?.gameObject.SetActive(true);
 
@@ -496,7 +553,7 @@ public class PotManager : NetworkBehaviour
         if (_selectedCards.Contains(card)) return;
         _selectedCards.Add(card);
 
-        if (_selectedCards.Count < _currentPotType.cardsToKeep)
+        if (_selectedCards.Count < _currentPurchasedPotType.cardsToKeep)
         {
             UpdateSelectionHint();
             return;
@@ -523,7 +580,7 @@ public class PotManager : NetworkBehaviour
 
     IEnumerator AutoResolveSelectedCards()
     {
-        int picksToKeep = Mathf.Max(1, _currentPotType != null ? _currentPotType.cardsToKeep : 1);
+        int picksToKeep = Mathf.Max(1, _currentPurchasedPotType != null ? _currentPurchasedPotType.cardsToKeep : 1);
 
         foreach (var c in _spawnedCards)
         {
@@ -562,7 +619,7 @@ public class PotManager : NetworkBehaviour
     void UpdateSelectionHint()
     {
         if (selectionHintText == null || !_cardsDealt) return;
-        int picksToKeep = Mathf.Max(1, _currentPotType != null ? _currentPotType.cardsToKeep : 1);
+        int picksToKeep = Mathf.Max(1, _currentPurchasedPotType != null ? _currentPurchasedPotType.cardsToKeep : 1);
         int remaining = Mathf.Max(0, picksToKeep - _selectedCards.Count);
 
         if (_autoResolvingSelection)
@@ -619,33 +676,33 @@ public class PotManager : NetworkBehaviour
         }
     }
 
-    void ServerApplyLovers(ulong casterClientId)
-    {
-        // Pick two random opponents (not the caster)
-        var opponents = new System.Collections.Generic.List<ulong>();
-        foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
-            if (kvp.Key != casterClientId)
-                opponents.Add(kvp.Key);
+    //void ServerApplyLovers(ulong casterClientId)
+    //{
+    //    // Pick two random opponents (not the caster)
+    //    var opponents = new System.Collections.Generic.List<ulong>();
+    //    foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
+    //        if (kvp.Key != casterClientId)
+    //            opponents.Add(kvp.Key);
 
-        if (opponents.Count < 2) return;
+    //    if (opponents.Count < 2) return;
 
-        int idxA = Random.Range(0, opponents.Count);
-        int idxB;
-        do { idxB = Random.Range(0, opponents.Count); } while (idxB == idxA);
+    //    int idxA = Random.Range(0, opponents.Count);
+    //    int idxB;
+    //    do { idxB = Random.Range(0, opponents.Count); } while (idxB == idxA);
 
-        ulong partnerA = opponents[idxA];
-        ulong partnerB = opponents[idxB];
+    //    ulong partnerA = opponents[idxA];
+    //    ulong partnerB = opponents[idxB];
 
-        // Store the link on the caster's PlayerEffects so it can be read in combat
-        var fx = PlayerEffects.GetEffects(casterClientId);
-        if (fx != null)
-        {
-            fx.LoversPartnerA.Value = partnerA;
-            fx.LoversPartnerB.Value = partnerB;
-        }
+    //    // Store the link on the caster's PlayerEffects so it can be read in combat
+    //    var fx = PlayerEffects.GetEffects(casterClientId);
+    //    if (fx != null)
+    //    {
+    //        fx.LoversPartnerA.Value = partnerA;
+    //        fx.LoversPartnerB.Value = partnerB;
+    //    }
 
-        GameLogger.Log(LogSeverity.Debug, $"The Lovers: {partnerA} and {partnerB} now share health.");
-    }
+    //    GameLogger.Log(LogSeverity.Debug, $"The Lovers: {partnerA} and {partnerB} now share health.");
+    //}
 
     [Rpc(SendTo.SpecifiedInParams)]
     void GrantFreeRerollRpc(RpcParams rpcParams = default)
@@ -674,6 +731,8 @@ public class PotManager : NetworkBehaviour
 
     public override void OnDestroy()
     {
+        UnhookEvents();
+
         _hideTooltipCts?.Cancel();
         _hideTooltipCts?.Dispose();
 
@@ -832,6 +891,10 @@ public class PotManager : NetworkBehaviour
 
         return result;
     }
+
+    public PotType GetPotTypeBySize(PotSize size) => potUILookup[size]?.PotType;
+    public TarotPotUIBehaviour GetPotUIBySize(PotSize size) => potUILookup[size];
+
 
     #endregion
 }

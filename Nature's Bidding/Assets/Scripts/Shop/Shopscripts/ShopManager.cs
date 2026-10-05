@@ -20,7 +20,7 @@ using TMPro;
 /// Purchase flow:
 ///   Click card → selects it, detail panel shows in that panel.
 ///   Click Buy  → upgrade: deduct coins, apply stat.
-///              → pot: deduct coins, open full-screen PotManager sequence.
+///              → pot: deduct coins, open full-screen TarotPotManager sequence.
 /// </summary>
 public class ShopManager : BaseGameServerHandler<ShopManager>
 {
@@ -91,7 +91,6 @@ public class ShopManager : BaseGameServerHandler<ShopManager>
         GameLogger.Log(LogSeverity.Info, "Shop phase is starting...");
 
         if (phaseLabel) phaseLabel.text = "Shop Phase";
-        PotManager.Instance?.ResetForNewPhase();
         SetShopBackgroundVisible(true);
 
         OnShopPhaseStartEveryoneRpc();

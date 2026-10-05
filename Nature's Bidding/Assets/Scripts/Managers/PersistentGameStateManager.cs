@@ -616,7 +616,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
                 shopManager?.OnShopPhaseStart();
                 break;
             case GameState.Tarot:
-                PotManager.Instance?.OnTarotPhaseStart();
+                TarotPotManager.Instance?.OnTarotPhaseStart();
                 break;
             case GameState.Combat:
                 break;

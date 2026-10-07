@@ -15,4 +15,4 @@ MonoBehaviour:
   objectName: Play_Combat
   id: 513571230
   guid: B8D0C18F-DB8D-461D-854D-85D52DF5B8FE
-  IsInUserDefinedSoundBank: 0
+  IsInUserDefinedSoundBank: 1

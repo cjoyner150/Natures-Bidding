@@ -8,14 +8,14 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
     private const float DeathEmitterLifetimeSeconds = 2f;
 
     [Header("Wwise")]
-    [FormerlySerializedAs("jumpEvent")]
     [SerializeField] private AK.Wwise.Event doubleJumpEvent;
     [SerializeField] private AK.Wwise.Event deathEvent;
     [SerializeField] private AK.Wwise.Event warpEvent;
     [SerializeField] private AK.Wwise.Event fallEvent;
-    [FormerlySerializedAs("jumpGruntEvent")]
     [SerializeField] private AK.Wwise.Event firstJumpGruntEvent;
     [SerializeField] private AK.Wwise.Switch[] playerVoiceSwitches;
+    [SerializeField] private AK.Wwise.Event shieldUpEvent;
+    [SerializeField] private AK.Wwise.Event shieldFailEvent;
 
     [Header("Screen-Space Panning")]
     [SerializeField] private AK.Wwise.RTPC combatPan;
@@ -118,6 +118,28 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
         voice.SetValue(gameObject);
         ApplyScreenSpacePan(gameObject, transform.position);
         firstJumpGruntEvent.Post(gameObject);
+    }
+
+    public void PlayShieldFail()
+    {
+        if (shieldFailEvent == null || !shieldFailEvent.IsValid())
+        {
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_SFX_Shield_Fail Event is assigned.", this);
+            return;
+        }
+        ApplyScreenSpacePan(gameObject, transform.position);
+        shieldFailEvent.Post(gameObject);
+    }
+
+    public void PlayShieldUp()
+    {
+        if (shieldUpEvent == null || !shieldUpEvent.IsValid())
+        {
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_SFX_Shield Event is assigned.", this);
+            return;
+        }
+        ApplyScreenSpacePan(gameObject, transform.position);
+        shieldUpEvent.Post(gameObject);
     }
 
     private void ApplyScreenSpacePan(GameObject emitter, Vector3 worldPosition)

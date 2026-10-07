@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{465C95EC-AD21-47BF-AFC3-D56DDBCC882B}",
     "Language": "SFX",
-    "Hash": "{10840E23-B76F-8DBB-2D4E-D5CE20D4A4B1}",
+    "Hash": "{7F45A510-AB98-258B-74D5-91FC6FDCE927}",
     "ObjectPath": "Play_SFX_Fall",
     "ShortName": "Play_SFX_Fall",
     "Path": "Event/Play_SFX_Fall.bnk",
@@ -22,7 +22,7 @@
       "Location": "Loose",
       "ShortName": "sfx_fall_cliff_01.wav",
       "Path": "Media/738650072.wem",
-      "CachePath": "3A/{3ACDC53C-96B4-9B65-A220-5BF2C4B07053}.wem"
+      "CachePath": "4A/{4A4715B7-6BCE-E0CA-5146-CD8B3E9C5B72}.wem"
      },
      {
       "Id": "1052431788",
@@ -31,7 +31,7 @@
       "Location": "Loose",
       "ShortName": "sfx_fall_cliff_02.wav",
       "Path": "Media/1052431788.wem",
-      "CachePath": "FA/{FA684865-41A9-6B1D-71E3-07C4D784ACD2}.wem"
+      "CachePath": "90/{90812407-E8BB-0116-6AD3-0A1C7715546B}.wem"
      }
     ],
     "Events": [
@@ -65,6 +65,6 @@
     ]
    }
   ],
-  "FileHash": "{E573FF96-CA43-5F22-1702-083827EC0E33}"
+  "FileHash": "{C8B2DD47-A47A-E613-2E7D-4FE8FE602B7D}"
  }
 }

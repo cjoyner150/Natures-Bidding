@@ -148,6 +148,28 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_SFX_Shield_Fail" ID="{7A7AE0E3-9239-47B9-9FD7-E0AFF8D57AB0}">
+					<ChildrenList>
+						<Action Name="" ID="{83076C28-7EB0-4F81-97F4-9B6718A5D9A9}" ShortID="972783762">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_Shield_Fail" ID="{CA33D97F-83B5-4835-9756-8DA63C54044D}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_SFX_Shield" ID="{F19E4B32-EEBC-4A8A-A6C0-00F414F1FC54}">
+					<ChildrenList>
+						<Action Name="" ID="{4614CDC9-EB22-40B9-9100-753B56EC2A3E}" ShortID="411903164">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SFX_Shield" ID="{D73877A1-0B12-484B-9D67-FB827D2CC076}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

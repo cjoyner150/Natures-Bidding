@@ -1,0 +1,58 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "639995196",
+    "Type": "Event",
+    "GUID": "{7A7AE0E3-9239-47B9-9FD7-E0AFF8D57AB0}",
+    "Language": "SFX",
+    "Hash": "{B3C4C0A2-3BF1-54EA-192E-1F173D359122}",
+    "ObjectPath": "Play_SFX_Shield_Fail",
+    "ShortName": "Play_SFX_Shield_Fail",
+    "Path": "Event/Play_SFX_Shield_Fail.bnk",
+    "Media": [
+     {
+      "Id": "459483911",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "ShieldFail\\gp_shield_fail_01.wav",
+      "Path": "Media/459483911.wem",
+      "CachePath": "5E/{5E27617D-70A7-4EE9-B96A-C9199CF0D625}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "639995196",
+      "Name": "Play_SFX_Shield_Fail",
+      "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_Shield_Fail",
+      "GUID": "{7A7AE0E3-9239-47B9-9FD7-E0AFF8D57AB0}",
+      "Color": "8",
+      "DurationType": "OneShot",
+      "DurationMin": "0.467",
+      "DurationMax": "0.467",
+      "MediaRefs": [
+       {
+        "Id": "459483911"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{6C672777-C2C3-8BB6-CB37-22A271A78EBA}"
+ }
+}

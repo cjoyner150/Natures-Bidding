@@ -25,6 +25,8 @@ namespace AK
         static const AkUniqueID PLAY_SFX_MANMASK_EXPLOSION = 735357806U;
         static const AkUniqueID PLAY_SFX_PARRY = 3835174908U;
         static const AkUniqueID PLAY_SFX_ROCKSLIDE = 3230763644U;
+        static const AkUniqueID PLAY_SFX_SHIELD = 2802293557U;
+        static const AkUniqueID PLAY_SFX_SHIELD_FAIL = 639995196U;
         static const AkUniqueID PLAY_SFX_WARP = 3667260136U;
         static const AkUniqueID PLAY_SFX_WOOSH = 415287154U;
         static const AkUniqueID PLAY_UI_BID_ADJUST = 3980822666U;

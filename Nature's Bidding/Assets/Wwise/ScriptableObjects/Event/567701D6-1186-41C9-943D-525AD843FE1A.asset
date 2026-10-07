@@ -15,4 +15,4 @@ MonoBehaviour:
   objectName: Play_Lobby
   id: 2111096682
   guid: 567701D6-1186-41C9-943D-525AD843FE1A
-  IsInUserDefinedSoundBank: 0
+  IsInUserDefinedSoundBank: 1

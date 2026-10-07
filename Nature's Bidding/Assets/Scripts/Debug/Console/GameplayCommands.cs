@@ -154,6 +154,80 @@ public static class GameplayCommands
     }
     #endregion
 
+    #region scene transition commands
+    [ConsoleCommand("scene", "loads a scene based on the node type")]
+    public static string LoadScene(NodeType nodeType)
+    {
+        if (PersistentGameStateManager.Instance == null) return "Game state manager not available";
+
+        switch (nodeType)
+        {
+            case NodeType.Bidding:
+                PersistentGameStateManager.Instance.LoadBiddingLevel();
+                break;
+            case NodeType.Shop:
+                PersistentGameStateManager.Instance.LoadShopLevel();
+                break;
+            case NodeType.Tarot:
+                PersistentGameStateManager.Instance.LoadTarotLevel();
+                break;
+            case NodeType.Fight:
+                PersistentGameStateManager.Instance.BeginCombatPhaseServer();
+                break;
+            default:
+                PersistentGameStateManager.Instance.LoadMapLevel();
+                return $"No scene transition defined for node type: {nodeType}";
+        }
+
+        return $"Loading scene for node type: {nodeType}";
+    }
+    #endregion
+
+    #region map debug commands
+
+    [ConsoleCommand("select_last_node", "Resolves a final-floor node immediately, skipping the rest of the map (server only)")]
+    public static string SelectLastNode(int choice = 0)
+    {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer)
+            return "Only the host can select map nodes.";
+
+        var generator = Object.FindFirstObjectByType<MapGenerator>();
+        if (generator == null || !generator.HasGeneratedData) return "No generated map in this scene.";
+
+        var finalFloor = generator.CurrentGraph[generator.CurrentGraph.Count - 1];
+        if (finalFloor.Count == 0) return "Final floor has no nodes.";
+
+        choice = Mathf.Clamp(choice, 0, finalFloor.Count - 1);
+        var node = finalFloor[choice];
+
+        PersistentGameStateManager.Instance.OnMapNodeSelected(node.id, node.blueprint.type);
+        return $"Selected final-floor node {node.id} ({node.blueprint.name}). Completing it will trigger map regeneration.";
+    }
+
+    [ConsoleCommand("goto_floor", "Moves the party's current map position to a node on the given floor so the next vote starts from there (server only)")]
+    public static string GotoFloor(int floorIndex, int choice = 0)
+    {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer)
+            return "Only the host can move the party.";
+
+        var generator = Object.FindFirstObjectByType<MapGenerator>();
+        var voting = Object.FindFirstObjectByType<MapVotingManager>();
+        if (generator == null || !generator.HasGeneratedData) return "No generated map in this scene.";
+        if (voting == null) return "No MapVotingManager in this scene.";
+
+        var graph = generator.CurrentGraph;
+        if (floorIndex < 0 || floorIndex >= graph.Count) return $"Floor must be 0-{graph.Count - 1}.";
+
+        var floor = graph[floorIndex];
+        choice = Mathf.Clamp(choice, 0, floor.Count - 1);
+        var node = floor[choice];
+
+        voting.CurrentNodeId.Value = node.id;   // server-writable NetworkVariable; camera refocus + vote options follow
+        return $"Party moved to floor {floorIndex}, node {node.id} ({node.blueprint.name}). Vote from here.";
+    }
+
+    #endregion
+
     #region utility commands
     [ConsoleCommand("timescale", "Sets Time.timeScale")]
     static void SetTimeScale(float scale = 1f) => Time.timeScale = scale;

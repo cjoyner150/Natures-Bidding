@@ -1,0 +1,82 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "2998890729",
+    "Type": "Event",
+    "GUID": "{62274A1C-0BD8-4A5F-9074-42B7CC2056F5}",
+    "Language": "SFX",
+    "Hash": "{EC0275B8-3D72-31BE-3484-F13251229461}",
+    "ObjectPath": "Play_SFX_DoubleJump",
+    "ShortName": "Play_SFX_DoubleJump",
+    "Path": "Event/Play_SFX_DoubleJump.bnk",
+    "Media": [
+     {
+      "Id": "436435918",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_jump_01.wav",
+      "Path": "Media/436435918.wem",
+      "CachePath": "71/{71E22DB9-29DD-FD9D-E444-99DE1FC54C23}.wem"
+     },
+     {
+      "Id": "644258818",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_jump_03.wav",
+      "Path": "Media/644258818.wem",
+      "CachePath": "82/{8261A343-CAA2-69DC-F602-A4A93DE05252}.wem"
+     },
+     {
+      "Id": "1038309825",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_jump_02.wav",
+      "Path": "Media/1038309825.wem",
+      "CachePath": "2D/{2D84AFEF-F7BD-5A39-2B83-6D2016CE2CB5}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "2998890729",
+      "Name": "Play_SFX_DoubleJump",
+      "ObjectPath": "\\Events\\SFX Work Unit\\Play_SFX_DoubleJump",
+      "GUID": "{62274A1C-0BD8-4A5F-9074-42B7CC2056F5}",
+      "Color": "8",
+      "DurationType": "OneShot",
+      "DurationMin": "1.4163127",
+      "DurationMax": "1.6842892",
+      "MediaRefs": [
+       {
+        "Id": "436435918"
+       },
+       {
+        "Id": "644258818"
+       },
+       {
+        "Id": "1038309825"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{A3A57132-381C-D552-B259-7468F81E621E}"
+ }
+}

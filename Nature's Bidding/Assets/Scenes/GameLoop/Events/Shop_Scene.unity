@@ -754,7 +754,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1836170790}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PotManager, Assembly-CSharp
         m_MethodName: OnCloseOverlay
         m_Mode: 1
@@ -917,7 +917,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 500
@@ -2015,7 +2015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 264460890
+  GlobalObjectIdHash: 4045599319
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2070,8 +2070,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7783ff921ad72a346bcd2dc1eb3559a3, type: 2}
   shopPanelsContainer: {fileID: 1172933857}
   playerShopPanelPrefab: {fileID: 7786274424010861874, guid: 1fdebb8aba146d143b750da5f9ee1511, type: 3}
-  smallPotCost: 100
-  grandPotCost: 150
   rerollCost: 15
   phaseLabel: {fileID: 0}
   shopCanvasRoot: {fileID: 264980705}
@@ -2121,7 +2119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 861166280
+  GlobalObjectIdHash: 2934506611
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2255,7 +2253,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1836170790}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PotManager, Assembly-CSharp
         m_MethodName: OnConfirmClicked
         m_Mode: 1
@@ -2305,114 +2303,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1661870315}
   m_CullTransparentMesh: 1
---- !u!1 &1836170787
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1836170788}
-  - component: {fileID: 1836170789}
-  - component: {fileID: 1836170790}
-  m_Layer: 0
-  m_Name: Potmanager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1836170788
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1836170787}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 630.69904, y: 485.44263, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1836170789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1836170787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 394506742
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 0
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
---- !u!114 &1836170790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1836170787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81012c0f409f6974893fc903d4f5ba5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PotManager
-  ShowTopMostFoldoutHeaderGroup: 1
-  smallPot: {fileID: 11400000, guid: 382035cd9f5b78042970a949f4c2c24d, type: 2}
-  grandPot: {fileID: 11400000, guid: e233a958962e6254c8c53027a107134e, type: 2}
-  cardPool:
-  - {fileID: 11400000, guid: ad3f3f1bf946baf41bb6bffa87503878, type: 2}
-  - {fileID: 11400000, guid: e92a22bb1b12fa14f9677142b5e081cd, type: 2}
-  - {fileID: 11400000, guid: a9ad3efd6e1eae544a9fed00d1fbc822, type: 2}
-  - {fileID: 11400000, guid: e17943c64cfd12c42be105dd0b3c7e5e, type: 2}
-  - {fileID: 11400000, guid: e3d15387212fe6c45a04696c82a1646e, type: 2}
-  - {fileID: 11400000, guid: df5699b749114aa4b8ce1a7da8a92d24, type: 2}
-  - {fileID: 11400000, guid: 8771aecec8e3dc0488a9b57f982626bd, type: 2}
-  - {fileID: 11400000, guid: d2a62a91963e43c4da39ee20a4f09da0, type: 2}
-  - {fileID: 11400000, guid: 92ffeeffcb9e68c4391996d1b62c923b, type: 2}
-  - {fileID: 11400000, guid: a9140ba8b9b60b24ea81c10b8328ed4a, type: 2}
-  - {fileID: 11400000, guid: 56a49ac2b7b4a264285c61b3e9fce057, type: 2}
-  - {fileID: 11400000, guid: b5a0ed7ef28211b46891c11f489deed5, type: 2}
-  - {fileID: 11400000, guid: 1f40ec51caf15d643bfe3e5c5d378af6, type: 2}
-  - {fileID: 11400000, guid: 6e16c607ccb194f42b405bf9442c3233, type: 2}
-  - {fileID: 11400000, guid: 964f7f4564fa3dd4bb4d27b2adc18201, type: 2}
-  - {fileID: 11400000, guid: 727c608f9e21c3e44b3225619bc63a8e, type: 2}
-  - {fileID: 11400000, guid: 95ba5c89811a7bf4283acf5bb94e9954, type: 2}
-  - {fileID: 11400000, guid: 8017dc78a16878243b2c8a493e313cc4, type: 2}
-  cardBackSprite: {fileID: 21300000, guid: fabc87e1b5e54924d959550cd1f7823b, type: 3}
-  potOverlay: {fileID: 536756032}
-  overlayCanvasGroup: {fileID: 536756034}
-  fadeInDuration: 0.35
-  potImage: {fileID: 2043653423}
-  explodeEffect: {fileID: 0}
-  clickHintText: {fileID: 0}
-  cardArea: {fileID: 723875202}
-  tarotCardPrefab: {fileID: 6041610422043367456, guid: 442c5c3f362a7494fb9a76f9da7e8627, type: 3}
-  cardDealInterval: 0.15
-  selectionHintText: {fileID: 2124498107}
-  confirmButton: {fileID: 1661870317}
-  confirmButtonText: {fileID: 1219463175}
-  closeButton: {fileID: 443152133}
-  tooltipPrefab: {fileID: 2826328358326014803, guid: 3d86d35e2a86a5349ba7709613fbe317, type: 3}
-  _rootCanvas: {fileID: 264980709}
 --- !u!114 &1900000011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2576,7 +2466,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1836170790}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PotManager, Assembly-CSharp
         m_MethodName: OnPotClicked
         m_Mode: 1
@@ -3015,6 +2905,5 @@ SceneRoots:
   - {fileID: 1029729256}
   - {fileID: 905186627}
   - {fileID: 1446565925}
-  - {fileID: 1836170788}
   - {fileID: 618511702}
   - {fileID: 2144975397}

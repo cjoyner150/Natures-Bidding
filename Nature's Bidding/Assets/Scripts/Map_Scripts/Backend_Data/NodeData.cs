@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Enum defining the mechanical purpose of a node
-public enum NodeType { Fight, Shop, Tarot, Clense, Curse }
+public enum NodeType { Fight, Shop, Bidding, Tarot, Clense, Curse }
 
 public class NodeData
 {

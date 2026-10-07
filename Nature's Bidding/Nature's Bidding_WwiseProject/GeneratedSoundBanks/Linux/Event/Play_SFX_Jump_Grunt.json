@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{2E1450BD-2672-4438-9635-E9F504D060B7}",
     "Language": "SFX",
-    "Hash": "{212B6194-E7B5-D00F-5B01-7553BE2D48BB}",
+    "Hash": "{4692A84F-9C54-5779-8241-D8B48976F48F}",
     "ObjectPath": "Play_SFX_Jump_Grunt",
     "ShortName": "Play_SFX_Jump_Grunt",
     "Path": "Event/Play_SFX_Jump_Grunt.bnk",
@@ -240,8 +240,8 @@
       "GUID": "{2E1450BD-2672-4438-9635-E9F504D060B7}",
       "Color": "8",
       "DurationType": "OneShot",
-      "DurationMin": "0.19230339",
-      "DurationMax": "0.37261286",
+      "DurationMin": "0.23268595",
+      "DurationMax": "0.41343984",
       "SwitchContainers": [
        {
         "SwitchValue": {
@@ -412,6 +412,6 @@
     ]
    }
   ],
-  "FileHash": "{390B5852-6F7B-9845-0B33-F51466DC4808}"
+  "FileHash": "{5C18CECF-0294-5220-EC77-EB722EA87A8C}"
  }
 }

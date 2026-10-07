@@ -2,7 +2,6 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Linq;
 using Unity.Netcode;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectManager>
@@ -380,7 +379,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
 
     private bool TryGetClientId(PlayerContext clientCtx, out ulong clientId)
     {
-        if (clientCtx.playerDamageable is NetworkBehaviour)
+        if (clientCtx?.playerDamageable is NetworkBehaviour)
         {
             clientId = (clientCtx.playerDamageable as NetworkBehaviour).OwnerClientId;
             return true;
@@ -393,7 +392,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     }
 
     private PlayerVisualEffectManager GetPlayerEffectManagerById(ulong id) => NetworkManager.Singleton.ConnectedClients[id]?.PlayerObject?.GetComponent<PlayerVisualEffectManager>();
-    private PlayerVisualEffectManager GetLocalEffectManagerByCtx(PlayerContext ctx) => ctx.playerAttackManager?.gameObject.GetComponent<PlayerVisualEffectManager>();
+    private PlayerVisualEffectManager GetLocalEffectManagerByCtx(PlayerContext ctx) => ctx?.playerAttackManager?.gameObject?.GetComponent<PlayerVisualEffectManager>();
     private PlayerVisualEffectManager GetFirstValidEffectManager() => NetworkManager.Singleton.ConnectedClients.Values.First(p => p.PlayerObject != null).PlayerObject.GetComponent<PlayerVisualEffectManager>();
     
 }

@@ -55,13 +55,12 @@ public class CardTooltip : MonoBehaviour
         if (stockText)  stockText.text  = $"Owned: {owned} / {upgrade.maxPurchases}";
     }
 
-    public void PopulatePot(int cost, bool used)
+    public void PopulatePot(int cost)
     {
         if (nameText)   nameText.text   = "Pot of Fate";
         if (effectText) effectText.text = "Random tarot reward";
         if (descText)   descText.text   = "Open the pot to draw 3 tarot cards and choose one reward.";
         if (costText)   costText.text   = $"{cost} coins";
-        if (stockText)  stockText.text  = used ? "Already used this phase" : "Available";
     }
 
     public void PositionBesideCard(RectTransform cardRect, float extraOffsetX = 20f)

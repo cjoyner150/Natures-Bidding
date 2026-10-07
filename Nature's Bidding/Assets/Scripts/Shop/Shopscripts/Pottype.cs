@@ -15,6 +15,7 @@ public class PotType : ScriptableObject
 
     [Header("Identity")]
     public string potName        = "Pot of Fate";
+    public PotSize potSize = PotSize.smallPot;
     public string description    = "Draw 3 tarot cards, choose 1 reward.";
     public int    cost           = 30;
 
@@ -47,4 +48,11 @@ public class PotType : ScriptableObject
     public GameObject explodeEffect;
 
     #endregion
+}
+
+public enum PotSize
+{
+    smallPot,
+    mediumPot,
+    grandPot
 }

@@ -85,6 +85,7 @@ public class MapGenerator : NetworkBehaviour
 
             PlotNodes();
             ConnectNodes();
+            AssignBlueprints();
             CullUnreachableNodes();
 
             if (AllFloorsMeetNodeCountLimits())
@@ -96,8 +97,13 @@ public class MapGenerator : NetworkBehaviour
 
         if (!validGraph)
         {
+            var report = string.Join(", ", generatedGraph.Select((floor, i) =>
+                $"F{i}:{floor.Count}/[{mapSettings.GetMinimumNodesForFloor(i)}-{mapSettings.GetMaximumNodesForFloor(i)}]"));
+
             GameLogger.Log(LogSeverity.Error,
-                $"Map generation could not meet the configured per-floor node limits after {MaximumGenerationAttempts} attempts. Check floor widths, densities, and blueprint compatibility.");
+                $"Map generation could not meet per-floor node limits after {MaximumGenerationAttempts} attempts. " +
+                $"Last attempt after culling: {report}. Check floor widths, densities, maxConnectionDrift, and blueprint compatibility.");
+
             generatedGraph.Clear();
             HasGeneratedData = false;
             return seed;
@@ -206,7 +212,7 @@ public class MapGenerator : NetworkBehaviour
                     id = nextAvailableNodeId++,
                     floorIndex = f,
                     percentX = percent,
-                    blueprint = GetBlueprintForNode(floorConfig)
+                    blueprint = floorConfig.forcedBlueprint   // null = assigned later, with variety rules
                 });
             }
 
@@ -229,72 +235,57 @@ public class MapGenerator : NetworkBehaviour
 
     private void ConnectFloorPair(int sourceFloorIndex, int targetFloorIndex, bool isSkipConnection)
     {
+        if (isSkipConnection) return; // skips always cross a zippered middle floor; leave off
+
         List<NodeData> sourceFloor = generatedGraph[sourceFloorIndex];
         List<NodeData> targetFloor = generatedGraph[targetFloorIndex];
-        int lastTargetIndex = 0;
+        int sCount = sourceFloor.Count, tCount = targetFloor.Count;
+        if (sCount == 0 || tCount == 0) return;
 
-        for (int i = 0; i < sourceFloor.Count; i++)
+        // Each source's contiguous target range [lo, hi]. Ranges are non-decreasing
+        // across sources, which is exactly the no-crossing condition.
+        int[] lo = new int[sCount];
+        int[] hi = new int[sCount];
+        for (int i = 0; i < sCount; i++) { lo[i] = int.MaxValue; hi[i] = -1; }
+
+        void Link(int s, int t)
         {
-            NodeData node = sourceFloor[i];
-            if (isSkipConnection && UnityEngine.Random.value > mapSettings.skipFloorConnectionChance)
-                continue;
+            int id = targetFloor[t].id;
+            if (!sourceFloor[s].connectedNodeIds.Contains(id))
+                sourceFloor[s].connectedNodeIds.Add(id);
+            lo[s] = Mathf.Min(lo[s], t);
+            hi[s] = Mathf.Max(hi[s], t);
+        }
 
-            List<int> validTargetIndices = new List<int>();
+        // 1. Zipper: every node on both floors gets at least one link, no crossings.
+        int si = 0, ti = 0;
+        while (true)
+        {
+            Link(si, ti);
+            bool lastS = si == sCount - 1, lastT = ti == tCount - 1;
+            if (lastS && lastT) break;
+            if (lastS) ti++;
+            else if (lastT) si++;
+            else if (sourceFloor[si + 1].percentX < targetFloor[ti + 1].percentX) si++;
+            else ti++;
+        }
 
-            // Keep links ordered to avoid crossing, and prohibit reusing the same blueprint asset.
-            for (int j = lastTargetIndex; j < targetFloor.Count; j++)
-            {
-                NodeData targetNode = targetFloor[j];
-                if (targetNode.blueprint == node.blueprint)
-                    continue;
+        // 2. Extras: a source may extend to a neighbour's boundary target (merge/split).
+        //    Processed in order with live ranges so two neighbours can't both extend into a gap.
+        for (int i = 0; i < sCount; i++)
+        {
+            if (UnityEngine.Random.value > mapSettings.extraConnectionChance) continue;
 
-                if (Mathf.Abs(targetNode.percentX - node.percentX) <= mapSettings.maxConnectionDrift)
-                {
-                    validTargetIndices.Add(j);
-                }
-            }
+            int desired = UnityEngine.Random.Range(mapSettings.pathsPerNodeMin, mapSettings.pathsPerNodeMax + 1);
+            int current = hi[i] - lo[i] + 1;
+            if (current >= desired) continue;
 
-            // If drift rules are too strict, use the closest compatible target without allowing crossings.
-            if (validTargetIndices.Count == 0)
-            {
-                int closestCompatibleIndex = -1;
-                float closestDistance = float.MaxValue;
-                for (int j = lastTargetIndex; j < targetFloor.Count; j++)
-                {
-                    NodeData targetNode = targetFloor[j];
-                    if (targetNode.blueprint == node.blueprint)
-                        continue;
+            var candidates = new List<int>();
+            if (i > 0 && hi[i - 1] < lo[i]) candidates.Add(hi[i - 1]);              // merge into previous source's last target
+            if (i < sCount - 1 && lo[i + 1] > hi[i]) candidates.Add(lo[i + 1]);     // split toward next source's first target
+            if (candidates.Count == 0) continue;
 
-                    float distance = Mathf.Abs(targetNode.percentX - node.percentX);
-                    if (distance < closestDistance)
-                    {
-                        closestDistance = distance;
-                        closestCompatibleIndex = j;
-                    }
-                }
-
-                if (closestCompatibleIndex >= 0)
-                    validTargetIndices.Add(closestCompatibleIndex);
-            }
-
-            if (validTargetIndices.Count == 0)
-                continue;
-
-            int numConnections = isSkipConnection
-                ? 1
-                : UnityEngine.Random.Range(mapSettings.pathsPerNodeMin, mapSettings.pathsPerNodeMax + 1);
-            numConnections = Mathf.Min(numConnections, validTargetIndices.Count);
-
-            var shuffledTargets = validTargetIndices
-                .OrderBy(_ => UnityEngine.Random.value)
-                .Take(numConnections)
-                .OrderBy(index => index)
-                .ToList();
-
-            foreach (int targetIndex in shuffledTargets)
-                node.connectedNodeIds.Add(targetFloor[targetIndex].id);
-
-            lastTargetIndex = shuffledTargets[shuffledTargets.Count - 1];
+            Link(i, candidates[UnityEngine.Random.Range(0, candidates.Count)]);
         }
     }
 
@@ -350,29 +341,80 @@ public class MapGenerator : NetworkBehaviour
             floor.RemoveAll(node => !reachesFinalFloor.Contains(node.id));
     }
 
-    private NodeBlueprintSO GetBlueprintForNode(MapSettingsSO.FloorConfig config)
+    /// <summary>
+    /// Assigns blueprints top-down so that (a) a node differs from all of its parents,
+    /// and (b) siblings — nodes that share any parent — differ from each other.
+    /// Falls back gracefully when the pool is too small to satisfy both.
+    /// </summary>
+    private void AssignBlueprints()
     {
-        // Check if the settings enforce a specific node here
-        if (config.forcedBlueprint != null) return config.forcedBlueprint;
+        var parentsOf = new Dictionary<int, List<NodeData>>();
+        foreach (var floor in generatedGraph)
+            foreach (var node in floor)
+                foreach (int childId in node.connectedNodeIds)
+                {
+                    if (!parentsOf.TryGetValue(childId, out var list)) parentsOf[childId] = list = new List<NodeData>();
+                    list.Add(node);
+                }
 
-        //  Otherwise, use Weighted Random Generation
-        float totalWeight = 0f;
-        foreach (var bp in availableBlueprints) totalWeight += bp.spawnWeight;
+        var exclude = new HashSet<NodeBlueprintSO>();
 
-        float randomVal = UnityEngine.Random.Range(0f, totalWeight);
-        float currentWeight = 0f;
-
-        foreach (var bp in availableBlueprints)
+        foreach (var floor in generatedGraph)
         {
-            currentWeight += bp.spawnWeight;
-            if (randomVal <= currentWeight)
+            foreach (var node in floor)
             {
-                return bp;
+                if (node.blueprint != null) continue; // forced by floor config
+
+                exclude.Clear();
+                if (parentsOf.TryGetValue(node.id, out var parents))
+                {
+                    foreach (var parent in parents)
+                    {
+                        if (parent.blueprint != null) exclude.Add(parent.blueprint);
+
+                        // siblings: every other child of this parent that's already assigned
+                        foreach (int siblingId in parent.connectedNodeIds)
+                        {
+                            if (siblingId == node.id) continue;
+                            var sibling = GetNodeById(siblingId);
+                            if (sibling?.blueprint != null) exclude.Add(sibling.blueprint);
+                        }
+                    }
+                }
+
+                node.blueprint = PickWeighted(exclude)
+                              ?? PickWeighted(SiblingsOnly(node, parentsOf))
+                              ?? PickWeighted(null);
             }
         }
+    }
 
-        // Fallback in case of floating point rounding errors
-        return availableBlueprints[0]; 
+    private HashSet<NodeBlueprintSO> SiblingsOnly(NodeData node, Dictionary<int, List<NodeData>> parentsOf)
+    {
+        var set = new HashSet<NodeBlueprintSO>();
+        if (!parentsOf.TryGetValue(node.id, out var parents)) return set;
+        foreach (var parent in parents)
+            foreach (int siblingId in parent.connectedNodeIds)
+                if (siblingId != node.id && GetNodeById(siblingId)?.blueprint is { } bp) set.Add(bp);
+        return set;
+    }
+
+    private NodeBlueprintSO PickWeighted(HashSet<NodeBlueprintSO> exclude)
+    {
+        float totalWeight = 0f;
+        foreach (var bp in availableBlueprints)
+            if (exclude == null || !exclude.Contains(bp)) totalWeight += bp.spawnWeight;
+        if (totalWeight <= 0f) return null;
+
+        float roll = UnityEngine.Random.Range(0f, totalWeight);
+        float acc = 0f;
+        foreach (var bp in availableBlueprints)
+        {
+            if (exclude != null && exclude.Contains(bp)) continue;
+            acc += bp.spawnWeight;
+            if (roll <= acc) return bp;
+        }
+        return null;
     }
 
     public NodeData GetNodeById(int id)
@@ -391,5 +433,10 @@ public class MapGenerator : NetworkBehaviour
     public bool IsFloorZeroNode(int id)
     {
         return generatedGraph.Count > 0 && generatedGraph[0].Any(node => node.id == id);
+    }
+
+    public bool IsFinalFloorNode(int id)
+    {
+        return generatedGraph.Count > 0 && generatedGraph[generatedGraph.Count - 1].Any(node => node.id == id);
     }
 }

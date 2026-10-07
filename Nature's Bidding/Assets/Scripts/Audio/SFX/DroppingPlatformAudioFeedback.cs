@@ -18,7 +18,7 @@ public sealed class DroppingPlatformAudioFeedback : MonoBehaviour
     [SerializeField, Min(0f)] private float startupGraceSeconds = 1f;
 
     private readonly List<Transform> platforms = new List<Transform>();
-    private readonly Dictionary<Transform, float> previousHeights = new Dictionary<Transform, float>();
+    private readonly Dictionary<Transform, float> baselineHeights = new Dictionary<Transform, float>();
     private readonly HashSet<Transform> triggeredPlatforms = new HashSet<Transform>();
     private float enabledAt;
 
@@ -26,7 +26,7 @@ public sealed class DroppingPlatformAudioFeedback : MonoBehaviour
     {
         enabledAt = Time.time;
         platforms.Clear();
-        previousHeights.Clear();
+        baselineHeights.Clear();
         triggeredPlatforms.Clear();
 
         NetworkTransform[] replicatedPlatforms = GetComponentsInChildren<NetworkTransform>(true);
@@ -37,7 +37,7 @@ public sealed class DroppingPlatformAudioFeedback : MonoBehaviour
 
             Transform platform = replicatedPlatform.transform;
             platforms.Add(platform);
-            previousHeights[platform] = platform.position.y;
+            baselineHeights[platform] = platform.position.y;
         }
 
         if (platforms.Count == 0)
@@ -56,14 +56,21 @@ public sealed class DroppingPlatformAudioFeedback : MonoBehaviour
             }
 
             float currentHeight = platform.position.y;
-            if (!previousHeights.TryGetValue(platform, out float previousHeight))
+            if (!baselineHeights.TryGetValue(platform, out float baselineHeight))
             {
-                previousHeights[platform] = currentHeight;
+                baselineHeights[platform] = currentHeight;
                 continue;
             }
 
-            previousHeights[platform] = currentHeight;
-            if (!canTrigger || previousHeight - currentHeight < minimumDownwardMovement)
+            // Consume replication corrections during startup. Once the grace period
+            // ends, keep a fixed baseline so slow movement accumulates across frames.
+            if (!canTrigger)
+            {
+                baselineHeights[platform] = currentHeight;
+                continue;
+            }
+
+            if (baselineHeight - currentHeight < minimumDownwardMovement)
             {
                 continue;
             }

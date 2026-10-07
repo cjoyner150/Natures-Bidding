@@ -17,5 +17,5 @@ MonoBehaviour:
   Description: Increases Health
   Duration: -1
   Stat: 0
-  Value: 20
+  Value: 30
   OperationType: 0

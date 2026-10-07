@@ -9,7 +9,7 @@ public class GameDataManager : Singleton<GameDataManager>
 
     protected override void Awake()
     {
-        if (HasInstance) Destroy(gameObject);
+        if (HasInstance && Instance != this) Destroy(gameObject);
         else
         {
             base.Awake();

@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{99A56689-A446-4980-8F28-BF17186FD824}",
     "Language": "SFX",
-    "Hash": "{74341DC4-62EF-107A-5980-FB2BD58E167D}",
+    "Hash": "{714CDDC6-3EC0-8B8A-1C42-A8232C11624C}",
     "ObjectPath": "Stop_AMB_Forest",
     "ShortName": "Stop_AMB_Forest",
     "Path": "Event/Stop_AMB_Forest.bnk",
@@ -20,6 +20,7 @@
       "Name": "Stop_AMB_Forest",
       "ObjectPath": "\\Events\\Ambience Work Unit\\Stop_AMB_Forest",
       "GUID": "{99A56689-A446-4980-8F28-BF17186FD824}",
+      "Color": "19",
       "MaxAttenuation": "0",
       "DurationType": "OneShot",
       "DurationMin": "0",
@@ -28,6 +29,6 @@
     ]
    }
   ],
-  "FileHash": "{C0A24528-4473-718F-E0A7-FA051B898796}"
+  "FileHash": "{668E526B-45DD-3AD6-BA6F-CF0760A2EE2F}"
  }
 }

@@ -54,6 +54,9 @@ public class Airborne : State
     protected override State GetTransition() 
     {
         if (ctx.shouldTakeKnockback) return airKnockback;
+
+        if (Leaf() == fall.fallAttack) return null; // Defer to fallAttack's transition logic
+
         else if (ctx.isGrounded && canGround) return GetParentOfType<PlayerRoot>().grounded;
         else return null;
     }

@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <WwiseSettings>
-    <CopySoundBanksAsPreBuildStep>true</CopySoundBanksAsPreBuildStep>
+    <CopySoundBanksAsPreBuildStep>false</CopySoundBanksAsPreBuildStep>
     <GenerateSoundBanksAsPreBuildStep>false</GenerateSoundBanksAsPreBuildStep>
     <WwiseStreamingAssetsPath>Audio\GeneratedSoundBanks</WwiseStreamingAssetsPath>
     <RootOutputPath>../Nature's Bidding_WwiseProject/GeneratedSoundBanks/</RootOutputPath>
@@ -12,7 +12,7 @@
     <ShowMissingRigidBodyWarning>true</ShowMissingRigidBodyWarning>
     <ShowSpatialAudioWarningMsg>true</ShowSpatialAudioWarningMsg>
     <WwiseInstallationPathMac>/Applications/Audiokinetic/Wwise_2025.1.9.9197/Wwise.app</WwiseInstallationPathMac>
-    <WwiseInstallationPathWindows>C:\Program Files (x86)\Audiokinetic\Wwise2025.1.5.9095</WwiseInstallationPathWindows>
+    <WwiseInstallationPathWindows>C:\Program Files (x86)\Audiokinetic\Wwise2025.1.9.9197</WwiseInstallationPathWindows>
     <WwiseProjectPath>../Nature's Bidding_WwiseProject/Nature's Bidding_WwiseProject.wproj</WwiseProjectPath>
     <UseWaapi>true</UseWaapi>
     <WaapiPort>8080</WaapiPort>

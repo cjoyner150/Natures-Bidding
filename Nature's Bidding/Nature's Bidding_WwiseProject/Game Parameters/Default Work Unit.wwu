@@ -2,12 +2,41 @@
 <WwiseDocument Type="WorkUnit" ID="{B6944527-D057-47A5-932F-995FF1BDA1F0}" SchemaVersion="133">
 	<GameParameters>
 		<WorkUnit Name="Default Work Unit" ID="{B6944527-D057-47A5-932F-995FF1BDA1F0}" PersistMode="Standalone">
+			<PropertyList>
+				<Property Name="Color" Type="int16" Value="3"/>
+				<Property Name="OverrideColor" Type="bool" Value="True"/>
+			</PropertyList>
 			<ChildrenList>
 				<GameParameter Name="Combat_Pan" ID="{1227142A-5FEB-462E-92E5-2D17A955B80D}">
 					<PropertyList>
 						<Property Name="InitialValue" Type="Real64" Value="0"/>
 						<Property Name="Max" Type="Real64" Value="50"/>
 						<Property Name="Min" Type="Real64" Value="-50"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="Master_Volume" ID="{DD363741-F720-47AF-B71F-B060BDAF9B6F}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="100"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="Music_Volume" ID="{450CA114-61C2-454D-B618-14824FE3AC2E}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="100"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="SFX_Volume" ID="{D00AF880-C149-46F7-BB98-B222FF4DEEFE}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="100"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="UI_Volume" ID="{8BBCB12F-7467-4482-A699-23AC78AC2A48}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="100"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="Ambience_Volume" ID="{C5C86D6B-0722-4D1A-8CAE-B66D8DCF527A}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="100"/>
 					</PropertyList>
 				</GameParameter>
 			</ChildrenList>

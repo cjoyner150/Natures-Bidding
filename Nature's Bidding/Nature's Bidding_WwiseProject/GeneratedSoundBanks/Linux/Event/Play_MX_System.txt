@@ -16,28 +16,28 @@ State	ID	Name	State Group			Notes
 	2764240573	Combat	Game_Phase			
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	42008625	Lobby Switch	.cache\FA\{FAD858A9-0837-AE9D-8AC7-451853CFCAB9}.wem		\Containers\Music Work Unit\MX_System\MX_Lobby\Lobby Segment\Lobby Switch		2648
-	64235366	New Switch Music Track	.cache\D4\{D4FB21F1-0ACD-9059-0601-E2D4E735CB00}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\GGJ2026 - Woodland Brawl_v1\New Switch Music Track		3142
-	115717617	AuctionTime_Master	.cache\56\{562BCBE9-CCB7-160A-8D12-4ED6B09FFAE0}.wem		\Containers\Music Work Unit\MX_System\MX_Bidding\AuctionTime_Master\AuctionTime_Master		2767
-	338048370	New Switch Music Track	.cache\BD\{BD92CAB4-B0E4-27EC-DA19-3FBDB4362C42}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\Nature's Bidding - Volcanic Brawl v2\New Switch Music Track		2638
-	476834380	Nature's Bidding_MainMenu_v2	.cache\93\{930C504D-3D9C-EDE3-769B-C05F9CC32966}.wem		\Containers\Music Work Unit\MX_System\MX_Menu\GGJ2026 - Main Menu_v1\Nature's Bidding_MainMenu_v2		2622
-	713782309	Lobby Switch	.cache\DE\{DEDD541C-C75B-5E2F-7E90-FD29EB94C8BE}.wem		\Containers\Music Work Unit\MX_System\MX_Lobby\Lobby Segment\Lobby Switch		3094
-	849034519	New Switch Music Track	.cache\8F\{8F0957B7-3857-4BEF-D6A1-D298532F34E4}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\GGJ2026 - Woodland Brawl_v1\New Switch Music Track		2858
-	893848697	New Switch Music Track	.cache\C3\{C30A1203-C246-974C-2BB2-9494152492C6}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\GGJ2026 - Woodland Brawl_v1\New Switch Music Track		2852
-	960355360	Nature's Bidding_Woodland Brawl v2_INTRO	.cache\C1\{C1FEE326-04E5-3F5C-4A1F-363124E876F5}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\Woodland Intro\Nature's Bidding_Woodland Brawl v2_INTRO		2412
-	968079997	New Switch Music Track	.cache\BC\{BC18F766-FF76-62BB-446A-F3181E733A8B}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\Nature's Bidding - Volcanic Brawl v2\New Switch Music Track		3107
-	1062067687	New Switch Music Track	.cache\83\{83568BD1-7792-8CC7-DA46-7936B4C41F7B}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\Nature's Bidding - Volcanic Brawl v2\New Switch Music Track		2549
+	42008625	MX_Lobby_Player_Mix	.cache\83\{8397463F-14B2-B195-F542-D0980469BD21}.wem		\Containers\Music Work Unit\MX_System\MX_Lobby\MX_Lobby_Loop\MX_Lobby_Player_Mix		2968
+	64235366	MX_Cliff_Player_Mix	.cache\AF\{AF1466B6-FEEB-BBF7-8082-62F724BAF2D4}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\MX_Cliff_Loop\MX_Cliff_Player_Mix		3718
+	115717617	MX_Bidding_Track	.cache\0E\{0E99BA06-B835-83D9-CE99-5AE853A1D894}.wem		\Containers\Music Work Unit\MX_System\MX_Bidding\MX_Bidding_Loop\MX_Bidding_Track		3251
+	338048370	MX_Lava_Player_Mix	.cache\CE\{CED73CCF-385D-A837-530F-D70C8AFE15E3}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\MX_Lava_Loop\MX_Lava_Player_Mix		3166
+	476834380	MX_Menu_Track	.cache\40\{409319AA-1834-0F4F-E9E4-8E3F065DC4CC}.wem		\Containers\Music Work Unit\MX_System\MX_Menu\MX_Menu_Loop\MX_Menu_Track		3166
+	713782309	MX_Lobby_Player_Mix	.cache\54\{5474789E-1764-DB09-0D07-916A5B0DCE4C}.wem		\Containers\Music Work Unit\MX_System\MX_Lobby\MX_Lobby_Loop\MX_Lobby_Player_Mix		3730
+	849034519	MX_Cliff_Player_Mix	.cache\18\{181A1DA1-978C-1CB2-1EE1-C326988A314F}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\MX_Cliff_Loop\MX_Cliff_Player_Mix		3438
+	893848697	MX_Cliff_Player_Mix	.cache\2F\{2F39D3DC-DF55-1CFF-E356-41BF4E212DA5}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\MX_Cliff_Loop\MX_Cliff_Player_Mix		3424
+	960355360	MX_Cliff_Intro_Track	.cache\68\{68822B99-F131-64EF-B94B-9573A6F38C1E}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\MX_Cliff_Intro\MX_Cliff_Intro_Track		2484
+	968079997	MX_Lava_Player_Mix	.cache\C7\{C7366FF5-5674-F741-2FA9-0EB4C445DFBF}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\MX_Lava_Loop\MX_Lava_Player_Mix		3639
+	1062067687	MX_Lava_Player_Mix	.cache\AE\{AEA191DD-5711-E39A-432A-119244F11657}.wem		\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\MX_Lava_Loop\MX_Lava_Player_Mix		3077
 
 Streamed Audio	ID	Name	Audio source file	Generated audio file	Wwise Object Path	Notes
-	42008625	Lobby Switch	.cache\FA\{FAD858A9-0837-AE9D-8AC7-451853CFCAB9}.wem	42008625.wem	\Containers\Music Work Unit\MX_System\MX_Lobby\Lobby Segment\Lobby Switch	
-	64235366	New Switch Music Track	.cache\D4\{D4FB21F1-0ACD-9059-0601-E2D4E735CB00}.wem	64235366.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\GGJ2026 - Woodland Brawl_v1\New Switch Music Track	
-	115717617	AuctionTime_Master	.cache\56\{562BCBE9-CCB7-160A-8D12-4ED6B09FFAE0}.wem	115717617.wem	\Containers\Music Work Unit\MX_System\MX_Bidding\AuctionTime_Master\AuctionTime_Master	
-	338048370	New Switch Music Track	.cache\BD\{BD92CAB4-B0E4-27EC-DA19-3FBDB4362C42}.wem	338048370.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\Nature's Bidding - Volcanic Brawl v2\New Switch Music Track	
-	476834380	Nature's Bidding_MainMenu_v2	.cache\93\{930C504D-3D9C-EDE3-769B-C05F9CC32966}.wem	476834380.wem	\Containers\Music Work Unit\MX_System\MX_Menu\GGJ2026 - Main Menu_v1\Nature's Bidding_MainMenu_v2	
-	713782309	Lobby Switch	.cache\DE\{DEDD541C-C75B-5E2F-7E90-FD29EB94C8BE}.wem	713782309.wem	\Containers\Music Work Unit\MX_System\MX_Lobby\Lobby Segment\Lobby Switch	
-	849034519	New Switch Music Track	.cache\8F\{8F0957B7-3857-4BEF-D6A1-D298532F34E4}.wem	849034519.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\GGJ2026 - Woodland Brawl_v1\New Switch Music Track	
-	893848697	New Switch Music Track	.cache\C3\{C30A1203-C246-974C-2BB2-9494152492C6}.wem	893848697.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\GGJ2026 - Woodland Brawl_v1\New Switch Music Track	
-	960355360	Nature's Bidding_Woodland Brawl v2_INTRO	.cache\C1\{C1FEE326-04E5-3F5C-4A1F-363124E876F5}.wem	960355360.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\Woodland Intro\Nature's Bidding_Woodland Brawl v2_INTRO	
-	968079997	New Switch Music Track	.cache\BC\{BC18F766-FF76-62BB-446A-F3181E733A8B}.wem	968079997.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\Nature's Bidding - Volcanic Brawl v2\New Switch Music Track	
-	1062067687	New Switch Music Track	.cache\83\{83568BD1-7792-8CC7-DA46-7936B4C41F7B}.wem	1062067687.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\Nature's Bidding - Volcanic Brawl v2\New Switch Music Track	
+	42008625	MX_Lobby_Player_Mix	.cache\83\{8397463F-14B2-B195-F542-D0980469BD21}.wem	42008625.wem	\Containers\Music Work Unit\MX_System\MX_Lobby\MX_Lobby_Loop\MX_Lobby_Player_Mix	
+	64235366	MX_Cliff_Player_Mix	.cache\AF\{AF1466B6-FEEB-BBF7-8082-62F724BAF2D4}.wem	64235366.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\MX_Cliff_Loop\MX_Cliff_Player_Mix	
+	115717617	MX_Bidding_Track	.cache\0E\{0E99BA06-B835-83D9-CE99-5AE853A1D894}.wem	115717617.wem	\Containers\Music Work Unit\MX_System\MX_Bidding\MX_Bidding_Loop\MX_Bidding_Track	
+	338048370	MX_Lava_Player_Mix	.cache\CE\{CED73CCF-385D-A837-530F-D70C8AFE15E3}.wem	338048370.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\MX_Lava_Loop\MX_Lava_Player_Mix	
+	476834380	MX_Menu_Track	.cache\40\{409319AA-1834-0F4F-E9E4-8E3F065DC4CC}.wem	476834380.wem	\Containers\Music Work Unit\MX_System\MX_Menu\MX_Menu_Loop\MX_Menu_Track	
+	713782309	MX_Lobby_Player_Mix	.cache\54\{5474789E-1764-DB09-0D07-916A5B0DCE4C}.wem	713782309.wem	\Containers\Music Work Unit\MX_System\MX_Lobby\MX_Lobby_Loop\MX_Lobby_Player_Mix	
+	849034519	MX_Cliff_Player_Mix	.cache\18\{181A1DA1-978C-1CB2-1EE1-C326988A314F}.wem	849034519.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\MX_Cliff_Loop\MX_Cliff_Player_Mix	
+	893848697	MX_Cliff_Player_Mix	.cache\2F\{2F39D3DC-DF55-1CFF-E356-41BF4E212DA5}.wem	893848697.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\MX_Cliff_Loop\MX_Cliff_Player_Mix	
+	960355360	MX_Cliff_Intro_Track	.cache\68\{68822B99-F131-64EF-B94B-9573A6F38C1E}.wem	960355360.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Cliff\MX_Cliff_Intro\MX_Cliff_Intro_Track	
+	968079997	MX_Lava_Player_Mix	.cache\C7\{C7366FF5-5674-F741-2FA9-0EB4C445DFBF}.wem	968079997.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\MX_Lava_Loop\MX_Lava_Player_Mix	
+	1062067687	MX_Lava_Player_Mix	.cache\AE\{AEA191DD-5711-E39A-432A-119244F11657}.wem	1062067687.wem	\Containers\Music Work Unit\MX_System\MX_Combat\MX_Lava\MX_Lava_Loop\MX_Lava_Player_Mix	
 

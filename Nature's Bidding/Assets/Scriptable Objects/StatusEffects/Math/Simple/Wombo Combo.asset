@@ -17,5 +17,5 @@ MonoBehaviour:
   Description: Deal increased damage when you hit higher combos
   Duration: -1
   Stat: 14
-  Value: 5
+  Value: 15
   OperationType: 0

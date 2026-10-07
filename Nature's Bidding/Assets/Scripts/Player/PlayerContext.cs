@@ -21,7 +21,8 @@ public class PlayerContext
     public Transform orientation;
     public Camera cam;
     public PlayerAttackManager playerAttackManager;
-    public PlayerHealth playerHealth;
+    public IDamageable playerDamageable;
+    public IEffectable playerEffectable;
 
     [Header("Speed")]
 

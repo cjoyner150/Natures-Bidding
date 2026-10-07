@@ -30,7 +30,7 @@
 					</ValueList>
 				</Property>
 				<Property Name="SoundBankGenerateHeaderFile" Type="bool" Value="True" />
-				<Property Name="SoundBankGenerateEstimatedDuration" Type="bool" Value="True" /><Property Name="SoundBankHeaderFilePath" Type="string" Value="Z:/Users/thomasvu/Documents/GitHub/Natures-Bidding/Nature's Bidding/Nature's Bidding_WwiseProject/GeneratedSoundBanks/" />
+				<Property Name="SoundBankGenerateEstimatedDuration" Type="bool" Value="True" /><Property Name="SoundBankHeaderFilePath" Type="string" Value="GeneratedSoundBanks\" />
 				<Property Name="SoundBankPaths" Type="string">
 					<ValueList>
 						<Value Platform="Mac">GeneratedSoundBanks\Mac\</Value>
@@ -67,6 +67,8 @@
 					</ValueList>
 				</Property>
 				<Property Name="WwiseVersionWhenCreated" Type="string" Value="Branch=wwise_v2025.1.5|Build=9095|VersionName=v2025.1.5|Config=Release" />
+			
+				<Property Name="LicenseKey" Type="string" Value="PHByb2plY3QgaWQ9IjIyMjA5IiBtYXNrPSJERFJaODIyOCIgZW5jPSIwIj48bGljZW5zZSBpZD0iMSIgbmFtZT0iV3dpc2UiIHR5cGU9IjIiIHBsYXRmb3Jtcz0iNCwxMCwxNCIgZXhwaXJlcz0iMjAyNy0wMS0wMSIgIC8+PGxpY2Vuc2UgaWQ9IjIxIiBuYW1lPSJNYWludGVuYW5jZSIgdHlwZT0iMiIgcGxhdGZvcm1zPSI0LDEwLDE0IiBleHBpcmVzPSIyMDI3LTAxLTAxIiAgLz48bGljZW5zZSBpZD0iNzAiIG5hbWU9IkluZGllIExpY2Vuc2UiIHR5cGU9IjIiIHBsYXRmb3Jtcz0iNCwxMCwxNCIgZXhwaXJlcz0iMjAyNy0wMS0wMSIgIC8+PC9wcm9qZWN0Pg==|CNwWbjmDsRkfIAsUxv0ZTOVY82Ea16DgcAnZNuQG4ufziA648Qv89AV5sisp6C5b6pELqaKTJq8tgKm5iW73N2kx7s9PbQtIwpgtEq2KzjFg/z1szt2FpCdjSXLIQGaUrtCf8v3bdX0TtszAo0TZTjeVI9mQhkqJqpZcp01Le2JxUYhEsa4iasBFPiVFu2hhoaerge/4h5xc0BABvLHjBTt24wQwWazWnXauMr8jI+VOi1Ygcurbmft9VJCzF9WnrtFxD1aeDg2GHM8qkJ2UETMa0KIFmRLa2Sb5b6/ixyyWbPITFNhY1DEZwa09F9nGpFMLD0+SZ4Xggu7cE8V7Zw=="/>
 			</PropertyList>
 			<SharedValues>
 				<SharedPropertyList ClassName="AudioFileSource" PluginType="0" CompanyID="1" PluginID="0">

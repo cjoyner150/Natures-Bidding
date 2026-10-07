@@ -17,5 +17,5 @@ MonoBehaviour:
   Description: Increases Crit Chance
   Duration: -1
   Stat: 11
-  Value: 10
+  Value: 15
   OperationType: 0

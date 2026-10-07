@@ -24,12 +24,12 @@ public class Dash : State
         if (teleport)
         {
             Teleport();
-            NetworkVisualEffectManager.SpawnTeleportEffectsOnPlayer?.Invoke(ctx.playerHealth.OwnerClientId);
+            NetworkVisualEffectManager.SpawnTeleportEffectsOnPlayer?.Invoke(ctx);
             return;
         }
 
         ctx.anim.SetBool("Dashing", true);
-        NetworkVisualEffectManager.SpawnDashEffectsOnPlayer?.Invoke(ctx.playerHealth.OwnerClientId);
+        NetworkVisualEffectManager.SpawnDashEffectsOnPlayer?.Invoke(ctx);
 
         ctx.desiredMaxSpeed = ctx.dashSpeed * ctx.playerStats.DashDistance;
 

@@ -67,6 +67,7 @@
 								<Value Platform="Linux">4</Value>
 							</ValueList>
 						</Property>
+						<Property Name="Color" Type="int16" Value="1"/>
 						<Property Name="LRMix" Type="Real64">
 							<ValueList>
 								<Value Platform="Mac">0</Value>
@@ -88,6 +89,7 @@
 								<Value Platform="Linux">0</Value>
 							</ValueList>
 						</Property>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
 						<Property Name="SampleRate" Type="int32">
 							<ValueList>
 								<Value Platform="Mac">0</Value>
@@ -104,11 +106,7 @@
 							<ConversionPlugin Name="" ID="{5290955F-8062-4FA4-87C2-C9E6BC61F602}" PluginName="Vorbis" CompanyID="0" PluginID="4"/>
 						</ConversionPluginInfo>
 						<ConversionPluginInfo Platform="Linux">
-							<ConversionPlugin Name="" ID="{EDE9497E-C7F0-4D53-BD6C-3D695E2C74BA}" PluginName="Vorbis" CompanyID="0" PluginID="4">
-								<PropertyList>
-									<Property Name="SeekTableGranularity" Type="int32" Value="5"/>
-								</PropertyList>
-							</ConversionPlugin>
+							<ConversionPlugin Name="" ID="{EDE9497E-C7F0-4D53-BD6C-3D695E2C74BA}" PluginName="Vorbis" CompanyID="0" PluginID="4"/>
 						</ConversionPluginInfo>
 					</ConversionPluginInfoList>
 				</Conversion>

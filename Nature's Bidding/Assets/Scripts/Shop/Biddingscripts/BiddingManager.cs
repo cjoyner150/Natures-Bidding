@@ -128,12 +128,9 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         var flowManager = PersistentGameStateManager.Instance;
         if (flowManager != null)
         {
-            var biddingCanvas = serializedBiddingCanvas;
-            var shopCanvas = serializedShopCanvas;
-            var shopManager = ShopManager.Instance != null ? ShopManager.Instance : FindAnyObjectByType<ShopManager>();
             var readyManager = ReadyManager.Instance != null ? ReadyManager.Instance : FindAnyObjectByType<ReadyManager>();
 
-            flowManager.ConfigureGameFlowReferences(biddingCanvas, shopCanvas, this, shopManager, readyManager);
+            flowManager.ConfigureGameFlowReferences(this, null, readyManager);
             flowManager.OnBiddingSceneReady();
 
             if (IsServer)
@@ -160,7 +157,15 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         InitializeGoldAsync();
     }
 
-    public async void OnBiddingPhaseStart()
+    public void OnBiddingPhaseStart()
+    {
+        if (!IsServer) return;
+
+        ShowOpeningInstructionsRpc();
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void ShowOpeningInstructionsRpc()
     {
         PointerNPC.Instance?.CelebrateOne();
         PointerNPC.Instance?.SayOpeningInstructions();
@@ -223,7 +228,9 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         // All rounds complete
         ShowTransitionMessageRpc("Bidding over! Heading to the shop...");
         yield return new WaitForSeconds(2f);
-        PersistentGameStateManager.Instance?.RequestStartShopPhase();
+        
+
+        // TODO - Return to map
     }
 
     IEnumerator RunSingleRound()

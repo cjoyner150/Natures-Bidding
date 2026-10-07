@@ -1,0 +1,15 @@
+Event	ID	Name			Wwise Object Path	Notes
+	2321666137	Play_SFX_Jump_Grunt			\SFX Work Unit\Play_SFX_Jump_Grunt	
+
+Switch Group	ID	Name			Wwise Object Path	Notes
+	1069431850	Player			\Default Work Unit\Player	
+
+Switch	ID	Name	Switch Group			Notes
+	678209053	Two	Player			
+	912956111	Three	Player			
+	1064933119	One	Player			
+	2863728729	Four	Player			
+
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	2369427653	Combat_Pan			\Default Work Unit\Combat_Pan	
+

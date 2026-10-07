@@ -27,13 +27,13 @@ public class BatMaskStatusEffect : StatusEffect
         );
 
         GameLogger.Log(LogSeverity.Debug, "Calling SpawnBatConfusion event...");
-        NetworkVisualEffectManager.SpawnBatConfusionEffectsOnPlayer?.Invoke(NetworkManager.Singleton.LocalClientId);
+        NetworkVisualEffectManager.SpawnBatConfusionEffectsOnPlayer?.Invoke(playerInput.GetPlayerContext());
     }  
 
     public override void OnEnd()
     {
         playerInput?.ResetControls();
 
-        NetworkVisualEffectManager.RemoveBatConfusionEffectsOnPlayer?.Invoke(NetworkManager.Singleton.LocalClientId);
+        NetworkVisualEffectManager.RemoveBatConfusionEffectsOnPlayer?.Invoke(playerInput.GetPlayerContext());
     }
 }

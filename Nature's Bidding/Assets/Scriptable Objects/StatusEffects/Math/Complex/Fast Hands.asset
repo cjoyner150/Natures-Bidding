@@ -21,4 +21,4 @@ MonoBehaviour:
   TargetOperationType: 0
   EffectByStat: 17
   ChangeEffectByOperation: 2
-  ChangeEffectByOperationValue: 300
+  ChangeEffectByOperationValue: 125

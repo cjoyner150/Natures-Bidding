@@ -14,13 +14,15 @@ public class DebugOnActionStatusEffect : ApplyXOnActionStatusEffect
     {
     }
 
-    protected override void OnApplyEffectTo(ulong targetId) {
+    protected override void OnApplyEffectTo(long targetId) {
         foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
         {
             GameLogger.Log(LogSeverity.Debug, $"key={kvp.Key}, PlayerObject={(kvp.Value.PlayerObject != null ? kvp.Value.PlayerObject.name : "NULL")}");
         }
 
-        var targetPlayer = NetworkManager.Singleton.ConnectedClients[targetId]?.PlayerObject;
+        if (targetId < 0) return;
+
+        var targetPlayer = NetworkManager.Singleton.ConnectedClients[(ulong)targetId]?.PlayerObject;
 
         if (targetPlayer != null)
         {

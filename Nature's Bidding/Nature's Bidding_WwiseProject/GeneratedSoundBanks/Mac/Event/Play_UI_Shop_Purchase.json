@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{3F536E32-71C6-480B-8715-842AF6AFAE0B}",
     "Language": "SFX",
-    "Hash": "{B980A432-0DB3-A7BC-1A04-8105B92CF4B9}",
+    "Hash": "{BAC8EF6A-59CA-5544-D611-6C4FEA170C58}",
     "ObjectPath": "Play_UI_Shop_Purchase",
     "ShortName": "Play_UI_Shop_Purchase",
     "Path": "Event/Play_UI_Shop_Purchase.bnk",
@@ -56,6 +56,6 @@
     ]
    }
   ],
-  "FileHash": "{F1EDBC3F-97DE-3246-86BA-F82C7CAA1FCA}"
+  "FileHash": "{A40BC90E-BF25-EE95-230E-16AC93712556}"
  }
 }

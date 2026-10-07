@@ -2,6 +2,10 @@
 <WwiseDocument Type="WorkUnit" ID="{5DE131AE-4DD4-44BE-A4AC-B74B190212AE}" SchemaVersion="133">
 	<Containers>
 		<WorkUnit Name="Dialogue Work Unit" ID="{5DE131AE-4DD4-44BE-A4AC-B74B190212AE}" PersistMode="Standalone">
+			<PropertyList>
+				<Property Name="Color" Type="int16" Value="24"/>
+				<Property Name="OverrideColor" Type="bool" Value="True"/>
+			</PropertyList>
 			<ChildrenList>
 				<PropertyContainer Name="Voices" ID="{08554F57-1B1B-4877-88C4-255A30391026}" ShortID="348209862">
 					<ReferenceList>
@@ -13,7 +17,7 @@
 						</Reference>
 					</ReferenceList>
 					<ChildrenList>
-						<RandomSequenceContainer Name="Auctioneer" ID="{D15D5C56-A529-4938-A655-39F6B36263D0}" ShortID="436973410">
+						<RandomSequenceContainer Name="DLG_Auctioneer" ID="{D15D5C56-A529-4938-A655-39F6B36263D0}" ShortID="436973410">
 							<PropertyList>
 								<Property Name="IgnoreParentMaxSoundInstance" Type="bool" Value="True"/>
 								<Property Name="MaxSoundPerInstance" Type="int16">

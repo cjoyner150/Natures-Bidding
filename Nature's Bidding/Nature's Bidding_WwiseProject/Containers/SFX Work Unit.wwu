@@ -234,7 +234,7 @@
 								</Property>
 								<Property Name="Volume" Type="Real64">
 									<ValueList>
-										<Value>8</Value>
+										<Value>9</Value>
 									</ValueList>
 								</Property>
 							</PropertyList>
@@ -2137,6 +2137,13 @@
 							</GroupingInfo>
 						</SwitchContainer>
 						<RandomSequenceContainer Name="SFX_Shield_Fail" ID="{CA33D97F-83B5-4835-9756-8DA63C54044D}" ShortID="623613796">
+							<PropertyList>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>-4</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
@@ -2173,6 +2180,11 @@
 						<RandomSequenceContainer Name="SFX_Shield" ID="{D73877A1-0B12-484B-9D67-FB827D2CC076}" ShortID="758164272">
 							<PropertyList>
 								<Property Name="OverrideEffect" Type="bool" Value="True"/>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>2</Value>
+									</ValueList>
+								</Property>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -2283,8 +2295,8 @@
 												<Custom>
 													<Effect Name="Parametric EQ (Custom)" ID="{7CF010D9-186A-4653-9569-BA2792BB3F7A}" ShortID="250719005" PluginName="Wwise Parametric EQ" CompanyID="0" PluginID="105" PluginType="3">
 														<PropertyList>
-															<Property Name="FrequencyBand2" Type="Real32" Value="3776.87"/>
-															<Property Name="GainBand2" Type="Real32" Value="-11.88119"/>
+															<Property Name="FrequencyBand2" Type="Real32" Value="4588.659"/>
+															<Property Name="GainBand2" Type="Real32" Value="-3.768595"/>
 															<Property Name="QFactorBand2" Type="Real32" Value="0.3"/>
 														</PropertyList>
 													</Effect>

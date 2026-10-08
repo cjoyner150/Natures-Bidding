@@ -293,8 +293,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PotManager, Assembly-CSharp
+      - m_Target: {fileID: 1839508122}
+        m_TargetAssemblyTypeName: TarotPotManager, Assembly-CSharp
         m_MethodName: OnCloseOverlay
         m_Mode: 1
         m_Arguments:
@@ -1442,8 +1442,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PotManager, Assembly-CSharp
+      - m_Target: {fileID: 1839508122}
+        m_TargetAssemblyTypeName: TarotPotManager, Assembly-CSharp
         m_MethodName: OnConfirmClicked
         m_Mode: 1
         m_Arguments:
@@ -2412,9 +2412,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PotManager, Assembly-CSharp
-        m_MethodName: OnPotClicked
+      - m_Target: {fileID: 1839508122}
+        m_TargetAssemblyTypeName: TarotPotManager, Assembly-CSharp
+        m_MethodName: OnAnimatedPotClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2769,23 +2769,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 727c608f9e21c3e44b3225619bc63a8e, type: 2}
   - {fileID: 11400000, guid: 95ba5c89811a7bf4283acf5bb94e9954, type: 2}
   - {fileID: 11400000, guid: 8017dc78a16878243b2c8a493e313cc4, type: 2}
-  cardBackSprite: {fileID: 0}
+  cardBackSprite: {fileID: 21300000, guid: fabc87e1b5e54924d959550cd1f7823b, type: 3}
   potOverlay: {fileID: 321230971}
   overlayCanvasGroup: {fileID: 321230977}
-  smallPotCardSlot: {fileID: 0}
-  grandPotCardSlot: {fileID: 0}
-  potCardPrefab: {fileID: 0}
   fadeInDuration: 0.35
   potImage: {fileID: 1598001082}
   explodeEffect: {fileID: 0}
-  clickHintText: {fileID: 1329725106}
+  clickHintText: {fileID: 0}
   cardArea: {fileID: 810482926}
   tarotCardPrefab: {fileID: 6041610422043367456, guid: 442c5c3f362a7494fb9a76f9da7e8627, type: 3}
   cardDealInterval: 0.15
-  selectionHintText: {fileID: 0}
-  confirmButton: {fileID: 0}
-  confirmButtonText: {fileID: 0}
-  closeButton: {fileID: 0}
+  selectionHintText: {fileID: 1329725106}
+  confirmButton: {fileID: 1174493939}
+  confirmButtonText: {fileID: 1451701035}
+  closeButton: {fileID: 195992545}
   tooltipPrefab: {fileID: 2826328358326014803, guid: 3d86d35e2a86a5349ba7709613fbe317, type: 3}
   playerCrosshairPrefab: {fileID: 6947474001905322135, guid: db42880c095dc494b982e3122ad8292a, type: 3}
   _rootCanvas: {fileID: 1127180138}
@@ -2797,6 +2794,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1450275384}
     m_Modifications:
+    - target: {fileID: 3679513902368704430, guid: ffeea5b17945e7f4399f1399f251e204, type: 3}
+      propertyPath: potType
+      value: 
+      objectReference: {fileID: 11400000, guid: 382035cd9f5b78042970a949f4c2c24d, type: 2}
     - target: {fileID: 5927515982429646519, guid: ffeea5b17945e7f4399f1399f251e204, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

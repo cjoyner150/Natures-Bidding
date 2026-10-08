@@ -140,14 +140,5 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         Gizmos.DrawSphere(transform.position + (transform.up * .125f), .2f);
     }
 
-    public Color GetPlayerColor()
-    {
-        var data = PersistentPlayerRegistry.Instance.GetByClientId(OwnerClientId);
-        if (data == null)
-        {
-            GameLogger.Log(LogSeverity.Error, $"Player data not found for clientId {OwnerClientId}. Returning default color.");
-            return Color.white;
-        }
-        return colors[data.playerIndex];
-    } 
+    public Color GetPlayerColor() => PersistentPlayerRegistry.Instance.GetPlayerColor(OwnerClientId);
 }

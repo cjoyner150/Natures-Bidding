@@ -16,6 +16,14 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
 
     private bool IsServer => NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer;
 
+    private string[] playerColorHexes = new string[]
+    {
+        "#FF0700",
+        "#00FF0B",
+        "#007BFF",
+        "#FFF209"
+    };
+
     protected override void Awake()
     {
         base.Awake();
@@ -173,6 +181,38 @@ public class PersistentPlayerRegistry : Singleton<PersistentPlayerRegistry>
     public bool HasPlayer(ulong clientId) => _clientToAuth.ContainsKey(clientId);
 
     public List<PlayerData> GetAllPlayers() => new(_playerData.Values);
+
+    public Color GetPlayerColor(ulong clientId)
+    {
+        if (_clientToAuth.TryGetValue(clientId, out var authId) && _playerData.TryGetValue(authId, out var data))
+        {
+            if (data.playerIndex < playerColorHexes.Length)
+            {
+                string hex = playerColorHexes[data.playerIndex];
+
+                // Tolerant of entries missing the leading '#'
+                if (!hex.StartsWith("#")) hex = "#" + hex;
+
+                if (ColorUtility.TryParseHtmlString(hex, out Color color))
+                {
+                    return color;
+                }
+
+                GameLogger.Log(LogSeverity.Warning, $"Invalid hex '{hex}' for player {data.playerName}. Defaulting to white.");
+                return Color.white;
+            }
+            else
+            {
+                GameLogger.Log(LogSeverity.Warning, $"The index of player {data.playerName} is out of bounds of the color array. Defaulting to white.");
+                return Color.white;
+            }
+        }
+        else
+        {
+            GameLogger.Log(LogSeverity.Warning, $"Player of clientId {clientId} not found in registry. Defaulting to white.");
+            return Color.white;
+        }
+    }
 
     #endregion
 

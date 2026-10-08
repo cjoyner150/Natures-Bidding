@@ -50,9 +50,6 @@ public class TarotPotManager : NetworkBehaviour
     [Header("Overlay")]
     [SerializeField] private GameObject  potOverlay;
     [SerializeField] private CanvasGroup overlayCanvasGroup;
-    [SerializeField] private Transform smallPotCardSlot;     // Parent for the small pot card
-    [SerializeField] private Transform grandPotCardSlot;     // Parent for the grand pot card
-    [SerializeField] private GameObject potCardPrefab;
     [SerializeField] private float       fadeInDuration  = 0.35f;
 
     [Header("Pot Graphic")]
@@ -310,8 +307,28 @@ public class TarotPotManager : NetworkBehaviour
         }
 
         playerPotSelections[playerClientId] = potBehaviour;
-        playerSelectionVisuals[playerClientId] = potBehaviour != null ? Instantiate(playerSelectionVisualPrefab, potBehaviour.LayoutGroup.transform).GetComponent<Image>() : null;
+        playerSelectionVisuals[playerClientId] = potBehaviour != null ? SpawnPlayerSelectionVisual(playerClientId, potBehaviour.LayoutGroup.transform) : null;
     }
+
+    private Image SpawnPlayerSelectionVisual(ulong clientId, Transform parent)
+    {
+        var go = Instantiate(playerSelectionVisualPrefab, parent);
+
+        Image img = go?.GetComponent<Image>();
+        if (img == null) { 
+            GameLogger.Log(LogSeverity.Error, "Player selection visual failed to spawn. Image not found.");
+            return null;
+        }
+
+        img.color = PersistentPlayerRegistry.Instance.GetPlayerColor(clientId);
+        return img;
+    }
+
+
+    #endregion
+
+    #region End Selection Sequence
+
 
 
     #endregion

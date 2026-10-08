@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -210,7 +211,8 @@ public class TarotPotManager : NetworkBehaviour
         ulong localClientId = NetworkManager.Singleton.LocalClientId;
 
         if (potBehaviour == null) return;
-        if (playerPotSelections[localClientId] != null && playerPotSelections[localClientId] == potBehaviour) return;
+
+        if (playerPotSelections.TryGetValue(localClientId, out var potSelection) && potSelection == potBehaviour) return;
 
         PlayerData playerData = PersistentPlayerRegistry.Instance?.GetByClientId(localClientId);
         if (playerData == null)
@@ -260,8 +262,10 @@ public class TarotPotManager : NetworkBehaviour
         if (!allowSelect) return;
         TarotPotUIBehaviour tarotPotUIBehaviour = GetPotUIBySize(potSize);
 
-        if (success) UpdateLocalPlayerSelection(playerClientId, tarotPotUIBehaviour);
-        else if (playerPotSelections[playerClientId] == tarotPotUIBehaviour) UpdateLocalPlayerSelection(playerClientId, null);
+        if (success) 
+            UpdateLocalPlayerSelection(playerClientId, tarotPotUIBehaviour);
+        else if (playerPotSelections.TryGetValue(playerClientId, out var potSelection) && potSelection == tarotPotUIBehaviour) 
+            UpdateLocalPlayerSelection(playerClientId, null);
 
         if (IsServer)
         {

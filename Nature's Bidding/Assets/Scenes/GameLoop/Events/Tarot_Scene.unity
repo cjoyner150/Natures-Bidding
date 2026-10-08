@@ -1556,11 +1556,6 @@ Transform:
   - {fileID: 920941653}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!224 &1325683935 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3950583451940854516, guid: ffeea5b17945e7f4399f1399f251e204, type: 3}
-  m_PrefabInstance: {fileID: 1396148511}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1329725104
 GameObject:
   m_ObjectHideFlags: 0
@@ -2004,10 +1999,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 3950583451940854516, guid: ffeea5b17945e7f4399f1399f251e204, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2085845941}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffeea5b17945e7f4399f1399f251e204, type: 3}
 --- !u!224 &1396148512 stripped
@@ -2015,6 +2007,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5927515982429646519, guid: ffeea5b17945e7f4399f1399f251e204, type: 3}
   m_PrefabInstance: {fileID: 1396148511}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1396148513 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3679513902368704430, guid: ffeea5b17945e7f4399f1399f251e204, type: 3}
+  m_PrefabInstance: {fileID: 1396148511}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52fe27b8f5e7d44488429ef0fda8d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TarotPotUIBehaviour
 --- !u!1 &1450275383
 GameObject:
   m_ObjectHideFlags: 0
@@ -2743,34 +2746,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PotManager
   ShowTopMostFoldoutHeaderGroup: 1
-  playerSelectionVisualPrefab: {fileID: 8270503820806290235, guid: cce16e10cbba0634abdb0c6766a4e84f, type: 3}
-  potUIBehaviours: []
-  cardPool: []
+  playerSelectionVisualPrefab: {fileID: 2079595037733994335, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
+  potUIBehaviours:
+  - {fileID: 2130706782}
+  - {fileID: 1396148513}
+  cardPool:
+  - {fileID: 11400000, guid: ad3f3f1bf946baf41bb6bffa87503878, type: 2}
+  - {fileID: 11400000, guid: e92a22bb1b12fa14f9677142b5e081cd, type: 2}
+  - {fileID: 11400000, guid: a9ad3efd6e1eae544a9fed00d1fbc822, type: 2}
+  - {fileID: 11400000, guid: e17943c64cfd12c42be105dd0b3c7e5e, type: 2}
+  - {fileID: 11400000, guid: e3d15387212fe6c45a04696c82a1646e, type: 2}
+  - {fileID: 11400000, guid: df5699b749114aa4b8ce1a7da8a92d24, type: 2}
+  - {fileID: 11400000, guid: 8771aecec8e3dc0488a9b57f982626bd, type: 2}
+  - {fileID: 11400000, guid: d2a62a91963e43c4da39ee20a4f09da0, type: 2}
+  - {fileID: 11400000, guid: 92ffeeffcb9e68c4391996d1b62c923b, type: 2}
+  - {fileID: 11400000, guid: a9140ba8b9b60b24ea81c10b8328ed4a, type: 2}
+  - {fileID: 11400000, guid: 56a49ac2b7b4a264285c61b3e9fce057, type: 2}
+  - {fileID: 11400000, guid: b5a0ed7ef28211b46891c11f489deed5, type: 2}
+  - {fileID: 11400000, guid: 1f40ec51caf15d643bfe3e5c5d378af6, type: 2}
+  - {fileID: 11400000, guid: 6e16c607ccb194f42b405bf9442c3233, type: 2}
+  - {fileID: 11400000, guid: 964f7f4564fa3dd4bb4d27b2adc18201, type: 2}
+  - {fileID: 11400000, guid: 727c608f9e21c3e44b3225619bc63a8e, type: 2}
+  - {fileID: 11400000, guid: 95ba5c89811a7bf4283acf5bb94e9954, type: 2}
+  - {fileID: 11400000, guid: 8017dc78a16878243b2c8a493e313cc4, type: 2}
   cardBackSprite: {fileID: 0}
-  potOverlay: {fileID: 0}
-  overlayCanvasGroup: {fileID: 0}
+  potOverlay: {fileID: 321230971}
+  overlayCanvasGroup: {fileID: 321230977}
   smallPotCardSlot: {fileID: 0}
   grandPotCardSlot: {fileID: 0}
   potCardPrefab: {fileID: 0}
   fadeInDuration: 0.35
-  potImage: {fileID: 0}
+  potImage: {fileID: 1598001082}
   explodeEffect: {fileID: 0}
-  clickHintText: {fileID: 0}
-  cardArea: {fileID: 0}
-  tarotCardPrefab: {fileID: 0}
+  clickHintText: {fileID: 1329725106}
+  cardArea: {fileID: 810482926}
+  tarotCardPrefab: {fileID: 6041610422043367456, guid: 442c5c3f362a7494fb9a76f9da7e8627, type: 3}
   cardDealInterval: 0.15
   selectionHintText: {fileID: 0}
   confirmButton: {fileID: 0}
   confirmButtonText: {fileID: 0}
   closeButton: {fileID: 0}
-  tooltipPrefab: {fileID: 0}
-  playerCrosshairPrefab: {fileID: 0}
-  _rootCanvas: {fileID: 0}
---- !u!224 &2085845941 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-  m_PrefabInstance: {fileID: 4069751864262815050}
-  m_PrefabAsset: {fileID: 0}
+  tooltipPrefab: {fileID: 2826328358326014803, guid: 3d86d35e2a86a5349ba7709613fbe317, type: 3}
+  playerCrosshairPrefab: {fileID: 6947474001905322135, guid: db42880c095dc494b982e3122ad8292a, type: 3}
+  _rootCanvas: {fileID: 1127180138}
 --- !u!1001 &2130706780
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2873,103 +2891,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5927515982429646519, guid: ffeea5b17945e7f4399f1399f251e204, type: 3}
   m_PrefabInstance: {fileID: 2130706780}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &4069751864262815050
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1325683935}
-    m_Modifications:
-    - target: {fileID: 2079595037733994335, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_Name
-      value: Player Selection Visual
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4725744671622641400, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c6a437ae6cfa3124584de9d7d37550dc, type: 3}
+--- !u!114 &2130706782 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3679513902368704430, guid: ffeea5b17945e7f4399f1399f251e204, type: 3}
+  m_PrefabInstance: {fileID: 2130706780}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52fe27b8f5e7d44488429ef0fda8d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TarotPotUIBehaviour
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

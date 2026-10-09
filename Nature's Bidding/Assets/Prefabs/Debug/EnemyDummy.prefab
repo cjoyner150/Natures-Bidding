@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c0bac34f78422bb08c39bfcc3a3a98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAudioFeedback
-  jumpEvent:
+  doubleJumpEvent:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: e4ed77791e1f4034aa2eac2d12badef5, type: 2}
@@ -214,6 +214,18 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: cee7765acb594cefb8fed4d92395aa41, type: 2}
+  fallEvent:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 33dc26a5f206a43c997b0819e74173cd, type: 2}
+  shieldUpEvent:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 8cbedfd0ae7bb462a807f27b1b54f3e1, type: 2}
+  shieldFailEvent:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 005e1385736e54e22adb5f9727b6e1ab, type: 2}
   combatPan:
     idInternal: 0
     valueGuidInternal: 

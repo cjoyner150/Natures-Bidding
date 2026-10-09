@@ -36,7 +36,7 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
     {
         if (doubleJumpEvent == null || !doubleJumpEvent.IsValid())
         {
-            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_SFX_DoubleJump Event is assigned.", this);
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_GP_Player_DoubleJump Event is assigned.", this);
             return;
         }
 
@@ -49,7 +49,7 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
     {
         if (warpEvent == null || !warpEvent.IsValid())
         {
-            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_SFX_Warp Event is assigned.", this);
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_GP_Player_Warp Event is assigned.", this);
             return;
         }
 
@@ -64,7 +64,7 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
 
         if (deathEvent == null || !deathEvent.IsValid())
         {
-            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_SFX_Death Event is assigned.", this);
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_GP_Player_Death Event is assigned.", this);
             return;
         }
 
@@ -124,7 +124,7 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
     {
         if (shieldFailEvent == null || !shieldFailEvent.IsValid())
         {
-            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_SFX_Shield_Fail Event is assigned.", this);
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_GP_Player_Shield_Fail Event is assigned.", this);
             return;
         }
         ApplyScreenSpacePan(gameObject, transform.position);
@@ -135,7 +135,7 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
     {
         if (shieldUpEvent == null || !shieldUpEvent.IsValid())
         {
-            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_SFX_Shield Event is assigned.", this);
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_GP_Player_Shield Event is assigned.", this);
             return;
         }
         ApplyScreenSpacePan(gameObject, transform.position);

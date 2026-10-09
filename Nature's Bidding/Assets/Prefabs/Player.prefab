@@ -874,6 +874,10 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: cee7765acb594cefb8fed4d92395aa41, type: 2}
+  fallEvent:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 33dc26a5f206a43c997b0819e74173cd, type: 2}
   firstJumpGruntEvent:
     idInternal: 0
     valueGuidInternal:
@@ -881,16 +885,32 @@ MonoBehaviour:
   playerVoiceSwitches:
   - idInternal: 0
     valueGuidInternal:
+    groupIdInternal: 0
+    groupGuidInternal:
     WwiseObjectReference: {fileID: 11400000, guid: c8330a336302460082badf9be10eabcb, type: 2}
   - idInternal: 0
     valueGuidInternal:
+    groupIdInternal: 0
+    groupGuidInternal:
     WwiseObjectReference: {fileID: 11400000, guid: 412f6ccdb521429980278a4d312afcd5, type: 2}
   - idInternal: 0
     valueGuidInternal:
+    groupIdInternal: 0
+    groupGuidInternal:
     WwiseObjectReference: {fileID: 11400000, guid: 80e6898edec04800898e239571996e98, type: 2}
   - idInternal: 0
     valueGuidInternal:
+    groupIdInternal: 0
+    groupGuidInternal:
     WwiseObjectReference: {fileID: 11400000, guid: e0d83cbe202547a1bf74140737c75492, type: 2}
+  shieldUpEvent:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 8cbedfd0ae7bb462a807f27b1b54f3e1, type: 2}
+  shieldFailEvent:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 005e1385736e54e22adb5f9727b6e1ab, type: 2}
   combatPan:
     idInternal: 0
     valueGuidInternal: 

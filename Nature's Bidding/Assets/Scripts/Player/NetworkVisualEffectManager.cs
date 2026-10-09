@@ -2,7 +2,6 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Linq;
 using Unity.Netcode;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectManager>
@@ -13,6 +12,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     public static Action<PlayerContext> SpawnTeleportEffectsOnPlayer;
     public static Action<PlayerContext, bool> SpawnJumpEffectsOnPlayer;
     public static Action<PlayerContext> SpawnParrySuccessReactEffectsOnPlayer;
+    public static Action<PlayerContext> PlayShieldFailOnPlayer;
     public static Action<PlayerContext> SpawnConfettiEffectsOnPlayer;
     public static Action<PlayerContext> SpawnBatConfusionEffectsOnPlayer;
     public static Action<PlayerContext> RemoveBatConfusionEffectsOnPlayer;
@@ -44,6 +44,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         RemoveBatConfusionEffectsOnPlayer += OnRemoveBatConfusionEffectsOnPlayer;
         SpawnHitReactionEffectsOnPlayer += OnSpawnHitReactionEffectsOnPlayer;
         SpawnExplosionAtPosition += OnSpawnExplosionAtPosition;
+        PlayShieldFailOnPlayer += OnPlayShieldFailOnPlayer;
     }
 
     public override void OnNetworkDespawn()
@@ -61,6 +62,7 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
         RemoveBatConfusionEffectsOnPlayer -= OnRemoveBatConfusionEffectsOnPlayer;
         SpawnHitReactionEffectsOnPlayer -= OnSpawnHitReactionEffectsOnPlayer;
         SpawnExplosionAtPosition -= OnSpawnExplosionAtPosition;
+        PlayShieldFailOnPlayer -= OnPlayShieldFailOnPlayer;
     }
 
     public void OnSpawnExplosionAtPosition(Vector3 spawnPos) 
@@ -390,6 +392,28 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
             clientId = 0;
             return false;
         }
+    }
+
+    private void OnPlayShieldFailOnPlayer(PlayerContext ctx)
+    {
+        var player = ctx?.playerDamageable as NetworkBehaviour;
+        if (player == null || !player.IsOwner || !player.IsSpawned)
+            return;
+
+        player.GetComponent<PlayerAudioFeedback>()?.PlayShieldFail();
+
+        PlayShieldFailClientRpc(
+            new NetworkObjectReference(player.NetworkObject));
+    }
+
+    [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
+    private void PlayShieldFailClientRpc(
+        NetworkObjectReference playerReference)
+    {
+        if (!playerReference.TryGet(out var player))
+            return;
+
+        player.GetComponent<PlayerAudioFeedback>()?.PlayShieldFail();
     }
 
     private PlayerVisualEffectManager GetPlayerEffectManagerById(ulong id) => NetworkManager.Singleton.ConnectedClients[id]?.PlayerObject?.GetComponent<PlayerVisualEffectManager>();

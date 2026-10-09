@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3048a983b0df63e4281883aaddd5ff1d, type: 3}
   m_Name: 36E6308A-11AE-45B4-9188-B735237F920C
   m_EditorClassIdentifier: AK.Wwise.Unity.API.WwiseTypes::WwiseEventReference
-  objectName: Play_SFX_Woosh
-  id: 415287154
+  objectName: Play_GP_Player_AttackSlash
+  id: 3812350027
   guid: 36E6308A-11AE-45B4-9188-B735237F920C
   IsInUserDefinedSoundBank: 0

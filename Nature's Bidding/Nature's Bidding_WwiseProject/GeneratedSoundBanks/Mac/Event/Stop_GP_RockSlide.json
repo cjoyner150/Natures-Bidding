@@ -1,0 +1,34 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Mac",
+  "BasePlatform": "Mac",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "758397350",
+    "Type": "Event",
+    "GUID": "{0E4F02D5-5657-4261-866D-C5AB24645067}",
+    "Language": "SFX",
+    "Hash": "{90CCE790-61D4-1823-4176-C6D25694B907}",
+    "ObjectPath": "Stop_GP_RockSlide",
+    "ShortName": "Stop_GP_RockSlide",
+    "Path": "Event/Stop_GP_RockSlide.bnk",
+    "Events": [
+     {
+      "Id": "758397350",
+      "Name": "Stop_GP_RockSlide",
+      "ObjectPath": "\\Events\\Gameplay Work Unit\\Stop_GP_RockSlide",
+      "GUID": "{0E4F02D5-5657-4261-866D-C5AB24645067}",
+      "Color": "8",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{59850E18-A604-4929-B989-C5DB1D06FD8F}"
+ }
+}

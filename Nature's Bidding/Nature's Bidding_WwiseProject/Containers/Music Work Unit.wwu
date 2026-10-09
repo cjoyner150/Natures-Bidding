@@ -193,18 +193,18 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="Nature's Bidding - Waterfall Brawl_01" ID="{F82D5932-1BAD-44C7-917C-F0800A375D85}">
+												<AudioFileSource Name="mx_lobby_waterfall_v01" ID="{F82D5932-1BAD-44C7-917C-F0800A375D85}">
 													<Language>SFX</Language>
-													<AudioFile>Nature's Bidding - Waterfall Brawl.wav</AudioFile>
+													<AudioFile>mx_lobby_waterfall_v01.wav</AudioFile>
 													<MediaIDList>
-														<MediaID ID="42008625"/>
+														<MediaID ID="227180"/>
 													</MediaIDList>
 												</AudioFileSource>
-												<AudioFileSource Name="GGJ2026 - Wilderness Waiting v2" ID="{ADB29A23-7FC9-41DB-BE38-211C082C69D7}">
+												<AudioFileSource Name="mx_lobby_wilderness_v02" ID="{ADB29A23-7FC9-41DB-BE38-211C082C69D7}">
 													<Language>SFX</Language>
-													<AudioFile>GGJ2026 - Wilderness Waiting v2.wav</AudioFile>
+													<AudioFile>mx_lobby_wilderness_v02.wav</AudioFile>
 													<MediaIDList>
-														<MediaID ID="713782309"/>
+														<MediaID ID="713782310"/>
 													</MediaIDList>
 												</AudioFileSource>
 											</ChildrenList>
@@ -213,14 +213,14 @@
 													<MusicTrackSequence Name="" ID="{1A64FDA1-C57B-4BE7-BBF8-7C5F7E74994F}">
 														<ObjectLists>
 															<ObjectList Name="Clips">
-																<MusicClip Name="GGJ2026 - Wilderness Waiting v2" ID="{F9DCF4E5-B8C5-4015-A970-769EF523970B}">
+																<MusicClip Name="mx_lobby_wilderness_v02" ID="{F9DCF4E5-B8C5-4015-A970-769EF523970B}">
 																	<PropertyList>
 																		<Property Name="EndTrimOffset" Type="Real64" Value="9333.33333333333"/>
 																		<Property Name="FadeInDuration" Type="Real64" Value="38.4811356465969"/>
 																		<Property Name="FadeOutDuration" Type="Real64" Value="542.3140078503"/>
 																		<Property Name="FadeOutShape" Type="int16" Value="2"/>
 																	</PropertyList>
-																	<AudioSourceRef Name="GGJ2026 - Wilderness Waiting v2" ID="{ADB29A23-7FC9-41DB-BE38-211C082C69D7}"/>
+																	<AudioSourceRef Name="mx_lobby_wilderness_v02" ID="{ADB29A23-7FC9-41DB-BE38-211C082C69D7}"/>
 																	<PropertyCurveList>
 																		<PropertyCurve PropertyName="Highpass">
 																			<Curve Name="" ID="{320369CC-0865-491F-BF6F-05CAB225DC93}">
@@ -292,7 +292,7 @@
 													<MusicTrackSequence Name="" ID="{90683D18-3189-449E-B7A4-3F7AC128B647}">
 														<ObjectLists>
 															<ObjectList Name="Clips">
-																<MusicClip Name="GGJ2026 - Wilderness Waiting v2" ID="{4286EFDC-0EC3-454A-9170-4F688AE78B8B}">
+																<MusicClip Name="mx_lobby_wilderness_v02" ID="{4286EFDC-0EC3-454A-9170-4F688AE78B8B}">
 																	<PropertyList>
 																		<Property Name="BeginTrimOffset" Type="Real64" Value="37333.3333333333"/>
 																		<Property Name="EndTrimOffset" Type="Real64" Value="46666.6666666667"/>
@@ -301,7 +301,7 @@
 																		<Property Name="FadeOutShape" Type="int16" Value="2"/>
 																		<Property Name="PlayAt" Type="Real64" Value="-37333.3333333333"/>
 																	</PropertyList>
-																	<AudioSourceRef Name="GGJ2026 - Wilderness Waiting v2" ID="{ADB29A23-7FC9-41DB-BE38-211C082C69D7}"/>
+																	<AudioSourceRef Name="mx_lobby_wilderness_v02" ID="{ADB29A23-7FC9-41DB-BE38-211C082C69D7}"/>
 																	<PropertyCurveList>
 																		<PropertyCurve PropertyName="Highpass">
 																			<Curve Name="" ID="{90E335CE-8B5A-431B-B67B-F5E326BD18E8}">
@@ -373,7 +373,7 @@
 													<MusicTrackSequence Name="" ID="{BF6941F2-C593-44F8-A60D-C4DF7CE3A7D4}">
 														<ObjectLists>
 															<ObjectList Name="Clips">
-																<MusicClip Name="GGJ2026 - Wilderness Waiting v2" ID="{ACD2B938-632A-4CB3-9F20-FAC2AA108D7A}">
+																<MusicClip Name="mx_lobby_wilderness_v02" ID="{ACD2B938-632A-4CB3-9F20-FAC2AA108D7A}">
 																	<PropertyList>
 																		<Property Name="BeginTrimOffset" Type="Real64" Value="74666.6666666667"/>
 																		<Property Name="EndTrimOffset" Type="Real64" Value="84000"/>
@@ -382,7 +382,7 @@
 																		<Property Name="FadeOutShape" Type="int16" Value="2"/>
 																		<Property Name="PlayAt" Type="Real64" Value="-74666.6666666667"/>
 																	</PropertyList>
-																	<AudioSourceRef Name="GGJ2026 - Wilderness Waiting v2" ID="{ADB29A23-7FC9-41DB-BE38-211C082C69D7}"/>
+																	<AudioSourceRef Name="mx_lobby_wilderness_v02" ID="{ADB29A23-7FC9-41DB-BE38-211C082C69D7}"/>
 																	<PropertyCurveList>
 																		<PropertyCurve PropertyName="Highpass">
 																			<Curve Name="" ID="{CB39F211-82C5-4D72-AA2A-19C17CF30EA6}">
@@ -525,25 +525,25 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="Nature's Bidding - Waterfall Brawl_01" ID="{B21B3D20-308A-46E0-B97A-A4E5A57513F8}">
+												<AudioFileSource Name="mx_lobby_waterfall_v01" ID="{B21B3D20-308A-46E0-B97A-A4E5A57513F8}">
 													<Language>SFX</Language>
-													<AudioFile>Nature's Bidding - Waterfall Brawl.wav</AudioFile>
+													<AudioFile>mx_lobby_waterfall_v01.wav</AudioFile>
 													<MediaIDList>
-														<MediaID ID="42008625"/>
+														<MediaID ID="227180"/>
 													</MediaIDList>
 												</AudioFileSource>
-												<AudioFileSource Name="GGJ2026 - Wilderness Waiting v2" ID="{EA3D5B13-7EF2-465B-A872-8A226450BA72}">
+												<AudioFileSource Name="mx_lobby_wilderness_v02" ID="{EA3D5B13-7EF2-465B-A872-8A226450BA72}">
 													<Language>SFX</Language>
-													<AudioFile>GGJ2026 - Wilderness Waiting v2.wav</AudioFile>
+													<AudioFile>mx_lobby_wilderness_v02.wav</AudioFile>
 													<MediaIDList>
-														<MediaID ID="713782309"/>
+														<MediaID ID="713782310"/>
 													</MediaIDList>
 												</AudioFileSource>
-												<AudioFileSource Name="Nature's Bidding - Waterfall Brawl" ID="{9921B4DF-60FC-4306-B2AE-974B592461A4}">
+												<AudioFileSource Name="mx_lobby_waterfall_v01_01" ID="{9921B4DF-60FC-4306-B2AE-974B592461A4}">
 													<Language>SFX</Language>
-													<AudioFile>Nature's Bidding - Waterfall Brawl.wav</AudioFile>
+													<AudioFile>mx_lobby_waterfall_v01.wav</AudioFile>
 													<MediaIDList>
-														<MediaID ID="42008625"/>
+														<MediaID ID="227180"/>
 													</MediaIDList>
 												</AudioFileSource>
 											</ChildrenList>
@@ -552,14 +552,14 @@
 													<MusicTrackSequence Name="" ID="{59F9606E-DD1B-434B-9E2C-3C07B5E4A7F8}">
 														<ObjectLists>
 															<ObjectList Name="Clips">
-																<MusicClip Name="Nature's Bidding - Waterfall Brawl" ID="{D1C12EDF-9474-4954-BDDF-FF0036172A5D}">
+																<MusicClip Name="mx_lobby_waterfall_v01" ID="{D1C12EDF-9474-4954-BDDF-FF0036172A5D}">
 																	<PropertyList>
 																		<Property Name="EndTrimOffset" Type="Real64" Value="9333.3333333334"/>
 																		<Property Name="FadeInMode" Type="int16" Value="0"/>
 																		<Property Name="FadeOutDuration" Type="Real64" Value="518.411284487023"/>
 																		<Property Name="FadeOutShape" Type="int16" Value="1"/>
 																	</PropertyList>
-																	<AudioSourceRef Name="Nature's Bidding - Waterfall Brawl" ID="{9921B4DF-60FC-4306-B2AE-974B592461A4}"/>
+																	<AudioSourceRef Name="mx_lobby_waterfall_v01_01" ID="{9921B4DF-60FC-4306-B2AE-974B592461A4}"/>
 																	<PropertyCurveList>
 																		<PropertyCurve PropertyName="Highpass">
 																			<Curve Name="" ID="{27F3936B-A07E-4F1B-8558-D4528D5FF558}">
@@ -631,7 +631,7 @@
 													<MusicTrackSequence Name="" ID="{63C2D673-86A8-4B56-A06A-A436C346A539}">
 														<ObjectLists>
 															<ObjectList Name="Clips">
-																<MusicClip Name="Nature's Bidding - Waterfall Brawl" ID="{A64D34E1-2123-4290-BF04-3458971D7181}">
+																<MusicClip Name="mx_lobby_waterfall_v01" ID="{A64D34E1-2123-4290-BF04-3458971D7181}">
 																	<PropertyList>
 																		<Property Name="BeginTrimOffset" Type="Real64" Value="18666.6666666667"/>
 																		<Property Name="EndTrimOffset" Type="Real64" Value="28000.0000000001"/>
@@ -640,7 +640,7 @@
 																		<Property Name="FadeOutShape" Type="int16" Value="1"/>
 																		<Property Name="PlayAt" Type="Real64" Value="-18666.6666666667"/>
 																	</PropertyList>
-																	<AudioSourceRef Name="Nature's Bidding - Waterfall Brawl" ID="{9921B4DF-60FC-4306-B2AE-974B592461A4}"/>
+																	<AudioSourceRef Name="mx_lobby_waterfall_v01_01" ID="{9921B4DF-60FC-4306-B2AE-974B592461A4}"/>
 																	<PropertyCurveList>
 																		<PropertyCurve PropertyName="Highpass">
 																			<Curve Name="" ID="{6F5A8050-AD44-4A1E-BA36-2F2164B7AA0F}">
@@ -712,7 +712,7 @@
 													<MusicTrackSequence Name="" ID="{A32E0F38-31E3-4166-BD21-B0BF1108E5E2}">
 														<ObjectLists>
 															<ObjectList Name="Clips">
-																<MusicClip Name="Nature's Bidding - Waterfall Brawl" ID="{6C94F0A5-4907-480D-8F05-668A3A9CB65A}">
+																<MusicClip Name="mx_lobby_waterfall_v01" ID="{6C94F0A5-4907-480D-8F05-668A3A9CB65A}">
 																	<PropertyList>
 																		<Property Name="BeginTrimOffset" Type="Real64" Value="37333.3333333333"/>
 																		<Property Name="EndTrimOffset" Type="Real64" Value="46666.6666666667"/>
@@ -721,7 +721,7 @@
 																		<Property Name="FadeOutShape" Type="int16" Value="1"/>
 																		<Property Name="PlayAt" Type="Real64" Value="-37333.3333333333"/>
 																	</PropertyList>
-																	<AudioSourceRef Name="Nature's Bidding - Waterfall Brawl" ID="{9921B4DF-60FC-4306-B2AE-974B592461A4}"/>
+																	<AudioSourceRef Name="mx_lobby_waterfall_v01_01" ID="{9921B4DF-60FC-4306-B2AE-974B592461A4}"/>
 																	<PropertyCurveList>
 																		<PropertyCurve PropertyName="Highpass">
 																			<Curve Name="" ID="{45CA2BCA-AE7B-4C0C-8908-385391F327AD}">
@@ -890,11 +890,11 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="GGJ2026 - Wilderness Waiting v2" ID="{5E520E8F-ADCA-4B0E-BF52-4F130DB9C26C}">
+												<AudioFileSource Name="mx_lobby_wilderness_v02" ID="{5E520E8F-ADCA-4B0E-BF52-4F130DB9C26C}">
 													<Language>SFX</Language>
-													<AudioFile>GGJ2026 - Wilderness Waiting v2.wav</AudioFile>
+													<AudioFile>mx_lobby_wilderness_v02.wav</AudioFile>
 													<MediaIDList>
-														<MediaID ID="713782309"/>
+														<MediaID ID="713782310"/>
 													</MediaIDList>
 												</AudioFileSource>
 											</ChildrenList>
@@ -903,7 +903,7 @@
 													<MusicTrackSequence Name="" ID="{6311259B-91E1-4470-A7F0-61FF90ECAB63}">
 														<ObjectLists>
 															<ObjectList Name="Clips">
-																<MusicClip Name="GGJ2026 - Wilderness Waiting v2" ID="{E2C00254-B220-4649-82DC-9CA73D9D0AB5}">
+																<MusicClip Name="mx_lobby_wilderness_v02" ID="{E2C00254-B220-4649-82DC-9CA73D9D0AB5}">
 																	<PropertyList>
 																		<Property Name="BeginTrimOffset" Type="Real64" Value="18666.6666666667"/>
 																		<Property Name="EndTrimOffset" Type="Real64" Value="28000"/>
@@ -912,7 +912,7 @@
 																		<Property Name="FadeOutShape" Type="int16" Value="2"/>
 																		<Property Name="PlayAt" Type="Real64" Value="-18666.6666666667"/>
 																	</PropertyList>
-																	<AudioSourceRef Name="GGJ2026 - Wilderness Waiting v2" ID="{5E520E8F-ADCA-4B0E-BF52-4F130DB9C26C}"/>
+																	<AudioSourceRef Name="mx_lobby_wilderness_v02" ID="{5E520E8F-ADCA-4B0E-BF52-4F130DB9C26C}"/>
 																	<PropertyCurveList>
 																		<PropertyCurve PropertyName="Highpass">
 																			<Curve Name="" ID="{88F93E17-B6C2-4008-B5D8-7E20CC4C119A}">
@@ -984,7 +984,7 @@
 													<MusicTrackSequence Name="" ID="{B851E782-D0C8-421F-B4AB-47C7C0CB1FA2}">
 														<ObjectLists>
 															<ObjectList Name="Clips">
-																<MusicClip Name="GGJ2026 - Wilderness Waiting v2" ID="{74363544-8E12-4697-A7A1-51203C276C63}">
+																<MusicClip Name="mx_lobby_wilderness_v02" ID="{74363544-8E12-4697-A7A1-51203C276C63}">
 																	<PropertyList>
 																		<Property Name="BeginTrimOffset" Type="Real64" Value="56000"/>
 																		<Property Name="EndTrimOffset" Type="Real64" Value="65333.3333333333"/>
@@ -993,7 +993,7 @@
 																		<Property Name="FadeOutShape" Type="int16" Value="2"/>
 																		<Property Name="PlayAt" Type="Real64" Value="-56000"/>
 																	</PropertyList>
-																	<AudioSourceRef Name="GGJ2026 - Wilderness Waiting v2" ID="{5E520E8F-ADCA-4B0E-BF52-4F130DB9C26C}"/>
+																	<AudioSourceRef Name="mx_lobby_wilderness_v02" ID="{5E520E8F-ADCA-4B0E-BF52-4F130DB9C26C}"/>
 																	<PropertyCurveList>
 																		<PropertyCurve PropertyName="Highpass">
 																			<Curve Name="" ID="{EAA11F22-F5DA-48F0-BFA1-59EDAD4F76EF}">
@@ -1065,7 +1065,7 @@
 													<MusicTrackSequence Name="" ID="{21BB9D0D-9524-41B4-8995-00002B1BF5D1}">
 														<ObjectLists>
 															<ObjectList Name="Clips">
-																<MusicClip Name="GGJ2026 - Wilderness Waiting v2" ID="{F8B8264D-458F-4438-85B3-7B66C58F03C8}">
+																<MusicClip Name="mx_lobby_wilderness_v02" ID="{F8B8264D-458F-4438-85B3-7B66C58F03C8}">
 																	<PropertyList>
 																		<Property Name="BeginTrimOffset" Type="Real64" Value="93333.3333333333"/>
 																		<Property Name="EndTrimOffset" Type="Real64" Value="102666.666666667"/>
@@ -1074,7 +1074,7 @@
 																		<Property Name="FadeOutShape" Type="int16" Value="2"/>
 																		<Property Name="PlayAt" Type="Real64" Value="-93333.3333333333"/>
 																	</PropertyList>
-																	<AudioSourceRef Name="GGJ2026 - Wilderness Waiting v2" ID="{5E520E8F-ADCA-4B0E-BF52-4F130DB9C26C}"/>
+																	<AudioSourceRef Name="mx_lobby_wilderness_v02" ID="{5E520E8F-ADCA-4B0E-BF52-4F130DB9C26C}"/>
 																	<PropertyCurveList>
 																		<PropertyCurve PropertyName="Highpass">
 																			<Curve Name="" ID="{06EE8222-91B9-4643-AD74-363F36B78E89}">
@@ -1369,25 +1369,25 @@
 														</Reference>
 													</ReferenceList>
 													<ChildrenList>
-														<AudioFileSource Name="Nature's Bidding_Volcanic Brawl v3_2PLAYERSALIVE" ID="{64C74ED2-AD86-4A24-8934-7C7C00EDA4CD}">
+														<AudioFileSource Name="mx_lava_players2_v03" ID="{64C74ED2-AD86-4A24-8934-7C7C00EDA4CD}">
 															<Language>SFX</Language>
-															<AudioFile>Nature's Bidding_Volcanic Brawl v3_2PLAYERSALIVE.wav</AudioFile>
+															<AudioFile>mx_lava_players2_v03.wav</AudioFile>
 															<MediaIDList>
-																<MediaID ID="968079997"/>
+																<MediaID ID="968079998"/>
 															</MediaIDList>
 														</AudioFileSource>
-														<AudioFileSource Name="Nature's Bidding_Volcanic Brawl v3_3PLAYERSALIVE" ID="{35BF0792-F8BD-43CE-BB5E-4A66ECF7128E}">
+														<AudioFileSource Name="mx_lava_players3_v03" ID="{35BF0792-F8BD-43CE-BB5E-4A66ECF7128E}">
 															<Language>SFX</Language>
-															<AudioFile>Nature's Bidding_Volcanic Brawl v3_3PLAYERSALIVE.wav</AudioFile>
+															<AudioFile>mx_lava_players3_v03.wav</AudioFile>
 															<MediaIDList>
-																<MediaID ID="1062067687"/>
+																<MediaID ID="1062067688"/>
 															</MediaIDList>
 														</AudioFileSource>
-														<AudioFileSource Name="Nature's Bidding_Volcanic Brawl v3_4PLAYERSALIVE" ID="{3A2CC469-1107-4583-9869-8B9021E6A128}">
+														<AudioFileSource Name="mx_lava_players4_v03" ID="{3A2CC469-1107-4583-9869-8B9021E6A128}">
 															<Language>SFX</Language>
-															<AudioFile>Nature's Bidding_Volcanic Brawl v3_4PLAYERSALIVE.wav</AudioFile>
+															<AudioFile>mx_lava_players4_v03.wav</AudioFile>
 															<MediaIDList>
-																<MediaID ID="338048370"/>
+																<MediaID ID="338048371"/>
 															</MediaIDList>
 														</AudioFileSource>
 													</ChildrenList>
@@ -1396,14 +1396,14 @@
 															<MusicTrackSequence Name="" ID="{C47B6C3A-B15A-4EB8-82AD-91A4215D2A2E}">
 																<ObjectLists>
 																	<ObjectList Name="Clips">
-																		<MusicClip Name="Nature's Bidding_Volcanic Brawl v3_2PLAYERSALIVE" ID="{8A128E5C-6247-459C-B2B1-3EB2F0F19FE0}">
+																		<MusicClip Name="mx_lava_players2_v03" ID="{8A128E5C-6247-459C-B2B1-3EB2F0F19FE0}">
 																			<PropertyList>
 																				<Property Name="EndTrimOffset" Type="Real64" Value="93714.2916666667"/>
 																				<Property Name="FadeInMode" Type="int16" Value="0"/>
 																				<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																				<Property Name="PlayAt" Type="Real64" Value="9.09494701772928E-13"/>
 																			</PropertyList>
-																			<AudioSourceRef Name="Nature's Bidding_Volcanic Brawl v3_2PLAYERSALIVE" ID="{64C74ED2-AD86-4A24-8934-7C7C00EDA4CD}"/>
+																			<AudioSourceRef Name="mx_lava_players2_v03" ID="{64C74ED2-AD86-4A24-8934-7C7C00EDA4CD}"/>
 																		</MusicClip>
 																	</ObjectList>
 																</ObjectLists>
@@ -1416,14 +1416,14 @@
 															<MusicTrackSequence Name="" ID="{0D04C2E2-7E8B-4711-AAFA-A8BB7A440833}">
 																<ObjectLists>
 																	<ObjectList Name="Clips">
-																		<MusicClip Name="Nature's Bidding_Volcanic Brawl v3_3PLAYERSALIVE" ID="{4448D8E1-527B-4361-AE77-1E6E5D3DAEA7}">
+																		<MusicClip Name="mx_lava_players3_v03" ID="{4448D8E1-527B-4361-AE77-1E6E5D3DAEA7}">
 																			<PropertyList>
 																				<Property Name="EndTrimOffset" Type="Real64" Value="93714.2916666667"/>
 																				<Property Name="FadeInMode" Type="int16" Value="0"/>
 																				<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																				<Property Name="PlayAt" Type="Real64" Value="9.09494701772928E-13"/>
 																			</PropertyList>
-																			<AudioSourceRef Name="Nature's Bidding_Volcanic Brawl v3_3PLAYERSALIVE" ID="{35BF0792-F8BD-43CE-BB5E-4A66ECF7128E}"/>
+																			<AudioSourceRef Name="mx_lava_players3_v03" ID="{35BF0792-F8BD-43CE-BB5E-4A66ECF7128E}"/>
 																		</MusicClip>
 																	</ObjectList>
 																</ObjectLists>
@@ -1436,14 +1436,14 @@
 															<MusicTrackSequence Name="" ID="{B59168AC-41DC-496C-9B4F-FEF5F2710C06}">
 																<ObjectLists>
 																	<ObjectList Name="Clips">
-																		<MusicClip Name="Nature's Bidding_Volcanic Brawl v3_4PLAYERSALIVE" ID="{BFA94B00-D100-40BA-9B3E-B622FFCDA882}">
+																		<MusicClip Name="mx_lava_players4_v03" ID="{BFA94B00-D100-40BA-9B3E-B622FFCDA882}">
 																			<PropertyList>
 																				<Property Name="EndTrimOffset" Type="Real64" Value="93714.2916666667"/>
 																				<Property Name="FadeInMode" Type="int16" Value="0"/>
 																				<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																				<Property Name="PlayAt" Type="Real64" Value="9.09494701772928E-13"/>
 																			</PropertyList>
-																			<AudioSourceRef Name="Nature's Bidding_Volcanic Brawl v3_4PLAYERSALIVE" ID="{3A2CC469-1107-4583-9869-8B9021E6A128}"/>
+																			<AudioSourceRef Name="mx_lava_players4_v03" ID="{3A2CC469-1107-4583-9869-8B9021E6A128}"/>
 																		</MusicClip>
 																	</ObjectList>
 																</ObjectLists>
@@ -1634,25 +1634,25 @@
 														</Reference>
 													</ReferenceList>
 													<ChildrenList>
-														<AudioFileSource Name="Nature's Bidding_Woodland Brawl v2_2PLAYERSALIVE" ID="{FCAF19AB-4853-4C69-ACAD-AD76AA047F7F}">
+														<AudioFileSource Name="mx_cliff_players2_v02" ID="{FCAF19AB-4853-4C69-ACAD-AD76AA047F7F}">
 															<Language>SFX</Language>
-															<AudioFile>Nature's Bidding_Woodland Brawl v2_2PLAYERSALIVE.wav</AudioFile>
+															<AudioFile>mx_cliff_players2_v02.wav</AudioFile>
 															<MediaIDList>
-																<MediaID ID="849034519"/>
+																<MediaID ID="67821349"/>
 															</MediaIDList>
 														</AudioFileSource>
-														<AudioFileSource Name="Nature's Bidding_Woodland Brawl v2_3PLAYERSALIVE" ID="{83B836ED-5116-49C4-863B-798291CB40BF}">
+														<AudioFileSource Name="mx_cliff_players3_v02" ID="{83B836ED-5116-49C4-863B-798291CB40BF}">
 															<Language>SFX</Language>
-															<AudioFile>Nature's Bidding_Woodland Brawl v2_3PLAYERSALIVE.wav</AudioFile>
+															<AudioFile>mx_cliff_players3_v02.wav</AudioFile>
 															<MediaIDList>
-																<MediaID ID="64235366"/>
+																<MediaID ID="430897452"/>
 															</MediaIDList>
 														</AudioFileSource>
-														<AudioFileSource Name="Nature's Bidding_Woodland Brawl v2_4PLAYERSALIVE" ID="{EE4FB142-4CB1-42EE-8E9F-A5ECF33E08C6}">
+														<AudioFileSource Name="mx_cliff_players4_v02" ID="{EE4FB142-4CB1-42EE-8E9F-A5ECF33E08C6}">
 															<Language>SFX</Language>
-															<AudioFile>Nature's Bidding_Woodland Brawl v2_4PLAYERSALIVE.wav</AudioFile>
+															<AudioFile>mx_cliff_players4_v02.wav</AudioFile>
 															<MediaIDList>
-																<MediaID ID="893848697"/>
+																<MediaID ID="43074103"/>
 															</MediaIDList>
 														</AudioFileSource>
 													</ChildrenList>
@@ -1661,13 +1661,13 @@
 															<MusicTrackSequence Name="" ID="{628B0096-5904-4D3A-941F-A3F810E9117A}">
 																<ObjectLists>
 																	<ObjectList Name="Clips">
-																		<MusicClip Name="Nature's Bidding_Woodland Brawl v2_2PLAYERSALIVE" ID="{39072C50-8E7E-4584-B570-DC01DBBB3E64}">
+																		<MusicClip Name="mx_cliff_players2_v02" ID="{39072C50-8E7E-4584-B570-DC01DBBB3E64}">
 																			<PropertyList>
 																				<Property Name="EndTrimOffset" Type="Real64" Value="99096.7916666667"/>
 																				<Property Name="FadeInMode" Type="int16" Value="0"/>
 																				<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																			</PropertyList>
-																			<AudioSourceRef Name="Nature's Bidding_Woodland Brawl v2_2PLAYERSALIVE" ID="{FCAF19AB-4853-4C69-ACAD-AD76AA047F7F}"/>
+																			<AudioSourceRef Name="mx_cliff_players2_v02" ID="{FCAF19AB-4853-4C69-ACAD-AD76AA047F7F}"/>
 																		</MusicClip>
 																	</ObjectList>
 																</ObjectLists>
@@ -1680,13 +1680,13 @@
 															<MusicTrackSequence Name="" ID="{8206EEED-CB58-4C68-ACE0-1F46832ABD01}">
 																<ObjectLists>
 																	<ObjectList Name="Clips">
-																		<MusicClip Name="Nature's Bidding_Woodland Brawl v2_3PLAYERSALIVE" ID="{1C4A0AB5-508D-49FF-8044-667BA47BF3F9}">
+																		<MusicClip Name="mx_cliff_players3_v02" ID="{1C4A0AB5-508D-49FF-8044-667BA47BF3F9}">
 																			<PropertyList>
 																				<Property Name="EndTrimOffset" Type="Real64" Value="99096.7916666667"/>
 																				<Property Name="FadeInMode" Type="int16" Value="0"/>
 																				<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																			</PropertyList>
-																			<AudioSourceRef Name="Nature's Bidding_Woodland Brawl v2_3PLAYERSALIVE" ID="{83B836ED-5116-49C4-863B-798291CB40BF}"/>
+																			<AudioSourceRef Name="mx_cliff_players3_v02" ID="{83B836ED-5116-49C4-863B-798291CB40BF}"/>
 																		</MusicClip>
 																	</ObjectList>
 																</ObjectLists>
@@ -1699,13 +1699,13 @@
 															<MusicTrackSequence Name="" ID="{A9B3BA93-E538-4C31-99D1-4FB03CCFDF16}">
 																<ObjectLists>
 																	<ObjectList Name="Clips">
-																		<MusicClip Name="Nature's Bidding_Woodland Brawl v2_4PLAYERSALIVE" ID="{AA5648A8-9891-49DE-BE8A-A800974473E9}">
+																		<MusicClip Name="mx_cliff_players4_v02" ID="{AA5648A8-9891-49DE-BE8A-A800974473E9}">
 																			<PropertyList>
 																				<Property Name="EndTrimOffset" Type="Real64" Value="99096.7916666667"/>
 																				<Property Name="FadeInMode" Type="int16" Value="0"/>
 																				<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																			</PropertyList>
-																			<AudioSourceRef Name="Nature's Bidding_Woodland Brawl v2_4PLAYERSALIVE" ID="{EE4FB142-4CB1-42EE-8E9F-A5ECF33E08C6}"/>
+																			<AudioSourceRef Name="mx_cliff_players4_v02" ID="{EE4FB142-4CB1-42EE-8E9F-A5ECF33E08C6}"/>
 																		</MusicClip>
 																	</ObjectList>
 																</ObjectLists>
@@ -1778,11 +1778,11 @@
 														</Reference>
 													</ReferenceList>
 													<ChildrenList>
-														<AudioFileSource Name="Nature's Bidding_Woodland Brawl v2_INTRO" ID="{AD0A6510-FE30-41DD-AA00-C031DE286C71}">
+														<AudioFileSource Name="mx_cliff_intro_v02" ID="{AD0A6510-FE30-41DD-AA00-C031DE286C71}">
 															<Language>SFX</Language>
-															<AudioFile>Nature's Bidding_Woodland Brawl v2_INTRO.wav</AudioFile>
+															<AudioFile>mx_cliff_intro_v02.wav</AudioFile>
 															<MediaIDList>
-																<MediaID ID="960355360"/>
+																<MediaID ID="862510427"/>
 															</MediaIDList>
 														</AudioFileSource>
 													</ChildrenList>
@@ -1791,13 +1791,13 @@
 															<MusicTrackSequence Name="" ID="{6CFDA418-A0D9-4434-896C-476CA08835D0}">
 																<ObjectLists>
 																	<ObjectList Name="Clips">
-																		<MusicClip Name="Nature's Bidding_Woodland Brawl v2_INTRO" ID="{4AA560E2-0B73-46C0-846E-C54935706729}">
+																		<MusicClip Name="mx_cliff_intro_v02" ID="{4AA560E2-0B73-46C0-846E-C54935706729}">
 																			<PropertyList>
 																				<Property Name="EndTrimOffset" Type="Real64" Value="12387.1041666667"/>
 																				<Property Name="FadeInMode" Type="int16" Value="0"/>
 																				<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																			</PropertyList>
-																			<AudioSourceRef Name="Nature's Bidding_Woodland Brawl v2_INTRO" ID="{AD0A6510-FE30-41DD-AA00-C031DE286C71}"/>
+																			<AudioSourceRef Name="mx_cliff_intro_v02" ID="{AD0A6510-FE30-41DD-AA00-C031DE286C71}"/>
 																		</MusicClip>
 																	</ObjectList>
 																</ObjectLists>
@@ -1960,7 +1960,7 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<MusicTrack Name="New Music Track" ID="{A5CD55AD-50F4-4839-9961-0355CEBAC475}" ShortID="1700506">
+										<MusicTrack Name="MX_Menu_Track" ID="{A5CD55AD-50F4-4839-9961-0355CEBAC475}" ShortID="1700506">
 											<PropertyList>
 												<Property Name="IsStreamingEnabled" Type="bool">
 													<ValueList>
@@ -1984,11 +1984,11 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="Nature's Bidding_MainMenu_v2" ID="{45E5BDE5-6C10-4FE3-9AB4-E517379433A5}">
+												<AudioFileSource Name="mx_menu_v02" ID="{45E5BDE5-6C10-4FE3-9AB4-E517379433A5}">
 													<Language>SFX</Language>
-													<AudioFile>Nature's Bidding_MainMenu_v2.wav</AudioFile>
+													<AudioFile>mx_menu_v02.wav</AudioFile>
 													<MediaIDList>
-														<MediaID ID="476834380"/>
+														<MediaID ID="755306111"/>
 													</MediaIDList>
 												</AudioFileSource>
 											</ChildrenList>
@@ -1997,14 +1997,14 @@
 													<MusicTrackSequence Name="" ID="{EF9C8484-2DC0-42D5-9AF4-F70D8EC31F49}">
 														<ObjectLists>
 															<ObjectList Name="Clips">
-																<MusicClip Name="Nature's Bidding_MainMenu_v2" ID="{94D3BBEE-A8DA-4349-AB81-AC82076856AD}">
+																<MusicClip Name="mx_menu_v02" ID="{94D3BBEE-A8DA-4349-AB81-AC82076856AD}">
 																	<PropertyList>
 																		<Property Name="EndTrimOffset" Type="Real64" Value="42666.6666666666"/>
 																		<Property Name="FadeInMode" Type="int16" Value="0"/>
 																		<Property Name="FadeOutDuration" Type="Real64" Value="2561.82060273965"/>
 																		<Property Name="PlayAt" Type="Real64" Value="1.77635683940025E-12"/>
 																	</PropertyList>
-																	<AudioSourceRef Name="Nature's Bidding_MainMenu_v2" ID="{45E5BDE5-6C10-4FE3-9AB4-E517379433A5}"/>
+																	<AudioSourceRef Name="mx_menu_v02" ID="{45E5BDE5-6C10-4FE3-9AB4-E517379433A5}"/>
 																	<PropertyCurveList>
 																		<PropertyCurve PropertyName="Highpass">
 																			<Curve Name="" ID="{366FE1D7-717A-46B9-A528-16D3799A153D}">
@@ -2185,11 +2185,11 @@
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
-												<AudioFileSource Name="Nature's Bidding - AUCTION TIME!!!(1)" ID="{BB2F9AF6-6B68-4EB5-A243-9EF60491F586}">
+												<AudioFileSource Name="mx_bidding_v01" ID="{BB2F9AF6-6B68-4EB5-A243-9EF60491F586}">
 													<Language>SFX</Language>
-													<AudioFile>Nature's Bidding - AUCTION TIME!!!(1).wav</AudioFile>
+													<AudioFile>mx_bidding_v01.wav</AudioFile>
 													<MediaIDList>
-														<MediaID ID="115717617"/>
+														<MediaID ID="115717618"/>
 													</MediaIDList>
 												</AudioFileSource>
 											</ChildrenList>
@@ -2198,13 +2198,13 @@
 													<MusicTrackSequence Name="" ID="{4D6F7951-C0D0-4BEE-BAC9-F9641B53360B}">
 														<ObjectLists>
 															<ObjectList Name="Clips">
-																<MusicClip Name="Nature's Bidding - AUCTION TIME!!!(1)" ID="{6EB14CFD-F794-45D7-9B82-54662FB8D965}">
+																<MusicClip Name="mx_bidding_v01" ID="{6EB14CFD-F794-45D7-9B82-54662FB8D965}">
 																	<PropertyList>
 																		<Property Name="EndTrimOffset" Type="Real64" Value="84480"/>
 																		<Property Name="FadeInMode" Type="int16" Value="0"/>
 																		<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																	</PropertyList>
-																	<AudioSourceRef Name="Nature's Bidding - AUCTION TIME!!!(1)" ID="{BB2F9AF6-6B68-4EB5-A243-9EF60491F586}"/>
+																	<AudioSourceRef Name="mx_bidding_v01" ID="{BB2F9AF6-6B68-4EB5-A243-9EF60491F586}"/>
 																</MusicClip>
 															</ObjectList>
 														</ObjectLists>

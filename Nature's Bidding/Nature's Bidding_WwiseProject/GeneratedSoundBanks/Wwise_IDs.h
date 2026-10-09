@@ -15,31 +15,31 @@ namespace AK
     {
         static const AkUniqueID PLAY_AMB_FOREST = 994146778U;
         static const AkUniqueID PLAY_AMB_LAVA = 3906149303U;
-        static const AkUniqueID PLAY_DLG_AUCTIONEER = 3605236953U;
+        static const AkUniqueID PLAY_GP_MANMASK_EXPLOSION = 2410750046U;
+        static const AkUniqueID PLAY_GP_PLAYER_ATTACKSLASH = 3812350027U;
+        static const AkUniqueID PLAY_GP_PLAYER_CLIFFFALL = 313685605U;
+        static const AkUniqueID PLAY_GP_PLAYER_DEATH = 2900211770U;
+        static const AkUniqueID PLAY_GP_PLAYER_DOUBLEJUMP = 3835938179U;
+        static const AkUniqueID PLAY_GP_PLAYER_PARRYSUCCESS = 2538377831U;
+        static const AkUniqueID PLAY_GP_PLAYER_SHIELD = 3484761007U;
+        static const AkUniqueID PLAY_GP_PLAYER_SHIELD_FAIL = 2926918818U;
+        static const AkUniqueID PLAY_GP_PLAYER_TAKEHIT = 1472718208U;
+        static const AkUniqueID PLAY_GP_PLAYER_WARP = 4114437350U;
+        static const AkUniqueID PLAY_GP_ROCKSLIDE = 2373231564U;
         static const AkUniqueID PLAY_MX_SYSTEM = 3580595815U;
-        static const AkUniqueID PLAY_SFX_DEATH = 729422592U;
-        static const AkUniqueID PLAY_SFX_DOUBLEJUMP = 2998890729U;
-        static const AkUniqueID PLAY_SFX_FALL = 729947933U;
-        static const AkUniqueID PLAY_SFX_HIT = 1376640657U;
-        static const AkUniqueID PLAY_SFX_JUMP_GRUNT = 2321666137U;
-        static const AkUniqueID PLAY_SFX_MANMASK_EXPLOSION = 735357806U;
-        static const AkUniqueID PLAY_SFX_PARRY = 3835174908U;
-        static const AkUniqueID PLAY_SFX_ROCKSLIDE = 3230763644U;
-        static const AkUniqueID PLAY_SFX_SHIELD = 2802293557U;
-        static const AkUniqueID PLAY_SFX_SHIELD_FAIL = 639995196U;
-        static const AkUniqueID PLAY_SFX_WARP = 3667260136U;
-        static const AkUniqueID PLAY_SFX_WOOSH = 415287154U;
         static const AkUniqueID PLAY_UI_BID_ADJUST = 3980822666U;
         static const AkUniqueID PLAY_UI_BID_REJECT = 1191336738U;
         static const AkUniqueID PLAY_UI_BID_SUBMIT = 2289452967U;
         static const AkUniqueID PLAY_UI_CLICK = 1749424733U;
         static const AkUniqueID PLAY_UI_HOVER = 1339559671U;
         static const AkUniqueID PLAY_UI_SHOP_PURCHASE = 2035278795U;
+        static const AkUniqueID PLAY_VO_AUCTIONEER = 773126247U;
+        static const AkUniqueID PLAY_VO_PLAYER_JUMPGRUNT = 1992741306U;
         static const AkUniqueID STOP_AMB_FOREST = 3443576024U;
         static const AkUniqueID STOP_AMB_FOREST_01 = 1443530286U;
         static const AkUniqueID STOP_AMB_LAVA = 3566511473U;
+        static const AkUniqueID STOP_GP_ROCKSLIDE = 758397350U;
         static const AkUniqueID STOP_MX_SYSTEM = 3534127541U;
-        static const AkUniqueID STOP_SFX_ROCKSLIDE = 1298362486U;
     } // namespace EVENTS
 
     namespace STATES

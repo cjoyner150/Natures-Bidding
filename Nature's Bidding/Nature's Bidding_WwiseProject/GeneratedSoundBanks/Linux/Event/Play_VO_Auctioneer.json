@@ -1,0 +1,121 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "773126247",
+    "Type": "Event",
+    "GUID": "{FC51EB7E-F371-4821-9E7A-9D7406953CA1}",
+    "Language": "SFX",
+    "Hash": "{53BBC71C-FCD7-DBFB-A87B-2EB0B62AE1F7}",
+    "ObjectPath": "Play_VO_Auctioneer",
+    "ShortName": "Play_VO_Auctioneer",
+    "Path": "Event/Play_VO_Auctioneer.bnk",
+    "Media": [
+     {
+      "Id": "286959463",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "vo_auctioneer_02.wav",
+      "Path": "Media/286959463.wem",
+      "CachePath": "7D/{7D2C33D1-36C0-B0B1-925B-4142348FED9B}.wem"
+     },
+     {
+      "Id": "315138503",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "vo_auctioneer_06.wav",
+      "Path": "Media/315138503.wem",
+      "CachePath": "72/{722DBBF6-0601-D4C9-8C09-31945E6DEADD}.wem"
+     },
+     {
+      "Id": "387140955",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "vo_auctioneer_01.wav",
+      "Path": "Media/387140955.wem",
+      "CachePath": "E4/{E4C3B3F6-12C1-BCB6-F657-429CD5EED39B}.wem"
+     },
+     {
+      "Id": "436289366",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "vo_auctioneer_05.wav",
+      "Path": "Media/436289366.wem",
+      "CachePath": "AE/{AEAE7A02-9629-79ED-B278-E6B794E55475}.wem"
+     },
+     {
+      "Id": "510422162",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "vo_auctioneer_04.wav",
+      "Path": "Media/510422162.wem",
+      "CachePath": "9D/{9D95372F-2F07-FFF7-264B-0776B65DAEF3}.wem"
+     },
+     {
+      "Id": "761025213",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "vo_auctioneer_07.wav",
+      "Path": "Media/761025213.wem",
+      "CachePath": "D8/{D803CBC4-05C5-617F-AF8F-84287283AA29}.wem"
+     },
+     {
+      "Id": "906730274",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "vo_auctioneer_03.wav",
+      "Path": "Media/906730274.wem",
+      "CachePath": "F1/{F1ABEA17-37A3-7D4D-DDFA-A293315532E1}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "773126247",
+      "Name": "Play_VO_Auctioneer",
+      "ObjectPath": "\\Events\\Voice Work Unit\\Play_VO_Auctioneer",
+      "GUID": "{FC51EB7E-F371-4821-9E7A-9D7406953CA1}",
+      "Color": "24",
+      "DurationType": "OneShot",
+      "DurationMin": "0.69122916",
+      "DurationMax": "1.346125",
+      "MediaRefs": [
+       {
+        "Id": "286959463"
+       },
+       {
+        "Id": "315138503"
+       },
+       {
+        "Id": "387140955"
+       },
+       {
+        "Id": "436289366"
+       },
+       {
+        "Id": "510422162"
+       },
+       {
+        "Id": "761025213"
+       },
+       {
+        "Id": "906730274"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{E59EE796-4FE2-1852-C52B-89A82B576AE2}"
+ }
+}

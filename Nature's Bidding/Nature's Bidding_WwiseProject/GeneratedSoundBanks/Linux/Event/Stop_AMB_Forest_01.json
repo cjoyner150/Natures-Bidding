@@ -18,7 +18,7 @@
      {
       "Id": "1443530286",
       "Name": "Stop_AMB_Forest_01",
-      "ObjectPath": "\\Events\\SFX Work Unit\\Stop_AMB_Forest_01",
+      "ObjectPath": "\\Events\\Gameplay Work Unit\\Stop_AMB_Forest_01",
       "GUID": "{FF05C7D0-0F5A-4B91-AC90-91D4B49CF154}",
       "Color": "8",
       "MaxAttenuation": "0",
@@ -29,6 +29,6 @@
     ]
    }
   ],
-  "FileHash": "{3AE3D4A4-83F0-A63C-0EDE-431C9553B7EB}"
+  "FileHash": "{2E7F7164-96F7-754A-D3EF-83E08C67CA37}"
  }
 }

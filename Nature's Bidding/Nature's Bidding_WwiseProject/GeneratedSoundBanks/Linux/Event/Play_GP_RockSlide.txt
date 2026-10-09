@@ -1,0 +1,6 @@
+Event	ID	Name			Wwise Object Path	Notes
+	2373231564	Play_GP_RockSlide			\Gameplay Work Unit\Play_GP_RockSlide	
+
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	2369427653	Combat_Pan			\Default Work Unit\Combat_Pan	
+

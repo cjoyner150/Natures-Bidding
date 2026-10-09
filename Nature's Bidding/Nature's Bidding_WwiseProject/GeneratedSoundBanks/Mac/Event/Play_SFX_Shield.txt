@@ -1,6 +1,0 @@
-Event	ID	Name			Wwise Object Path	Notes
-	2802293557	Play_SFX_Shield			\SFX Work Unit\Play_SFX_Shield	
-
-Game Parameter	ID	Name			Wwise Object Path	Notes
-	2369427653	Combat_Pan			\Default Work Unit\Combat_Pan	
-

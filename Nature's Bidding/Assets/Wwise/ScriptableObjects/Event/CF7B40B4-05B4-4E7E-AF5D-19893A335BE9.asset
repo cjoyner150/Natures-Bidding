@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3048a983b0df63e4281883aaddd5ff1d, type: 3}
   m_Name: CF7B40B4-05B4-4E7E-AF5D-19893A335BE9
   m_EditorClassIdentifier: AK.Wwise.Unity.API.WwiseTypes::WwiseEventReference
-  objectName: Play_SFX_ManMask_Explosion
-  id: 735357806
+  objectName: Play_GP_ManMask_Explosion
+  id: 2410750046
   guid: CF7B40B4-05B4-4E7E-AF5D-19893A335BE9
   IsInUserDefinedSoundBank: 0

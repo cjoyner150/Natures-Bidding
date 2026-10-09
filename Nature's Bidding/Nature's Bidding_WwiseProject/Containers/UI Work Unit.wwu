@@ -723,16 +723,16 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<AudioFileSource Name="ui_generic_click_01" ID="{43DB221B-92A5-4F85-9C86-B66A50F4050E}">
+										<AudioFileSource Name="ui_click_01" ID="{43DB221B-92A5-4F85-9C86-B66A50F4050E}">
 											<Language>SFX</Language>
-											<AudioFile>generic\click\ui_generic_click_01.wav</AudioFile>
+											<AudioFile>generic\click\ui_click_01.wav</AudioFile>
 											<MediaIDList>
-												<MediaID ID="433221746"/>
+												<MediaID ID="433221747"/>
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
 									<ActiveSourceList>
-										<ActiveSource Name="ui_generic_click_01" ID="{43DB221B-92A5-4F85-9C86-B66A50F4050E}" Platform="Linked"/>
+										<ActiveSource Name="ui_click_01" ID="{43DB221B-92A5-4F85-9C86-B66A50F4050E}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 								<Sound Name="ui_click_02" ID="{025F0134-D613-4743-9DBB-1D8982E51D49}" ShortID="1027967589">
@@ -745,16 +745,16 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<AudioFileSource Name="ui_generic_click_02" ID="{04AC98BB-B030-4951-9FE0-D021C0002682}">
+										<AudioFileSource Name="ui_click_02" ID="{04AC98BB-B030-4951-9FE0-D021C0002682}">
 											<Language>SFX</Language>
-											<AudioFile>generic\click\ui_generic_click_02.wav</AudioFile>
+											<AudioFile>generic\click\ui_click_02.wav</AudioFile>
 											<MediaIDList>
-												<MediaID ID="384994988"/>
+												<MediaID ID="384994989"/>
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
 									<ActiveSourceList>
-										<ActiveSource Name="ui_generic_click_02" ID="{04AC98BB-B030-4951-9FE0-D021C0002682}" Platform="Linked"/>
+										<ActiveSource Name="ui_click_02" ID="{04AC98BB-B030-4951-9FE0-D021C0002682}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
@@ -794,16 +794,16 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<AudioFileSource Name="ui_generic_hover_01" ID="{EE34CC97-1009-420B-9DD8-F8F058A69E9F}">
+										<AudioFileSource Name="ui_hover_01" ID="{EE34CC97-1009-420B-9DD8-F8F058A69E9F}">
 											<Language>SFX</Language>
-											<AudioFile>hover\ui_generic_hover_01.wav</AudioFile>
+											<AudioFile>hover\ui_hover_01.wav</AudioFile>
 											<MediaIDList>
-												<MediaID ID="655518862"/>
+												<MediaID ID="655518863"/>
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
 									<ActiveSourceList>
-										<ActiveSource Name="ui_generic_hover_01" ID="{EE34CC97-1009-420B-9DD8-F8F058A69E9F}" Platform="Linked"/>
+										<ActiveSource Name="ui_hover_01" ID="{EE34CC97-1009-420B-9DD8-F8F058A69E9F}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 								<Sound Name="ui_hover_02" ID="{D1A70F17-110E-439C-8F4C-CBDCC0E21196}" ShortID="343643408">
@@ -816,16 +816,16 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<AudioFileSource Name="ui_generic_hover_02" ID="{0DD31B87-6358-4C9C-9B3A-DBB1347CEA5F}">
+										<AudioFileSource Name="ui_hover_02" ID="{0DD31B87-6358-4C9C-9B3A-DBB1347CEA5F}">
 											<Language>SFX</Language>
-											<AudioFile>hover\ui_generic_hover_02.wav</AudioFile>
+											<AudioFile>hover\ui_hover_02.wav</AudioFile>
 											<MediaIDList>
-												<MediaID ID="795904522"/>
+												<MediaID ID="795904523"/>
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
 									<ActiveSourceList>
-										<ActiveSource Name="ui_generic_hover_02" ID="{0DD31B87-6358-4C9C-9B3A-DBB1347CEA5F}" Platform="Linked"/>
+										<ActiveSource Name="ui_hover_02" ID="{0DD31B87-6358-4C9C-9B3A-DBB1347CEA5F}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 								<Sound Name="ui_hover_03" ID="{953FD364-E752-431A-9BDD-34866EEF43A4}" ShortID="659561740">
@@ -838,16 +838,16 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<AudioFileSource Name="ui_generic_hover_03" ID="{C592FB00-269E-49D4-A946-5AA47822FC86}">
+										<AudioFileSource Name="ui_hover_03" ID="{C592FB00-269E-49D4-A946-5AA47822FC86}">
 											<Language>SFX</Language>
-											<AudioFile>hover\ui_generic_hover_03.wav</AudioFile>
+											<AudioFile>hover\ui_hover_03.wav</AudioFile>
 											<MediaIDList>
-												<MediaID ID="4474322"/>
+												<MediaID ID="4474323"/>
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
 									<ActiveSourceList>
-										<ActiveSource Name="ui_generic_hover_03" ID="{C592FB00-269E-49D4-A946-5AA47822FC86}" Platform="Linked"/>
+										<ActiveSource Name="ui_hover_03" ID="{C592FB00-269E-49D4-A946-5AA47822FC86}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 								<Sound Name="ui_hover_04" ID="{EA549F25-2C3F-41DE-A177-C4650A93D4FD}" ShortID="1045484932">
@@ -860,16 +860,16 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<AudioFileSource Name="ui_generic_hover_04" ID="{E622D2B7-E1EB-4EDF-9CDE-489B6F4D086C}">
+										<AudioFileSource Name="ui_hover_04" ID="{E622D2B7-E1EB-4EDF-9CDE-489B6F4D086C}">
 											<Language>SFX</Language>
-											<AudioFile>hover\ui_generic_hover_04.wav</AudioFile>
+											<AudioFile>hover\ui_hover_04.wav</AudioFile>
 											<MediaIDList>
-												<MediaID ID="949801205"/>
+												<MediaID ID="949801206"/>
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
 									<ActiveSourceList>
-										<ActiveSource Name="ui_generic_hover_04" ID="{E622D2B7-E1EB-4EDF-9CDE-489B6F4D086C}" Platform="Linked"/>
+										<ActiveSource Name="ui_hover_04" ID="{E622D2B7-E1EB-4EDF-9CDE-489B6F4D086C}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3048a983b0df63e4281883aaddd5ff1d, type: 3}
   m_Name: 465C95EC-AD21-47BF-AFC3-D56DDBCC882B
   m_EditorClassIdentifier: AK.Wwise.Unity.API.WwiseTypes::WwiseEventReference
-  objectName: Play_SFX_Fall
-  id: 729947933
+  objectName: Play_GP_Player_CliffFall
+  id: 313685605
   guid: 465C95EC-AD21-47BF-AFC3-D56DDBCC882B
   IsInUserDefinedSoundBank: 0

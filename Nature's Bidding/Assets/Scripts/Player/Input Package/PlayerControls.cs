@@ -163,6 +163,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Toggle Secrets"",
+                    ""type"": ""Button"",
+                    ""id"": ""0be44ea1-53a8-4878-96f6-6fc44b989974"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -407,6 +416,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Ready"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bdeff0a3-73d0-47f6-9671-d7dedec3db26"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Secrets"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c25407a3-d3a4-400a-b230-b16bdb02e649"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Secrets"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -423,6 +454,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerGameplay_Parry = m_PlayerGameplay.FindAction("Parry", throwIfNotFound: true);
         m_PlayerGameplay_Pause = m_PlayerGameplay.FindAction("Pause", throwIfNotFound: true);
         m_PlayerGameplay_Ready = m_PlayerGameplay.FindAction("Ready", throwIfNotFound: true);
+        m_PlayerGameplay_ToggleSecrets = m_PlayerGameplay.FindAction("Toggle Secrets", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -511,6 +543,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerGameplay_Parry;
     private readonly InputAction m_PlayerGameplay_Pause;
     private readonly InputAction m_PlayerGameplay_Ready;
+    private readonly InputAction m_PlayerGameplay_ToggleSecrets;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerGameplay".
     /// </summary>
@@ -554,6 +587,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerGameplay/Ready".
         /// </summary>
         public InputAction @Ready => m_Wrapper.m_PlayerGameplay_Ready;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerGameplay/ToggleSecrets".
+        /// </summary>
+        public InputAction @ToggleSecrets => m_Wrapper.m_PlayerGameplay_ToggleSecrets;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -604,6 +641,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Ready.started += instance.OnReady;
             @Ready.performed += instance.OnReady;
             @Ready.canceled += instance.OnReady;
+            @ToggleSecrets.started += instance.OnToggleSecrets;
+            @ToggleSecrets.performed += instance.OnToggleSecrets;
+            @ToggleSecrets.canceled += instance.OnToggleSecrets;
         }
 
         /// <summary>
@@ -639,6 +679,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Ready.started -= instance.OnReady;
             @Ready.performed -= instance.OnReady;
             @Ready.canceled -= instance.OnReady;
+            @ToggleSecrets.started -= instance.OnToggleSecrets;
+            @ToggleSecrets.performed -= instance.OnToggleSecrets;
+            @ToggleSecrets.canceled -= instance.OnToggleSecrets;
         }
 
         /// <summary>
@@ -735,5 +778,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnReady(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Toggle Secrets" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleSecrets(InputAction.CallbackContext context);
     }
 }

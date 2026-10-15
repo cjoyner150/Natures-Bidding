@@ -163,6 +163,15 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Toggle Secrets"",
+                    ""type"": ""Button"",
+                    ""id"": ""84e4adaa-d529-4621-885d-049ddb6c1c36"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -251,6 +260,28 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Ready"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e7645ab-7b71-4875-bee6-ebf5e8996e24"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Secrets"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7497a3de-1377-4051-bcc0-f047e0b68b6e"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Secrets"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -423,6 +454,7 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
         m_PlayerGameplay_Attack = m_PlayerGameplay.FindAction("Attack", throwIfNotFound: true);
         m_PlayerGameplay_Pause = m_PlayerGameplay.FindAction("Pause", throwIfNotFound: true);
         m_PlayerGameplay_Ready = m_PlayerGameplay.FindAction("Ready", throwIfNotFound: true);
+        m_PlayerGameplay_ToggleSecrets = m_PlayerGameplay.FindAction("Toggle Secrets", throwIfNotFound: true);
     }
 
     ~@ReversedPlayerControls()
@@ -511,6 +543,7 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
     private readonly InputAction m_PlayerGameplay_Attack;
     private readonly InputAction m_PlayerGameplay_Pause;
     private readonly InputAction m_PlayerGameplay_Ready;
+    private readonly InputAction m_PlayerGameplay_ToggleSecrets;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerGameplay".
     /// </summary>
@@ -554,6 +587,10 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
         /// Provides access to the underlying input action "PlayerGameplay/Ready".
         /// </summary>
         public InputAction @Ready => m_Wrapper.m_PlayerGameplay_Ready;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerGameplay/ToggleSecrets".
+        /// </summary>
+        public InputAction @ToggleSecrets => m_Wrapper.m_PlayerGameplay_ToggleSecrets;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -604,6 +641,9 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
             @Ready.started += instance.OnReady;
             @Ready.performed += instance.OnReady;
             @Ready.canceled += instance.OnReady;
+            @ToggleSecrets.started += instance.OnToggleSecrets;
+            @ToggleSecrets.performed += instance.OnToggleSecrets;
+            @ToggleSecrets.canceled += instance.OnToggleSecrets;
         }
 
         /// <summary>
@@ -639,6 +679,9 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
             @Ready.started -= instance.OnReady;
             @Ready.performed -= instance.OnReady;
             @Ready.canceled -= instance.OnReady;
+            @ToggleSecrets.started -= instance.OnToggleSecrets;
+            @ToggleSecrets.performed -= instance.OnToggleSecrets;
+            @ToggleSecrets.canceled -= instance.OnToggleSecrets;
         }
 
         /// <summary>
@@ -735,5 +778,12 @@ public partial class @ReversedPlayerControls: IInputActionCollection2, IDisposab
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnReady(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Toggle Secrets" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleSecrets(InputAction.CallbackContext context);
     }
 }

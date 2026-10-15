@@ -11,6 +11,7 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
     // Combat levels use the 3D pause menu, every other scene uses the 2D one.
     private const string VolcanoCombatSceneName = "LavaGameplay";
     private const string CliffsCombatSceneName = "CliffGameplay";
+    private const string LobbySceneName = "LobbyScene";
 
     [Serializable]
     private class PauseMenuVariant
@@ -68,7 +69,7 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
 
     private static bool IsCombatScene(string sceneName)
     {
-        return sceneName == VolcanoCombatSceneName || sceneName == CliffsCombatSceneName;
+        return sceneName == VolcanoCombatSceneName || sceneName == CliffsCombatSceneName || sceneName == LobbySceneName;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

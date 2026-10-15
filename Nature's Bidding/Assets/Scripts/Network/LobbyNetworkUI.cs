@@ -12,6 +12,7 @@ using System;
 
 public class LobbyNetworkUI : MonoBehaviour
 {
+    [Header("Ready Config")]
     [SerializeField] GameObject readyPanel;
     [SerializeField] MMRotationShaker readyPanelShaker;
     [SerializeField] Image playerMnkReadyVisual;
@@ -19,7 +20,17 @@ public class LobbyNetworkUI : MonoBehaviour
     [SerializeField] Image playerConfirmedReadyVisual;
     [SerializeField] TextMeshProUGUI readyTMP;
 
+    [Header("Lobby Info Config")]
+    [SerializeField] TextMeshProUGUI lobbyCodeTMP;
+    [SerializeField] Image showCodeEyeVisual;
+    [SerializeField] Image hideCodeEyeVisual;
+    [SerializeField] Image toggleCodeMnkVisual;
+    [SerializeField] Image toggleCodeControllerVisual;
+    private bool codeHidden = true;
+
+
     public static Action OnPlayerReadyEvent;
+    public static Action OnPlayerToggleSecretsEvent;
 
     bool readied = false;
     bool canReady = false;
@@ -39,6 +50,9 @@ public class LobbyNetworkUI : MonoBehaviour
     {
         sessionManager = NetworkSessionManager.Instance;
         UpdateReadyVisualState(ReadyPanelState.WaitingOnPlayers);
+        UpdateHideCodeState(codeHidden);
+
+        UpdateInputPrompts();
     }
 
     private void UpdateReadyVisualState(ReadyPanelState newState)
@@ -53,13 +67,15 @@ public class LobbyNetworkUI : MonoBehaviour
         switch (newState)
         {
             case ReadyPanelState.WaitingOnPlayers:
-                readyTMP.text = "Waiting on more players...";
+                readyTMP.text = "Waiting...";
                 playerConfirmedReadyVisual.enabled = false;
                 playerMnkReadyVisual.enabled = false;
                 playerControllerReadyVisual.enabled = false;
+                canReady = false;
                 break;
             case ReadyPanelState.WaitingForReady:
                 readyTMP.text = "Ready?";
+                canReady = true; 
                 playerConfirmedReadyVisual.enabled = false;
                 playerMnkReadyVisual.enabled = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.MouseAndKeyboard;
                 playerControllerReadyVisual.enabled = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.Gamepad;
@@ -69,15 +85,36 @@ public class LobbyNetworkUI : MonoBehaviour
                 playerConfirmedReadyVisual.enabled = true;
                 playerMnkReadyVisual.enabled = false;
                 playerControllerReadyVisual.enabled = false;
+                canReady = false;
                 break;
         }
         
+    }
+
+    private void UpdateHideCodeState(bool hideCode)
+    {
+        codeHidden = hideCode;
+
+        if (hideCode)
+        {
+            showCodeEyeVisual.enabled = false;
+            hideCodeEyeVisual.enabled = true;
+            lobbyCodeTMP.text = "#####";
+        }
+        else
+        {
+            showCodeEyeVisual.enabled = true;
+            hideCodeEyeVisual.enabled = false;
+            lobbyCodeTMP.text = NetworkSessionManager.Instance?.ActiveSession?.Code;
+        }
+
     }
 
     private void OnEnable()
     {
 
         OnPlayerReadyEvent += OnPlayerReady;
+        OnPlayerToggleSecretsEvent += OnPlayerToggleSecrets;
 
         InputDeviceTracker.OnInputTypeChanged += OnInputTypeChanged;
 
@@ -89,6 +126,7 @@ public class LobbyNetworkUI : MonoBehaviour
     {
 
         OnPlayerReadyEvent -= OnPlayerReady;
+        OnPlayerToggleSecretsEvent -= OnPlayerToggleSecrets;
 
         InputDeviceTracker.OnInputTypeChanged -= OnInputTypeChanged;
 
@@ -106,27 +144,45 @@ public class LobbyNetworkUI : MonoBehaviour
         UpdateReadyVisualState(ReadyPanelState.HasReadied);
     }
 
+    void OnPlayerToggleSecrets()
+    {
+        UpdateHideCodeState(!codeHidden);
+    }
+
     void OnPlayerRequirementMet()
     {
         if (canReady || readied) return; // Client already knows the player requirement is met and should not have text reset
 
         UpdateReadyVisualState(ReadyPanelState.WaitingForReady);
-        canReady = true;
     }
 
     void OnPlayerRequirementDropped()
     {
         UpdateReadyVisualState(ReadyPanelState.WaitingOnPlayers);
         readied = false;
-        canReady = false;
     }
 
-    void OnInputTypeChanged(InputDeviceTracker.InputType inputType)
+    void OnInputTypeChanged(InputDeviceTracker.InputType _) => UpdateInputPrompts();
+
+    private void UpdateInputPrompts()
     {
         if (currentReadyState == ReadyPanelState.WaitingForReady)
         {
-            playerMnkReadyVisual.enabled = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.MouseAndKeyboard;
-            playerControllerReadyVisual.enabled = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.Gamepad;
+            UpdateReadyInputPrompt();
         }
+
+        UpdateToggleSecretsInputPrompt();
+    }
+
+    private void UpdateToggleSecretsInputPrompt()
+    {
+        toggleCodeMnkVisual.enabled = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.MouseAndKeyboard;
+        toggleCodeControllerVisual.enabled = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.Gamepad;
+    }
+
+    private void UpdateReadyInputPrompt()
+    {
+        playerMnkReadyVisual.enabled = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.MouseAndKeyboard;
+        playerControllerReadyVisual.enabled = InputDeviceTracker.CurrentInputType == InputDeviceTracker.InputType.Gamepad;
     }
 }

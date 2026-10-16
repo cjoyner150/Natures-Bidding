@@ -193,10 +193,20 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     public void SpawnNetworkSingletons()
     {
+        if (!NetworkManager.Singleton.IsServer) throw new InvalidOperationException("Not server.");
+        
         foreach (var prefab in spawnableNetworkSingletons)
         {
             var go = Instantiate(prefab);
-            go.GetComponent<NetworkObject>().Spawn();
+            try 
+            { 
+                go.GetComponent<NetworkObject>().Spawn(); 
+            }
+            catch 
+            { 
+                Destroy(go); 
+                throw; 
+            }
         }
     }
 
@@ -389,42 +399,65 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
 
 
-    public async UniTask ReturnToMenu()
+    private UniTask _returnToMenuTask;
+
+    public UniTask ReturnToMenu(LeaveReason reason, string detail = null)
     {
-        GameLogger.Log(LogSeverity.Verbose, $"[ReturnToMenu] CALLED. Stack trace:\n{System.Environment.StackTrace}");
-        if (IsReturningToMenu) return;
+        if (IsReturningToMenu) return _returnToMenuTask;   // first reason wins, no duplicate messages
         IsReturningToMenu = true;
 
-        visitedMapNodeIds.Clear();
+        string msg = LeaveReasonText.Describe(reason, detail);
+        if (msg != null) MenuNetworkErrorHandler.ThrowMenuErrorToQueue(msg);
 
-        SetLoadingState("Leaving session...");
+        _returnToMenuTask = ReturnToMenuInternal();
+        return _returnToMenuTask;
+    }
 
-        PersistentPlayerRegistry.Instance.Clear();
-        State = GameState.Menu;
-        currentMapSeed = -1;
-        currentMapNodeId = -1;
+    private async UniTask ReturnToMenuInternal()
+    {
+        try
+        {
+            SetLoadingState("Leaving session...");
 
-        _sceneLoadTcs?.TrySetCanceled();
-        _sceneLoadTcs = null;
+            _sceneLoadTcs?.TrySetCanceled();
+            _sceneLoadTcs = null;
 
-        if (NetworkSessionManager.Instance.HasActiveSession)
+            // Leave the UGS session even if the NM is half-started.
             await NetworkSessionManager.Instance.LeaveSession();
 
-        await UniTask.WaitUntil(() =>
-            NetworkManager.Singleton == null ||
-            !NetworkManager.Singleton.IsListening
-        );
+            var nm = NetworkManager.Singleton;
+            if (nm != null && nm.IsListening) nm.Shutdown();
 
-        Cursor.lockState = CursorLockMode.Confined;
+            try
+            {
+                await UniTask.WaitUntil(() => NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
+                    .Timeout(TimeSpan.FromSeconds(5));
+            }
+            catch (TimeoutException)
+            {
+                GameLogger.Log(LogSeverity.Warning, "NetworkManager did not stop in time; continuing.");
+            }
 
-        SetLoadingState("Returning to Menu...", true);
+            // Only now, with the network down:
+            PersistentPlayerRegistry.Instance.Clear();
+            visitedMapNodeIds.Clear();
+            State = GameState.Menu;
+            currentMapSeed = -1;
+            currentMapNodeId = -1;
 
-        await LoadSceneAsync(1);
-
-        await UniTask.WaitUntil(() => NetworkManager.Singleton != null);
-        IsReturningToMenu = false;
-
-        ClearLoadingState();
+            Cursor.lockState = CursorLockMode.Confined;
+            SetLoadingState("Returning to Menu...", true);
+            await LoadSceneAsync(1);
+        }
+        catch (Exception e)
+        {
+            GameLogger.LogException(LogSeverity.Error, "ReturnToMenu failed.", e);
+        }
+        finally
+        {
+            IsReturningToMenu = false;
+            ClearLoadingState();
+        }
     }
 
     private async UniTask LoadSceneAsync(int idx)
@@ -656,7 +689,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         if (winningPlayer != null && winningPlayer.combatWins >= combatWinsRequiredToEnd)
         {
             State = GameState.Menu;
-            await ReturnToMenu();
+            await ReturnToMenu(LeaveReason.RunComplete);
             return;
         }
 

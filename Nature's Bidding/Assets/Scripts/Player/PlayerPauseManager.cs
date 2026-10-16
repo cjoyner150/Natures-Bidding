@@ -167,7 +167,7 @@ public class PlayerPauseManager : Singleton<PlayerPauseManager>
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
-        PersistentGameStateManager.Instance.ReturnToMenu().Forget();
+        PersistentGameStateManager.Instance.ReturnToMenu(LeaveReason.UserRequested).Forget();
     }
 
 }

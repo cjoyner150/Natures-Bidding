@@ -22,6 +22,7 @@ public class LobbyNetworkUI : MonoBehaviour
 
     [Header("Lobby Info Config")]
     [SerializeField] TextMeshProUGUI lobbyCodeTMP;
+    [SerializeField] MMRotationShaker lobbyCodeShaker;
     [SerializeField] Image showCodeEyeVisual;
     [SerializeField] Image hideCodeEyeVisual;
     [SerializeField] Image toggleCodeMnkVisual;
@@ -93,13 +94,16 @@ public class LobbyNetworkUI : MonoBehaviour
 
     private void UpdateHideCodeState(bool hideCode)
     {
+        if (lobbyCodeShaker.IsDestroyed() || lobbyCodeShaker == null) return;
+
+        lobbyCodeShaker.enabled = true;
         codeHidden = hideCode;
 
         if (hideCode)
         {
             showCodeEyeVisual.enabled = false;
             hideCodeEyeVisual.enabled = true;
-            lobbyCodeTMP.text = "#####";
+            lobbyCodeTMP.text = "######";
         }
         else
         {

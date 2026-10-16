@@ -1,0 +1,137 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "3042049247",
+    "Type": "Event",
+    "GUID": "{0AD81702-EF32-4857-BAC8-6E4DC9ED9828}",
+    "Language": "SFX",
+    "Hash": "{06B147BB-9CDC-0D68-FEA4-4AF644378FEF}",
+    "ObjectPath": "Play_GP_Player_Fall",
+    "ShortName": "Play_GP_Player_Fall",
+    "Path": "Event/Play_GP_Player_Fall.bnk",
+    "Media": [
+     {
+      "Id": "715263605",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "GP_Player_LavaFall\\gp_lava_fall_01.wav",
+      "Path": "Media/715263605.wem",
+      "CachePath": "BE/{BE4EA9EA-5F11-978F-A38C-2350D61FBD1B}.wem"
+     },
+     {
+      "Id": "738650073",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_cliff_fall_01.wav",
+      "Path": "Media/738650073.wem",
+      "CachePath": "D2/{D21B6A13-6454-87E3-799B-10495393EAF0}.wem"
+     },
+     {
+      "Id": "1052431789",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_cliff_fall_02.wav",
+      "Path": "Media/1052431789.wem",
+      "CachePath": "27/{27CC2D7A-EF8C-3D81-CE4B-0ED5D82414BF}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "3042049247",
+      "Name": "Play_GP_Player_Fall",
+      "ObjectPath": "\\Events\\Gameplay Work Unit\\Play_GP_Player_Fall",
+      "GUID": "{0AD81702-EF32-4857-BAC8-6E4DC9ED9828}",
+      "Color": "8",
+      "DurationType": "OneShot",
+      "DurationMin": "0.9303257",
+      "DurationMax": "1.4603542",
+      "SwitchContainers": [
+       {
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "1048449605",
+         "Id": "540301611",
+         "GUID": "{D5BA4557-9946-47D0-B9A0-7045CF947424}",
+         "Color": "3"
+        },
+        "MediaRefs": [
+         {
+          "Id": "715263605"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "1048449605",
+         "Id": "1668395945",
+         "GUID": "{93B52BF6-F969-483A-A7EA-3C9E82A44F89}",
+         "Color": "3",
+         "Default": "true"
+        },
+        "MediaRefs": [
+         {
+          "Id": "738650073"
+         },
+         {
+          "Id": "1052431789"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
+     }
+    ],
+    "StateGroups": [
+     {
+      "Id": "1048449605",
+      "Name": "Map",
+      "ObjectPath": "\\States\\Default Work Unit\\Map",
+      "GUID": "{34ADBFF0-DAEF-4ED8-BA8A-3FA9901AB826}",
+      "Color": "3",
+      "States": [
+       {
+        "Id": "540301611",
+        "Name": "Lava",
+        "ObjectPath": "\\States\\Default Work Unit\\Map\\Lava",
+        "GUID": "{D5BA4557-9946-47D0-B9A0-7045CF947424}",
+        "Color": "3"
+       },
+       {
+        "Id": "748895195",
+        "Name": "None",
+        "ObjectPath": "\\States\\Default Work Unit\\Map\\None",
+        "GUID": "{B582B5AA-26BC-420A-A1B4-62606537B8F3}",
+        "Color": "3"
+       },
+       {
+        "Id": "1668395945",
+        "Name": "Cliff",
+        "ObjectPath": "\\States\\Default Work Unit\\Map\\Cliff",
+        "GUID": "{93B52BF6-F969-483A-A7EA-3C9E82A44F89}",
+        "Color": "3"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{E644A7DF-CAEA-D9A9-BA68-9A76726B360C}"
+ }
+}

@@ -1246,113 +1246,6 @@
 								</ObjectList>
 							</ObjectLists>
 						</RandomSequenceContainer>
-						<RandomSequenceContainer Name="GP_Player_CliffFall" ID="{76797351-2FCA-4F3A-B89F-B79D5F46928B}" ShortID="809741765">
-							<PropertyList>
-								<Property Name="OverrideEffect" Type="bool" Value="True"/>
-								<Property Name="Pitch" Type="int32">
-									<ModifierList>
-										<ModifierInfo>
-											<Modifier Name="" ID="{B1B65444-C4E5-4DC4-A2B4-E6B9B1472ABF}">
-												<PropertyList>
-													<Property Name="Enabled" Type="bool" Value="True"/>
-													<Property Name="Max" Type="Real64" Value="100"/>
-													<Property Name="Min" Type="Real64" Value="-100"/>
-												</PropertyList>
-											</Modifier>
-										</ModifierInfo>
-									</ModifierList>
-								</Property>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<Sound Name="gp_player_cliff_fall_01" ID="{5304AD1B-AD39-4089-A4A8-1F8254F0D0C1}" ShortID="716856468">
-									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
-										</Reference>
-										<Reference Name="OutputBus">
-											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
-										</Reference>
-									</ReferenceList>
-									<ChildrenList>
-										<AudioFileSource Name="gp_player_cliff_fall_01" ID="{9C9BE359-878A-45F8-AE96-6F1D099501AD}">
-											<Language>SFX</Language>
-											<AudioFile>gp_player_cliff_fall_01.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="738650073"/>
-											</MediaIDList>
-										</AudioFileSource>
-										<AudioFileSource Name="gp_player_cliff_fall_02" ID="{194D45D9-33B4-4609-AFBC-1A76649790EC}">
-											<Language>SFX</Language>
-											<AudioFile>gp_player_cliff_fall_01.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="738650073"/>
-											</MediaIDList>
-										</AudioFileSource>
-									</ChildrenList>
-									<ActiveSourceList>
-										<ActiveSource Name="gp_player_cliff_fall_02" ID="{194D45D9-33B4-4609-AFBC-1A76649790EC}" Platform="Linked"/>
-									</ActiveSourceList>
-								</Sound>
-								<Sound Name="gp_player_cliff_fall_02" ID="{60FB66A4-0AC1-4FAA-852B-7D281FA85896}" ShortID="196939240">
-									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
-										</Reference>
-										<Reference Name="OutputBus">
-											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
-										</Reference>
-									</ReferenceList>
-									<ChildrenList>
-										<AudioFileSource Name="gp_player_cliff_fall_02" ID="{F89715F1-8010-4688-9A12-B3F281BD7B4E}">
-											<Language>SFX</Language>
-											<AudioFile>gp_player_cliff_fall_02.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="1052431789"/>
-											</MediaIDList>
-										</AudioFileSource>
-										<AudioFileSource Name="gp_player_cliff_fall_01" ID="{B6DB248C-2638-4F15-9E08-992506171481}">
-											<Language>SFX</Language>
-											<AudioFile>gp_player_cliff_fall_02.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="1052431789"/>
-											</MediaIDList>
-										</AudioFileSource>
-									</ChildrenList>
-									<ActiveSourceList>
-										<ActiveSource Name="gp_player_cliff_fall_01" ID="{B6DB248C-2638-4F15-9E08-992506171481}" Platform="Linked"/>
-									</ActiveSourceList>
-								</Sound>
-							</ChildrenList>
-							<ObjectLists>
-								<ObjectList Name="Effects">
-									<EffectSlot Name="" ID="{3E77B5B6-D846-4EDF-A761-29B16B2FF55D}" ShortID="250722645">
-										<PropertyList>
-											<Property Name="Render" Type="bool" Value="True"/>
-										</PropertyList>
-										<ReferenceList>
-											<Reference Name="Effect">
-												<Custom>
-													<Effect Name="Fall_Speed_1_5x" ID="{4814407B-DE15-4F3B-B5D5-5EC3E160FD55}" ShortID="255587360" PluginName="Wwise Time Stretch" CompanyID="0" PluginID="130" PluginType="3">
-														<PropertyList>
-															<Property Name="QualityEnable" Type="int16" Value="1"/>
-															<Property Name="TimeStretch" Type="Real32" Value="66.66666"/>
-														</PropertyList>
-													</Effect>
-												</Custom>
-											</Reference>
-										</ReferenceList>
-									</EffectSlot>
-								</ObjectList>
-							</ObjectLists>
-						</RandomSequenceContainer>
 						<SwitchContainer Name="VO_Player_JumpGrunt" ID="{003C3AF3-C5EF-4876-8AE8-1E06F713D7D6}" ShortID="979984900">
 							<PropertyList>
 								<Property Name="Pitch" Type="int32">
@@ -2393,6 +2286,286 @@
 								</ObjectList>
 							</ObjectLists>
 						</RandomSequenceContainer>
+						<SwitchContainer Name="GP_Player_Fall" ID="{45B9AFA9-155F-4565-820A-696A66D32E67}" ShortID="772957524">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+								</Reference>
+								<Reference Name="DefaultSwitchOrState">
+									<ObjectRef Name="Cliff" ID="{93B52BF6-F969-483A-A7EA-3C9E82A44F89}" WorkUnitID="{6949BC57-2612-4D09-ABA1-5198942D42F4}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+								</Reference>
+								<Reference Name="SwitchGroupOrStateGroup">
+									<ObjectRef Name="Map" ID="{34ADBFF0-DAEF-4ED8-BA8A-3FA9901AB826}" WorkUnitID="{6949BC57-2612-4D09-ABA1-5198942D42F4}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<RandomSequenceContainer Name="GP_Player_CliffFall" ID="{76797351-2FCA-4F3A-B89F-B79D5F46928B}" ShortID="809741765">
+									<PropertyList>
+										<Property Name="OverrideEffect" Type="bool" Value="True"/>
+										<Property Name="Pitch" Type="int32">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{B1B65444-C4E5-4DC4-A2B4-E6B9B1472ABF}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="100"/>
+															<Property Name="Min" Type="Real64" Value="-100"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+										<Property Name="SpeakerPanning" Type="int16" Value="1"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="SFX" ID="{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<Sound Name="gp_player_cliff_fall_01" ID="{5304AD1B-AD39-4089-A4A8-1F8254F0D0C1}" ShortID="716856468">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="gp_player_cliff_fall_01" ID="{9C9BE359-878A-45F8-AE96-6F1D099501AD}">
+													<Language>SFX</Language>
+													<AudioFile>gp_player_cliff_fall_01.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="738650073"/>
+													</MediaIDList>
+												</AudioFileSource>
+												<AudioFileSource Name="gp_player_cliff_fall_02" ID="{194D45D9-33B4-4609-AFBC-1A76649790EC}">
+													<Language>SFX</Language>
+													<AudioFile>gp_player_cliff_fall_01.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="738650073"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="gp_player_cliff_fall_02" ID="{194D45D9-33B4-4609-AFBC-1A76649790EC}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="gp_player_cliff_fall_02" ID="{60FB66A4-0AC1-4FAA-852B-7D281FA85896}" ShortID="196939240">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="gp_player_cliff_fall_02" ID="{F89715F1-8010-4688-9A12-B3F281BD7B4E}">
+													<Language>SFX</Language>
+													<AudioFile>gp_player_cliff_fall_02.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="1052431789"/>
+													</MediaIDList>
+												</AudioFileSource>
+												<AudioFileSource Name="gp_player_cliff_fall_01" ID="{B6DB248C-2638-4F15-9E08-992506171481}">
+													<Language>SFX</Language>
+													<AudioFile>gp_player_cliff_fall_02.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="1052431789"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="gp_player_cliff_fall_01" ID="{B6DB248C-2638-4F15-9E08-992506171481}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+									</ChildrenList>
+									<PositioningInfo>
+										<Panner Name="" ID="{B7D420AE-8129-421C-995A-407B9A24785F}">
+											<ObjectLists>
+												<ObjectList Name="RTPC">
+													<RTPC Name="" ID="{37E2612D-44DF-4DBD-8FB9-25DBB4A71222}" ShortID="335376052">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="PanX"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="Combat_Pan" ID="{1227142A-5FEB-462E-92E5-2D17A955B80D}" WorkUnitID="{B6944527-D057-47A5-932F-995FF1BDA1F0}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{E2DF7D26-F0F6-4827-A54F-4DC5F304D792}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="1"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>-50</XPos>
+																				<YPos>-50</YPos>
+																				<Flags>5</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>0</XPos>
+																				<YPos>0</YPos>
+																				<Flags>0</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>50</XPos>
+																				<YPos>50</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</ObjectList>
+											</ObjectLists>
+										</Panner>
+									</PositioningInfo>
+									<ObjectLists>
+										<ObjectList Name="Effects">
+											<EffectSlot Name="" ID="{3E77B5B6-D846-4EDF-A761-29B16B2FF55D}" ShortID="250722645">
+												<PropertyList>
+													<Property Name="Render" Type="bool" Value="True"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="Effect">
+														<Custom>
+															<Effect Name="Fall_Speed_1_5x" ID="{4814407B-DE15-4F3B-B5D5-5EC3E160FD55}" ShortID="255587360" PluginName="Wwise Time Stretch" CompanyID="0" PluginID="130" PluginType="3">
+																<PropertyList>
+																	<Property Name="QualityEnable" Type="int16" Value="1"/>
+																	<Property Name="TimeStretch" Type="Real32" Value="66.66666"/>
+																</PropertyList>
+															</Effect>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</EffectSlot>
+										</ObjectList>
+									</ObjectLists>
+								</RandomSequenceContainer>
+								<RandomSequenceContainer Name="GP_Player_LavaFall" ID="{53CF84BD-834F-4061-A9D8-0DAD79947068}" ShortID="64540212">
+									<PropertyList>
+										<Property Name="SpeakerPanning" Type="int16" Value="1"/>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-6</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="SFX" ID="{2F0F7EF2-404C-4955-8BCA-AE53E5C9D895}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<Sound Name="gp_lava_fall_01" ID="{D2B0A923-EB84-4439-BDDA-E24F34276933}" ShortID="103526969">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{83766F9B-8B97-44A7-B5CF-30CBA4B3AAC2}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{6D157B63-780F-478F-BC39-172B07D29E4C}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="gp_lava_fall_01" ID="{87D19D12-5305-4F09-8157-615D1BC59320}">
+													<Language>SFX</Language>
+													<AudioFile>GP_Player_LavaFall\gp_lava_fall_01.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="715263605"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="gp_lava_fall_01" ID="{87D19D12-5305-4F09-8157-615D1BC59320}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+									</ChildrenList>
+									<PositioningInfo>
+										<Panner Name="" ID="{ABD7A302-7888-4638-AEA5-11649A0E772E}">
+											<ObjectLists>
+												<ObjectList Name="RTPC">
+													<RTPC Name="" ID="{3B25E93A-7AD6-4DF0-8A82-F4D4CF4EBD0F}" ShortID="937368429">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="PanX"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="Combat_Pan" ID="{1227142A-5FEB-462E-92E5-2D17A955B80D}" WorkUnitID="{B6944527-D057-47A5-932F-995FF1BDA1F0}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{299282C9-00F9-403F-B59E-31DF49E6E847}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="1"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>-50</XPos>
+																				<YPos>-50</YPos>
+																				<Flags>5</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>0</XPos>
+																				<YPos>0</YPos>
+																				<Flags>0</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>50</XPos>
+																				<YPos>50</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</ObjectList>
+											</ObjectLists>
+										</Panner>
+									</PositioningInfo>
+								</RandomSequenceContainer>
+							</ChildrenList>
+							<GroupingInfo>
+								<GroupingBehaviorList>
+									<GroupingBehavior>
+										<ItemRef Name="GP_Player_CliffFall" ID="{76797351-2FCA-4F3A-B89F-B79D5F46928B}"/>
+									</GroupingBehavior>
+									<GroupingBehavior>
+										<ItemRef Name="GP_Player_LavaFall" ID="{53CF84BD-834F-4061-A9D8-0DAD79947068}"/>
+									</GroupingBehavior>
+								</GroupingBehaviorList>
+								<GroupingList>
+									<Grouping>
+										<SwitchRef Name="Lava" ID="{D5BA4557-9946-47D0-B9A0-7045CF947424}"/>
+										<ItemList>
+											<ItemRef Name="GP_Player_LavaFall" ID="{53CF84BD-834F-4061-A9D8-0DAD79947068}"/>
+										</ItemList>
+									</Grouping>
+									<Grouping>
+										<SwitchRef Name="Cliff" ID="{93B52BF6-F969-483A-A7EA-3C9E82A44F89}"/>
+										<ItemList>
+											<ItemRef Name="GP_Player_CliffFall" ID="{76797351-2FCA-4F3A-B89F-B79D5F46928B}"/>
+										</ItemList>
+									</Grouping>
+								</GroupingList>
+							</GroupingInfo>
+						</SwitchContainer>
 					</ChildrenList>
 					<PositioningInfo>
 						<Panner Name="" ID="{AB4EB316-D5C3-47DC-BB4F-2CAB419029AA}">

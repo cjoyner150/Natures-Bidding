@@ -8,6 +8,7 @@ public sealed class GameAudioController : MonoBehaviour
 {
     private const string CliffSceneName = "CliffGameplay";
     private const string LavaSceneName = "LavaGameplay";
+    private const string MapSceneName = "MapScene";
     private const float CombatPlayerStatePollInterval = 0.2f;
 
     private static GameAudioController instance;
@@ -30,6 +31,7 @@ public sealed class GameAudioController : MonoBehaviour
     [Header("UI Events")]
     [SerializeField] private AK.Wwise.Event playUIClick;
     [SerializeField] private AK.Wwise.Event playUIHover;
+    [SerializeField] private AK.Wwise.Event playMapLocationClick;
 
     [Header("Ambience Events")]
     [SerializeField] private AK.Wwise.Event playForestAmbience;
@@ -214,6 +216,14 @@ public sealed class GameAudioController : MonoBehaviour
     public void PlayUIHover()
     {
         PostEvent(playUIHover, "Play_UI_Hover");
+    }
+
+    public void PlayMapLocationClick()
+    {
+        if (SceneManager.GetActiveScene().name != MapSceneName)
+            return;
+
+        PostEvent(playMapLocationClick, "Play_UI_Paper_Click");
     }
 
     private void OnSceneUnloaded(Scene scene)

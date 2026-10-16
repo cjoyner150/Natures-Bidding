@@ -170,6 +170,28 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_GP_Player_LavaFall" ID="{F2500039-08C6-4049-B85C-AFA6A4EE95C7}">
+					<ChildrenList>
+						<Action Name="" ID="{367265E8-3830-424B-93F1-0BCEA5FDD639}" ShortID="1035244037">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GP_Player_LavaFall" ID="{53CF84BD-834F-4061-A9D8-0DAD79947068}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_GP_Player_Fall" ID="{0AD81702-EF32-4857-BAC8-6E4DC9ED9828}">
+					<ChildrenList>
+						<Action Name="" ID="{2E1279C0-BFE8-479A-899C-55BA74F27C1D}" ShortID="865180043">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GP_Player_Fall" ID="{45B9AFA9-155F-4565-820A-696A66D32E67}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

@@ -70,9 +70,10 @@ public class VolumeSettingsManager : MonoBehaviour
 
         Save(data);
 
-        AudioVolumeControls.SetMasterVolume(data.MasterVolume);
-        AudioVolumeControls.SetMusicVolume(data.MusicVolume);
-        AudioVolumeControls.SetSFXVolume(data.SfxVolume);
+        // Sliders use 0-1; Wwise volume parameters use 0-100.
+        AudioVolumeControls.SetMasterVolume(data.MasterVolume * 100f);
+        AudioVolumeControls.SetMusicVolume(data.MusicVolume * 100f);
+        AudioVolumeControls.SetSFXVolume(data.SfxVolume * 100f);
     }
 }
 

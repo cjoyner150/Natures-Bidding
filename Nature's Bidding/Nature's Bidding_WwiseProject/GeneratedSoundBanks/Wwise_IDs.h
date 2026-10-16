@@ -20,6 +20,8 @@ namespace AK
         static const AkUniqueID PLAY_GP_PLAYER_CLIFFFALL = 313685605U;
         static const AkUniqueID PLAY_GP_PLAYER_DEATH = 2900211770U;
         static const AkUniqueID PLAY_GP_PLAYER_DOUBLEJUMP = 3835938179U;
+        static const AkUniqueID PLAY_GP_PLAYER_FALL = 3042049247U;
+        static const AkUniqueID PLAY_GP_PLAYER_LAVAFALL = 65350837U;
         static const AkUniqueID PLAY_GP_PLAYER_PARRYSUCCESS = 2538377831U;
         static const AkUniqueID PLAY_GP_PLAYER_SHIELD = 3484761007U;
         static const AkUniqueID PLAY_GP_PLAYER_SHIELD_FAIL = 2926918818U;
@@ -28,10 +30,12 @@ namespace AK
         static const AkUniqueID PLAY_GP_ROCKSLIDE = 2373231564U;
         static const AkUniqueID PLAY_MX_SYSTEM = 3580595815U;
         static const AkUniqueID PLAY_UI_BID_ADJUST = 3980822666U;
+        static const AkUniqueID PLAY_UI_BID_CLICK = 1600875125U;
         static const AkUniqueID PLAY_UI_BID_REJECT = 1191336738U;
         static const AkUniqueID PLAY_UI_BID_SUBMIT = 2289452967U;
         static const AkUniqueID PLAY_UI_CLICK = 1749424733U;
         static const AkUniqueID PLAY_UI_HOVER = 1339559671U;
+        static const AkUniqueID PLAY_UI_PAPER_CLICK = 575206846U;
         static const AkUniqueID PLAY_UI_SHOP_PURCHASE = 2035278795U;
         static const AkUniqueID PLAY_VO_AUCTIONEER = 773126247U;
         static const AkUniqueID PLAY_VO_PLAYER_JUMPGRUNT = 1992741306U;

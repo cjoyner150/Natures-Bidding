@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{465C95EC-AD21-47BF-AFC3-D56DDBCC882B}",
     "Language": "SFX",
-    "Hash": "{D1EF9512-C4D8-51D7-EEFA-68C43B192F8C}",
+    "Hash": "{846BF3B2-15B2-2699-315D-D46DC8A2211E}",
     "ObjectPath": "Play_GP_Player_CliffFall",
     "ShortName": "Play_GP_Player_CliffFall",
     "Path": "Event/Play_GP_Player_CliffFall.bnk",
@@ -62,9 +62,41 @@
       "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
       "Color": "3"
      }
+    ],
+    "StateGroups": [
+     {
+      "Id": "1048449605",
+      "Name": "Map",
+      "ObjectPath": "\\States\\Default Work Unit\\Map",
+      "GUID": "{34ADBFF0-DAEF-4ED8-BA8A-3FA9901AB826}",
+      "Color": "3",
+      "States": [
+       {
+        "Id": "540301611",
+        "Name": "Lava",
+        "ObjectPath": "\\States\\Default Work Unit\\Map\\Lava",
+        "GUID": "{D5BA4557-9946-47D0-B9A0-7045CF947424}",
+        "Color": "3"
+       },
+       {
+        "Id": "748895195",
+        "Name": "None",
+        "ObjectPath": "\\States\\Default Work Unit\\Map\\None",
+        "GUID": "{B582B5AA-26BC-420A-A1B4-62606537B8F3}",
+        "Color": "3"
+       },
+       {
+        "Id": "1668395945",
+        "Name": "Cliff",
+        "ObjectPath": "\\States\\Default Work Unit\\Map\\Cliff",
+        "GUID": "{93B52BF6-F969-483A-A7EA-3C9E82A44F89}",
+        "Color": "3"
+       }
+      ]
+     }
     ]
    }
   ],
-  "FileHash": "{7AAA5FC6-A204-A491-3ACC-FA96DBDAEB9C}"
+  "FileHash": "{85EFB26B-B2EC-99EE-F452-FC85BA6BCCF6}"
  }
 }

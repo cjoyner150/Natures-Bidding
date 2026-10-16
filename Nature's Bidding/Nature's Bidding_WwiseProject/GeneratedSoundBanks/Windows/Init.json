@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{359DC26E-CD95-6550-AA6B-4B60665E41AF}",
+    "Hash": "{60F6F944-13D2-1067-8E18-343F46C38D6B}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -38,7 +38,7 @@
      {
       "Id": "85412153",
       "Name": "Ambience",
-      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\Ambience",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\SFX\\Ambience",
       "GUID": "{E3FF9C71-34A7-47B6-A750-804FE4397322}",
       "Color": "19"
      },
@@ -52,7 +52,7 @@
      {
       "Id": "1551306167",
       "Name": "UI",
-      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\UI",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\SFX\\UI",
       "GUID": "{ADF1903D-2C27-4D5C-8A60-52061641C33E}",
       "Color": "2"
      },
@@ -353,6 +353,6 @@
     ]
    }
   ],
-  "FileHash": "{F5E0D4CE-ACC4-F1D3-2D5D-F474F72C5C14}"
+  "FileHash": "{AC2659AC-0E92-34E4-5734-D46DF77F8D7C}"
  }
 }

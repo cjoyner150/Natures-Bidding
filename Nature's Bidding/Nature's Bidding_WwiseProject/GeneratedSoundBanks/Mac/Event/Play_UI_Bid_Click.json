@@ -1,0 +1,61 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Mac",
+  "BasePlatform": "Mac",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "1600875125",
+    "Type": "Event",
+    "GUID": "{05FAF864-0BEF-4FD6-A8FD-D6E2E21879FB}",
+    "Language": "SFX",
+    "Hash": "{2CCBEBA9-56D1-9B2F-473E-C425F41969BC}",
+    "ObjectPath": "Play_UI_Bid_Click",
+    "ShortName": "Play_UI_Bid_Click",
+    "Path": "Event/Play_UI_Bid_Click.bnk",
+    "Media": [
+     {
+      "Id": "166329416",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "UI_Bid_Click\\v02\\ui_bid_click_02.wav",
+      "Path": "Media/166329416.wem",
+      "CachePath": "D2/{D2E787B4-BCE2-2979-C12C-9607EBC9302C}.wem"
+     },
+     {
+      "Id": "794111002",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "UI_Bid_Click\\v02\\ui_bid_click_01.wav",
+      "Path": "Media/794111002.wem",
+      "CachePath": "D5/{D5283361-E7A0-BF13-0CBA-6DE4FBC2B4E6}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "1600875125",
+      "Name": "Play_UI_Bid_Click",
+      "ObjectPath": "\\Events\\UI Work Unit\\Play_UI_Bid_Click",
+      "GUID": "{05FAF864-0BEF-4FD6-A8FD-D6E2E21879FB}",
+      "Color": "2",
+      "DurationType": "OneShot",
+      "DurationMin": "0.165",
+      "DurationMax": "0.165",
+      "MediaRefs": [
+       {
+        "Id": "166329416"
+       },
+       {
+        "Id": "794111002"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{853C372F-0EE9-A3FA-328B-8418D73CE683}"
+ }
+}

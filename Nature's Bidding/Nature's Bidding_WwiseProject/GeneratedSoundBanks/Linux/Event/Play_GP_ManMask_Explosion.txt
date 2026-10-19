@@ -1,0 +1,6 @@
+Event	ID	Name			Wwise Object Path	Notes
+	2410750046	Play_GP_ManMask_Explosion			\Gameplay Work Unit\Play_GP_ManMask_Explosion	
+
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	2369427653	Combat_Pan			\Default Work Unit\Combat_Pan	
+

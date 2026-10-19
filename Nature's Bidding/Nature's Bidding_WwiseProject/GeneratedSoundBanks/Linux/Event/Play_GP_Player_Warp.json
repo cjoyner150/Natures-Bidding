@@ -1,0 +1,101 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "4114437350",
+    "Type": "Event",
+    "GUID": "{322A45A2-4058-4F8F-8E7D-8516BF02B0ED}",
+    "Language": "SFX",
+    "Hash": "{3A1510E5-5AA5-D816-5B3F-C38D42EC6736}",
+    "ObjectPath": "Play_GP_Player_Warp",
+    "ShortName": "Play_GP_Player_Warp",
+    "Path": "Event/Play_GP_Player_Warp.bnk",
+    "Media": [
+     {
+      "Id": "528292290",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_warp_03.wav",
+      "Path": "Media/528292290.wem",
+      "CachePath": "75/{75EADD87-E017-862C-4944-6F37C00256CB}.wem"
+     },
+     {
+      "Id": "585802346",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_warp_02.wav",
+      "Path": "Media/585802346.wem",
+      "CachePath": "15/{15795B44-D1EA-150E-CBBB-C1F2DF6E3ED7}.wem"
+     },
+     {
+      "Id": "731812738",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_warp_01.wav",
+      "Path": "Media/731812738.wem",
+      "CachePath": "62/{6228296A-7E32-5C4B-EC03-D9D1F31F75C3}.wem"
+     }
+    ],
+    "Plugins": {
+     "ShareSets": [
+      {
+       "Id": "3604890626",
+       "Name": "High_Pass_60Hz",
+       "ObjectPath": "\\Effects\\Factory Effects\\Parametric EQ\\High Pass Filters\\High_Pass_60Hz",
+       "GUID": "{F9627628-0B10-4272-BC30-D4C20423CB38}",
+       "LibName": "Wwise Parametric EQ",
+       "LibId": "6881283"
+      }
+     ]
+    },
+    "Events": [
+     {
+      "Id": "4114437350",
+      "Name": "Play_GP_Player_Warp",
+      "ObjectPath": "\\Events\\Gameplay Work Unit\\Play_GP_Player_Warp",
+      "GUID": "{322A45A2-4058-4F8F-8E7D-8516BF02B0ED}",
+      "Color": "8",
+      "DurationType": "OneShot",
+      "DurationMin": "1.5863959",
+      "DurationMax": "1.59925",
+      "MediaRefs": [
+       {
+        "Id": "528292290"
+       },
+       {
+        "Id": "585802346"
+       },
+       {
+        "Id": "731812738"
+       }
+      ],
+      "PluginRefs": {
+       "ShareSets": [
+        {
+         "Id": "3604890626"
+        }
+       ]
+      }
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{DE88E6CD-8D3D-B9FC-6C24-403B83700410}"
+ }
+}

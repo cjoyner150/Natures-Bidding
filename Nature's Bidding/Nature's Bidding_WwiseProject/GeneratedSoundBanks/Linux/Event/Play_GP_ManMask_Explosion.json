@@ -1,0 +1,58 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "2410750046",
+    "Type": "Event",
+    "GUID": "{CF7B40B4-05B4-4E7E-AF5D-19893A335BE9}",
+    "Language": "SFX",
+    "Hash": "{BC793099-5094-0AE1-2B9D-1802F0EFCDFE}",
+    "ObjectPath": "Play_GP_ManMask_Explosion",
+    "ShortName": "Play_GP_ManMask_Explosion",
+    "Path": "Event/Play_GP_ManMask_Explosion.bnk",
+    "Media": [
+     {
+      "Id": "122476699",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_man_mask_explosion_v01.wav",
+      "Path": "Media/122476699.wem",
+      "CachePath": "FB/{FB4D96A0-D55A-FE2C-5A39-E4096B061340}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "2410750046",
+      "Name": "Play_GP_ManMask_Explosion",
+      "ObjectPath": "\\Events\\Gameplay Work Unit\\Play_GP_ManMask_Explosion",
+      "GUID": "{CF7B40B4-05B4-4E7E-AF5D-19893A335BE9}",
+      "Color": "8",
+      "DurationType": "OneShot",
+      "DurationMin": "1.2971458",
+      "DurationMax": "1.2971458",
+      "MediaRefs": [
+       {
+        "Id": "122476699"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{384C2079-85CB-E3B4-4FA2-7EF198380FDE}"
+ }
+}

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{5341106E-017A-4A1B-B37A-794AEC6B0530}" SchemaVersion="133">
+	<Events>
+		<WorkUnit Name="Gameplay Work Unit" ID="{5341106E-017A-4A1B-B37A-794AEC6B0530}" PersistMode="Standalone">
+			<PropertyList>
+				<Property Name="Color" Type="int16" Value="8"/>
+				<Property Name="OverrideColor" Type="bool" Value="True"/>
+			</PropertyList>
+			<ChildrenList>
+				<Event Name="Play_GP_ManMask_Explosion" ID="{CF7B40B4-05B4-4E7E-AF5D-19893A335BE9}">
+					<ChildrenList>
+						<Action Name="" ID="{13E3CE00-9361-43D4-BD83-5B08C5CB1F46}" ShortID="500961482">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="gp_man_mask_explosion_01" ID="{90AF0A7C-AE7D-4CA7-B5BD-7C7D3EE10333}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_GP_Player_AttackSlash" ID="{36E6308A-11AE-45B4-9188-B735237F920C}">
+					<ChildrenList>
+						<Action Name="" ID="{53608CA5-452D-4F97-B6B6-AA70F371B245}" ShortID="490152283">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GP_Player_AttackSlash" ID="{F178F61F-E1F1-4E9F-A82C-C7E454B58B48}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_GP_Player_ParrySuccess" ID="{70FC38F5-5881-4468-A0ED-87520397CA12}">
+					<ChildrenList>
+						<Action Name="" ID="{47BEF767-20CC-4D0C-91E3-5E34E27D91DB}" ShortID="101215747">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GP_Player_ParrySuccess" ID="{1464D94F-D611-47D1-AB77-953CBCEE9FE6}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_GP_Player_TakeHit" ID="{523D8481-4617-4947-84FB-07B128556FFD}">
+					<ChildrenList>
+						<Action Name="" ID="{E1FCF280-E3CC-44F3-BA99-C28231220726}" ShortID="398853352">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GP_Player_TakeHit" ID="{34ED782E-5143-41EE-8644-8964D9751D37}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_GP_RockSlide" ID="{AA4FEBB9-D96F-4973-B31E-EF7C291E5439}">
+					<ChildrenList>
+						<Action Name="" ID="{4133D68E-1547-41DA-BC9B-C45A85F5B9CE}" ShortID="308854324">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GP_RockSlide" ID="{91F3F26E-AE9F-4267-9F57-3FEDD8FFD8AB}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_GP_Player_DoubleJump" ID="{62274A1C-0BD8-4A5F-9074-42B7CC2056F5}">
+					<ChildrenList>
+						<Action Name="" ID="{5DD8833F-A85A-4720-9171-1F6C18552ECC}" ShortID="76567946">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GP_Player_DoubleJump" ID="{B70E73D8-695C-4FDC-B1D2-332B528C0E7E}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_GP_Player_Death" ID="{1D4A0908-0C51-480F-90F3-B839978FF706}">
+					<ChildrenList>
+						<Action Name="" ID="{856BAF19-E594-436F-BFA9-4F1BB031D4CB}" ShortID="45721873">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GP_Player_Death" ID="{58F56393-C204-4CF2-A88A-A6E890B6BAFE}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_GP_Player_Warp" ID="{322A45A2-4058-4F8F-8E7D-8516BF02B0ED}">
+					<ChildrenList>
+						<Action Name="" ID="{E65D6076-8AC7-4F0C-86BD-57BA81A6EB2E}" ShortID="846383929">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GP_Player_Warp" ID="{D3632283-ED09-4AE3-B29E-287BCC16CF1E}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_GP_Player_CliffFall" ID="{465C95EC-AD21-47BF-AFC3-D56DDBCC882B}">
+					<ChildrenList>
+						<Action Name="" ID="{03A5066D-9B24-45BD-9F3F-923DA3D8D207}" ShortID="235934067">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GP_Player_CliffFall" ID="{76797351-2FCA-4F3A-B89F-B79D5F46928B}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_GP_RockSlide" ID="{0E4F02D5-5657-4261-866D-C5AB24645067}">
+					<ChildrenList>
+						<Action Name="" ID="{EDE19CA7-ABE2-4874-902F-E9D171888860}" ShortID="602792042">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.1"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GP_RockSlide" ID="{91F3F26E-AE9F-4267-9F57-3FEDD8FFD8AB}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_AMB_Forest_01" ID="{FF05C7D0-0F5A-4B91-AC90-91D4B49CF154}">
+					<ChildrenList>
+						<Action Name="" ID="{3970F9E0-DC41-4369-9446-910B00D22D38}" ShortID="926489144">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="AMB_Forest" ID="{EECDB04F-8316-4FE4-8828-A3EA5866884D}" WorkUnitID="{B9190133-2ADD-4907-9F1E-71803388E4A6}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_VO_Player_JumpGrunt" ID="{2E1450BD-2672-4438-9635-E9F504D060B7}">
+					<ChildrenList>
+						<Action Name="" ID="{FC4BC453-33BA-4B58-8BA1-93CCE1F04148}" ShortID="600723115">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="VO_Player_JumpGrunt" ID="{003C3AF3-C5EF-4876-8AE8-1E06F713D7D6}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_GP_Player_Shield_Fail" ID="{7A7AE0E3-9239-47B9-9FD7-E0AFF8D57AB0}">
+					<ChildrenList>
+						<Action Name="" ID="{83076C28-7EB0-4F81-97F4-9B6718A5D9A9}" ShortID="972783762">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GP_Player_Shield_Fail" ID="{CA33D97F-83B5-4835-9756-8DA63C54044D}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_GP_Player_Shield" ID="{F19E4B32-EEBC-4A8A-A6C0-00F414F1FC54}">
+					<ChildrenList>
+						<Action Name="" ID="{4614CDC9-EB22-40B9-9100-753B56EC2A3E}" ShortID="411903164">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GP_Player_Shield" ID="{D73877A1-0B12-484B-9D67-FB827D2CC076}" WorkUnitID="{60E6AB22-942F-42AE-A57E-436AC9219521}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

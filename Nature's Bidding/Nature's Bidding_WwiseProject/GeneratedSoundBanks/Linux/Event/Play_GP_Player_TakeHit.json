@@ -1,0 +1,113 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "1472718208",
+    "Type": "Event",
+    "GUID": "{523D8481-4617-4947-84FB-07B128556FFD}",
+    "Language": "SFX",
+    "Hash": "{E9ED269A-9AD4-41DC-F904-EC5440C363F0}",
+    "ObjectPath": "Play_GP_Player_TakeHit",
+    "ShortName": "Play_GP_Player_TakeHit",
+    "Path": "Event/Play_GP_Player_TakeHit.bnk",
+    "Media": [
+     {
+      "Id": "10484457",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_take_hit_04.wav",
+      "Path": "Media/10484457.wem",
+      "CachePath": "45/{458A8306-9007-2FBF-F7A9-A1B7D9C5C8F9}.wem"
+     },
+     {
+      "Id": "179884072",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_take_hit_01.wav",
+      "Path": "Media/179884072.wem",
+      "CachePath": "49/{495A2C0E-83CA-3EB7-052C-BEAF0C70072C}.wem"
+     },
+     {
+      "Id": "398798996",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_take_hit_03.wav",
+      "Path": "Media/398798996.wem",
+      "CachePath": "EE/{EEF9D94C-CBEC-D281-8567-8769F923A0FB}.wem"
+     },
+     {
+      "Id": "899394234",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_take_hit_02.wav",
+      "Path": "Media/899394234.wem",
+      "CachePath": "59/{594558F8-E0BA-94B7-4643-59F363D3B05E}.wem"
+     }
+    ],
+    "Plugins": {
+     "Custom": [
+      {
+       "Id": "260839487",
+       "Name": "Parametric EQ",
+       "ObjectPath": "\\Containers\\Gameplay Work Unit\\Combat_2D\\GP_Player_TakeHit\\[Effect Slot [0]: (Parametric EQ)]\\Parametric EQ",
+       "GUID": "{BBEDBB21-2325-40EC-972B-8E711E2962EB}",
+       "LibName": "Wwise Parametric EQ",
+       "LibId": "6881283"
+      }
+     ]
+    },
+    "Events": [
+     {
+      "Id": "1472718208",
+      "Name": "Play_GP_Player_TakeHit",
+      "ObjectPath": "\\Events\\Gameplay Work Unit\\Play_GP_Player_TakeHit",
+      "GUID": "{523D8481-4617-4947-84FB-07B128556FFD}",
+      "Color": "8",
+      "DurationType": "OneShot",
+      "DurationMin": "0.45590878",
+      "DurationMax": "0.5523793",
+      "MediaRefs": [
+       {
+        "Id": "10484457"
+       },
+       {
+        "Id": "179884072"
+       },
+       {
+        "Id": "398798996"
+       },
+       {
+        "Id": "899394234"
+       }
+      ],
+      "PluginRefs": {
+       "Custom": [
+        {
+         "Id": "260839487"
+        }
+       ]
+      }
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{EAFB88A8-ED7F-0FC9-DD15-587AAEFDC08C}"
+ }
+}

@@ -59,6 +59,8 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     public void SpawnParryEffectParticles(int milliseconds)
     {
+        audioFeedback?.PlayShieldUp();
+
         GameLogger.Log(LogSeverity.Debug, $"SpawnParryEffectParticles called with duration: {milliseconds} ms");
         GameObject go = Instantiate(parryParticle, gameObject.transform, false);
         go.transform.localPosition = Vector3.zero;

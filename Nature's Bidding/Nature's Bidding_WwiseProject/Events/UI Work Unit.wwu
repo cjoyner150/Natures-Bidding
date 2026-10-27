@@ -87,6 +87,28 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_UI_Paper_Click" ID="{E95B4453-15C9-4369-8AD9-71A31EF7C759}">
+					<ChildrenList>
+						<Action Name="" ID="{6694CB4F-D2E0-4F78-BD68-C594A0A52872}" ShortID="979671014">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="UI_Paper_Click" ID="{7ED8284B-F91A-4DB2-9F28-57EF5AD888D3}" WorkUnitID="{1225B259-A259-44FE-8970-96AB4F733DF4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_UI_Bid_Click" ID="{05FAF864-0BEF-4FD6-A8FD-D6E2E21879FB}">
+					<ChildrenList>
+						<Action Name="" ID="{FAAF48A9-D7EB-49BB-B64B-CAC900F602E0}" ShortID="764657916">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="UI_Bid_Click" ID="{23BEAD5B-9139-4BDD-AD2D-942B21FB6AF2}" WorkUnitID="{1225B259-A259-44FE-8970-96AB4F733DF4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

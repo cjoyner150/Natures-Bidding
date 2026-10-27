@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3048a983b0df63e4281883aaddd5ff1d, type: 3}
   m_Name: 1D4A0908-0C51-480F-90F3-B839978FF706
   m_EditorClassIdentifier: AK.Wwise.Unity.API.WwiseTypes::WwiseEventReference
-  objectName: Play_SFX_Death
-  id: 729422592
+  objectName: Play_GP_Player_Death
+  id: 2900211770
   guid: 1D4A0908-0C51-480F-90F3-B839978FF706
   IsInUserDefinedSoundBank: 0

@@ -1,0 +1,3 @@
+Event	ID	Name			Wwise Object Path	Notes
+	1600875125	Play_UI_Bid_Click			\UI Work Unit\Play_UI_Bid_Click	
+

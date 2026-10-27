@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3048a983b0df63e4281883aaddd5ff1d, type: 3}
   m_Name: AA4FEBB9-D96F-4973-B31E-EF7C291E5439
   m_EditorClassIdentifier: AK.Wwise.Unity.API.WwiseTypes::WwiseEventReference
-  objectName: Play_SFX_RockSlide
-  id: 3230763644
+  objectName: Play_GP_RockSlide
+  id: 2373231564
   guid: AA4FEBB9-D96F-4973-B31E-EF7C291E5439
   IsInUserDefinedSoundBank: 0

@@ -1203,6 +1203,10 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 7c4aaf3a7a046415b95cc8e681dd0dd9, type: 2}
+  stopMusicSystem:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 8301cdc8bde2f4653a89edb7fa6473c1, type: 2}
   playUIClick:
     idInternal: 0
     valueGuidInternal: 
@@ -1211,6 +1215,10 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 9f0c6f8d024a48e598c3e8bb6be89768, type: 2}
+  playMapLocationClick:
+    idInternal: 0
+    valueGuidInternal:
+    WwiseObjectReference: {fileID: 11400000, guid: 26c5f42d21064e8ea017d24797ef6283, type: 2}
   playForestAmbience:
     idInternal: 0
     valueGuidInternal: 

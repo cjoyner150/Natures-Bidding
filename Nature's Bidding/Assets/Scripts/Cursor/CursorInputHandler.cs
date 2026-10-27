@@ -35,11 +35,6 @@ public class CursorInputHandler : MonoBehaviour
     {
         if (Cursor.visible) Cursor.visible = false;
 
-        if (Keyboard.current != null && Keyboard.current.pKey.wasPressedThisFrame)
-        {
-            _cursorPaused = !_cursorPaused;
-        }
-
         if (CursorUIManager.Instance == null || !CursorUIManager.Instance.cursorEnabled)
         {
             if (cursorImage != null) cursorImage.gameObject.SetActive(false);

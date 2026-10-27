@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3048a983b0df63e4281883aaddd5ff1d, type: 3}
   m_Name: 322A45A2-4058-4F8F-8E7D-8516BF02B0ED
   m_EditorClassIdentifier: AK.Wwise.Unity.API.WwiseTypes::WwiseEventReference
-  objectName: Play_SFX_Warp
-  id: 3667260136
+  objectName: Play_GP_Player_Warp
+  id: 4114437350
   guid: 322A45A2-4058-4F8F-8E7D-8516BF02B0ED
   IsInUserDefinedSoundBank: 0

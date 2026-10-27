@@ -84,7 +84,7 @@ public sealed class DroppingPlatformAudioFeedback : MonoBehaviour
     {
         if (rockSlideEvent == null || !rockSlideEvent.IsValid())
         {
-            Debug.LogWarning("[DroppingPlatformAudioFeedback] No valid Play_SFX_RockSlide Event is assigned.", this);
+            Debug.LogWarning("[DroppingPlatformAudioFeedback] No valid Play_GP_RockSlide Event is assigned.", this);
             return;
         }
 

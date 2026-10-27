@@ -8,14 +8,14 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
     private const float DeathEmitterLifetimeSeconds = 2f;
 
     [Header("Wwise")]
-    [FormerlySerializedAs("jumpEvent")]
     [SerializeField] private AK.Wwise.Event doubleJumpEvent;
     [SerializeField] private AK.Wwise.Event deathEvent;
     [SerializeField] private AK.Wwise.Event warpEvent;
     [SerializeField] private AK.Wwise.Event fallEvent;
-    [FormerlySerializedAs("jumpGruntEvent")]
     [SerializeField] private AK.Wwise.Event firstJumpGruntEvent;
     [SerializeField] private AK.Wwise.Switch[] playerVoiceSwitches;
+    [SerializeField] private AK.Wwise.Event shieldUpEvent;
+    [SerializeField] private AK.Wwise.Event shieldFailEvent;
 
     [Header("Screen-Space Panning")]
     [SerializeField] private AK.Wwise.RTPC combatPan;
@@ -36,7 +36,7 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
     {
         if (doubleJumpEvent == null || !doubleJumpEvent.IsValid())
         {
-            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_SFX_DoubleJump Event is assigned.", this);
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_GP_Player_DoubleJump Event is assigned.", this);
             return;
         }
 
@@ -49,7 +49,7 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
     {
         if (warpEvent == null || !warpEvent.IsValid())
         {
-            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_SFX_Warp Event is assigned.", this);
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_GP_Player_Warp Event is assigned.", this);
             return;
         }
 
@@ -64,7 +64,7 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
 
         if (deathEvent == null || !deathEvent.IsValid())
         {
-            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_SFX_Death Event is assigned.", this);
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_GP_Player_Death Event is assigned.", this);
             return;
         }
 
@@ -118,6 +118,28 @@ public sealed class PlayerAudioFeedback : MonoBehaviour
         voice.SetValue(gameObject);
         ApplyScreenSpacePan(gameObject, transform.position);
         firstJumpGruntEvent.Post(gameObject);
+    }
+
+    public void PlayShieldFail()
+    {
+        if (shieldFailEvent == null || !shieldFailEvent.IsValid())
+        {
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_GP_Player_Shield_Fail Event is assigned.", this);
+            return;
+        }
+        ApplyScreenSpacePan(gameObject, transform.position);
+        shieldFailEvent.Post(gameObject);
+    }
+
+    public void PlayShieldUp()
+    {
+        if (shieldUpEvent == null || !shieldUpEvent.IsValid())
+        {
+            Debug.LogWarning("[PlayerAudioFeedback] No valid Play_GP_Player_Shield Event is assigned.", this);
+            return;
+        }
+        ApplyScreenSpacePan(gameObject, transform.position);
+        shieldUpEvent.Post(gameObject);
     }
 
     private void ApplyScreenSpacePan(GameObject emitter, Vector3 worldPosition)

@@ -20,6 +20,7 @@ public class PlayerInputManager : MonoBehaviour
     private InputAction attack;
     private InputAction pause;
     private InputAction ready;
+    private InputAction toggleSecrets;
 
     protected bool allowInputs = false;
     public bool allowSprint = true;
@@ -28,6 +29,7 @@ public class PlayerInputManager : MonoBehaviour
     public bool allowAttack = true;
     public bool allowParry = true;
     public bool allowPause = true;
+    public bool allowToggleSecrets = true;
 
     protected bool paused = false;
     protected bool consoleOpen = false;
@@ -49,6 +51,7 @@ public class PlayerInputManager : MonoBehaviour
         parry ??= controls.PlayerGameplay.Parry;
         pause ??= controls.PlayerGameplay.Pause;
         ready ??= controls.PlayerGameplay.Ready;
+        toggleSecrets ??= controls.PlayerGameplay.ToggleSecrets;
 
         ctx.orientation = Instantiate(new GameObject(), transform).transform;
         ctx.orientation.rotation = transform.rotation;
@@ -70,9 +73,11 @@ public class PlayerInputManager : MonoBehaviour
         parry.Enable();
         pause.Enable();
         ready.Enable();
+        toggleSecrets.Enable();
 
         ready.performed += OnReadyPressed;
         pause.performed += OnPausePressed;
+        toggleSecrets.performed += OnToggleSecretsPressed;
         PlayerPauseManager.OnPaused += OnPaused;
         PlayerPauseManager.OnResumed += OnResumed;
         DeveloperConsole.OnConsoleOpened += OnConsoleOpened;
@@ -108,13 +113,16 @@ public class PlayerInputManager : MonoBehaviour
         parry?.Disable();
         pause?.Disable();
         ready?.Disable();
+        toggleSecrets?.Disable();
 
         if (pause != null)
             pause.performed -= OnPausePressed;
 
         if (ready != null)
             ready.performed -= OnReadyPressed;
-        
+
+        if (toggleSecrets != null)
+            toggleSecrets.performed -= OnToggleSecretsPressed;
 
         if (PlayerPauseManager.HasInstance)
         {
@@ -214,10 +222,6 @@ public class PlayerInputManager : MonoBehaviour
 
     }
 
-    public void OnReadyPressed(InputAction.CallbackContext callbackContext)
-    {
-        LobbyNetworkUI.OnPlayerReadyEvent?.Invoke();
-    }
 
     public void ReverseControls()
     {
@@ -234,6 +238,7 @@ public class PlayerInputManager : MonoBehaviour
         parry = reversedControls.PlayerGameplay.Parry;
         pause = reversedControls.PlayerGameplay.Pause;
         ready = reversedControls.PlayerGameplay.Ready;
+        toggleSecrets = reversedControls.PlayerGameplay.ToggleSecrets;
 
         move.Enable();
         sprint.Enable();
@@ -243,6 +248,7 @@ public class PlayerInputManager : MonoBehaviour
         parry.Enable();
         pause.Enable();
         ready.Enable();
+        toggleSecrets.Enable();
     }
 
     public void ResetControls()
@@ -260,6 +266,7 @@ public class PlayerInputManager : MonoBehaviour
         parry = controls.PlayerGameplay.Parry;
         pause = controls.PlayerGameplay.Pause;
         ready = controls.PlayerGameplay.Ready;
+        toggleSecrets = controls.PlayerGameplay.ToggleSecrets;
 
         move.Enable();
         sprint.Enable();
@@ -269,6 +276,7 @@ public class PlayerInputManager : MonoBehaviour
         parry.Enable();
         pause.Enable();
         ready.Enable();
+        toggleSecrets.Enable();
     }
 
     public void DisableInput()
@@ -283,6 +291,7 @@ public class PlayerInputManager : MonoBehaviour
         parry?.Disable();
         pause?.Disable();
         ready?.Disable();
+        toggleSecrets?.Disable();
     }
 
     public void EnableInput()
@@ -297,6 +306,20 @@ public class PlayerInputManager : MonoBehaviour
         parry?.Enable();
         pause?.Enable();
         ready?.Enable();
+        toggleSecrets?.Enable();
+    }
+
+    protected void OnToggleSecretsPressed(InputAction.CallbackContext callback)
+    {
+        if (allowToggleSecrets)
+        {
+            LobbyNetworkUI.OnPlayerToggleSecretsEvent?.Invoke();
+        }
+    }
+
+    public void OnReadyPressed(InputAction.CallbackContext callbackContext)
+    {
+        LobbyNetworkUI.OnPlayerReadyEvent?.Invoke();
     }
 
     protected void OnPausePressed(InputAction.CallbackContext callback)

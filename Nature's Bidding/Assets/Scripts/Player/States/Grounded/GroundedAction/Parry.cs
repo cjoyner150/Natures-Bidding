@@ -42,7 +42,9 @@ public class Parry : State
         if (parryTimer <= 0) 
         {
             ctx.shouldStunSelf = true;
-            exitParry = true; 
+            exitParry = true;
+
+            NetworkVisualEffectManager.PlayShieldFailOnPlayer?.Invoke(ctx);
         }
     }
 

@@ -124,6 +124,9 @@ public class MapVotingManager : NetworkBehaviour
     [ClientRpc]
     private void UpdateVoteVisualClientRpc(ulong clientId, int nodeId)
     {
+        if (NetworkManager.Singleton != null && clientId == NetworkManager.Singleton.LocalClientId)
+            GameAudioController.Instance?.PlayMapLocationClick();
+
         GameObject targetNode = FindNodeObject(nodeId);
         GameLogger.Log(LogSeverity.Debug, $"UpdateVoteVisualClientRpc: clientId={clientId}, nodeId={nodeId}, targetNode found={targetNode != null}, playerAvatarPrefab null={playerAvatarPrefab == null}");
 

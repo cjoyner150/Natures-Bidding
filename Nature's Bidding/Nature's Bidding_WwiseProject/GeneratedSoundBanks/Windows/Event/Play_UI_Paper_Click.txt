@@ -1,0 +1,3 @@
+Event	ID	Name			Wwise Object Path	Notes
+	575206846	Play_UI_Paper_Click			\UI Work Unit\Play_UI_Paper_Click	
+

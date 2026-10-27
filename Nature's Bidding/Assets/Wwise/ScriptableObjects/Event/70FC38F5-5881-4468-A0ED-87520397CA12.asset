@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3048a983b0df63e4281883aaddd5ff1d, type: 3}
   m_Name: 70FC38F5-5881-4468-A0ED-87520397CA12
   m_EditorClassIdentifier: AK.Wwise.Unity.API.WwiseTypes::WwiseEventReference
-  objectName: Play_SFX_Parry
-  id: 3835174908
+  objectName: Play_GP_Player_ParrySuccess
+  id: 2538377831
   guid: 70FC38F5-5881-4468-A0ED-87520397CA12
   IsInUserDefinedSoundBank: 0

@@ -8,6 +8,7 @@ public sealed class GameAudioController : MonoBehaviour
 {
     private const string CliffSceneName = "CliffGameplay";
     private const string LavaSceneName = "LavaGameplay";
+    private const string MapSceneName = "MapScene";
     private const float CombatPlayerStatePollInterval = 0.2f;
 
     private static GameAudioController instance;
@@ -25,10 +26,12 @@ public sealed class GameAudioController : MonoBehaviour
 
     [Header("Music Events")]
     [SerializeField] private AK.Wwise.Event playMusicSystem;
+    [SerializeField] private AK.Wwise.Event stopMusicSystem;
 
     [Header("UI Events")]
     [SerializeField] private AK.Wwise.Event playUIClick;
     [SerializeField] private AK.Wwise.Event playUIHover;
+    [SerializeField] private AK.Wwise.Event playMapLocationClick;
 
     [Header("Ambience Events")]
     [SerializeField] private AK.Wwise.Event playForestAmbience;
@@ -56,6 +59,7 @@ public sealed class GameAudioController : MonoBehaviour
     [SerializeField] private AK.Wwise.State playersFour;
 
     private bool musicSystemIsPlaying;
+    private bool hasStarted;
     private bool forestAmbienceIsPlaying;
     private bool lavaAmbienceIsPlaying;
     private PersistentGameStateManager.GameState currentGameState;
@@ -88,6 +92,24 @@ public sealed class GameAudioController : MonoBehaviour
         SetGameState(gameStateManager != null
             ? gameStateManager.State
             : PersistentGameStateManager.GameState.Menu);
+        hasStarted = true;
+    }
+
+    private void OnEnable()
+    {
+        if (hasStarted && instance == this)
+            StartMusic();
+    }
+
+    private void OnDisable()
+    {
+        if (instance != this || !musicSystemIsPlaying)
+            return;
+
+        if (AkUnitySoundEngine.IsInitialized())
+            PostEvent(stopMusicSystem, "Stop_MX_System");
+
+        musicSystemIsPlaying = false;
     }
 
     private void OnDestroy()
@@ -196,13 +218,21 @@ public sealed class GameAudioController : MonoBehaviour
         PostEvent(playUIHover, "Play_UI_Hover");
     }
 
+    public void PlayMapLocationClick()
+    {
+        if (SceneManager.GetActiveScene().name != MapSceneName)
+            return;
+
+        PostEvent(playMapLocationClick, "Play_UI_Paper_Click");
+    }
+
     private void OnSceneUnloaded(Scene scene)
     {
         if (scene.name != LavaSceneName || !AkUnitySoundEngine.IsInitialized())
             return;
 
         // The global Stop action also reaches sounds whose platforms were destroyed.
-        PostEvent(stopRockSlide, "Stop_SFX_Rockslide");
+        PostEvent(stopRockSlide, "Stop_GP_RockSlide");
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode _)

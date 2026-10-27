@@ -10,11 +10,20 @@
     "Type": "Event",
     "GUID": "{C2E4B442-82BC-43CC-AF73-90A9B75CF663}",
     "Language": "SFX",
-    "Hash": "{536A6944-C8FB-5851-E7AF-DA7E2ED79822}",
+    "Hash": "{968E0589-36B5-5190-08ED-E57461025092}",
     "ObjectPath": "Play_UI_Bid_Adjust",
     "ShortName": "Play_UI_Bid_Adjust",
     "Path": "Event/Play_UI_Bid_Adjust.bnk",
     "Media": [
+     {
+      "Id": "166329416",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "UI_Bid_Click\\v02\\ui_bid_click_02.wav",
+      "Path": "Media/166329416.wem",
+      "CachePath": "D2/{D2E787B4-BCE2-2979-C12C-9607EBC9302C}.wem"
+     },
      {
       "Id": "279613791",
       "Language": "SFX",
@@ -23,33 +32,6 @@
       "ShortName": "bid\\flick\\ui_bid_flick_03.wav",
       "Path": "Media/279613791.wem",
       "CachePath": "13/{13C73296-B021-2E1C-CEB5-153CBF64B039}.wem"
-     },
-     {
-      "Id": "285808475",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Loose",
-      "ShortName": "ui_bid_click_06.wav",
-      "Path": "Media/285808475.wem",
-      "CachePath": "BC/{BC9D5DC0-6F9F-329F-16CE-06794FC548FC}.wem"
-     },
-     {
-      "Id": "417578727",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Loose",
-      "ShortName": "ui_bid_click_02.wav",
-      "Path": "Media/417578727.wem",
-      "CachePath": "9C/{9C8E35C3-2AC7-7CF5-CD78-42418F327108}.wem"
-     },
-     {
-      "Id": "507841480",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Loose",
-      "ShortName": "ui_bid_click_01.wav",
-      "Path": "Media/507841480.wem",
-      "CachePath": "80/{8030FB06-B869-15ED-79C3-B728BE424263}.wem"
      },
      {
       "Id": "513889449",
@@ -61,6 +43,15 @@
       "CachePath": "56/{5637DA4B-BD9E-F8FE-6823-EBF52849D886}.wem"
      },
      {
+      "Id": "794111002",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "UI_Bid_Click\\v02\\ui_bid_click_01.wav",
+      "Path": "Media/794111002.wem",
+      "CachePath": "D5/{D5283361-E7A0-BF13-0CBA-6DE4FBC2B4E6}.wem"
+     },
+     {
       "Id": "842139254",
       "Language": "SFX",
       "Streaming": "false",
@@ -68,33 +59,6 @@
       "ShortName": "bid\\flick\\ui_bid_flick_04.wav",
       "Path": "Media/842139254.wem",
       "CachePath": "55/{55FC308B-7F2F-6CEC-E09D-A3B2DCE18321}.wem"
-     },
-     {
-      "Id": "902824185",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Loose",
-      "ShortName": "ui_bid_click_04.wav",
-      "Path": "Media/902824185.wem",
-      "CachePath": "19/{19454A88-A2C1-D291-F55F-E929B85ECD36}.wem"
-     },
-     {
-      "Id": "963185542",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Loose",
-      "ShortName": "ui_bid_click_05.wav",
-      "Path": "Media/963185542.wem",
-      "CachePath": "E8/{E8C99BC7-D6B6-4B35-5B56-E10B41366D81}.wem"
-     },
-     {
-      "Id": "1025063735",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Loose",
-      "ShortName": "ui_bid_click_03.wav",
-      "Path": "Media/1025063735.wem",
-      "CachePath": "4A/{4A254282-1199-AC4B-0E9B-E1AF91349261}.wem"
      },
      {
       "Id": "1040799385",
@@ -114,8 +78,8 @@
       "GUID": "{C2E4B442-82BC-43CC-AF73-90A9B75CF663}",
       "Color": "2",
       "DurationType": "OneShot",
-      "DurationMin": "0.117555365",
-      "DurationMax": "0.16578199",
+      "DurationMin": "0.14784983",
+      "DurationMax": "0.19621918",
       "MediaRefs": [
        {
         "Id": "279613791"
@@ -141,22 +105,10 @@
         },
         "MediaRefs": [
          {
-          "Id": "285808475"
+          "Id": "166329416"
          },
          {
-          "Id": "417578727"
-         },
-         {
-          "Id": "507841480"
-         },
-         {
-          "Id": "902824185"
-         },
-         {
-          "Id": "963185542"
-         },
-         {
-          "Id": "1025063735"
+          "Id": "794111002"
          }
         ]
        },
@@ -170,22 +122,10 @@
         },
         "MediaRefs": [
          {
-          "Id": "285808475"
+          "Id": "166329416"
          },
          {
-          "Id": "417578727"
-         },
-         {
-          "Id": "507841480"
-         },
-         {
-          "Id": "902824185"
-         },
-         {
-          "Id": "963185542"
-         },
-         {
-          "Id": "1025063735"
+          "Id": "794111002"
          }
         ]
        }
@@ -219,6 +159,6 @@
     ]
    }
   ],
-  "FileHash": "{0D57E12D-EFFD-EED9-E6D1-1AEC69707FA8}"
+  "FileHash": "{A31A915B-6CC9-823E-D9D5-AE8043B2015F}"
  }
 }

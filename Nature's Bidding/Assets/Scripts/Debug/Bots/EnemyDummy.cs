@@ -117,6 +117,10 @@ public class EnemyDummy : NetworkBehaviour, IDamageable, IEffectable
     public void Stun(float additionalStunTime)
     {
         GameLogger.Log(LogSeverity.Debug, $"EnemyDummy is stunned");
+
+        GetComponent<PlayerVisualEffectManager>()
+            ?.SpawnParrySuccessReactionParticles();
+
         dummyCtx.shouldStunSelf = true;
     }
 

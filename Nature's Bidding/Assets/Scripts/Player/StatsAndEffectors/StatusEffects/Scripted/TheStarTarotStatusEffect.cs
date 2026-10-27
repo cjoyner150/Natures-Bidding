@@ -91,7 +91,7 @@ public class TheStarTarotStatusEffect : StatusEffect
             {
                 effectEnabled = true;
                 _activeTimer = 0f;
-                NetworkVisualEffectManager.ToggleStarEffectsOnPlayer?.Invoke(NetworkManager.Singleton.LocalClientId, true);
+                NetworkVisualEffectManager.ToggleStarEffectsOnPlayer?.Invoke(playerContext, true);
             }
         }
         else
@@ -104,7 +104,7 @@ public class TheStarTarotStatusEffect : StatusEffect
             if (pastMinDuration && belowDeactivationThreshold)
             {
                 effectEnabled = false;
-                NetworkVisualEffectManager.ToggleStarEffectsOnPlayer?.Invoke(NetworkManager.Singleton.LocalClientId, false);
+                NetworkVisualEffectManager.ToggleStarEffectsOnPlayer?.Invoke(playerContext, false);
             }
         }
     }
@@ -120,7 +120,7 @@ public class TheStarTarotStatusEffect : StatusEffect
 
             if (damage > 0f)
             {
-                damageable.TickHealth(damage, NetworkManager.Singleton.LocalClientId);
+                damageable.TickHealth(damage, playerContext);
             }
         }
 
@@ -134,7 +134,7 @@ public class TheStarTarotStatusEffect : StatusEffect
         if (effectEnabled)
         {
             effectEnabled = false;
-            NetworkVisualEffectManager.ToggleStarEffectsOnPlayer?.Invoke(NetworkManager.Singleton.LocalClientId, false);
+            NetworkVisualEffectManager.ToggleStarEffectsOnPlayer?.Invoke(playerContext, false);
         }
     }
 }

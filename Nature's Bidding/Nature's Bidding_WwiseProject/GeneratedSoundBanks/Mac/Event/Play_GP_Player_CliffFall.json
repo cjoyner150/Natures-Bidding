@@ -1,0 +1,70 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Mac",
+  "BasePlatform": "Mac",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "313685605",
+    "Type": "Event",
+    "GUID": "{465C95EC-AD21-47BF-AFC3-D56DDBCC882B}",
+    "Language": "SFX",
+    "Hash": "{D1EF9512-C4D8-51D7-EEFA-68C43B192F8C}",
+    "ObjectPath": "Play_GP_Player_CliffFall",
+    "ShortName": "Play_GP_Player_CliffFall",
+    "Path": "Event/Play_GP_Player_CliffFall.bnk",
+    "Media": [
+     {
+      "Id": "738650073",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_cliff_fall_01.wav",
+      "Path": "Media/738650073.wem",
+      "CachePath": "D2/{D21B6A13-6454-87E3-799B-10495393EAF0}.wem"
+     },
+     {
+      "Id": "1052431789",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_cliff_fall_02.wav",
+      "Path": "Media/1052431789.wem",
+      "CachePath": "27/{27CC2D7A-EF8C-3D81-CE4B-0ED5D82414BF}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "313685605",
+      "Name": "Play_GP_Player_CliffFall",
+      "ObjectPath": "\\Events\\Gameplay Work Unit\\Play_GP_Player_CliffFall",
+      "GUID": "{465C95EC-AD21-47BF-AFC3-D56DDBCC882B}",
+      "Color": "8",
+      "DurationType": "OneShot",
+      "DurationMin": "0.9303257",
+      "DurationMax": "1.1551018",
+      "MediaRefs": [
+       {
+        "Id": "738650073"
+       },
+       {
+        "Id": "1052431789"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{7AAA5FC6-A204-A491-3ACC-FA96DBDAEB9C}"
+ }
+}

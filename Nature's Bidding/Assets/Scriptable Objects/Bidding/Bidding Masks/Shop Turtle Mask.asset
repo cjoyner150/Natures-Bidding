@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Shop Turtle Mask
   m_EditorClassIdentifier: Assembly-CSharp::BiddableItem
   itemId: Turtle_mask
-  itemName: Turtle Mask
-  description: Why not slow down?
+  itemName: Turtle
+  description: The curse of lethargy. What will you do when you cannot run?
   icon: {fileID: 21300000, guid: 235a27ee3a73ea5448984a87551d56cd, type: 3}
   displayPrefab: {fileID: 7806434552370689164, guid: a3440cfcc33b42140aeeb6708fb84706, type: 3}
   displayRotation: {x: 0, y: 0, z: 0}

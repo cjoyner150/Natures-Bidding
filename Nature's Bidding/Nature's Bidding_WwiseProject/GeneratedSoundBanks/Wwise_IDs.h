@@ -15,21 +15,30 @@ namespace AK
     {
         static const AkUniqueID PLAY_AMB_FOREST = 994146778U;
         static const AkUniqueID PLAY_AMB_LAVA = 3906149303U;
-        static const AkUniqueID PLAY_AUCTIONEER = 4115709719U;
+        static const AkUniqueID PLAY_GP_MANMASK_EXPLOSION = 2410750046U;
+        static const AkUniqueID PLAY_GP_PLAYER_ATTACKSLASH = 3812350027U;
+        static const AkUniqueID PLAY_GP_PLAYER_CLIFFFALL = 313685605U;
+        static const AkUniqueID PLAY_GP_PLAYER_DEATH = 2900211770U;
+        static const AkUniqueID PLAY_GP_PLAYER_DOUBLEJUMP = 3835938179U;
+        static const AkUniqueID PLAY_GP_PLAYER_PARRYSUCCESS = 2538377831U;
+        static const AkUniqueID PLAY_GP_PLAYER_SHIELD = 3484761007U;
+        static const AkUniqueID PLAY_GP_PLAYER_SHIELD_FAIL = 2926918818U;
+        static const AkUniqueID PLAY_GP_PLAYER_TAKEHIT = 1472718208U;
+        static const AkUniqueID PLAY_GP_PLAYER_WARP = 4114437350U;
+        static const AkUniqueID PLAY_GP_ROCKSLIDE = 2373231564U;
         static const AkUniqueID PLAY_MX_SYSTEM = 3580595815U;
-        static const AkUniqueID PLAY_SFX_HIT = 1376640657U;
-        static const AkUniqueID PLAY_SFX_MANMASK_EXPLOSION = 735357806U;
-        static const AkUniqueID PLAY_SFX_PARRY = 3835174908U;
-        static const AkUniqueID PLAY_SFX_ROCKSLIDE = 3230763644U;
-        static const AkUniqueID PLAY_SFX_WOOSH = 415287154U;
         static const AkUniqueID PLAY_UI_BID_ADJUST = 3980822666U;
         static const AkUniqueID PLAY_UI_BID_REJECT = 1191336738U;
         static const AkUniqueID PLAY_UI_BID_SUBMIT = 2289452967U;
         static const AkUniqueID PLAY_UI_CLICK = 1749424733U;
         static const AkUniqueID PLAY_UI_HOVER = 1339559671U;
         static const AkUniqueID PLAY_UI_SHOP_PURCHASE = 2035278795U;
+        static const AkUniqueID PLAY_VO_AUCTIONEER = 773126247U;
+        static const AkUniqueID PLAY_VO_PLAYER_JUMPGRUNT = 1992741306U;
         static const AkUniqueID STOP_AMB_FOREST = 3443576024U;
+        static const AkUniqueID STOP_AMB_FOREST_01 = 1443530286U;
         static const AkUniqueID STOP_AMB_LAVA = 3566511473U;
+        static const AkUniqueID STOP_GP_ROCKSLIDE = 758397350U;
         static const AkUniqueID STOP_MX_SYSTEM = 3534127541U;
     } // namespace EVENTS
 
@@ -119,6 +128,19 @@ namespace AK
             } // namespace SWITCH
         } // namespace MASK_TYPE
 
+        namespace PLAYER
+        {
+            static const AkUniqueID GROUP = 1069431850U;
+
+            namespace SWITCH
+            {
+                static const AkUniqueID FOUR = 2863728729U;
+                static const AkUniqueID ONE = 1064933119U;
+                static const AkUniqueID THREE = 912956111U;
+                static const AkUniqueID TWO = 678209053U;
+            } // namespace SWITCH
+        } // namespace PLAYER
+
         namespace SURFACE
         {
             static const AkUniqueID GROUP = 1834394558U;
@@ -141,7 +163,12 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
+        static const AkUniqueID AMBIENCE_VOLUME = 2901143258U;
         static const AkUniqueID COMBAT_PAN = 2369427653U;
+        static const AkUniqueID MASTER_VOLUME = 4179668880U;
+        static const AkUniqueID MUSIC_VOLUME = 1006694123U;
+        static const AkUniqueID SFX_VOLUME = 1564184899U;
+        static const AkUniqueID UI_VOLUME = 1719345792U;
     } // namespace GAME_PARAMETERS
 
     namespace BUSSES

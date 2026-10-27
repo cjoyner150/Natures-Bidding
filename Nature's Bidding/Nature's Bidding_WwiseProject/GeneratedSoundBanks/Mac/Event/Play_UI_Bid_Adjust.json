@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{C2E4B442-82BC-43CC-AF73-90A9B75CF663}",
     "Language": "SFX",
-    "Hash": "{335B1F12-C343-B47E-4F17-1DB93DD22FD2}",
+    "Hash": "{536A6944-C8FB-5851-E7AF-DA7E2ED79822}",
     "ObjectPath": "Play_UI_Bid_Adjust",
     "ShortName": "Play_UI_Bid_Adjust",
     "Path": "Event/Play_UI_Bid_Adjust.bnk",
@@ -136,7 +136,8 @@
          "GroupType": "Switch",
          "GroupId": "4110079352",
          "Id": "1551306158",
-         "GUID": "{4A570298-AF13-4468-8D95-002DCFC71E96}"
+         "GUID": "{4A570298-AF13-4468-8D95-002DCFC71E96}",
+         "Color": "3"
         },
         "MediaRefs": [
          {
@@ -164,7 +165,8 @@
          "GroupType": "Switch",
          "GroupId": "4110079352",
          "Id": "2280510569",
-         "GUID": "{6D589AD8-8279-45C6-8882-D8D66C367B8A}"
+         "GUID": "{6D589AD8-8279-45C6-8882-D8D66C367B8A}",
+         "Color": "3"
         },
         "MediaRefs": [
          {
@@ -196,24 +198,27 @@
       "Name": "Bid_Direction",
       "ObjectPath": "\\Switches\\Default Work Unit\\Bid_Direction",
       "GUID": "{796B2E9E-6B23-44A6-94CF-AAFA97E4DB38}",
+      "Color": "3",
       "Switches": [
        {
         "Id": "1551306158",
         "Name": "Up",
         "ObjectPath": "\\Switches\\Default Work Unit\\Bid_Direction\\Up",
-        "GUID": "{4A570298-AF13-4468-8D95-002DCFC71E96}"
+        "GUID": "{4A570298-AF13-4468-8D95-002DCFC71E96}",
+        "Color": "3"
        },
        {
         "Id": "2280510569",
         "Name": "Down",
         "ObjectPath": "\\Switches\\Default Work Unit\\Bid_Direction\\Down",
-        "GUID": "{6D589AD8-8279-45C6-8882-D8D66C367B8A}"
+        "GUID": "{6D589AD8-8279-45C6-8882-D8D66C367B8A}",
+        "Color": "3"
        }
       ]
      }
     ]
    }
   ],
-  "FileHash": "{80D5E545-FFEE-27A4-1D3E-FC34922D771F}"
+  "FileHash": "{0D57E12D-EFFD-EED9-E6D1-1AEC69707FA8}"
  }
 }

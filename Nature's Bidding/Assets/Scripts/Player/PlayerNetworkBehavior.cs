@@ -14,6 +14,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
     public PlayerContext ctx;
     private PlayerInputManager playerInput;
     private PlayerWeaponManager playerWeaponManager;
+    private PlayerAttackManager playerAttackManager;
     private PlayerStatusEffectManager playerStatusEffectManager;
     private PlayerMaskVisualManager playerMaskVisualManager;
     private CinemachineTargetGroup cameraTargetGroup;
@@ -27,7 +28,7 @@ public class PlayerNetworkBehavior : NetworkBehaviour
         cameraTargetGroup = FindAnyObjectByType<CinemachineTargetGroup>();
         cameraTargetGroup?.AddMember(transform, 1, 4);
 
-        bool isCombatScene = CombatServerHandler.Instance != null;
+        bool isCombatScene = CombatServerHandler.Instance != null || GymnasiumServerHandler.Instance != null;
 
         if (isCombatScene)
         {
@@ -49,8 +50,11 @@ public class PlayerNetworkBehavior : NetworkBehaviour
                 playerStatusEffectManager = gameObject.AddComponent<PlayerStatusEffectManager>();
                 playerWeaponManager = GetComponent<PlayerWeaponManager>();
                 playerWeaponManager.Initialize(playerStatusEffectManager);
-                playerStatusEffectManager.Initialize(ctx.playerStats, OwnerClientId);
+                playerStatusEffectManager.Initialize(ctx, ctx.playerStats, OwnerClientId);
             }
+
+            playerAttackManager = GetComponent<PlayerAttackManager>();
+            playerAttackManager.Initialize(ctx);
 
             playerInput.InitializePlayer(ctx);
             ctx.maxJumps = ctx.playerStats.Jumps;

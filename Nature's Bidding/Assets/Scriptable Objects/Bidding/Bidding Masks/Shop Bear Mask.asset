@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Shop Bear Mask
   m_EditorClassIdentifier: Assembly-CSharp::BiddableItem
   itemId: bear_mask
-  itemName: Bear Mask
-  description: Big and slow.
+  itemName: Bear
+  description: The curse of size. Become a larger and slower target.
   icon: {fileID: 0}
   displayPrefab: {fileID: 3334988474426576908, guid: c309877316cd7064c9de9ee63a824795, type: 3}
   displayRotation: {x: 0, y: 0, z: 0}

@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c64c524e213d78a469ace7eb02e09a47, type: 3}
-  m_Name: damage
+  m_Name: damage 6
   m_EditorClassIdentifier: Assembly-CSharp::ShopUpgrade
   _id: damage
-  upgradeName: Damage Boost
-  description: Increases damage by 5%.
-  icon: {fileID: 21300000, guid: 235a27ee3a73ea5448984a87551d56cd, type: 3}
-  effectorId: test_id
+  upgradeName: Damage Up
+  description: Increases damage by +5%.
+  icon: {fileID: 21300000, guid: 028c3b2e471bf294fbe5bf4722ae705d, type: 3}
+  effectorId: Damage Up
+  effectorBucket: 2
   upgradeType: 2
   effectValue: 0.05
   cost: 50

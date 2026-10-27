@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shop Man Mask
   m_EditorClassIdentifier: Assembly-CSharp::BiddableItem
   itemId: man_mask
-  itemName: Man Mask
+  itemName: Man
   description: Something is ticking...
   icon: {fileID: 0}
   displayPrefab: {fileID: 1471524667041046909, guid: 38f2d1ca36d7e394d88062457262c017, type: 3}

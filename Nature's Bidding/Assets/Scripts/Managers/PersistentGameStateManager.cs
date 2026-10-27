@@ -12,11 +12,11 @@ using Steamworks;
 
 public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 {
-    public enum GameFlowPhase { Lobby, Bidding, ShopReview, Combat }
-
     private const string BiddingSceneName = "Bidding_Scene";
+    private const string ShoppingSceneName = "Shop_Scene";
     private const string VolcanoCombatSceneName = "LavaGameplay";
     private const string CliffsCombatSceneName = "CliffGameplay";
+    private const string MapSceneName = "MapScene";
 
     [SerializeField] private GameObject[] spawnableNetworkSingletons; 
     [SerializeField] private GameObject loadingPanel;
@@ -29,10 +29,6 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     [Header("Debug")]
     [SerializeField] bool skipToCombat;
-
-    [Header("Game Flow")]
-    [SerializeField] private GameObject biddingCanvas;
-    [SerializeField] private GameObject shopCanvas;
 
     [Header("Flow Managers")]
     [SerializeField] private BiddingManager biddingManager;
@@ -54,13 +50,14 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         set
         {
             _isLoading = value;
-            loadingPanel.SetActive(value);
+            loadingPanel?.SetActive(value);
         }
     }
 
     public enum GameState {
         Menu,
         Lobby,
+        Map,
         Bidding,
         Shopping,
         Combat
@@ -88,9 +85,15 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private CombatLevelSelectType levelSelectionType = CombatLevelSelectType.Random;
 
+    // -1 means no seed generated yet for this run / no node chosen yet (floor 0 is open to vote on).
+    private int currentMapSeed = -1;
+    private int currentMapNodeId = -1;
+    public int CurrentMapNodeId => currentMapNodeId;
+
     protected override void Awake()
     {
-        if (HasInstance) Destroy(gameObject);
+        Debug.Log($"HasInstance={HasInstance}, Instance={Instance?.gameObject?.name}");
+        if (HasInstance && Instance != this) Destroy(gameObject);
         else
         {
             base.Awake();
@@ -128,6 +131,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         switch (newState)
         {
             case GameState.Menu:
+            case GameState.Map:
             case GameState.Bidding:
             case GameState.Shopping:
             case GameState.Combat:
@@ -177,12 +181,17 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
     private void OnSessionHosted()
     {
+        SpawnNetworkSingletons();
+        LoadLobbyLevel();
+    }
+
+    public void SpawnNetworkSingletons()
+    {
         foreach (var prefab in spawnableNetworkSingletons)
         {
             var go = Instantiate(prefab);
             go.GetComponent<NetworkObject>().Spawn();
         }
-        LoadLobbyLevel();
     }
 
     public async void LoadLobbyLevel()
@@ -195,9 +204,21 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     public async void LoadBiddingLevel()
     {
         SetLoadingState("Loading bidding...", true);
-
-        State = GameState.Bidding;
         await LoadNetworkedSceneAsync(BiddingSceneName);
+    }
+
+    public async void LoadShopLevel()
+    {
+        SetLoadingState("Loading shop...", true);
+        await LoadNetworkedSceneAsync(ShoppingSceneName);
+    }
+
+    public async void LoadMapLevel()
+    {
+        SetLoadingState("Loading map...", true);
+
+        State = GameState.Map;
+        await LoadNetworkedSceneAsync(MapSceneName);
     }
 
     public async void OnLobbySceneReady()
@@ -227,21 +248,44 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     {
         State = GameState.Bidding;
         ClearLoadingState();
+
+        // The Lobby/Combat player-owned cursor is gone by now (destroyed with its scene); hide the map's stand-in cursor.
+        CursorUIManager.Instance?.SetLocalCursorEnabled(false);
+    }
+
+    public void OnMapSceneReady()
+    {
+        State = GameState.Map;
+        ClearLoadingState();
+
+        // Map node clicks need a visible, unlocked cursor, but Lobby/Combat's player-owned cursor is gone by now (destroyed with its scene).
+        CursorUIManager.Instance?.SetLocalCursorEnabled(true);
+    }
+
+    /// <summary>Server-only. Returns the seed for the current run's map, generating one the first time it's requested.</summary>
+    public int RequestMapSeed()
+    {
+        if (currentMapSeed == -1)
+            currentMapSeed = Random.Range(0, 999999);
+
+        return currentMapSeed;
+    }
+
+    public void OnShopSceneReady()
+    {
+        State = GameState.Shopping;
+        ClearLoadingState();
     }
 
     public void ConfigureGameFlowReferences(
-        GameObject newBiddingCanvas,
-        GameObject newShopCanvas,
         BiddingManager newBiddingManager,
         ShopManager newShopManager,
         ReadyManager newReadyManager)
     {
         GameLogger.Log(LogSeverity.Debug, "Configuring game flow references...");
-        biddingCanvas = newBiddingCanvas;
-        shopCanvas = newShopCanvas;
-        biddingManager = newBiddingManager;
-        shopManager = newShopManager;
-        readyManager = newReadyManager;
+        biddingManager ??= newBiddingManager;
+        shopManager ??= newShopManager;
+        readyManager ??= newReadyManager;
     }
 
     public async UniTask InitializeBiddingFlowIfServer()
@@ -249,37 +293,6 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         await UniTask.Yield();
         if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
             BeginBiddingPhaseServer();
-    }
-
-    public void SyncFlowPhase(GameFlowPhase phase)
-    {
-        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
-            return;
-
-        ApplyFlowPhase(phase);
-    }
-
-    public void RequestStartShopPhase()
-    {
-
-        if (NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)
-        {
-            ShopManager.Instance?.StartShopPhaseRpc();
-            return;
-        }
-
-        BeginShopPhaseServer();
-    }
-
-    public void RequestStartBiddingPhase()
-    {
-        if (NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)
-        {
-            BiddingManager.Instance?.StartBiddingPhaseRpc();
-            return;
-        }
-
-        BeginBiddingPhaseServer();
     }
 
     public void RequestStartCombatPhase()
@@ -293,12 +306,49 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         BeginCombatPhaseServer();
     }
 
+    public void RequestReturnToMap()
+    {
+        if (NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)
+        {
+            ReadyManager.Instance?.ReturnToMapRpc();
+            return;
+        }
+
+        LoadMapLevel();
+    }
+
+    /// <summary>Server-only. Routes the flow based on which node type players voted for on the map.</summary>
+    public void OnMapNodeSelected(int nodeId, NodeType nodeType)
+    {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
+
+        currentMapNodeId = nodeId;
+
+        switch (nodeType)
+        {
+            case NodeType.Fight:
+                BeginCombatPhaseServer();
+                break;
+            case NodeType.Shop:
+                LoadShopLevel();
+                break;
+            case NodeType.Bidding:
+                LoadBiddingLevel();
+                break;
+            default:
+                // Tarot/Clense/Curse nodes have no implementation yet — stub back to the map so the loop doesn't stall.
+                GameLogger.Log(LogSeverity.Warning, $"Map node type {nodeType} is not implemented yet; returning to map.");
+                LoadMapLevel();
+                break;
+        }
+    }
+
     public void BeginBiddingPhaseServer()
     {
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
         readyManager?.ResetForNewPhase();
-        ApplyFlowPhase(GameFlowPhase.Bidding);
+        ApplyFlowPhase(GameState.Bidding);
         biddingManager?.BeginBiddingPhase();
     }
 
@@ -307,14 +357,14 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
         readyManager?.ResetForNewPhase();
-        ApplyFlowPhase(GameFlowPhase.ShopReview);
+        ApplyFlowPhase(GameState.Shopping);
     }
 
     public void BeginCombatPhaseServer()
     {
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
-        ApplyFlowPhase(GameFlowPhase.Combat);
+        ApplyFlowPhase(GameState.Combat);
         readyManager?.SyncCombatStateRpc();
         LoadCombatLevel();
     }
@@ -331,6 +381,8 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
 
         PersistentPlayerRegistry.Instance.Clear();
         State = GameState.Menu;
+        currentMapSeed = -1;
+        currentMapNodeId = -1;
 
         _sceneLoadTcs?.TrySetCanceled();
         _sceneLoadTcs = null;
@@ -466,6 +518,7 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         {
             IGameServerHandler handler = FindAnyObjectByType<LobbyServerHandler>();
             handler ??= FindAnyObjectByType<CombatServerHandler>();
+            handler ??= FindAnyObjectByType<GymnasiumServerHandler>();
             return handler != null;
         });
 
@@ -484,6 +537,8 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
             LobbyServerHandler.Instance.SendAuthToServerRpc(playerId, playerName);
         else if (CombatServerHandler.Instance != null)
             CombatServerHandler.Instance.SendAuthToServerRpc(playerId, playerName);
+        else
+            GymnasiumServerHandler.Instance?.SendAuthToServerRpc(playerId, playerName);
     }
 
     private void OnAllPlayersReadied()
@@ -499,55 +554,23 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
         }
         else
         {
-            LoadBiddingLevel();
+            LoadMapLevel();
         }
     }
 
-    private void ApplyFlowPhase(GameFlowPhase phase)
+    private void ApplyFlowPhase(GameState state)
     {
-        if (biddingCanvas == null || shopCanvas == null)
+        State = state;
+
+        switch (state)
         {
-            GameLogger.Log(LogSeverity.Warning, $"ApplyFlowPhase({phase}) called before canvases were configured. Deferring.");
-            WaitForCanvasesThenApply(phase).Forget();
-            return;
-        }
-
-        ApplyFlowPhaseInternal(phase);
-    }
-
-    private async UniTaskVoid WaitForCanvasesThenApply(GameFlowPhase phase)
-    {
-        await UniTask.WaitUntil(() => biddingCanvas != null && shopCanvas != null);
-        ApplyFlowPhaseInternal(phase);
-    }
-
-    private void ApplyFlowPhaseInternal(GameFlowPhase phase)
-    {
-        switch (phase)
-        {
-            case GameFlowPhase.Lobby: State = GameState.Lobby; break;
-            case GameFlowPhase.Bidding: State = GameState.Bidding; break;
-            case GameFlowPhase.ShopReview: State = GameState.Shopping; break;
-            case GameFlowPhase.Combat: State = GameState.Combat; break;
-        }
-
-        biddingCanvas.SetActive(phase == GameFlowPhase.Bidding);
-        shopCanvas.SetActive(phase == GameFlowPhase.ShopReview);
-
-        if (phase == GameFlowPhase.ShopReview)
-            PointerNPC.Instance?.HideSpeechBubble();
-
-        switch (phase)
-        {
-            case GameFlowPhase.Bidding:
+            case GameState.Bidding:
                 biddingManager?.OnBiddingPhaseStart();
                 break;
-            case GameFlowPhase.ShopReview:
+            case GameState.Shopping:
                 shopManager?.OnShopPhaseStart();
                 break;
-            case GameFlowPhase.Combat:
-                biddingCanvas.SetActive(false);
-                shopCanvas.SetActive(false);
+            case GameState.Combat:
                 break;
         }
     }
@@ -589,6 +612,9 @@ public class PersistentGameStateManager : Singleton<PersistentGameStateManager>
     {
         ClearLoadingState();
         State = GameState.Combat;
+
+        // Combat spawns its own fresh player-owned cursor; hide the map's stand-in cursor.
+        CursorUIManager.Instance?.SetLocalCursorEnabled(false);
     }
 
     public async UniTask HandleCombatRoundEnded(ulong winningPlayerId)

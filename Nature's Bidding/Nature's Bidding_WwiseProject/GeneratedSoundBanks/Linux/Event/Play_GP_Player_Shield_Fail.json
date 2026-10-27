@@ -1,0 +1,58 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "2926918818",
+    "Type": "Event",
+    "GUID": "{7A7AE0E3-9239-47B9-9FD7-E0AFF8D57AB0}",
+    "Language": "SFX",
+    "Hash": "{984B0AEA-872E-B3DF-BAE2-6351C86A6EF6}",
+    "ObjectPath": "Play_GP_Player_Shield_Fail",
+    "ShortName": "Play_GP_Player_Shield_Fail",
+    "Path": "Event/Play_GP_Player_Shield_Fail.bnk",
+    "Media": [
+     {
+      "Id": "459483911",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "GP_Player_Shield_Fail\\gp_player_shield_fail_01.wav",
+      "Path": "Media/459483911.wem",
+      "CachePath": "5E/{5E27617D-70A7-4EE9-B96A-C9199CF0D625}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "2926918818",
+      "Name": "Play_GP_Player_Shield_Fail",
+      "ObjectPath": "\\Events\\Gameplay Work Unit\\Play_GP_Player_Shield_Fail",
+      "GUID": "{7A7AE0E3-9239-47B9-9FD7-E0AFF8D57AB0}",
+      "Color": "8",
+      "DurationType": "OneShot",
+      "DurationMin": "0.467",
+      "DurationMax": "0.467",
+      "MediaRefs": [
+       {
+        "Id": "459483911"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{A35439FD-C69B-07FA-1B06-F76AE31A773F}"
+ }
+}

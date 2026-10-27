@@ -9,7 +9,7 @@ public class PlayerData
     public int gold;
     public int combatWins;
 
-    // UI faux frontend info
+    // UI faux frontend info (Temporary)
     public float speedMultiplier = 1f;
     public float jumpMultiplier = 1f;
     public float damageMultiplier = 1f;

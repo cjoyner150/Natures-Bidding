@@ -17,11 +17,14 @@ public class PlayerStatusEffectManager : MonoBehaviour
     private PlayerHealth playerHealth;
     private StatsMediator statsMediator;
     private Stats playerStats;
+    private PlayerContext ctx;
 
     Vector3 initialLocalScale;
     
-    public void Initialize(Stats stats, ulong clientId)
+    public void Initialize(PlayerContext ctx, Stats stats, ulong clientId)
     {
+        this.ctx = ctx;
+
         IEnumerable<StatusEffectorSO> StatusEffectors = GetStatusEffectors(clientId);
         playerHealth = GetComponent<PlayerHealth>();
 
@@ -30,6 +33,9 @@ public class PlayerStatusEffectManager : MonoBehaviour
         initialLocalScale = transform.localScale;
 
         AddModifiers(StatusEffectors);
+
+        PlayerCombatHooks.OnItemAdded += OnItemAdded;
+
         OnInitializeCompleted?.Invoke();
 
     }
@@ -56,8 +62,7 @@ public class PlayerStatusEffectManager : MonoBehaviour
             activeEffectors.Add(effectData);
         }
 
-        playerHealth.SendMaxHealthToServerRpc(playerStats.MaxHealth, playerHealth.OwnerClientId);
-        UpdateScale();
+        UpdateStatValues();
     }
 
     public void AddModifiers(StatusEffectorSO addedEffect)
@@ -68,8 +73,7 @@ public class PlayerStatusEffectManager : MonoBehaviour
         var effectData = new EffectorData(addedEffect, playerStats, this, statsMediator);
         activeEffectors.Add(effectData);
 
-        playerHealth.SendMaxHealthToServerRpc(playerStats.MaxHealth, playerHealth.OwnerClientId);
-        UpdateScale();
+        UpdateStatValues();
     }
 
     public void RemoveModifiers(IEnumerable<string> ids)
@@ -91,8 +95,7 @@ public class PlayerStatusEffectManager : MonoBehaviour
             }
         }
 
-        playerHealth.SendMaxHealthToServerRpc(playerStats.MaxHealth, playerHealth.OwnerClientId);
-        UpdateScale();
+        UpdateStatValues();
     }
 
     public void RemoveModifiers(string id)
@@ -111,12 +114,23 @@ public class PlayerStatusEffectManager : MonoBehaviour
                 _debugShowCurrentStatusEffectors.Remove(debugEffect);
             }
 
-        playerHealth.SendMaxHealthToServerRpc(playerStats.MaxHealth, playerHealth.OwnerClientId);
-        UpdateScale();
+        UpdateStatValues();
     }
 
-    private void UpdateScale() => transform.localScale = initialLocalScale * playerStats.Size;
-    
+    private void UpdateStatValues() 
+    {
+        playerHealth.SendMaxHealthToServerRpc(playerStats.MaxHealth, playerHealth.OwnerClientId);
+        transform.localScale = initialLocalScale * playerStats.Size;
+        ctx.maxJumps = ctx.playerStats.Jumps;
+
+        GameLogger.Log(LogSeverity.Debug, "[Player Stats] Modifiers have been changed. Stats are now:  " + playerStats?.ToString());
+    }
+
+    private void OnItemAdded(string itemId)
+    {
+        var effector = GameDataManager.Instance.GetEffector(itemId);
+        AddModifiers(effector);
+    }
 
     [ContextMenu("Add Debug Modifiers")]
     public void DebugAddModifiers()
@@ -133,8 +147,11 @@ public class PlayerStatusEffectManager : MonoBehaviour
             effect.OnTick(Time.deltaTime);
         }
         
+    }
 
-        print("[Player Stats] Modifiers Initialized. "+playerStats?.ToString());
+    private void OnDestroy()
+    {
+        PlayerCombatHooks.OnItemAdded -= OnItemAdded;
     }
 
 }

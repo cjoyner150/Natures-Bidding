@@ -4879,6 +4879,7 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal:
     WwiseObjectReference: {fileID: 11400000, guid: df9a0ae429a048368955a609d39b6e58, type: 2}
+  postOnRoot: 1
   applyScreenSpacePan: 1
   combatPan:
     idInternal: 0

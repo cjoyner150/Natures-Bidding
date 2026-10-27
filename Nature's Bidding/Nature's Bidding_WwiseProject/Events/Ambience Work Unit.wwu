@@ -2,6 +2,10 @@
 <WwiseDocument Type="WorkUnit" ID="{7E994C95-B386-48DD-853D-D4339C406EFA}" SchemaVersion="133">
 	<Events>
 		<WorkUnit Name="Ambience Work Unit" ID="{7E994C95-B386-48DD-853D-D4339C406EFA}" PersistMode="Standalone">
+			<PropertyList>
+				<Property Name="Color" Type="int16" Value="19"/>
+				<Property Name="OverrideColor" Type="bool" Value="True"/>
+			</PropertyList>
 			<ChildrenList>
 				<Event Name="Play_AMB_Forest" ID="{E6111105-4B67-4AF0-B526-83D7003FAD60}">
 					<ChildrenList>

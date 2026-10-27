@@ -20,6 +20,7 @@ public class InstantKillBounds : NetworkBehaviour
 
                 if (serverHandler != null)
                 {
+                    playerHealth.PlayFallFeedbackClientRpc();
                     serverHandler.HandleInstantKill(playerHealth);
                 }
             }

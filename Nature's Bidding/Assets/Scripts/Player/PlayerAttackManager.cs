@@ -8,33 +8,44 @@ using UnityUtils;
 public class PlayerAttackManager : NetworkBehaviour
 {
     [SerializeField] private Transform attackTransform;
-    [SerializeField] private PlayerHealth selfPlayerHealth;
     [SerializeField] private LayerMask attackableLayers;
 
-    private bool isAttacking;
+    public bool isAttacking;
 
     private HashSet<IDamageable> damagedObjectsOnThisAttack = new HashSet<IDamageable>();
-
+    
+    [Header("Basic Attack Settings")]
     [SerializeField] private float attackRadius;
     [SerializeField] private float attackLength;
 
-    PlayerContext ctx;
+    [Header("Falling Slam Settings")]
+    [SerializeField] private float fallingSlamRadius;
+    [SerializeField] private float fallingSlamLength;
 
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
+    private IDamageable selfDamageable;
+    private IEffectable selfEffectable;
+    private PlayerContext ctx;
+
+    //public override void OnNetworkSpawn()
+    //{
+    //    base.OnNetworkSpawn();
         
-        selfPlayerHealth = GetComponent<PlayerHealth>();
-        if (IsOwner)
-        {
-            UpdateContextNextFrame();
-        }
-    }
+    //    selfDamageable = GetComponent<IDamageable>();
 
-    async void UpdateContextNextFrame()
+    //    if (IsOwner)
+    //    {
+    //        var inputManager = GetComponent<PlayerInputManager>();
+    //        _ = UniTask.NextFrame().ContinueWith(() => ctx = inputManager.GetPlayerContext());
+    //    }
+    //}
+
+    public void Initialize(PlayerContext ctx)
     {
-        await UniTask.NextFrame();
-        ctx = selfPlayerHealth.GetPlayerContext();
+        GameLogger.Log(LogSeverity.Debug, $"{gameObject.name} has initialized its attack manager.");
+        selfDamageable = GetComponent<IDamageable>();
+        selfEffectable = GetComponent<IEffectable>();
+
+        this.ctx = ctx;
     }
 
     public void BeginAttack()
@@ -42,17 +53,49 @@ public class PlayerAttackManager : NetworkBehaviour
         damagedObjectsOnThisAttack.Clear();
         isAttacking = true;
 
-        NetworkVisualEffectManager.SpawnSlashEffectsOnPlayer?.Invoke(OwnerClientId, (int)(ctx.attackTime / ctx.attackSpeed * 1000));
+        NetworkVisualEffectManager.SpawnSlashEffectsOnPlayer?.Invoke(ctx, (int)(ctx.attackTime / ctx.attackSpeed * 1000));
     }
 
     public void EndAttack()
     {
-        foreach (var health in damagedObjectsOnThisAttack.OfType<PlayerHealth>())
+        foreach (var damageable in damagedObjectsOnThisAttack)
         {
-            PlayerCombatHooks.TriggerOnAttack(health.OwnerClientId);
+            if (damageable is NetworkBehaviour)
+            {
+                var networkBehaviour = damageable as NetworkBehaviour;
+                PlayerCombatHooks.TriggerOnAttack((long)networkBehaviour.OwnerClientId);
+            }
+            else
+            {
+                PlayerCombatHooks.TriggerOnAttack(-1);
+            }
         }
 
         isAttacking = false;
+    }
+
+    public void FallingSlamAttack()
+    {
+        RaycastHit[] hits = Physics.SphereCastAll(
+            transform.position + (ctx.modelHolder.forward * fallingSlamRadius / 2f), 
+            fallingSlamRadius, 
+            ctx.modelHolder.forward, 
+            fallingSlamLength, 
+            attackableLayers
+            );
+
+        if (debugAttackCast)
+            DrawSphereCastDebug(transform.position, fallingSlamRadius, ctx.modelHolder.forward, fallingSlamLength, hits);
+
+        foreach (RaycastHit hit in hits)
+        {
+            GameObject go = hit.collider.gameObject;
+            UtilityExtensions.TryGetInParents<IDamageable>(go, out var damageable);
+            if (damageable != null)
+            {
+                HandleHitDamageableTarget(damageable, go);
+            }
+        }
     }
 
     void FixedUpdate()
@@ -89,7 +132,7 @@ public class PlayerAttackManager : NetworkBehaviour
     {
         bool didHit = hits.Length > 0;
         Color color = didHit ? Color.red : Color.green;
-        float duration = 0.15f;
+        float duration = 1f;
 
         Vector3 endPos = origin + direction.normalized * distance;
 
@@ -150,13 +193,13 @@ public class PlayerAttackManager : NetworkBehaviour
         damage += ctx.playerStats.ComboDamage * ctx.combo;
         damage *= crit ? ctx.playerStats.CritDamageMultiplier : 1;
 
-        damageable.Hit(damage, selfPlayerHealth.OwnerClientId, out IDamageable.HitCallbackContext callbackContext, crit);
+        damageable.Hit(damage, ctx, out IDamageable.HitCallbackContext callbackContext, crit);
         damagedObjectsOnThisAttack.Add(damageable);
 
         if (callbackContext == IDamageable.HitCallbackContext.success)
         {
             ctx.forceToAdd = Vector3.zero;
-            ctx.rb.linearVelocity = (selfPlayerHealth.transform.position - damagedObject.transform.position).normalized * ctx.attackResponseForce;
+            ctx.rb.linearVelocity = (ctx.modelHolder.position - damagedObject.transform.position).normalized * ctx.attackResponseForce;
             ctx.hitResponse = true;
             ctx.dashCDTimer = 0;
 
@@ -166,13 +209,30 @@ public class PlayerAttackManager : NetworkBehaviour
             
             if (PersistentGameStateManager.Instance.State == PersistentGameStateManager.GameState.Combat)
             {
-                if (ctx.playerStats.Stealing > 0) RequestStealServerRpc(OwnerClientId, damagedObject.GetComponent<NetworkObject>().OwnerClientId, (int)(ctx.playerStats.Stealing));
-                if (ctx.playerStats.Lifesteal > 0) selfPlayerHealth.Heal(ctx.playerStats.Lifesteal);
+                if (ctx.playerStats.Stealing > 0) 
+                {
+                    var damagedEffectable = damagedObject.GetComponent<IEffectable>();
+
+                    int retries = 10;
+                    while (retries >= 0 && damagedEffectable == null && damagedObject.transform.parent != null)
+                    {
+                        damagedObject = damagedObject.transform.parent.gameObject;
+                        damagedEffectable = damagedObject.GetComponent<IEffectable>();
+                        retries--;
+                    }
+
+                    var damagedNetworkObject = damagedObject.GetComponent<NetworkObject>();
+
+                    long stealTarget = damagedNetworkObject != null ? (long)damagedNetworkObject.OwnerClientId : -1;
+
+                    if (damagedEffectable != null) damagedEffectable.StealFrom((long)OwnerClientId, stealTarget, (int)(ctx.playerStats.Stealing));
+                }
+                if (ctx.playerStats.Lifesteal > 0) selfDamageable.Heal(ctx.playerStats.Lifesteal);
             }
         }
         else if (callbackContext == IDamageable.HitCallbackContext.parried)
         {
-            selfPlayerHealth.StunPlayer(0);
+            selfEffectable.Stun(0);
         }
     }
 
@@ -183,14 +243,4 @@ public class PlayerAttackManager : NetworkBehaviour
         Gizmos.DrawLine(attackTransform.position, attackTransform.position + (transform.forward * attackLength));
     }
 
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    private void RequestStealServerRpc(ulong thiefId, ulong targetId, int amount)
-    {
-        var target = PersistentPlayerRegistry.Instance.GetByClientId(targetId);
-        if (target == null) return;
-
-        int stolen = Mathf.Min(amount, target.gold);
-        PersistentPlayerRegistry.Instance.TrySpendGold(targetId, stolen);
-        PersistentPlayerRegistry.Instance.AddGold(thiefId, stolen);
-    }
 }

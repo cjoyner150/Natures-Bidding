@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Shop Butterfly Mask
   m_EditorClassIdentifier: Assembly-CSharp::BiddableItem
   itemId: butterfly_mask
-  itemName: Butterfly Mask
-  description: A hit will send you flying
+  itemName: Butterfly
+  description: The curse of weightlessness. Become significantly more susceptible
+    to outside forces.
   icon: {fileID: 21300000, guid: 235a27ee3a73ea5448984a87551d56cd, type: 3}
   displayPrefab: {fileID: 2687728767732451186, guid: 73fb66291658c0e4c945c4d7fa34c11c, type: 3}
   displayRotation: {x: 0, y: 0, z: 0}

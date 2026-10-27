@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{3987688E-AC48-4183-A467-5C674A86EECC}",
     "Language": "SFX",
-    "Hash": "{3006B5F0-8FB5-B06B-41E3-4F7DC353CC83}",
+    "Hash": "{4597263C-A39F-064A-DDA3-794733629892}",
     "ObjectPath": "Play_UI_Bid_Submit",
     "ShortName": "Play_UI_Bid_Submit",
     "Path": "Event/Play_UI_Bid_Submit.bnk",
@@ -80,6 +80,6 @@
     ]
    }
   ],
-  "FileHash": "{606EBF94-CD0A-943B-99E2-789F4D359395}"
+  "FileHash": "{46A41545-CC7B-D82D-03F5-2F99DC3D5CD2}"
  }
 }

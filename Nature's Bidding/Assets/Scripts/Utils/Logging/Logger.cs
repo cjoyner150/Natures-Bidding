@@ -36,7 +36,7 @@ public enum LogSeverity
 public static class GameLogger
 {
     /// <summary>Controls ONLY what's mirrored to the Unity Console/Player.log. File output is unaffected.</summary>
-    public static LogSeverity CurrentLevel = LogSeverity.Info;
+    public static LogSeverity CurrentLevel = LogSeverity.Debug;
 
     /// <summary>How many previous session log files to keep, per severity folder.</summary>
     public static int MaxSessionsToKeep = 5;

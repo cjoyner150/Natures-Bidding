@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Shop Snake Mask
   m_EditorClassIdentifier: Assembly-CSharp::BiddableItem
   itemId: snake_mask
-  itemName: Snake Mask
-  description: Snakes can't jump.
+  itemName: Snake
+  description: The curse of dismemberment. Jumping is a priviledge that the goddess
+    allows.
   icon: {fileID: 0}
   displayPrefab: {fileID: 7320822817033505857, guid: a685fce9264e1824b906f58e3be5bbe1, type: 3}
   displayRotation: {x: 0, y: 0, z: 0}

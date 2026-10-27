@@ -21,9 +21,9 @@ public class Parry : State
         ctx.forceToAdd = Vector3.zero;
 
         ctx.anim.SetTrigger("Parry");
-        NetworkVisualEffectManager.SpawnParryEffectsOnPlayer?.Invoke(ctx.playerHealth.OwnerClientId, (int)(ctx.playerStats.ParryDuration * 1000));
+        NetworkVisualEffectManager.SpawnParryEffectsOnPlayer?.Invoke(ctx, (int)(ctx.playerStats.ParryDuration * 1000));
 
-        ctx.playerHealth.BeginParry();
+        ctx.playerDamageable.BeginParry();
         parryTimer = ctx.playerStats.ParryDuration;
 
         exitParry = false;
@@ -42,7 +42,9 @@ public class Parry : State
         if (parryTimer <= 0) 
         {
             ctx.shouldStunSelf = true;
-            exitParry = true; 
+            exitParry = true;
+
+            NetworkVisualEffectManager.PlayShieldFailOnPlayer?.Invoke(ctx);
         }
     }
 
@@ -51,7 +53,7 @@ public class Parry : State
         ctx.forceToAdd = Vector3.zero;
         ctx.parryCDTimer = ctx.playerStats.ParryCooldown;
 
-        ctx.playerHealth.EndParry();
+        ctx.playerDamageable.EndParry();
 
         ctx.parryResponse = false;
     }

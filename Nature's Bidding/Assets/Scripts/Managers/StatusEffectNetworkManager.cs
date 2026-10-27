@@ -17,10 +17,16 @@ public class StatusEffectNetworkManager : NetworkSingleton<StatusEffectNetworkMa
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void ApplyToPlayerServerRpc(ulong playerId, string effectIds)
+    public void ApplyToPlayerServerRpc(long playerId, string effectIds)
     {
         GameLogger.Log(LogSeverity.Debug, $"Server received {effectIds} for {playerId}");
-        ApplyToPlayerWhenReady(playerId, effectIds).Forget();
+
+        if (playerId >= 0)
+            ApplyToPlayerWhenReady((ulong)playerId, effectIds).Forget();
+        else
+        {
+            // Handle bot
+        }
     }
 
     private async UniTaskVoid ApplyToPlayerWhenReady(ulong playerId, string effectIds)

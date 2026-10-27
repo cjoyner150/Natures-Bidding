@@ -1,0 +1,125 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Linux",
+  "BasePlatform": "Linux",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "2538377831",
+    "Type": "Event",
+    "GUID": "{70FC38F5-5881-4468-A0ED-87520397CA12}",
+    "Language": "SFX",
+    "Hash": "{D7989E24-BBB6-B164-B831-F3B2BD4399E8}",
+    "ObjectPath": "Play_GP_Player_ParrySuccess",
+    "ShortName": "Play_GP_Player_ParrySuccess",
+    "Path": "Event/Play_GP_Player_ParrySuccess.bnk",
+    "Media": [
+     {
+      "Id": "11201239",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_parry_success_03.wav",
+      "Path": "Media/11201239.wem",
+      "CachePath": "41/{41683151-E1C1-93C2-433D-A0FC17D3502E}.wem"
+     },
+     {
+      "Id": "155811665",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_parry_success_01.wav",
+      "Path": "Media/155811665.wem",
+      "CachePath": "CC/{CCB568F9-6CF1-B28F-1B56-1F1603E247AE}.wem"
+     },
+     {
+      "Id": "584268127",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_parry_success_02.wav",
+      "Path": "Media/584268127.wem",
+      "CachePath": "8A/{8AF96D1E-EEA0-52CC-4731-CB1CF978FCB4}.wem"
+     },
+     {
+      "Id": "616913992",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_parry_success_05.wav",
+      "Path": "Media/616913992.wem",
+      "CachePath": "C2/{C257553E-679D-43C0-7A0D-742EC7EF939A}.wem"
+     },
+     {
+      "Id": "695332118",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "gp_player_parry_success_04.wav",
+      "Path": "Media/695332118.wem",
+      "CachePath": "98/{98591E70-6297-E918-855C-140D5C77618C}.wem"
+     }
+    ],
+    "Plugins": {
+     "ShareSets": [
+      {
+       "Id": "1008402193",
+       "Name": "Low_Pass_20KHz",
+       "ObjectPath": "\\Effects\\Factory Effects\\Parametric EQ\\Low Pass Filters\\Low_Pass_20KHz",
+       "GUID": "{830124FB-B9D5-4AE8-846E-E94A74652666}",
+       "LibName": "Wwise Parametric EQ",
+       "LibId": "6881283"
+      }
+     ]
+    },
+    "Events": [
+     {
+      "Id": "2538377831",
+      "Name": "Play_GP_Player_ParrySuccess",
+      "ObjectPath": "\\Events\\Gameplay Work Unit\\Play_GP_Player_ParrySuccess",
+      "GUID": "{70FC38F5-5881-4468-A0ED-87520397CA12}",
+      "Color": "8",
+      "DurationType": "OneShot",
+      "DurationMin": "0.77827",
+      "DurationMax": "1.1590012",
+      "MediaRefs": [
+       {
+        "Id": "11201239"
+       },
+       {
+        "Id": "155811665"
+       },
+       {
+        "Id": "584268127"
+       },
+       {
+        "Id": "616913992"
+       },
+       {
+        "Id": "695332118"
+       }
+      ],
+      "PluginRefs": {
+       "ShareSets": [
+        {
+         "Id": "1008402193"
+        }
+       ]
+      }
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2369427653",
+      "Name": "Combat_Pan",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Combat_Pan",
+      "GUID": "{1227142A-5FEB-462E-92E5-2D17A955B80D}",
+      "Color": "3"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{9FF59AFC-AA63-3F8A-FBC0-06CC1C227BED}"
+ }
+}

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Shop Bat Mask
   m_EditorClassIdentifier: Assembly-CSharp::BiddableItem
   itemId: bat_mask
-  itemName: Bat Mask
-  description: Your controls go batty.
+  itemName: Bat
+  description: The curse of blindness. You will have to adjust to a new kind of navigation.
   icon: {fileID: 0}
   displayPrefab: {fileID: 630671564400494279, guid: 5793b29a4cb5f1147a156c1a860b39f8, type: 3}
   displayRotation: {x: 0, y: 0, z: 0}

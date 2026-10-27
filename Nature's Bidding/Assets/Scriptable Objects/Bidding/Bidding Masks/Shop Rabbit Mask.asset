@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Shop Rabbit Mask
   m_EditorClassIdentifier: Assembly-CSharp::BiddableItem
   itemId: rabbit_mask
-  itemName: Rabbit Mask
-  description: Small and delicate.
+  itemName: Rabbit
+  description: The curse of fragility. Your enemies will crush you.
   icon: {fileID: 0}
   displayPrefab: {fileID: 3532223658133545416, guid: 9e3571bfdf04199459f5bba50601a9c8, type: 3}
   displayRotation: {x: 0, y: 0, z: 0}

@@ -12,6 +12,7 @@ public class GroundedAction : State
     public readonly Dash dash;
     public readonly Knockback knockback;
     public readonly Parry parry;
+    public readonly SlamRecovery slamRecovery;
 
     public GroundedAction(StateMachine machine, PlayerContext ctx, State parent) : base(machine, parent)
     {
@@ -21,6 +22,7 @@ public class GroundedAction : State
         dash = new Dash(machine, ctx, this);
         knockback = new Knockback(machine, ctx, this);
         parry = new Parry(machine, ctx, this);
+        slamRecovery = new SlamRecovery(machine, ctx, this);
     }
 
     protected override State GetInitialState() 

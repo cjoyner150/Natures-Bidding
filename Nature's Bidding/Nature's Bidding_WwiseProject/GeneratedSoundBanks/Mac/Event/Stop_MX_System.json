@@ -10,7 +10,7 @@
     "Type": "Event",
     "GUID": "{0B983AC7-6D7B-4C1C-AA1E-05447D4235F3}",
     "Language": "SFX",
-    "Hash": "{A3EB1FA8-4BC0-9348-0AD5-DB60E601C42D}",
+    "Hash": "{FAEA3353-5796-663F-85AD-085051A59899}",
     "ObjectPath": "Stop_MX_System",
     "ShortName": "Stop_MX_System",
     "Path": "Event/Stop_MX_System.bnk",
@@ -20,6 +20,7 @@
       "Name": "Stop_MX_System",
       "ObjectPath": "\\Events\\Music Work Unit\\Stop_MX_System",
       "GUID": "{0B983AC7-6D7B-4C1C-AA1E-05447D4235F3}",
+      "Color": "1",
       "MaxAttenuation": "0",
       "DurationType": "OneShot",
       "DurationMin": "0",
@@ -28,6 +29,6 @@
     ]
    }
   ],
-  "FileHash": "{E92AAE0B-5FEC-BCEF-29F0-E5D7CB31C5FB}"
+  "FileHash": "{5D050177-0D2A-9DC8-D901-259E314E61EF}"
  }
 }

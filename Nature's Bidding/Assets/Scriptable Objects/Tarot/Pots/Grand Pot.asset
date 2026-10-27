@@ -9,15 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6702619c487f595469c4bd0a5c0c0053, type: 3}
-  m_Name: smallpot
-  m_EditorClassIdentifier: Assembly-CSharp::PotType
-  potName: Small Pot
-  description: Draw 3 tarot cards, choose 1 reward.
-  cost: 100
+  m_Script: {fileID: 11500000, guid: 8e869a3dc0df4a24cbd0dc0b37c4bee1, type: 3}
+  m_Name: Grand Pot
+  m_EditorClassIdentifier: Assembly-CSharp::PotTypeSO
+  potName: Grand Pot
+  potSize: 2
+  description: Draw 5 tarot cards, choose 2 rewards.
+  cost: 300
   clicksToOpen: 3
-  cardsToDraw: 3
-  cardsToKeep: 1
+  cardsToDraw: 5
+  cardsToKeep: 2
   clickSprites:
   - {fileID: 21300000, guid: ff2ea62f39b4b9e4a9527e9501f54346, type: 3}
   - {fileID: 21300000, guid: b769618d7c5195242888c1b4aefdde16, type: 3}

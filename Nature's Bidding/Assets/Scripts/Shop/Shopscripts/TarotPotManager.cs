@@ -15,7 +15,7 @@ using Random = UnityEngine.Random;
 /// TarotPotManager — Full-screen pot opening sequence.
 ///
 /// Two pot slots exist in each PlayerShopPanel (SmallPot + GrandPot).
-/// Each has its own PotType SO defining cost, clicks, cards drawn, cards to keep.
+/// Each has its own PotTypeSO SO defining cost, clicks, cards drawn, cards to keep.
 ///
 /// Sequence:
 ///   1. Player buys a pot in the shop (ShopManager calls OpenSequence).
@@ -33,13 +33,14 @@ public class TarotPotManager : NetworkBehaviour
 
     public static Action<TarotPotUIBehaviour> OnPotUIHoveredEvent;
     public static Action<TarotPotUIBehaviour> OnPotUIClickedEvent;
+    public static Action<TarotPotUIBehaviour> OnPotUIExitedEvent;
 
     #region Inspector Fields
 
     [Header("Pot Selection UI")]
     [SerializeField] private GameObject playerSelectionVisualPrefab;
 
-    [Header("Pot Types — drag PotType SOs here")]
+    [Header("Pot Types — drag PotTypeSO SOs here")]
     [SerializeField] private TarotPotUIBehaviour[] potUIBehaviours;
     private Dictionary<PotSize, TarotPotUIBehaviour> potUILookup = new Dictionary<PotSize, TarotPotUIBehaviour>();
 
@@ -85,7 +86,7 @@ public class TarotPotManager : NetworkBehaviour
     private Dictionary<ulong, Image> playerSelectionVisuals = new Dictionary<ulong, Image>();
     private bool allowSelect = true;
 
-    private PotType              _currentPurchasedPotType;
+    private PotTypeSO              _currentPurchasedPotType;
     private int                  _clicksRemaining;
     private bool                 _waitingForClicks;
     private bool                 _cardsDealt;
@@ -98,8 +99,6 @@ public class TarotPotManager : NetworkBehaviour
 
     private CardTooltip           _activeTooltip;
     [SerializeField] private Canvas                _rootCanvas;
-
-    private object _activeHoverTarget;
 
     #endregion
 
@@ -125,12 +124,14 @@ public class TarotPotManager : NetworkBehaviour
     {
         OnPotUIClickedEvent += OnPotUIClicked;
         OnPotUIHoveredEvent += OnPotUIHovered;
+        OnPotUIExitedEvent += OnPotUIExited;
     }
 
     private void UnhookEvents()
     {
         OnPotUIClickedEvent -= OnPotUIClicked;
         OnPotUIHoveredEvent -= OnPotUIHovered;
+        OnPotUIExitedEvent -= OnPotUIExited;
     }
 
     public async override void OnNetworkSpawn()
@@ -174,7 +175,7 @@ public class TarotPotManager : NetworkBehaviour
 
     #endregion
 
-    #region Card Pointer Hooks
+    #region Pot Pointer Hooks
 
     public void OnPotUIClicked(TarotPotUIBehaviour potBehaviour)
     {
@@ -188,13 +189,17 @@ public class TarotPotManager : NetworkBehaviour
         _hideTooltipCts?.Dispose();
         _hideTooltipCts = null;
 
-        if (_activeTooltip != null && _activeHoverTarget as string == "SmallPot")
-            return;
-
         EnsureTooltip();
-        _activeTooltip?.PopulatePot(potBehaviour.PotType.cost);
-        _activeHoverTarget = "SmallPot";
+        _activeTooltip?.PopulatePot(potBehaviour.PotType);
         ShowTooltipNextFrameAsync(potBehaviour.GetComponent<RectTransform>()).Forget();
+    }
+
+    public void OnPotUIExited(TarotPotUIBehaviour potBehaviour)
+    {
+        _hideTooltipCts?.Cancel();
+        _hideTooltipCts?.Dispose();
+        _hideTooltipCts = new CancellationTokenSource();
+        HideTooltipAfterDelay(_hideTooltipCts.Token).Forget();
     }
 
     #endregion
@@ -398,7 +403,7 @@ public class TarotPotManager : NetworkBehaviour
         _currentPurchasedPotType = GetPotTypeBySize(potSize);
         if (_currentPurchasedPotType == null)
         {
-            GameLogger.Log(LogSeverity.Error, $"PotType not assigned ({potSize})!");
+            GameLogger.Log(LogSeverity.Error, $"PotTypeSO not assigned ({potSize})!");
             return;
         }
 
@@ -772,7 +777,11 @@ public class TarotPotManager : NetworkBehaviour
     /// <summary>Creates the tooltip once and reuses it — avoids flash from destroy/recreate.</summary>
     void EnsureTooltip()
     {
-        if (_activeTooltip != null) return;
+        if (_activeTooltip != null) 
+        {
+            _activeTooltip.gameObject.SetActive(true);
+            return;
+        }
         if (tooltipPrefab == null) return;
 
         // Re-find canvas here in case it was null during Initialize
@@ -830,13 +839,7 @@ public class TarotPotManager : NetworkBehaviour
 
             if (tooltipPrefab == null || _rootCanvas == null) return;
 
-            DestroyTooltip();
-            var go = Instantiate(tooltipPrefab, _rootCanvas.transform);
-            _activeTooltip = go.GetComponent<CardTooltip>();
-            _activeTooltipReward = reward;
-            if (_activeTooltip == null) return;
-
-            _activeTooltip.SetCanvas(_rootCanvas);
+            EnsureTooltip();
 
             if (_activeTooltip.nameText) _activeTooltip.nameText.text = reward.cardName;
             if (_activeTooltip.effectText) _activeTooltip.effectText.text = reward.rewardSummary;
@@ -847,8 +850,6 @@ public class TarotPotManager : NetworkBehaviour
             var hoveredCard = _spawnedCards.Find(c => c != null && c.Reward == reward);
             if (hoveredCard != null)
                 _activeTooltip.PositionBesideCard(hoveredCard.GetComponent<RectTransform>());
-
-            go.SetActive(true);
         }
         else
         {
@@ -861,15 +862,15 @@ public class TarotPotManager : NetworkBehaviour
         }
     }
 
-    void OnCardHoverExit()
-    {
-        if (_activeTooltip == null) return;
+    //void OnCardHoverExit()
+    //{
+    //    if (_activeTooltip == null) return;
 
-        _hideTooltipCts?.Cancel();
-        _hideTooltipCts?.Dispose();
-        _hideTooltipCts = new CancellationTokenSource();
-        HideTooltipAfterDelay(_hideTooltipCts.Token).Forget();
-    }
+    //    _hideTooltipCts?.Cancel();
+    //    _hideTooltipCts?.Dispose();
+    //    _hideTooltipCts = new CancellationTokenSource();
+    //    HideTooltipAfterDelay(_hideTooltipCts.Token).Forget();
+    //}
 
     private async UniTaskVoid HideTooltipAfterDelay(CancellationToken token)
     {
@@ -886,8 +887,7 @@ public class TarotPotManager : NetworkBehaviour
     {
         if (_activeTooltip != null)
         {
-            Destroy(_activeTooltip.gameObject);
-            _activeTooltip = null;
+            _activeTooltip.gameObject.SetActive(false);
         }
     }
 
@@ -913,7 +913,7 @@ public class TarotPotManager : NetworkBehaviour
         return result;
     }
 
-    public PotType GetPotTypeBySize(PotSize size) => potUILookup[size]?.PotType;
+    public PotTypeSO GetPotTypeBySize(PotSize size) => potUILookup[size]?.PotType;
     public TarotPotUIBehaviour GetPotUIBySize(PotSize size) => potUILookup[size];
 
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// PotType — ScriptableObject defining a pot's behaviour and visuals.
+/// PotTypeSO — ScriptableObject defining a pot's behaviour and visuals.
 /// Create via: Right-click → Create → Bidding → Pot Type
 ///
 /// Example setups:
@@ -9,7 +9,7 @@ using UnityEngine;
 ///   Grand Pot: cost=50, clicksToOpen=5, cardsToDraw=5, cardsToKeep=2
 /// </summary>
 [CreateAssetMenu(fileName = "NewPotType", menuName = "Bidding/Pot Type")]
-public class PotType : ScriptableObject
+public class PotTypeSO : ScriptableObject
 {
     #region Identity
 

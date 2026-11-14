@@ -997,6 +997,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6d6a66f05584e4949a2db0dbbe26637d, type: 2}
   - {fileID: 11400000, guid: b7f493d7d13596343b8ffbdf328df70d, type: 2}
   - {fileID: 11400000, guid: b7f9d153713de48498c12850ec6755c8, type: 2}
+  - {fileID: 11400000, guid: 85d2a7b7f0521cb4b8edbd22649c4add, type: 2}
   useExternalSeed: 1
   externalSeed: 0
 --- !u!4 &1608632800

@@ -4,6 +4,7 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using MoreMountains.Tools;
 
 
 public class PlayerVisualEffectManager : MonoBehaviour
@@ -24,6 +25,7 @@ public class PlayerVisualEffectManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] protected Transform weaponHolderTransform;
+    [SerializeField] protected Transform starHolderTransform;
     [SerializeField] protected MMF_Player hitReactFeedback;
     [SerializeField] protected PlayerAudioFeedback audioFeedback;
 
@@ -112,12 +114,21 @@ public class PlayerVisualEffectManager : MonoBehaviour
         SafeDispose(go, 1000).Forget();
     }
 
-    public void ToggleStarParticles(bool enabled)
+    public void ToggleStarParticles(bool enabled, float speed)
     {
         if (enabled)
         {
             GameObject go = Instantiate(starParticle, gameObject.transform, false);
             go.transform.localPosition = Vector3.zero;
+
+            MMAutoRotate rotator = go.GetComponent<MMAutoRotate>();
+            if (rotator != null)
+            {
+                rotator.OrbitCenterTransform = starHolderTransform;
+                rotator.OrbitCorrectionSpeed = 10 * speed;
+                rotator.OrbitRotationSpeed = 1000 * speed;
+                rotator.OrbitRadius = 3;
+            }
             
             if (starEffectCache != null)
             {

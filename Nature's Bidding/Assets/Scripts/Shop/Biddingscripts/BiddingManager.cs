@@ -240,6 +240,7 @@ public class BiddingManager : BaseGameServerHandler<BiddingManager>
         // Run the opening cutscene, then start the rounds after it finishes.
         openingCutsceneDirector.stopped += (pd) =>
         {
+            if (this == null || gameObject == null) return;
             GameLogger.Log(LogSeverity.Debug, "Cutscene finished.");
             StartCoroutine(RunAllRounds());
         };

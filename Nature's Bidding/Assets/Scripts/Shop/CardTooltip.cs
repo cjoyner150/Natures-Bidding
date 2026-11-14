@@ -78,7 +78,6 @@ public class CardTooltip : MonoBehaviour
         float cardLeftPx = corners[0].x;
         float cardCentrePxY = (corners[0].y + corners[1].y) * 0.5f;
 
-        // Use assumed width for edge check since sizeDelta may be 0 with ContentSizeFitter
         bool goRight = (cardRightPx + sideGap + extraOffsetX + assumedWidthPx) <= Screen.width;
 
         // Screen pixel X of the tooltip's pivot point — extraOffsetX pushes further

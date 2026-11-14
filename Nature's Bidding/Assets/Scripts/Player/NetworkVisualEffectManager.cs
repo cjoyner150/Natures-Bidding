@@ -134,10 +134,10 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     public void OnToggleStarEffectsOnPlayer(PlayerContext clientCtx, bool enabled)
     {
         var localVFXManager = GetLocalEffectManagerByCtx(clientCtx);
-        if (localVFXManager != null) localVFXManager.ToggleStarParticles(enabled);
+        if (localVFXManager != null) localVFXManager.ToggleStarParticles(enabled, clientCtx.playerStats.MoveSpeed);
 
         if (TryGetClientId(clientCtx, out var clientId))
-            ToggleStarEffectsClientRpc(clientId, enabled);
+            ToggleStarEffectsClientRpc(clientId, enabled, clientCtx.playerStats.MoveSpeed);
     }
 
     public void OnSpawnJumpEffectsOnPlayer(PlayerContext clientCtx, bool isDoubleJump)
@@ -290,13 +290,13 @@ public class NetworkVisualEffectManager : NetworkSingleton<NetworkVisualEffectMa
     }
 
     [Rpc(SendTo.NotMe, InvokePermission = RpcInvokePermission.Everyone)]
-    public void ToggleStarEffectsClientRpc(ulong clientId, bool enabled)
+    public void ToggleStarEffectsClientRpc(ulong clientId, bool enabled, float speed)
     {
         var playerEffectManager = GetPlayerEffectManagerById(clientId);
 
         if (playerEffectManager != null)
         {
-            playerEffectManager.ToggleStarParticles(enabled);
+            playerEffectManager.ToggleStarParticles(enabled, speed);
         }
         else
         {

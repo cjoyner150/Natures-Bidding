@@ -458,6 +458,7 @@ MonoBehaviour:
   dashParticle: {fileID: 371010074459113082, guid: 44f822ef532e8bd438508c29a45b93a0, type: 3}
   teleportParticle: {fileID: 7981934318694625484, guid: 7eb09148b5a5f2f4686ec0e43bbf878c, type: 3}
   weaponHolderTransform: {fileID: 4987226103521437686}
+  starHolderTransform: {fileID: 1751406282189161435}
   hitReactFeedback: {fileID: 473235510453661419}
   audioFeedback: {fileID: 930000000000000302}
 --- !u!114 &2427196603344720073
@@ -918,6 +919,37 @@ MonoBehaviour:
     WwiseObjectReference: {fileID: 11400000, guid: d3789b5d1dcc4b77835432f774ddfae0, type: 2}
   edgePanValue: 50
   panCameraOverride: {fileID: 0}
+--- !u!1 &2719362079485194426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1751406282189161435}
+  m_Layer: 7
+  m_Name: OrbitCenter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1751406282189161435
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2719362079485194426}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.02, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1487306883029901934}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3070850993678211743
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,6 +1058,7 @@ Transform:
   m_Children:
   - {fileID: 6928901183550045857}
   - {fileID: 5380504398759204246}
+  - {fileID: 1751406282189161435}
   m_Father: {fileID: 1529684055763310261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7307092967920666893

@@ -26,7 +26,7 @@ public class TarotPotUIBehaviour : MonoBehaviour, IPointerEnterHandler, IPointer
             return;
         }
 
-        PotPriceTagTMP.text = potType.cost.ToString();
+        PotPriceTagTMP.text = potType.cost > 0 ? potType.cost.ToString() : "Free";
     }
 
     public void OnPointerClick(PointerEventData eventData)

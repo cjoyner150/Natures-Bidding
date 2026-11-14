@@ -77,6 +77,7 @@ public class TarotPotManager : NetworkBehaviour
     [SerializeField] private GameObject  tooltipPrefab;      // Same CardTooltip prefab used in shop
     [SerializeField] private GameObject playerCrosshairPrefab;
 
+    HashSet<ulong> finalizedRewardPlayers = new();
 
     #endregion
 
@@ -634,12 +635,27 @@ public class TarotPotManager : NetworkBehaviour
                 ? c.Reward.cardId
                 : c.Reward.name;
             ApplyTarotRewardRpc(rewardId);
+            GameLogger.Log(LogSeverity.Debug, $"Applying tarot reward: {rewardId}");
             applied++;
             if (applied >= picksToKeep)
                 break;
         }
 
+        NotifyRewardsFinalizedServerRpc();
+
         OnCloseOverlay();
+    }
+
+    [Rpc(SendTo.Server, InvokePermission= RpcInvokePermission.Everyone)]
+    public void NotifyRewardsFinalizedServerRpc(RpcParams rpcParams = default)
+    {
+        ulong sender = rpcParams.Receive.SenderClientId;
+        finalizedRewardPlayers.Add(sender);
+
+        if (finalizedRewardPlayers.Count >= NetworkManager.ConnectedClientsIds.Count)
+        {
+            PersistentGameStateManager.Instance.RequestReturnToMap();
+        }
     }
 
     void UpdateSelectionHint()
@@ -668,11 +684,6 @@ public class TarotPotManager : NetworkBehaviour
     #endregion
 
     #region Confirm
-
-    public void OnConfirmClicked()
-    {
-        // Deprecated path: pot rewards now resolve instantly when a card is clicked.
-    }
 
     [Rpc(SendTo.Server)]
     void ApplyTarotRewardRpc(string rewardId, RpcParams rpcParams = default)

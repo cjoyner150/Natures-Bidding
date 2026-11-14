@@ -14,14 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PotTypeSO
   potName: Grand Pot
   potSize: 2
-  description: Draw 5 tarot cards, choose 2 rewards.
-  cost: 300
-  clicksToOpen: 3
-  cardsToDraw: 5
-  cardsToKeep: 2
+  description: Draw 6 tarot cards, choose 3 rewards.
+  cost: 400
+  clicksToOpen: 6
+  cardsToDraw: 6
+  cardsToKeep: 3
   clickSprites:
-  - {fileID: 21300000, guid: ff2ea62f39b4b9e4a9527e9501f54346, type: 3}
-  - {fileID: 21300000, guid: b769618d7c5195242888c1b4aefdde16, type: 3}
-  - {fileID: 21300000, guid: 80ae97619c774a54193e7ca097759ce4, type: 3}
-  explodeSprite: {fileID: 21300000, guid: b6962ab358c581d48910457ea1e740fd, type: 3}
+  - {fileID: 21300000, guid: 23d8be2c8cd68214a9ed7703d508ef15, type: 3}
+  - {fileID: 21300000, guid: 85f90974866928f42aea4ada7915713b, type: 3}
+  - {fileID: 21300000, guid: c675c3461cb1739469cd3ceb8de6a18c, type: 3}
+  - {fileID: 21300000, guid: b5e2085972402cf4aa472fd7e267fd62, type: 3}
+  - {fileID: 21300000, guid: 31c0f07cf9f4890429e653871bfca25d, type: 3}
+  - {fileID: 21300000, guid: 9b35956579bcfe04bb13692bef488c84, type: 3}
+  explodeSprite: {fileID: 21300000, guid: d7cd1400bcb9de74082225433781d3b3, type: 3}
   explodeEffect: {fileID: 0}
